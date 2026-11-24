@@ -189,7 +189,8 @@ bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
   // Algorithms usually appear in names surrounded by characters that are not
   // alphabetical characters in the same case. This handles the upper and lower
-  // case cases.
+  // case cases, plus mixed-case algorithm strings bounded by non-alphabetic
+  // characters (such as `AES/cbc/Pkcs5Padding`).
   result =
     "((^|.*[^A-Z])(" + algorithmString + ")([^A-Z].*|$))" +
       // or...
@@ -197,7 +198,9 @@ private string algorithmRegex(string algorithmString) {
       // For lowercase, we want to be careful to avoid being confused by camelCase
       // hence we require two preceding uppercase letters to be sure of a case switch,
       // or a preceding non-alphabetic character
-      "((^|.*[A-Z]{2}|.*[^a-zA-Z])(" + algorithmString.toLowerCase() + ")([^a-z].*|$))"
+      "((^|.*[A-Z]{2}|.*[^a-zA-Z])(" + algorithmString.toLowerCase() + ")([^a-z].*|$))" +
+      // or...
+      "|" + "((^|.*[^a-zA-Z])(?i)(" + algorithmString + ")([^a-zA-Z].*|$))"
 }
 
 /**
@@ -258,7 +261,7 @@ string getInsecureAlgorithmReason(string input) {
 string getASecureAlgorithmName() {
   result =
     [
-      "RSA", "SHA-?(256|384|512)", "CCM", "GCM", "AES(?![^a-zA-Z](ECB|CBC/PKCS[57]Padding))",
+      "RSA", "SHA-?(256|384|512)", "CCM", "GCM", "AES(?![^a-zA-Z](?i)(ECB|CBC/PKCS[57]Padding))",
       "Blowfish", "ECIES", "SHA3-(256|384|512)",
       // Elliptic Curve algorithms: EC (key generation), ECDSA (signatures), ECDH (key agreement),
       // EdDSA/Ed25519/Ed448 (Edwards-curve signatures), XDH/X25519/X448 (key agreement).
@@ -271,19 +274,15 @@ string getASecureAlgorithmName() {
 
 private string rankedSecureAlgorithm(int i) { result = rank[i](getASecureAlgorithmName()) }
 
-private string secureAlgorithmString(int i) {
-  i = 1 and result = rankedSecureAlgorithm(i)
-  or
-  result = rankedSecureAlgorithm(i) + "|" + secureAlgorithmString(i - 1)
+private string secureAlgorithmString() {
+  result = concat(int i | | rankedSecureAlgorithm(i), "|" order by i desc)
 }
 
 /**
  * Gets a regular expression for matching strings that look like they
  * contain an algorithm that is known to be secure.
  */
-string getSecureAlgorithmRegex() {
-  result = algorithmRegex(secureAlgorithmString(max(int i | exists(rankedSecureAlgorithm(i)))))
-}
+string getSecureAlgorithmRegex() { result = algorithmRegex(secureAlgorithmString()) }
 
 /**
  * Any use of a cryptographic element that specifies an encryption

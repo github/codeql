@@ -18,6 +18,7 @@ postIsInSameCallable
 reverseRead
 | tst.js:109:11:113:3 | [dynamic parameter array] | Origin of readStep is missing a PostUpdateNode. |
 | tst.js:267:28:267:31 | map3 | Origin of readStep is missing a PostUpdateNode. |
+| tst.js:305:30:305:43 | constructedMap | Origin of readStep is missing a PostUpdateNode. |
 argHasPostUpdate
 postWithInFlow
 viableImplInCallContextTooLarge

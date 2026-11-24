@@ -7,7 +7,6 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
-private import semmle.python.dataflow.new.RemoteFlowSources
 
 /**
  * Provides default sources, sinks and sanitizers for detecting "XML bomb"
@@ -29,8 +28,14 @@ module XmlBomb {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for XML bomb vulnerabilities. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /** An active threat-model source, considered as a flow source. */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+  }
 
   /**
    * A call to an XML parser that is vulnerable to XML bombs.

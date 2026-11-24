@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/go-all
-      extensible: sourceModel
-    data:
-      - ["github.com/go-chi/chi", "", False, "URLParam", "", "", "ReturnValue", "remote", "manual"]
-      - ["github.com/go-chi/chi", "", False, "URLParamFromCtx", "", "", "ReturnValue", "remote", "manual"]
-      - ["github.com/go-chi/chi", "Context", True, "URLParam", "", "", "ReturnValue", "remote", "manual"]

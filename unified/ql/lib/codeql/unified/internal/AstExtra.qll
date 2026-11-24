@@ -1,6 +1,8 @@
 /**
  * Provides additional AST-like classes outside the generated tree-sitter classes.
  */
+overlay[local?]
+module;
 
 private import unified
 private import codeql.unified.internal.NameBindingPlugin
@@ -110,5 +112,90 @@ module Public {
   /** An identifier appearing in the context of an expression, pattern, or type annotation. */
   final class IdentifierExpr extends Identifier {
     IdentifierExpr() { not this instanceof IdentifierLabel }
+  }
+
+  /**
+   * A class representing one of the branches of an algebraic data type.
+   *
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration. Example:
+   *
+   * ```swift
+   * enum E {
+   *   case foo(Int)
+   * }
+   * ```
+   *
+   * is modeled as
+   *
+   * ```swift
+   * class E {
+   *   class foo {
+   *     init(_ x : Int)
+   *   }
+   * }
+   * ```
+   */
+  final class EnumCaseClass extends ClassLikeDeclaration {
+    EnumCaseClass() { this.hasModifier("enum_case") }
+
+    /** Gets the enum declaration that this case class belongs to. */
+    ClassLikeDeclaration getEnumClass() { this = result.getAMember() }
+
+    /** Gets the constructor of this algebraic data type. */
+    EnumCaseConstructor getConstructor() { result = this.getAMember() }
+  }
+
+  /**
+   * The constructor of a class representing one of the branches of an algebraic data type.
+   *
+   * In Swift, a class with a single constructor is generated for each `case` with data parameters in an `enum` declaration. Example:
+   *
+   * ```swift
+   * enum E {
+   *   case foo(Int)
+   * }
+   * ```
+   *
+   * is modeled as
+   *
+   * ```swift
+   * class E {
+   *   class foo {
+   *     init(_ x : Int)
+   *   }
+   * }
+   * ```
+   */
+  final class EnumCaseConstructor extends ConstructorDeclaration {
+    EnumCaseConstructor() { this = any(EnumCaseClass cls).getAMember() }
+
+    /** Gets the class containing this constructor. */
+    EnumCaseClass getEnumCaseClass() { result.getAMember() = this }
+
+    /** Gets the enum declaration that this constructor belongs to. */
+    ClassLikeDeclaration getEnumClass() { result = this.getEnumCaseClass().getEnumClass() }
+  }
+
+  /**
+   * A field of an enum case in an algebraic data type. For example `a` and
+   * `b` in
+   *
+   * ```swift
+   * enum E {
+   *   case a
+   *   case b
+   * }
+   * ```
+   */
+  final class EnumField extends VariableDeclaration {
+    private ClassLikeDeclaration enum;
+
+    EnumField() {
+      this = enum.getAMember() and
+      this.hasModifier("enum_case")
+    }
+
+    /** Gets the enum declaration that this enum field belongs to. */
+    ClassLikeDeclaration getEnumClass() { result = enum }
   }
 }

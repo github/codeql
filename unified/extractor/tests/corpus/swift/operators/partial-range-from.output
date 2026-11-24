@@ -35,4 +35,7 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "range" source="range"
-          value: unsupported_node "3..." source="3..."
+          value:
+            unary_expr source="⟨operand⟩⟨operator⟩"
+              operand: int_literal "3" source="3"
+              operator: postfix_operator "..." source="..."

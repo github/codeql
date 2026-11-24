@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.controlflow.Guards
 
 /**
  * Provides classes and predicates relating to flags that may indicate security expectations.
@@ -114,9 +115,30 @@ module InsecureFeatureFlag {
   }
 
   /**
-   * Gets a control-flow node that represents a (likely) security feature-flag check
+   * Holds if `block` is controlled by a flag of kind `flagKind`.
+   *
+   * For a switch case expression, only the matching branch is controlled by that flag. Other
+   * branches, including the default case, are reached when the flag does not match.
    */
-  ControlFlow::ConditionGuardNode getASecurityFeatureFlagCheck() {
-    result.ensures(any(SecurityFeatureFlag f).getAFlag().getANode(), _)
+  predicate flagControls(FlagKind flagKind, BasicBlock block) {
+    exists(GVN flag, Guard guard |
+      flag = flagKind.getAFlag() and
+      guard = flag.getANode().asExpr() and
+      (
+        exists(CaseClause cc, ExpressionSwitchStmt switch |
+          guard.getParent() = cc and
+          cc = switch.getACase() and
+          exists(switch.getExpr()) and
+          caseExpressionMatchControls(guard, block)
+        )
+        or
+        not exists(CaseClause cc, ExpressionSwitchStmt switch |
+          guard.getParent() = cc and
+          cc = switch.getACase() and
+          exists(switch.getExpr())
+        ) and
+        guard.controls(block, _)
+      )
+    )
   }
 }

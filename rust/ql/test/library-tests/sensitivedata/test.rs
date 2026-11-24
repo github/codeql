@@ -97,10 +97,17 @@ fn get_public_key() -> String { get_string() }
 fn get_secret_token() -> String { get_string() }
 fn get_next_token() -> String { get_string() }
 
+struct Connection;
+
+impl Connection {
+	fn set_trusted_schema(&mut self, enabled: bool) -> bool { enabled }
+}
+
 fn test_credentials(
 	account_key: &str, accnt_key: &str, license_key: &str, secret_key: &str, is_secret: bool, num_accounts: i64,
 	username: String, user_name: String, userid: i64, user_id: i64, my_user_id_64: i64, id: i64, uid: i64, uuid: i64, guid: i64, unique_id: i64,
 	sessionkey: &[u64; 4], session_key: &[u64; 4], hashkey: &[u64; 4], hash_key: &[u64; 4], sessionkeypath: &[u64; 4], account_key_path: &[u64; 4],
+	trusted_token: &str, trusted_schema: bool, trustedSchema: bool, conn: &mut Connection,
 	ms: &MyStruct
 ) {
 	// credentials
@@ -125,6 +132,7 @@ fn test_credentials(
 	sink(get_secure_key()); // $ MISSING: sensitive=secret
 	sink(get_private_key()); // $ MISSING: sensitive=secret
 	sink(get_secret_token()); // $ sensitive=secret
+	sink(trusted_token); // $ sensitive=secret
 
 	// not (necessarily) credentials
 
@@ -146,6 +154,9 @@ fn test_credentials(
 
 	sink(get_public_key());
 	sink(get_next_token());
+	sink(trusted_schema);
+	sink(trustedSchema);
+	sink(conn.set_trusted_schema(false));
 }
 
 struct MacAddr {

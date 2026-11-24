@@ -51,13 +51,13 @@ class VariableScope extends TScope, AstNode {
   }
 }
 
-private AstNode parent(AstNode child) {
-  result = child.getParent() and
-  not child instanceof VariableScope
-}
-
 pragma[nomagic]
-VariableScope scopeOf(AstNode n) { result = parent*(n.getParent()) }
+VariableScope scopeOf(AstNode n) {
+  result = n.getParent()
+  or
+  not n.getParent() instanceof VariableScope and
+  result = scopeOf(n.getParent())
+}
 
 private string getName(Identifier i) {
   exists(QL::Variable v |

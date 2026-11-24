@@ -37,10 +37,9 @@ module XsltInjection {
    */
   deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
-  /**
-   * An active threat-model source, considered as a flow source.
-   */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+  /** An active threat-model source, considered as a flow source. */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+  }
 
   /**
    * An XSLT construction, considered as a flow sink.

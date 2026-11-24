@@ -61,10 +61,10 @@ class ImplicitConversion extends Expr {
   int getSourceSize() {
     if this instanceof IntConstantExpr
     then result = this.(IntConstantExpr).getRequiredSizeBits()
-    else result = this.getUnderlyingSourceType().getSize() * 8
+    else result = this.getUnderlyingSourceType().getBitWidth()
   }
 
-  int getTargetSize() { result = this.getUnderlyingTargetType().getSize() * 8 }
+  int getTargetSize() { result = this.getUnderlyingTargetType().getBitWidth() }
 
   predicate isSourceSignedInt() {
     if this instanceof IntConstantExpr

@@ -1,8 +1,8 @@
 import python
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
-import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.internal.DataFlowPublic
+import semmle.python.Concepts
 import FileAndFormRemoteFlowSource::FileAndFormRemoteFlowSource
 import codeql.util.Unit
 
@@ -426,7 +426,7 @@ predicate isAdditionalTaintStepTextIOWrapper(DataFlow::Node nodeFrom, DataFlow::
 
 module BombsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
+    source instanceof ActiveThreatModelSource
     or
     source instanceof FastApi
   }

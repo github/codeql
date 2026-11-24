@@ -303,7 +303,7 @@ private predicate isInConditionalEvaluation(Expr e) {
   isInConditionalEvaluation(getRealParent(e))
 }
 
-private predicate isConditionalTemporaryDestructorCall(DestructorCall dc) {
+predicate isConditionalTemporaryDestructorCall(DestructorCall dc) {
   exists(TemporaryObjectExpr temp |
     temp = dc.getQualifier().(ReuseExpr).getReusedExpr() and
     isInConditionalEvaluation(temp)

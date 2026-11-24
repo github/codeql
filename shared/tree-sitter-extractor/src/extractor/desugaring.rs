@@ -63,7 +63,7 @@ impl LanguageExtractor for LanguageSpec {
         trap_writer: &mut trap::Writer,
         path: &std::path::Path,
         source: &[u8],
-    ) {
+    ) -> Result<(), String> {
         crate::extractor::extract_parsed(
             self.parser.as_ref(),
             self.prefix,
@@ -74,7 +74,7 @@ impl LanguageExtractor for LanguageSpec {
             path,
             source,
             self.desugarer.as_ref(),
-        );
+        )
     }
 }
 

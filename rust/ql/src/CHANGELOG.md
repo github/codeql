@@ -1,3 +1,25 @@
+## 0.1.48
+
+No user-facing changes.
+
+## 0.1.47
+
+### New Queries
+
+* Added a new query, `rust/unsafe-deserialization`, to detect deserialization of user-controlled data.
+
+## 0.1.46
+
+No user-facing changes.
+
+## 0.1.45
+
+No user-facing changes.
+
+## 0.1.44
+
+No user-facing changes.
+
 ## 0.1.43
 
 No user-facing changes.

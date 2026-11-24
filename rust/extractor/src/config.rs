@@ -62,7 +62,7 @@ pub struct Config {
     pub logging_flamegraph: Option<PathBuf>,
     pub logging_verbosity: Option<String>,
     pub trap_compression: Compression,
-    pub inputs: Vec<PathBuf>,
+    pub file_list: Option<PathBuf>,
     pub qltest: bool,
     pub qltest_cargo_check: bool,
     pub qltest_dependencies: Vec<String>,
@@ -95,17 +95,12 @@ impl Config {
     }
 
     pub fn extract() -> anyhow::Result<Config> {
-        let args = argfile::expand_args(argfile::parse_fromfile, argfile::PREFIX)
-            .context("expanding parameter files")?;
-        let cli_args = CliConfig::parse_from(args);
+        let cli_args = CliConfig::parse();
         let mut figment = Figment::new()
-            .merge(Env::raw().filter_map(|f| {
-                if f.eq("CODEQL_VERBOSITY") {
-                    Some("LOGGING_VERBOSITY".into())
-                } else {
-                    None
-                }
-            }))
+            .merge(
+                Env::raw()
+                    .filter_map(|f| f.eq("CODEQL_VERBOSITY").then(|| "LOGGING_VERBOSITY".into())),
+            )
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_"))
             .merge(Env::prefixed("CODEQL_EXTRACTOR_RUST_OPTION_"))
             .merge(Serialized::defaults(cli_args));
@@ -189,6 +184,16 @@ impl Config {
 
     pub fn to_cargo_config(&self, dir: &AbsPath) -> (CargoConfig, LoadCargoConfig) {
         let sysroot = self.sysroot(dir);
+        let mut extra_args = self.cargo_extra_args.clone();
+        // The fixed toolchain may be older than the project's declared minimum.
+        // If that's the case `cargo` will error. Passing the flag below ensures
+        // that the project's speified Rust version is ignored. With this
+        // failures will only occur if the project actually uses Rust features
+        // that rust-analyzer and/or the fixed toolchain is incompatible with
+        // (which is the best we can hope for).
+        if !extra_args.iter().any(|arg| arg == "--ignore-rust-version") {
+            extra_args.push("--ignore-rust-version".to_owned());
+        }
         (
             CargoConfig {
                 all_targets: self.cargo_all_targets,
@@ -205,7 +210,7 @@ impl Config {
                     .map(RustLibSource::Path),
 
                 extra_env: self.get_extra_env(),
-                extra_args: self.cargo_extra_args.clone(),
+                extra_args,
                 extra_includes: self
                     .extra_includes
                     .iter()
@@ -238,7 +243,7 @@ impl Config {
 }
 
 fn to_cfg_override(spec: &str) -> CfgAtom {
-    if let Some((key, value)) = spec.split_once("=") {
+    if let Some((key, value)) = spec.split_once('=') {
         CfgAtom::KeyValue {
             key: Symbol::intern(key),
             value: Symbol::intern(value),

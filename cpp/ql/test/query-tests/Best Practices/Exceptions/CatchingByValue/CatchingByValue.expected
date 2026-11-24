@@ -1,0 +1,2 @@
+| test.cpp:12:32:12:34 | { ... } | This should catch a DerivedException by (const) reference rather than by value. |
+| test.cpp:16:29:16:31 | { ... } | This should catch a BaseException by (const) reference rather than by value. |

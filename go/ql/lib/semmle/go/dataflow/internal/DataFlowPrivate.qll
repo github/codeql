@@ -2,6 +2,8 @@ overlay[local?]
 module;
 
 private import go
+private import semmle.go.dataflow.SsaImpl as SsaImpl
+private import semmle.go.controlflow.Guards
 private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
@@ -69,19 +71,19 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // Instruction -> SSA defn
-  exists(IR::Instruction pred, SsaExplicitDefinition succ |
-    succ.getRhs() = pred and
+  exists(IR::Instruction pred, SsaExplicitWrite succ |
+    succ.getDefinition().getRhs() = pred and
     (
       nodeFrom = instructionNode(pred) or
       nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
     ) and
-    nodeTo = ssaNode(succ.getVariable())
+    nodeTo = ssaNode(succ)
   )
   or
   // SSA defn -> first SSA use
-  exists(SsaDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
-    (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
-    nodeFrom = ssaNode(pred.getVariable()) and
+  exists(SsaDefinition pred, IR::Instruction succ | SsaImpl::firstUse(pred, succ) |
+    (pred instanceof SsaExplicitWrite or pred instanceof SsaUncertainWrite) and
+    nodeFrom = ssaNode(pred) and
     nodeTo = instructionNode(succ)
   )
   or
@@ -124,14 +126,16 @@ predicate jumpStep(Node n1, Node n2) {
     isValueEntityRead(v, n2)
   )
   or
-  exists(SsaExplicitDefinition def, SsaVariableCapture succ |
+  exists(SsaExplicitWrite def, SsaUncertainWrite succ |
     succ.getSourceVariable() = def.getSourceVariable() and
     n2 = ssaNode(succ)
   |
-    not exists(def.getAFirstUse()) and n1 = ssaNode(def)
+    not SsaImpl::firstUse(def, _) and n1 = ssaNode(def)
     or
     exists(IR::Instruction lastUse |
-      lastUse = getAnAdjacentUse*(def.getAFirstUse()) and
+      exists(IR::Instruction firstUse |
+        SsaImpl::firstUse(def, firstUse) and lastUse = getAnAdjacentUse*(firstUse)
+      ) and
       not exists(getAnAdjacentUse(lastUse))
     |
       n1 = instructionNode(lastUse) or
@@ -374,9 +378,9 @@ class DataFlowCall extends Expr {
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.getBoolValue() = val
   or
-  exists(SsaExplicitDefinition v, Expr src |
-    IR::evalExprInstruction(e) = v.getVariable().getAUse() and
-    IR::evalExprInstruction(src) = v.getRhs() and
+  exists(SsaExplicitWrite def, Expr src |
+    e = def.getARead() and
+    IR::evalExprInstruction(src) = def.getDefinition().getRhs() and
     constantBooleanExpr(src, val)
   )
 }
@@ -390,19 +394,21 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
 }
 
 /**
- * Returns a guard that will certainly not hold in calling context `call`.
+ * Holds if `guard` evaluating to `branch` will certainly not happen in calling
+ * context `call`.
  *
  * In particular it does not hold because it checks that `param` has value `b`, but
  * in context `call` it is known to have value `!b`. Note this is `noinline`d in order
  * to avoid a bad join order in `isUnreachableInCall`.
  */
 pragma[noinline]
-private ControlFlow::ConditionGuardNode getAFalsifiedGuard(DataFlowCall call) {
+private predicate falsifiedGuard(DataFlowCall call, Guard guard, boolean branch) {
   exists(SsaParameterNode param, ConstantBooleanArgumentNode arg |
     // get constant bool argument and parameter for this call
     viableParamArg(call, pragma[only_bind_into](param), pragma[only_bind_into](arg)) and
     // which is used in a guard controlling `n` with the opposite value of `arg`
-    result.ensures(param.getAUse(), arg.getBooleanValue().booleanNot())
+    guard = param.getAUse().asExpr() and
+    branch = arg.getBooleanValue().booleanNot()
   )
 }
 
@@ -416,7 +422,10 @@ class NodeRegion instanceof BasicBlock {
  * Holds if the nodes in `nr` are unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
-  getAFalsifiedGuard(call).dominates(nr)
+  exists(Guard guard, boolean branch |
+    falsifiedGuard(call, guard, branch) and
+    guard.controls(nr, branch)
+  )
 }
 
 /**

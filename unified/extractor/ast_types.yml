@@ -13,6 +13,7 @@ supertypes:
     - binary_expr
     - unary_expr
     - call_expr
+    - macro_call_expr
     - member_access_expr
     - super_expr
     - function_expr
@@ -40,6 +41,7 @@ supertypes:
     - bulk_importing_pattern
     - ignore_pattern
     - generic_type_expr
+    - modified_type_expr
     - inferred_type_expr
   # An element of an `unresolved_operator_sequence`: either an operand (`expr`)
   # or one of the infix operators separating the operands.
@@ -64,28 +66,38 @@ supertypes:
     - for_each_stmt
     - while_stmt
     - do_while_stmt
+    - defer_stmt
     - labeled_stmt
+    - fallthrough_stmt
   callable:
-    - top_level
-    - function_expr
-    - function_declaration
-    - constructor_declaration
-    - destructor_declaration
-    - accessor_declaration
-    - initializer_declaration
+    subtypes:
+      - top_level
+      - function_expr
+      - function_declaration
+      - constructor_declaration
+      - destructor_declaration
+      - accessor_declaration
+      - initializer_declaration
+    fields:
+      parameter*: parameter
+      body?: block
+      return_type?: expr
   # A member is anything that can appear in the body of a class-like declaration
   member:
-    - constructor_declaration
-    - destructor_declaration
-    - function_declaration
-    - variable_declaration
-    - accessor_declaration
-    - initializer_declaration
-    - class_like_declaration
-    - type_alias_declaration
-    - associated_type_declaration
-    - unsupported_node
-    - unhandled_node
+    subtypes:
+      - constructor_declaration
+      - destructor_declaration
+      - function_declaration
+      - variable_declaration
+      - accessor_declaration
+      - initializer_declaration
+      - class_like_declaration
+      - type_alias_declaration
+      - associated_type_declaration
+      - unsupported_node
+      - unhandled_node
+    fields:
+      name_node: identifier
   type_constraint:
     - equality_type_constraint
     - bound_type_constraint
@@ -170,6 +182,13 @@ named:
     callee: expr
     argument*: argument
 
+  # A macro call expression, such as `#expect(x == y)` in Swift or
+  # `assert!(x == y)` in Rust.
+  macro_call_expr:
+    macro_name_node: identifier
+    type_argument*: expr
+    argument*: argument
+
   argument:
     modifier*: modifier
     name_node?: identifier
@@ -243,7 +262,10 @@ named:
   block:
     stmt*: stmt
 
+  # An if expression or a conditional compilation directive (which we view as a
+  # compile-time evaluated if expression).
   if_expr:
+    modifier*: modifier
     condition: expr
     then?: expr
     else?: expr
@@ -281,6 +303,9 @@ named:
   continue_expr:
     label_name_node?: identifier
 
+  # Transfer control directly to the next switch case's body.
+  fallthrough_stmt:
+
   # A labeled statement, such as `outer: for ... { ... }`. The labeled
   # statement appears as the `stmt` field; `break`/`continue` may target
   # the label.
@@ -317,6 +342,13 @@ named:
     type: expr
 
   # A top-level function declaration.
+  #
+  # A function with a parameter whose external name is the reserved name
+  # `#newValue` is a setter method, such as the setter of a Swift subscript. A
+  # call `x.foo(...)` that is the target of an assignment, or is otherwise
+  # updated in place, invokes the setter method named `foo` (whereas a call in
+  # a read position invokes the ordinary method `foo`), passing the new value
+  # as the `#newValue` argument.
   function_declaration:
     modifier*: modifier
     name_node: identifier
@@ -345,6 +377,9 @@ named:
     modifier*: modifier
     body?: block
     condition: expr
+
+  defer_stmt:
+    body: expr
 
   # `do { body } catch pattern { ... } catch ...`. Swift uses `do`/`catch`
   # for error handling; for languages with `try`/`catch`, this is the same shape.
@@ -513,7 +548,7 @@ named:
     name_node: identifier
     accessor_kind: accessor_kind
     parameter*: parameter
-    type?: expr
+    return_type?: expr
     body?: block
 
   # "get", "set", or a language-specific kind like "didSet"
@@ -532,6 +567,12 @@ named:
   generic_type_expr:
     base: expr
     type_argument*: expr
+
+  # A type with a modifier. In Swift this can be specifiers or attributes, such
+  # as `inout T`, `sending T` or `@escaping () -> Void`.
+  modified_type_expr:
+    modifier*: modifier
+    type: expr
 
   # A modifier such as 'static', 'public', or 'async'. For now this is just a leaf node with a string value.
   modifier:

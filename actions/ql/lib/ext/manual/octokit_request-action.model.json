@@ -1,0 +1,13 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/actions-all",
+        "extensible": "actionsSinkModel"
+      },
+      "data": [
+        ["octokit/request-action", "*", "input.route", "request-forgery", "manual"]
+      ]
+    }
+  ]
+}

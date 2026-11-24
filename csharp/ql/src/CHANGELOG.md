@@ -1,3 +1,31 @@
+## 1.11.2
+
+No user-facing changes.
+
+## 1.11.1
+
+No user-facing changes.
+
+## 1.11.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `cs/redos` and `cs/regex-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
+## 1.10.2
+
+### Minor Analysis Improvements
+
+* The `cs/simplifiable-boolean-expression` query now produces fewer false-positive results when type information is incomplete.
+
+## 1.10.1
+
+### Minor Analysis Improvements
+
+* The `cs/web/missing-x-frame-options` query now recognizes clickjacking protection configured
+  through ASP.NET Core response headers and enforced Content Security Policy `frame-ancestors`
+  directives.
+
 ## 1.10.0
 
 ### New Queries

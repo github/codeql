@@ -4,9 +4,9 @@
  */
 
 private import internal.AsmOperandNamedImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AsmOperand
 import codeql.rust.elements.AsmPiece
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Name
 
 /**

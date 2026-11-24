@@ -174,7 +174,7 @@ class UserAPI < Grape::API
         sink route_id # $ hasTaintFlow
         sink auth # $ hasTaintFlow
         sink session # $ hasTaintFlow
-        # Note: request.body.read may not be detected by this flow test config
+        sink body_data # $ hasTaintFlow
     end
 
     get '/helper_test/:user_id' do
@@ -236,4 +236,55 @@ class UserAPI < Grape::API
             sink case_result # $ hasValueFlow=caseHelper
         end
     end
+end
+
+# Exercises `request` sub-accessors (body, params, GET, POST, cookies, env,
+# query_string, path_info) as remote flow sources.
+class RequestAccessorsAPI < Grape::API
+  format :json
+
+  get '/body_read_test' do
+    body_data = request.body.read
+    sink body_data # $ hasTaintFlow
+  end
+
+  get '/body_string_test' do
+    body_data = request.body.string
+    sink body_data # $ hasTaintFlow
+  end
+
+  get '/request_params_test' do
+    params_hash = request.params
+    sink params_hash # $ hasTaintFlow
+  end
+
+  get '/request_get_test' do
+    get_params = request.GET
+    sink get_params # $ hasTaintFlow
+  end
+
+  get '/request_post_test' do
+    post_params = request.POST
+    sink post_params # $ hasTaintFlow
+  end
+
+  get '/request_cookies_test' do
+    cookie_data = request.cookies
+    sink cookie_data # $ hasTaintFlow
+  end
+
+  get '/request_env_test' do
+    env_data = request.env
+    sink env_data # $ hasTaintFlow
+  end
+
+  get '/request_query_string_test' do
+    qs = request.query_string
+    sink qs # $ hasTaintFlow
+  end
+
+  get '/request_path_info_test' do
+    path = request.path_info
+    sink path # $ hasTaintFlow
+  end
 end

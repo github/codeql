@@ -5,7 +5,7 @@ use crate::{Ast, Id, Node, NodeContent, CHILD_FIELD};
 
 #[derive(Debug)]
 struct VisitorNode {
-    inner: Node,
+    inner: Node<Id>,
     parent: Option<Id>,
 }
 

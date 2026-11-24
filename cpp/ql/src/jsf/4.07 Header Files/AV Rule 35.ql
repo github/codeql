@@ -7,7 +7,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/missing-header-guard
- * @tags efficiency
+ * @tags quality
+ *       efficiency
  *       maintainability
  *       modularity
  *       external/jsf

@@ -1,3 +1,25 @@
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Features
+
+* Added the opt-in `ai` threat model for LLM-generated data. No built-in source models are included.
+
+## 1.0.59
+
+No user-facing changes.
+
 ## 1.0.58
 
 No user-facing changes.

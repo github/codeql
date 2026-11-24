@@ -207,6 +207,145 @@ module Grape {
   }
 
   /**
+   * Gets an API node for the `request` object accessible within a Grape API endpoint.
+   */
+  private API::Node grapeRequestInstance() { result = grapeApiInstance().getReturn("request") }
+
+  /**
+   * A call to `request.body.read` from within a Grape API endpoint, which reads
+   * the raw, unparsed request body and can contain user input.
+   */
+  class GrapeRequestBodyReadSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestBodyReadSource() {
+      this.asExpr().getExpr() =
+        grapeRequestInstance().getReturn("body").getAMethodCall("read").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#body.read" }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
+  }
+
+  /**
+   * A call to `request.body.string` from within a Grape API endpoint, which reads
+   * the raw, unparsed request body and can contain user input.
+   */
+  class GrapeRequestBodyStringSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestBodyStringSource() {
+      this.asExpr().getExpr() =
+        grapeRequestInstance().getReturn("body").getAMethodCall("string").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#body.string" }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
+  }
+
+  /**
+   * A call to `request.params` from within a Grape API endpoint.
+   */
+  class GrapeRequestParamsSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestParamsSource() {
+      this.asExpr().getExpr() = grapeRequestInstance().getAMethodCall("params").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#params" }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
+  }
+
+  /**
+   * A call to `request.GET` from within a Grape API endpoint, which returns the
+   * parsed query-string parameters.
+   */
+  class GrapeRequestGetSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestGetSource() {
+      this.asExpr().getExpr() = grapeRequestInstance().getAMethodCall("GET").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#GET" }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
+  }
+
+  /**
+   * A call to `request.POST` from within a Grape API endpoint, which returns the
+   * parsed form/body parameters.
+   */
+  class GrapeRequestPostSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestPostSource() {
+      this.asExpr().getExpr() = grapeRequestInstance().getAMethodCall("POST").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#POST" }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
+  }
+
+  /**
+   * A call to `request.cookies` from within a Grape API endpoint.
+   */
+  class GrapeRequestCookiesSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestCookiesSource() {
+      this.asExpr().getExpr() = grapeRequestInstance().getAMethodCall("cookies").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#cookies" }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::cookieInputKind() }
+  }
+
+  /**
+   * A call to `request.env` from within a Grape API endpoint, which returns the
+   * underlying Rack environment hash.
+   */
+  class GrapeRequestEnvSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestEnvSource() {
+      this.asExpr().getExpr() = grapeRequestInstance().getAMethodCall("env").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#env" }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
+  }
+
+  /**
+   * A call to `request.query_string` from within a Grape API endpoint.
+   */
+  class GrapeRequestQueryStringSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestQueryStringSource() {
+      this.asExpr().getExpr() =
+        grapeRequestInstance().getAMethodCall("query_string").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#query_string" }
+
+    override Http::Server::RequestInputKind getKind() {
+      result = Http::Server::parameterInputKind()
+    }
+  }
+
+  /**
+   * A call to `request.path_info` from within a Grape API endpoint.
+   */
+  class GrapeRequestPathInfoSource extends Http::Server::RequestInputAccess::Range {
+    GrapeRequestPathInfoSource() {
+      this.asExpr().getExpr() =
+        grapeRequestInstance().getAMethodCall("path_info").asExpr().getExpr()
+    }
+
+    override string getSourceType() { result = "Grape::Request#path_info" }
+
+    override Http::Server::RequestInputKind getKind() { result = Http::Server::urlInputKind() }
+  }
+
+  /**
    * A call to `route_param` from within a Grape API endpoint.
    */
   private class GrapeRouteParamCall extends MethodCall {

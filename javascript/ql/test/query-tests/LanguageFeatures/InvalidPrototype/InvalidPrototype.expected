@@ -2,3 +2,5 @@
 | tst.js:8:27:8:28 | 42 | Values of type number cannot be used as prototypes. |
 | tst.js:9:15:9:18 | true | Values of type boolean cannot be used as prototypes. |
 | tst.js:10:1:10:10 | "function" | Values of type string cannot be used as prototypes. |
+| tst.js:15:25:15:26 | 42 | Values of type number cannot be used as prototypes. |
+| tst.js:17:19:17:20 | 42 | Values of type number cannot be used as prototypes. |

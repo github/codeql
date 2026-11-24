@@ -9,7 +9,6 @@
  * @id js/server-crash
  * @tags security
  *       external/cwe/cwe-248
- *       external/cwe/cwe-730
  */
 
 import javascript

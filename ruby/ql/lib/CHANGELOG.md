@@ -1,3 +1,27 @@
+## 7.1.3
+
+No user-facing changes.
+
+## 7.1.2
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics treat names built on `trusted_schema`, such as SQLite's `set_trusted_schema` setting, as non-sensitive. This removes false positive results from queries that use the sensitive data library (for example `rb/clear-text-logging-sensitive-data`).
+
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* Added modeling for `Grape::API`'s `request` sub-accessors (`body.read`, `body.string`, `params`, `GET`, `POST`, `cookies`, `env`, `query_string`, and `path_info`) as remote flow sources.
+
+## 7.0.2
+
+No user-facing changes.
+
 ## 7.0.1
 
 No user-facing changes.

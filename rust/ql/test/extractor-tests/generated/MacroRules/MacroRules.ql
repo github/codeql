@@ -10,7 +10,7 @@ query predicate getAttributeMacroExpansion(MacroRules x, MacroItems getAttribute
   getAttributeMacroExpansion = x.getAttributeMacroExpansion()
 }
 
-query predicate getAttr(MacroRules x, int index, Attr getAttr) {
+query predicate getAttr(MacroRules x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

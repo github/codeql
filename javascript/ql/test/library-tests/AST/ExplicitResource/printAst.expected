@@ -3,6 +3,7 @@ nodes
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | tst.html:1:5:1:9 | [ExprStmt] using | semmle.label | [ExprStmt] using |
 | tst.html:1:5:1:9 | [ExprStmt] using | semmle.order | 1 |
@@ -69,6 +70,15 @@ nodes
 | tst.js:28:5:28:16 | [CallExpr] using(using) | semmle.label | [CallExpr] using(using) |
 | tst.js:28:5:28:17 | [ExprStmt] using(using); | semmle.label | [ExprStmt] using(using); |
 | tst.js:28:11:28:15 | [VarRef] using | semmle.label | [VarRef] using |
+| tst.js:31:1:33:1 | [FunctionDeclStmt] async f ... oo"); } | semmle.label | [FunctionDeclStmt] async f ... oo"); } |
+| tst.js:31:1:33:1 | [FunctionDeclStmt] async f ... oo"); } | semmle.order | 5 |
+| tst.js:31:16:31:29 | [VarDecl] asyncUsesUsing | semmle.label | [VarDecl] asyncUsesUsing |
+| tst.js:31:33:33:1 | [BlockStmt] { a ... oo"); } | semmle.label | [BlockStmt] { a ... oo"); } |
+| tst.js:32:5:32:22 | [AwaitExpr] await using("foo") | semmle.label | [AwaitExpr] await using("foo") |
+| tst.js:32:5:32:23 | [ExprStmt] await using("foo"); | semmle.label | [ExprStmt] await using("foo"); |
+| tst.js:32:11:32:15 | [VarRef] using | semmle.label | [VarRef] using |
+| tst.js:32:11:32:22 | [CallExpr] using("foo") | semmle.label | [CallExpr] using("foo") |
+| tst.js:32:17:32:21 | [Literal] "foo" | semmle.label | [Literal] "foo" |
 edges
 | file://:0:0:0:0 | (Arguments) | tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.label | 0 |
 | file://:0:0:0:0 | (Arguments) | tst.js:4:10:4:18 | [AssignExpr] test = 20 | semmle.order | 0 |
@@ -78,6 +88,8 @@ edges
 | file://:0:0:0:0 | (Arguments) | tst.js:24:11:24:15 | [Literal] "foo" | semmle.order | 0 |
 | file://:0:0:0:0 | (Arguments) | tst.js:28:11:28:15 | [VarRef] using | semmle.label | 0 |
 | file://:0:0:0:0 | (Arguments) | tst.js:28:11:28:15 | [VarRef] using | semmle.order | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:32:17:32:21 | [Literal] "foo" | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.js:32:17:32:21 | [Literal] "foo" | semmle.order | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.js:25:20:25:22 | [SimpleParameter] foo | semmle.label | 0 |
 | file://:0:0:0:0 | (Parameters) | tst.js:25:20:25:22 | [SimpleParameter] foo | semmle.order | 0 |
 | tst.html:1:5:1:9 | [ExprStmt] using | tst.html:1:5:1:9 | [VarRef] using | semmle.label | 1 |
@@ -194,5 +206,19 @@ edges
 | tst.js:28:5:28:16 | [CallExpr] using(using) | tst.js:28:5:28:9 | [VarRef] using | semmle.order | 0 |
 | tst.js:28:5:28:17 | [ExprStmt] using(using); | tst.js:28:5:28:16 | [CallExpr] using(using) | semmle.label | 1 |
 | tst.js:28:5:28:17 | [ExprStmt] using(using); | tst.js:28:5:28:16 | [CallExpr] using(using) | semmle.order | 1 |
+| tst.js:31:1:33:1 | [FunctionDeclStmt] async f ... oo"); } | tst.js:31:16:31:29 | [VarDecl] asyncUsesUsing | semmle.label | 0 |
+| tst.js:31:1:33:1 | [FunctionDeclStmt] async f ... oo"); } | tst.js:31:16:31:29 | [VarDecl] asyncUsesUsing | semmle.order | 0 |
+| tst.js:31:1:33:1 | [FunctionDeclStmt] async f ... oo"); } | tst.js:31:33:33:1 | [BlockStmt] { a ... oo"); } | semmle.label | 5 |
+| tst.js:31:1:33:1 | [FunctionDeclStmt] async f ... oo"); } | tst.js:31:33:33:1 | [BlockStmt] { a ... oo"); } | semmle.order | 5 |
+| tst.js:31:33:33:1 | [BlockStmt] { a ... oo"); } | tst.js:32:5:32:23 | [ExprStmt] await using("foo"); | semmle.label | 1 |
+| tst.js:31:33:33:1 | [BlockStmt] { a ... oo"); } | tst.js:32:5:32:23 | [ExprStmt] await using("foo"); | semmle.order | 1 |
+| tst.js:32:5:32:22 | [AwaitExpr] await using("foo") | tst.js:32:11:32:22 | [CallExpr] using("foo") | semmle.label | 1 |
+| tst.js:32:5:32:22 | [AwaitExpr] await using("foo") | tst.js:32:11:32:22 | [CallExpr] using("foo") | semmle.order | 1 |
+| tst.js:32:5:32:23 | [ExprStmt] await using("foo"); | tst.js:32:5:32:22 | [AwaitExpr] await using("foo") | semmle.label | 1 |
+| tst.js:32:5:32:23 | [ExprStmt] await using("foo"); | tst.js:32:5:32:22 | [AwaitExpr] await using("foo") | semmle.order | 1 |
+| tst.js:32:11:32:22 | [CallExpr] using("foo") | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.js:32:11:32:22 | [CallExpr] using("foo") | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.js:32:11:32:22 | [CallExpr] using("foo") | tst.js:32:11:32:15 | [VarRef] using | semmle.label | 0 |
+| tst.js:32:11:32:22 | [CallExpr] using("foo") | tst.js:32:11:32:15 | [VarRef] using | semmle.order | 0 |
 graphProperties
 | semmle.graphKind | tree |

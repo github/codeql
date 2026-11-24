@@ -594,52 +594,6 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
 }
 
 /**
- * Gets `unspecifiedType`, but with the outermost `ReferenceType` removed, if any.
- */
-private Type stripReferences(Type unspecifiedType) {
-  result = unspecifiedType.(Cpp::ReferenceType).getBaseType().getUnspecifiedType()
-  or
-  not unspecifiedType instanceof Cpp::ReferenceType and
-  result = unspecifiedType
-}
-
-predicate forwardingCallTargetsConstructor(
-  CallInstruction call, Cpp::Constructor constructor, int start
-) {
-  exists(int numberOfForwardedArguments |
-    numberOfForwardedArguments <= constructor.getNumberOfParameters()
-    or
-    constructor.isVarargs()
-  |
-    External::forwards(call.getStaticCallTarget(), constructor, start) and
-    call.getNumberOfPositionalArguments() = start + numberOfForwardedArguments and
-    forall(int i | i = [0 .. constructor.getNumberOfParameters() - 1] |
-      // If we are still processing the forwarded arguments then we need to
-      // check that the argument types match the parameter types.
-      // Functions that perform perfect forwarding are always written as:
-      // ```
-      // template<typename... Args> void emplace(Args&&... args) { ... }
-      // ```
-      // and so all the arguments will be reference typed (lvalue or rvalued).
-      // However, the constructor may not specify all the arguments by
-      // reference.
-      i < numberOfForwardedArguments and
-      stripReferences(call.getPositionalArgument(start + i).getResultType()) =
-        stripReferences(constructor.getParameter(i).getUnspecifiedType())
-      or
-      // If the constructor has a default argument and we have processed all
-      // the forwarded arguments then we don't need to check the types.
-      i >= numberOfForwardedArguments and constructor.getParameter(i).hasInitializer()
-    )
-  )
-}
-
-/** Holds if `call` is a call that forwards arguments to a constructor call. */
-predicate isForwarderConstructorArgumentNodeImpl(CallInstruction call) {
-  forwardingCallTargetsConstructor(call, _, _)
-}
-
-/**
  * In order to implement a MaD summary for a flow such as:
  * ```
  * struct Foo {
@@ -679,7 +633,10 @@ private class ForwarderConstructorArgumentNode extends ArgumentNode,
   /**
    * Gets a constructor which may be targeted by this forwarding call.
    */
-  Cpp::Constructor getAConstructor() { forwardingCallTargetsConstructor(call, result, _) }
+  Cpp::Constructor getAConstructor() {
+    result =
+      External::ConstructorForwarding::getForwardingConstructor(call.getStaticCallTarget(), _)
+  }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = this.getFunction()
@@ -2216,23 +2173,14 @@ module IteratorFlow {
     predicate variableRead(IRCfg::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       Ssa::variableRead(bb, i, v, certain)
     }
+
+    predicate ssaCachedStageRevRef() { DataFlowIntegrationImpl::ssaCachedStageRevRef2() }
   }
 
   private module IteratorSsa = SsaImpl::Make<Location, IRCfg, SsaInput>;
 
   private module DataFlowIntegrationInput implements IteratorSsa::DataFlowIntegrationInputSig {
     private import codeql.util.Void
-
-    class Expr extends Instruction {
-      Expr() {
-        exists(IRBlock bb, int i |
-          SsaInput::variableRead(bb, i, _, true) and
-          this = bb.getInstruction(i)
-        )
-      }
-
-      predicate hasCfgNode(IRCfg::BasicBlock bb, int i) { bb.getInstruction(i) = this }
-    }
 
     predicate ssaDefHasSource(IteratorSsa::WriteDefinition def) { none() }
 
@@ -2321,7 +2269,7 @@ module IteratorFlow {
     result = n.(SsaIteratorNode).getIteratorFlowNode()
     or
     exists(Ssa::UseImpl use, IRBlock bb, int i |
-      result.(DataFlowIntegrationImpl::ExprNode).getExpr().hasCfgNode(bb, i) and
+      result.(DataFlowIntegrationImpl::ReadNode).readsAt(bb, i, v) and
       use.hasIndexInBlock(bb, i, v) and
       use.getNode() = n
     )
@@ -2335,7 +2283,10 @@ module IteratorFlow {
   predicate localFlowStep(Node nodeFrom, Node nodeTo) {
     exists(SourceVariable v |
       nodeFrom != nodeTo and
-      DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v), _)
+      // Skip use-use steps. These are already accounted for by regular SSA
+      // flow including proper handling of `modeledFlowBarrier`.
+      DataFlowIntegrationImpl::localFlowStep(v, fromDfNode(nodeFrom, v), fromDfNode(nodeTo, v),
+        false)
     )
   }
 }

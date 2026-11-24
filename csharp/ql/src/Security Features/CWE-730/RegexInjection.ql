@@ -9,7 +9,6 @@
  * @precision high
  * @id cs/regex-injection
  * @tags security
- *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 

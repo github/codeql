@@ -119,3 +119,12 @@ def python2_style():
     # In Python 3, `__builtin__` has no special meaning.
     from __builtin__ import open # $ use=moduleImport("__builtin__").getMember("open")
     open("hello.txt") # $ use=moduleImport("__builtin__").getMember("open").getReturn()
+
+def python315_builtins():
+    frozendict(key="value") # $ use=moduleImport("builtins").getMember("frozendict").getReturn()
+    sentinel("MISSING") # $ use=moduleImport("builtins").getMember("sentinel").getReturn()
+
+    freeze = frozendict # $ use=moduleImport("builtins").getMember("frozendict")
+    make_sentinel = sentinel # $ use=moduleImport("builtins").getMember("sentinel")
+    freeze(key="value") # $ use=moduleImport("builtins").getMember("frozendict").getReturn()
+    make_sentinel("UNSET") # $ use=moduleImport("builtins").getMember("sentinel").getReturn()

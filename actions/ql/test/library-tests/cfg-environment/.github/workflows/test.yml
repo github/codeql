@@ -1,0 +1,21 @@
+on: issues
+
+env:
+  GLOBAL_VALUE: ${{ github.event.issue.title }}
+
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    env:
+      JOB_VALUE: ${{ github.event.issue.body }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "$GLOBAL_VALUE $JOB_VALUE"
+      - run: echo "$GLOBAL_VALUE $JOB_VALUE $STEP_VALUE"
+        env:
+          STEP_VALUE: ${{ github.actor }}
+
+  external:
+    uses: octo/example/.github/workflows/reusable.yml@main
+    with:
+      value: ${{ github.event.issue.number }}

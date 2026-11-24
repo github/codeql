@@ -22,7 +22,7 @@ query predicate getAttributeMacroExpansion(Const x, MacroItems getAttributeMacro
   getAttributeMacroExpansion = x.getAttributeMacroExpansion()
 }
 
-query predicate getAttr(Const x, int index, Attr getAttr) {
+query predicate getAttr(Const x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

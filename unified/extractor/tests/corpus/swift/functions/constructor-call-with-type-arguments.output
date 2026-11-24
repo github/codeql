@@ -11,18 +11,19 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Foo"
           memberBlock:
             memberBlock
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
     codeBlockItem
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "C"
           genericParameterClause:
             genericParameterClause
@@ -37,7 +38,6 @@ sourceFile
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
     codeBlockItem
       item:
@@ -83,12 +83,22 @@ top_level source="⟨body⟩"
         class_like_declaration source="⟨modifier⟩ ⟨name_node⟩ {}"
           modifier: modifier "class" source="class"
           name_node: identifier "Foo" source="Foo"
+          member:
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""
         class_like_declaration source="⟨modifier⟩ ⟨name_node⟩<⟨type_parameter⟩> {}"
           modifier: modifier "class" source="class"
           name_node: identifier "C" source="C"
           type_parameter:
             type_parameter source="⟨name_node⟩"
               name_node: identifier "T" source="T"
+          member:
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "x" source="x"

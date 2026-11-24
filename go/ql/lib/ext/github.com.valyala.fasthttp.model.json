@@ -1,0 +1,121 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        // request-forgery
+        ["github.com/valyala/fasthttp", "", false, "Get", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "GetDeadline", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "GetTimeout", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "Post", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "Dial", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "DialDualStack", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "DialDualStackTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "DialTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        ["github.com/valyala/fasthttp", "Client", true, "Get", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Client", true, "GetDeadline", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Client", true, "GetTimeout", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Client", true, "Post", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "HostClient", true, "Get", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "HostClient", true, "GetDeadline", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "HostClient", true, "GetTimeout", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "HostClient", true, "Post", "", "", "Argument[1]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "SetHost", "", "", "Argument[0]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "SetHostBytes", "", "", "Argument[0]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "SetRequestURI", "", "", "Argument[0]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "SetRequestURIBytes", "", "", "Argument[0]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "SetURI", "", "", "Argument[0]", "request-forgery", "manual"],
+        ["github.com/valyala/fasthttp", "TCPDialer", true, "Dial", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        ["github.com/valyala/fasthttp", "TCPDialer", true, "DialDualStack", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        ["github.com/valyala/fasthttp", "TCPDialer", true, "DialDualStackTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        ["github.com/valyala/fasthttp", "TCPDialer", true, "DialTimeout", "", "", "Argument[0]", "request-forgery[TCP Addr + Port]", "manual"],
+        // path-injection
+        ["github.com/valyala/fasthttp", "", false, "SaveMultipartFile", "", "", "Argument[1]", "path-injection", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "ServeFile", "", "", "Argument[1]", "path-injection", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "ServeFileBytes", "", "", "Argument[1]", "path-injection", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "ServeFileBytesUncompressed", "", "", "Argument[1]", "path-injection", "manual"],
+        ["github.com/valyala/fasthttp", "", false, "ServeFileUncompressed", "", "", "Argument[1]", "path-injection", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "SendFile", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "SendFileBytes", "", "", "Argument[0]", "path-injection", "manual"],
+        ["github.com/valyala/fasthttp", "Response", true, "SendFile", "", "", "Argument[0]", "path-injection", "manual"],
+        // url-redirection
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "Redirect", "", "", "Argument[0]", "url-redirection", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "RedirectBytes", "", "", "Argument[0]", "url-redirection", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["github.com/valyala/fasthttp", "URI", true, "SetHost", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "SetHostBytes", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "Update", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "UpdateBytes", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "Parse", "", "", "Argument[0..1]", "Argument[receiver]", "taint", "manual"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sourceModel"
+      },
+      "data": [
+        ["github.com/valyala/fasthttp", "Args", true, "Peek", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Args", true, "PeekBytes", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Args", true, "PeekMulti", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Args", true, "PeekMultiBytes", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Args", true, "QueryString", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Args", true, "String", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "FullURI", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "LastPathSegment", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "Path", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "PathOriginal", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "QueryString", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "URI", true, "String", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "Body", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "BodyGunzip", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "BodyInflate", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "BodyStream", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "BodyUnbrotli", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "BodyUncompressed", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "ContinueReadBody", "", "", "Argument[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "ContinueReadBodyStream", "", "", "Argument[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "Host", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "ReadBody", "", "", "Argument[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "ReadLimitBody", "", "", "Argument[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "Request", true, "RequestURI", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "Host", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "Path", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "PostBody", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "Referer", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "RequestBodyStream", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "RequestURI", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "String", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestCtx", true, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "ContentEncoding", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "ContentType", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "CookieBytes", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "Header", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "Host", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "MultipartFormBoundary", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "Peek", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "PeekAll", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "PeekBytes", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "PeekKeys", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "PeekTrailerKeys", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "RawHeaders", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "Referer", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "RequestURI", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "String", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "TrailerHeader", "", "", "ReturnValue[0]", "remote", "manual"],
+        ["github.com/valyala/fasthttp", "RequestHeader", true, "UserAgent", "", "", "ReturnValue[0]", "remote", "manual"]
+      ]
+    }
+  ]
+}

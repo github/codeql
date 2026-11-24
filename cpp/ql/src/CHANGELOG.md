@@ -1,3 +1,37 @@
+## 1.10.2
+
+No user-facing changes.
+
+## 1.10.1
+
+### Minor Analysis Improvements
+
+* The `cpp/cleartext-transmission` and `cpp/cleartext-storage-file` queries now track flow through character types. As a result, these queries may find additional results.
+* The `cpp/unused-static-variable` query no longer reports compiler-generated variables, such as placeholders for empty function parameter packs.
+* The `cpp/unused-local-variable` and `cpp/unused-static-variable` queries no longer report variables whose initializers may have side effects.
+* The `cpp/missing-check-scanf` query produces fewer false positives when an unaliased local output variable is overwritten with a default value if a `scanf`-like call fails.
+
+## 1.10.0
+
+### Query Metadata Changes
+
+* Added a new `cpp-code-quality` query suite containing queries that identify maintainability and reliability issues in C and C++ code.
+
+### Minor Analysis Improvements
+
+* The `cpp/suspicious-pointer-scaling` query no longer reports false positives for intentional pointer arithmetic from `std::byte*` buffers.
+* The `cpp/unused-local-variable` and `cpp/unused-static-variable` queries no longer report variables marked with the C++17 `[[maybe_unused]]` attribute.
+
+## 1.9.2
+
+### Minor Analysis Improvements
+
+* The `cpp/resource-not-released-in-destructor` query now recognizes resources released through local aliases, reducing false-positive results.
+
+## 1.9.1
+
+No user-facing changes.
+
 ## 1.9.0
 
 ### New Queries

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -30,5 +31,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The certificate used for the registry proxy.
         /// </summary>
         X509Certificate2? Certificate { get; }
+
+        /// <summary>
+        /// Configures the environment variables for a process to use the registry proxy.
+        /// </summary>
+        /// <param name="pi">The process start info to configure.</param>
+        void SetProcessEnvironment(ProcessStartInfo pi);
     }
 }

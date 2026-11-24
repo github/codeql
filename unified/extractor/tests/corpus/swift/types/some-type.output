@@ -1,0 +1,101 @@
+func values(_ input: some Collection<Int>) -> some Collection<Int> {
+    input
+}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+                codeBlockItem
+                  item:
+                    declReferenceExpr
+                      baseName: identifier "input"
+          modifiers:
+          name: identifier "values"
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        someOrAnyType
+                          constraint:
+                            identifierType
+                              name: identifier "Collection"
+                              genericArgumentClause:
+                                genericArgumentClause
+                                  arguments:
+                                    genericArgument
+                                      argument:
+                                        identifierType
+                                          name: identifier "Int"
+                                  leftAngle: <
+                                  rightAngle: >
+                          someOrAnySpecifier: some
+                      firstName: _
+                      secondName: identifier "input"
+              returnClause:
+                returnClause
+                  arrow: ->
+                  type:
+                    someOrAnyType
+                      constraint:
+                        identifierType
+                          name: identifier "Collection"
+                          genericArgumentClause:
+                            genericArgumentClause
+                              arguments:
+                                genericArgument
+                                  argument:
+                                    identifierType
+                                      name: identifier "Int"
+                              leftAngle: <
+                              rightAngle: >
+                      someOrAnySpecifier: some
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩) -> ⟨return_type⟩ ⟨body⟩"
+          name_node: identifier "values" source="values"
+          parameter:
+            parameter source="⟨external_name_node⟩ ⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "_" source="_"
+              type:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "some" source="some"
+                  type:
+                    generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                      base: identifier "Collection" source="Collection"
+                      type_argument: identifier "Int" source="Int"
+              pattern: identifier "input" source="input"
+          return_type:
+            modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+              modifier: modifier "some" source="some"
+              type:
+                generic_type_expr source="⟨base⟩<⟨type_argument⟩>"
+                  base: identifier "Collection" source="Collection"
+                  type_argument: identifier "Int" source="Int"
+          body:
+            block source="{\n    ⟨stmt⟩\n}"
+              stmt: identifier "input" source="input"

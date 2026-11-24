@@ -1,3 +1,27 @@
+## 1.12.2
+
+No user-facing changes.
+
+## 1.12.1
+
+### Minor Analysis Improvements
+
+* The `java/local-variable-is-never-read` query no longer reports unnamed variables (`_`), for example in `case Foo _ ->` patterns, `for (var _ : items)` loops, and `var _ = ...;` declarations.
+
+## 1.12.0
+
+### Query Metadata Changes
+
+* The `external/cwe/cwe-730` tag has been removed from `java/redos`, `java/polynomial-redos` and `java/regex-injection`, because MITRE has marked CWE-730 as prohibited for vulnerability mapping. The queries retain their other CWE tags.
+
+## 1.11.13
+
+No user-facing changes.
+
+## 1.11.12
+
+No user-facing changes.
+
 ## 1.11.11
 
 No user-facing changes.

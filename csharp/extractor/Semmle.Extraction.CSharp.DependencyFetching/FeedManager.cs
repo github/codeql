@@ -107,29 +107,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             lazyExplicitFeeds = new Lazy<ImmutableHashSet<string>>(GetExplicitFeeds);
             lazyAllFeeds = new Lazy<ImmutableHashSet<string>>(GetAllFeeds);
-            lazyReachableExplicitFeeds = new Lazy<ImmutableHashSet<string>>(() =>
-            {
-                logger.LogInfo("Discovering reachable explicit NuGet feeds.");
-                return CheckSpecifiedFeeds(ExplicitFeeds);
-            });
+            lazyReachableExplicitFeeds = new Lazy<ImmutableHashSet<string>>(() => CheckSpecifiedFeeds(ExplicitFeeds, "explicit"));
             lazyReachableFeeds = new Lazy<ImmutableHashSet<string>>(() =>
             {
-                logger.LogInfo("Discovering reachable inherited NuGet feeds.");
                 // Inherited feeds should only be used, if they are indeed reachable (as they may be environment specific).
-                var reachableInheritedFeeds = CheckSpecifiedFeeds(InheritedFeeds);
+                var reachableInheritedFeeds = CheckSpecifiedFeeds(InheritedFeeds, "inherited");
                 return ReachableExplicitFeeds.Union(reachableInheritedFeeds).ToImmutableHashSet();
             });
-            lazyReachableFallbackFeeds = new Lazy<ImmutableHashSet<string>>(() =>
-            {
-                logger.LogInfo("Discovering reachable fallback NuGet feeds.");
-                var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
-                return reachableFallbackFeeds.ToImmutableHashSet();
-            });
-            lazyReachableDefaultFeeds = new Lazy<ImmutableHashSet<string>>(() =>
-            {
-                logger.LogInfo("Discovering reachable default NuGet feeds.");
-                return CheckSpecifiedFeeds(DefaultFeeds);
-            });
+            lazyReachableFallbackFeeds = new Lazy<ImmutableHashSet<string>>(GetReachableFallbackNugetFeeds);
+            lazyReachableDefaultFeeds = new Lazy<ImmutableHashSet<string>>(() => CheckSpecifiedFeeds(DefaultFeeds, "default"));
         }
 
         public FeedManager(ILogger logger, IDotNet dotnet, IRegistryProxy? registryProxy, IFileProvider fileProvider)
@@ -300,8 +286,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         /// <param name="feeds">The set of package feeds to check.</param>
         /// <returns>The list of feeds that were reachable.</returns>
-        private ImmutableHashSet<string> CheckSpecifiedFeeds(ImmutableHashSet<string> feeds)
+        private ImmutableHashSet<string> CheckSpecifiedFeeds(ImmutableHashSet<string> feeds, string kind)
         {
+            if (feeds.Count == 0)
+            {
+                return [];
+            }
+
+            logger.LogInfo($"Discovering reachable {kind} NuGet feeds.");
+
             // Exclude any feeds from the feed check that are configured by the corresponding environment variable.
             // These feeds are always assumed to be reachable.
             var excludedFeeds = GetExcludedFeeds();
@@ -316,7 +309,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return true;
             }).ToHashSet();
 
-            var reachable = GetReachableNuGetFeeds(feedsToCheck, isFallback: false);
+            var reachable = feedsToCheck.Count > 0 ? GetReachableNuGetFeeds(feedsToCheck, kind, isFallback: false) : [];
 
             // Always consider feeds excluded for the reachability check as reachable.
             return reachable.Union(feeds.Where(feed => excludedFeeds.Contains(feed))).ToImmutableHashSet();
@@ -328,10 +321,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="feedsToCheck">The feeds to check.</param>
         /// <param name="isFallback">Whether the feeds are fallback feeds or not.</param>
         /// <returns>The list of feeds that could be reached.</returns>
-        private List<string> GetReachableNuGetFeeds(HashSet<string> feedsToCheck, bool isFallback)
+        private List<string> GetReachableNuGetFeeds(HashSet<string> feedsToCheck, string kind, bool isFallback)
         {
-            var fallbackStr = isFallback ? "fallback " : "";
-            logger.LogInfo($"Checking {fallbackStr}NuGet feed reachability on feeds: {string.Join(", ", feedsToCheck.OrderBy(f => f))}");
+            logger.LogInfo($"Checking {kind} NuGet feed reachability on feeds: {string.Join(", ", feedsToCheck.OrderBy(f => f))}");
 
             var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback);
             var reachableFeeds = feedsToCheck
@@ -340,17 +332,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (reachableFeeds.Count == 0)
             {
-                logger.LogWarning($"No {fallbackStr}NuGet feeds are reachable.");
+                logger.LogWarning($"No {kind} NuGet feeds are reachable.");
             }
             else
             {
-                logger.LogInfo($"Reachable {fallbackStr}NuGet feeds: {string.Join(", ", reachableFeeds.OrderBy(f => f))}");
+                logger.LogInfo($"Reachable {kind} NuGet feeds: {string.Join(", ", reachableFeeds.OrderBy(f => f))}");
             }
 
             return reachableFeeds;
         }
 
-        private List<string> GetReachableFallbackNugetFeeds()
+        private ImmutableHashSet<string> GetReachableFallbackNugetFeeds()
         {
             var fallbackFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.FallbackNugetFeeds).ToHashSet();
             if (fallbackFeeds.Count == 0)
@@ -374,7 +366,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Using fallback NuGet feeds from environment variable '{EnvironmentVariableNames.FallbackNugetFeeds}'.");
             }
 
-            return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true);
+            return GetReachableNuGetFeeds(fallbackFeeds, "fallback", isFallback: true).ToImmutableHashSet();
         }
 
         private ImmutableHashSet<string> GetExplicitFeeds()

@@ -3,7 +3,6 @@ private import codeql.dataflow.DataFlow
 private import codeql.actions.Ast
 private import codeql.actions.Cfg as Cfg
 private import codeql.Locations
-private import codeql.actions.controlflow.BasicBlocks
 private import DataFlowPublic
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.dataflow.FlowSteps
@@ -50,7 +49,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall call, ArgumentPosition p
 }
 
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
-  node = TExprNode(any(DataFlowExpr e | result = e.getScope()))
+  node = TExprNode(any(DataFlowExpr e | result = e.getEnclosingCallable()))
 }
 
 DataFlowType getNodeType(Node node) { any() }
@@ -59,13 +58,16 @@ predicate nodeIsHidden(Node node) { none() }
 
 class DataFlowExpr extends Cfg::Node {
   DataFlowExpr() {
-    this.getAstNode() instanceof Job or
-    this.getAstNode() instanceof Expression or
-    this.getAstNode() instanceof Uses or
-    this.getAstNode() instanceof Run or
-    this.getAstNode() instanceof Outputs or
-    this.getAstNode() instanceof Input or
-    this.getAstNode() instanceof ScalarValue
+    this.injects(this.getAstNode()) and
+    (
+      this.getAstNode() instanceof Job or
+      this.getAstNode() instanceof Expression or
+      this.getAstNode() instanceof Uses or
+      this.getAstNode() instanceof Run or
+      this.getAstNode() instanceof Outputs or
+      this.getAstNode() instanceof Input or
+      this.getAstNode() instanceof ScalarValue
+    )
   }
 }
 
@@ -73,14 +75,17 @@ class DataFlowExpr extends Cfg::Node {
  * A call corresponds to a Uses steps where a composite action or a reusable workflow get called
  */
 class DataFlowCall instanceof Cfg::Node {
-  DataFlowCall() { super.getAstNode() instanceof Uses }
+  DataFlowCall() {
+    this.injects(this.getAstNode()) and
+    super.getAstNode() instanceof Uses
+  }
 
   /** Gets a textual representation of this element. */
   string toString() { result = super.toString() }
 
   string getName() { result = super.getAstNode().(Uses).getCallee() }
 
-  DataFlowCallable getEnclosingCallable() { result = super.getScope() }
+  DataFlowCallable getEnclosingCallable() { result = super.getEnclosingCallable() }
 
   /** Gets a best-effort total ordering. */
   int totalorder() { none() }

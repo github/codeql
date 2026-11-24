@@ -58,3 +58,25 @@ class IncompleteNestedOperatorTest
         return lambda() || Local();
     }
 }
+
+class Test
+{
+    public class Container
+    {
+        public bool? Field;
+    }
+
+    public void Fn()
+    {
+        bool? boption = false;
+        if (boption == true) ; // GOOD. Can't be simplified like a regular bool
+
+        bool b = false;
+        if (b ? boption : false) ; // GOOD. Can't be simplified like a regular bool
+
+        // Emulating incomplete type information by not declaring container explicitly.
+        if (container.Field == true) ; // GOOD. Can't be simplified like a regular bool
+
+        if (b ? container.Field : false) ; // GOOD. Can't be simplified like a regular bool
+    }
+}

@@ -1,9 +1,24 @@
 /**
  * Provides Swift-specific name binding rules.
  */
+overlay[local?]
+module;
 
 private import unified
+private import codeql.unified.internal.StaticNameBinding
 private import codeql.unified.internal.NameBindingPlugin
+
+private class GeneratedConstructor extends ConstructorDeclaration {
+  GeneratedConstructor() { this.hasModifier("generated") }
+}
+
+private class ConvenienceConstructor extends ConstructorDeclaration {
+  ConvenienceConstructor() { this.hasModifier("convenience") }
+}
+
+private class DesignatedConstructor extends ConstructorDeclaration {
+  DesignatedConstructor() { not this instanceof ConvenienceConstructor }
+}
 
 class NameBindingPluginSwift extends NameBindingPlugin {
   bindingset[e]
@@ -36,7 +51,54 @@ class NameBindingPluginSwift extends NameBindingPlugin {
   bindingset[cls, member]
   override predicate isInheritableMember(ClassLikeDeclaration cls, Member member) {
     exists(cls) and
-    not member.hasModifier("private")
+    not member.hasModifier("private") and
+    not (cls.hasModifier("protocol") and member instanceof ConstructorDeclaration)
+  }
+
+  bindingset[n, member]
+  override predicate isInvalidMember(NamespaceNode n, Member member) {
+    exists(NamespaceNode parent |
+      parent = n.getAnInheritanceParent() and
+      not parent
+          .isInstanceOrStaticMemberNamespace(any(ClassLikeDeclaration p | p.hasModifier("protocol")))
+    |
+      // Remove generated constructors when there are inherited constructors available
+      // Note: If the base class only has private constructors, this class must have an
+      // explicit constructor, in which case there is no generated constructor to begin
+      // with
+      member instanceof GeneratedConstructor and
+      n.getOwnMember(_).isMember(member) and
+      parent.getMemberFull(_, _).isMember(any(ConstructorDeclaration inherited))
+      or
+      // Remove inherited designated constructors (generated or not) when there are
+      // explicit designated constructors available
+      // Note: We always inherit convenience constructors, even though it may not actually
+      // be the case in Swift; this should be OK, since there can then not exist any calls
+      // that target those constructors
+      parent.getMemberFull(_, _).isMember(member.(DesignatedConstructor)) and
+      exists(DesignatedConstructor designated |
+        n.getOwnMember(_).isMember(designated) and
+        not designated instanceof GeneratedConstructor
+      )
+    )
+  }
+
+  override string getShadowingKey(Member m) {
+    not m instanceof Callable and result = ""
+    or
+    not m instanceof GeneratedConstructor and
+    result =
+      concat(int i, Parameter p, string name |
+        p = m.(Callable).getParameter(i) and
+        (
+          name = p.getExternalNameNode().getValue()
+          or
+          not exists(p.getExternalNameNode()) and
+          name = "_"
+        )
+      |
+        name, "," order by i
+      )
   }
 
   override string getImplicitReceiverParameterName(Callable callable) {
@@ -44,6 +106,9 @@ class NameBindingPluginSwift extends NameBindingPlugin {
     callable = any(ClassLikeDeclaration cls).getAMember() and
     result = "self"
   }
+
+  bindingset[se]
+  override string getSuperLocalName(SuperExpr se) { exists(se) and result = "self" }
 
   bindingset[cls]
   override string getStaticSelfName(ClassLikeDeclaration cls) { exists(cls) and result = "Self" }

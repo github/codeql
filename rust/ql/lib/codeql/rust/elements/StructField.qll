@@ -4,8 +4,8 @@
  */
 
 private import internal.StructFieldImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Attr
 import codeql.rust.elements.ConstArg
 import codeql.rust.elements.MutRestriction
 import codeql.rust.elements.Name

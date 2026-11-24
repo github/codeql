@@ -6,8 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.StructExprField
 
@@ -35,9 +35,9 @@ module Generated {
     /**
      * Gets the `index`th attr of this struct expression field list (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertStructExprFieldListToRaw(this)
+        Synth::convertAnyAttrFromRaw(Synth::convertStructExprFieldListToRaw(this)
               .(Raw::StructExprFieldList)
               .getAttr(index))
     }
@@ -45,7 +45,7 @@ module Generated {
     /**
      * Gets any of the attrs of this struct expression field list.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this struct expression field list.

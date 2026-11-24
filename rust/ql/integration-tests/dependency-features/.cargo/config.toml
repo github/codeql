@@ -1,0 +1,7 @@
+# Add a source definition backed by the directories in "dependencies"
+[source.test-dependencies]
+directory = "dependencies"
+
+# Map crates.io to our local source definition
+[source.crates-io]
+replace-with = "test-dependencies"

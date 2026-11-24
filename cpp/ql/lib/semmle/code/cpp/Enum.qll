@@ -55,6 +55,12 @@ class Enum extends UserType, IntegralOrEnumType {
     not exists(UserType.super.getSize()) and result = 4
   }
 
+  override int getBitWidth() {
+    result = UserType.super.getBitWidth()
+    or
+    not exists(UserType.super.getBitWidth()) and result = 32
+  }
+
   /** See `Type.isDeeplyConst` and `Type.isDeeplyConstBelow`. Internal. */
   override predicate isDeeplyConstBelow() { any() } // No subparts
 

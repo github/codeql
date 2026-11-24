@@ -4,8 +4,8 @@
  */
 
 private import internal.StructPatFieldImpl
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.AstNode
-import codeql.rust.elements.Attr
 import codeql.rust.elements.NameRef
 import codeql.rust.elements.Pat
 

@@ -833,7 +833,11 @@ class Module extends TModule, ModuleDeclaration {
 
   Module() { this = TModule(mod) }
 
-  override Location getLocation() { result = mod.asLeft().getName().getLocation() }
+  override Location getLocation() {
+    result = mod.asLeft().getName().getLocation()
+    or
+    not exists(mod.asLeft().getName()) and result = mod.asLeft().getLocation()
+  }
 
   override string getAPrimaryQlClass() { result = "Module" }
 
@@ -2526,13 +2530,25 @@ private class AnnotationArg extends TAnnotationArg, AstNode {
 
   AnnotationArg() { this = TAnnotationArg(arg) }
 
+  private predicate isOptional() {
+    arg.getLocation().getEndLine() != arg.getChild().getLocation().getEndLine()
+    or
+    arg.getLocation().getEndColumn() != arg.getChild().getLocation().getEndColumn()
+  }
+
   /** Gets the name of this argument. */
   string getValue() {
-    result =
-      [
-        arg.getChild().(QL::SimpleId).getValue(), arg.getChild().(QL::Result).getValue(),
-        arg.getChild().(QL::This).getValue()
-      ]
+    exists(string value |
+      value =
+        [
+          arg.getChild().(QL::SimpleId).getValue(), arg.getChild().(QL::Result).getValue(),
+          arg.getChild().(QL::This).getValue()
+        ]
+    |
+      result = value and not this.isOptional()
+      or
+      result = value + "?" and this.isOptional()
+    )
   }
 
   override string toString() { result = this.getValue() }

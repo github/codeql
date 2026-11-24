@@ -26,6 +26,8 @@ class TypedefType extends UserType {
 
   override int getSize() { result = this.getBaseType().getSize() }
 
+  override int getBitWidth() { result = this.getBaseType().getBitWidth() }
+
   override int getAlignment() { result = this.getBaseType().getAlignment() }
 
   override int getPointerIndirectionLevel() {

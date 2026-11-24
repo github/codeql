@@ -85,10 +85,22 @@ private func serializeTrivia(
 ///     therefore simply a JSON array. This drops the collection node's own
 ///     `kind`/location, which are unnamed and largely recoverable from the
 ///     elements.
-private func serialize(_ node: Syntax) -> Any {
+private let maximumSerializationDepth = 2048
+
+private struct SerializationDepthError: Error, CustomStringConvertible {
+    var description: String {
+        "syntax tree exceeds maximum serialization depth (\(maximumSerializationDepth))"
+    }
+}
+
+private func serialize(_ node: Syntax, depth: Int = 1) throws -> Any {
+    if depth > maximumSerializationDepth {
+        throw SerializationDepthError()
+    }
+
     if node.kind.isSyntaxCollection {
-        return node.children(viewMode: .sourceAccurate).map {
-            serialize($0)
+        return try node.children(viewMode: .sourceAccurate).map {
+            try serialize($0, depth: depth + 1)
         }
     }
 
@@ -133,10 +145,10 @@ private func serialize(_ node: Syntax) -> Any {
         // parent (the same mechanism SwiftSyntax uses for its debug dump). A
         // child that is a collection serializes to an array (see above).
         if let keyPath = child.keyPathInParent, let name = childName(keyPath) {
-            result[name] = serialize(child)
+            result[name] = try serialize(child, depth: depth + 1)
         } else {
             // Defensive fallback for any unnamed layout child.
-            result["child\(unnamed)"] = serialize(child)
+            result["child\(unnamed)"] = try serialize(child, depth: depth + 1)
             unnamed += 1
         }
     }
@@ -292,22 +304,33 @@ private func appendJSON(_ value: Any, to output: inout [UInt8]) throws {
     }
 }
 
-/// Parse the given NUL-terminated Swift source string and return a
-/// heap-allocated, NUL-terminated JSON representation of the syntax tree.
+/// Parse the given UTF-8 Swift source buffer and return a heap-allocated,
+/// NUL-terminated JSON representation of the syntax tree.
 ///
 /// The returned pointer is owned by the caller and MUST be released with
 /// `ssr_string_free`. Returns `nil` on failure.
 @_cdecl("ssr_parse_json")
-public func ssr_parse_json(_ source: UnsafePointer<CChar>?) -> UnsafeMutablePointer<CChar>? {
-    guard let source = source else { return nil }
-    let code = String(cString: source)
+public func ssr_parse_json(
+    _ source: UnsafePointer<UInt8>?,
+    _ sourceLength: Int
+) -> UnsafeMutablePointer<CChar>? {
+    guard sourceLength >= 0, source != nil || sourceLength == 0 else { return nil }
+    let sourceBytes = UnsafeBufferPointer(start: source, count: sourceLength)
+    let code = String(decoding: sourceBytes, as: UTF8.self)
     let tree = Parser.parse(source: code)
     // Fold operator sequences before serializing. Source positions are
     // preserved by folding (the same tokens, in the same places), so a
     // converter built from the original tree maps the folded tree correctly.
     let folded = foldOperators(in: tree)
     let converter = SourceLocationConverter(fileName: "<input>", tree: tree)
-    guard var json = serialize(folded) as? [String: Any] else {
+    let serialized: Any
+    do {
+        serialized = try serialize(folded)
+    } catch {
+        writeToStandardError("SwiftSyntaxFFI: JSON serialization failed: \(error)\n")
+        return nil
+    }
+    guard var json = serialized as? [String: Any] else {
         return nil
     }
     json["$lineStarts"] = lineStarts(converter)

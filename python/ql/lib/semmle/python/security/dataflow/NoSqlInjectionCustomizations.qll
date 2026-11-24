@@ -6,7 +6,6 @@
 
 import python
 import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.Concepts
 
 /**
@@ -63,8 +62,14 @@ module NoSqlInjection {
     abstract DataFlow::Node getOutput();
   }
 
-  /** A remote flow source considered a source of user controlled strings. */
-  class RemoteFlowSourceAsStringSource extends RemoteFlowSource, StringSource { }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsStringSource = ActiveThreatModelSourceAsStringSource;
+
+  /** An active threat-model source considered a source of user controlled strings. */
+  private class ActiveThreatModelSourceAsStringSource extends StringSource instanceof ActiveThreatModelSource
+  { }
 
   /** A NoSQL query that is vulnerable to user controlled strings. */
   class NoSqlExecutionAsStringSink extends StringSink {

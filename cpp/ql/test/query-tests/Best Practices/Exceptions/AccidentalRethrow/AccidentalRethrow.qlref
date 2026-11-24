@@ -1,0 +1,2 @@
+query: Best Practices/Exceptions/AccidentalRethrow.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

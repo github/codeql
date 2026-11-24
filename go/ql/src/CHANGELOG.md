@@ -1,3 +1,25 @@
+## 1.6.16
+
+No user-facing changes.
+
+## 1.6.15
+
+### Minor Analysis Improvements
+
+* Added value flow models for functions in the `maps` package which do not involve the `iter` package.
+
+## 1.6.14
+
+No user-facing changes.
+
+## 1.6.13
+
+No user-facing changes.
+
+## 1.6.12
+
+No user-facing changes.
+
 ## 1.6.11
 
 No user-facing changes.

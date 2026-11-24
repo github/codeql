@@ -4,13 +4,16 @@ version = "0.1.0"
 edition = "2024"
 license = "MIT"
 
+[lints]
+workspace = true
+
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
 ungrammar = "1.16.1"
 proc-macro2 = "1.0.107"
 quote = "1.0.47"
-either = "1.17.0"
-stdx = {package = "ra_ap_stdx", version = "0.0.347"}
+either = "1.19.0"
+stdx = {package = "ra_ap_stdx", version = "0.0.358"}
 itertools = "0.15.0"
 mustache = "0.9.0"
 serde = { version = "1.0.229", features = ["derive"] }

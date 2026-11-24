@@ -490,6 +490,32 @@ module Directive {
   class WorkletDirective extends KnownDirective {
     WorkletDirective() { this.getDirectiveText() = "worklet" }
   }
+
+  /**
+   * A Workflow SDK `use workflow` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use workflow";
+   * ```
+   */
+  class UseWorkflowDirective extends KnownDirective {
+    UseWorkflowDirective() { this.getDirectiveText() = "use workflow" }
+  }
+
+  /**
+   * A Workflow SDK `use step` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use step";
+   * ```
+   */
+  class UseStepDirective extends KnownDirective {
+    UseStepDirective() { this.getDirectiveText() = "use step" }
+  }
 }
 
 /**

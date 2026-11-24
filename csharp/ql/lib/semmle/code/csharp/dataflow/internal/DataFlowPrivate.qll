@@ -494,9 +494,9 @@ module SsaFlow {
   Impl::Node asNode(Node n) {
     n = TSsaNode(result)
     or
-    result.(Impl::ExprNode).getExpr() = n.(ExprNode).getControlFlowNode()
+    result.(Impl::ReadNode).getControlFlowNode() = n.(ExprNode).getControlFlowNode()
     or
-    result.(Impl::ExprPostUpdateNode).getExpr() =
+    result.(Impl::PostUpdateReadNode).getControlFlowNode() =
       n.(PostUpdateNode).getPreUpdateNode().(ExprNode).getControlFlowNode()
     or
     result.(Impl::WriteDefSourceNode).getDefinition() = n.(ExplicitParameterNode).getSsaDefinition()
@@ -560,10 +560,22 @@ module LocalFlow {
     or
     exists(AssignExpr ae | ae.getLeftOperand().(TupleExpr) = e2 and ae.getRightOperand() = e1)
     or
-    exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
-      cfe.(IsExpr).getExpr() = e1
-      or
-      exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1)
+    exists(IsExpr e |
+      e1 = e.getExpr() and
+      e2 = e.getPattern() and
+      (
+        e2 instanceof TuplePatternExpr or
+        e2 instanceof RecursivePatternExpr
+      )
+    )
+    or
+    exists(Switch sw |
+      e1 = sw.getExpr() and
+      e2 = sw.getACase().getPattern() and
+      (
+        e2 instanceof TuplePatternExpr or
+        e2 instanceof RecursivePatternExpr
+      )
     )
   }
 
@@ -1978,16 +1990,22 @@ class FieldOrProperty extends Assignable, Modifiable {
   }
 }
 
-/** A string that is a reference to a late-bound target of a dynamic member access. */
+/** A member name used by a dynamic access or a property pattern without type information. */
 class DynamicProperty extends string {
-  private DynamicMemberAccess dma;
-
-  DynamicProperty() { this = dma.getLateBoundTargetName() }
+  DynamicProperty() {
+    this = any(DynamicMemberAccess dma).getLateBoundTargetName()
+    or
+    exists(PatternExpr qualifier, LabeledPatternExpr label |
+      propertyPatternQualifier(qualifier, label) and
+      qualifier.getType() instanceof NullType and
+      this = label.getLabel()
+    )
+  }
 
   ContentSet getContentSet() { result.isDynamicProperty(this) }
 
   /** Gets an access of this dynamic property. */
-  DynamicMemberAccess getAnAccess() { result = dma }
+  DynamicMemberAccess getAnAccess() { result.getLateBoundTargetName() = this }
 }
 
 private class InstanceFieldOrProperty extends FieldOrProperty {
@@ -2202,6 +2220,40 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   storeStepDelegateCall(node1, c, node2)
 }
 
+private predicate readStepPattern(Node node1, Content c, Node node2) {
+  exists(RecursivePatternExpr pattern, PatternExpr item, int i |
+    node1.asExpr() = pattern and
+    item = pattern.getPositionalPatterns().getPattern(i) and
+    c.(FieldContent).getField() =
+      pattern.getType().(TupleType).getElement(i).getUnboundDeclaration()
+  |
+    // item = { ... } in node1 = (var ..., { ... })
+    item = node2.asExpr().(RecursivePatternExpr)
+    or
+    // item = (...,...) in node1 = (var ..., (..., ...))
+    item = node2.asExpr().(TuplePatternExpr)
+    or
+    // item = variable in node1 = (..., variable, ...) in a case/is (var ..., var ...)
+    exists(AssignableDefinitions::PatternDefinition lvd |
+      node2.(AssignableDefinitionNode).getDefinition() = lvd and
+      item.(BindingPatternExpr).getVariableDeclExpr() = lvd.getDeclaration()
+    )
+  )
+  or
+  // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
+  exists(TuplePatternExpr pattern, PatternExpr item, int i |
+    node1.asExpr() = pattern and
+    c.(FieldContent).getField() =
+      pattern.getType().(TupleType).getElement(i).getUnboundDeclaration() and
+    item = pattern.getArgument(i)
+  |
+    exists(AssignableDefinitions::PatternDefinition lvd |
+      node2.(AssignableDefinitionNode).getDefinition() = lvd and
+      item = lvd.getDeclaration()
+    )
+  )
+}
+
 private predicate readContentStep(Node node1, Content c, Node node2) {
   arrayRead(node1.asExpr(), node2.asExpr()) and
   c instanceof ElementContent
@@ -2240,14 +2292,9 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
       node2.(AssignableDefinitionNode).getDefinition() = tad and
       tad.getLeaf() = item
     )
-    or
-    // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-    isPatternExprDescendant(te) and
-    exists(AssignableDefinitions::LocalVariableDefinition lvd |
-      node2.(AssignableDefinitionNode).getDefinition() = lvd and
-      lvd.getDeclaration() = item
-    )
   )
+  or
+  readStepPattern(node1, c, node2)
   or
   VariableCapture::readStep(node1, c, node2)
 }
@@ -2267,6 +2314,40 @@ private predicate readStepDelegateCall(Node node1, ContentSet c, OutNode node2) 
   )
 }
 
+private predicate propertyPatternQualifier(PatternExpr qualifier, LabeledPatternExpr label) {
+  qualifier.(RecursivePatternExpr).getPropertyPatterns().getPattern(_) = label
+  or
+  qualifier instanceof LabeledPatternExpr and
+  qualifier.(PropertyPatternExpr).getPattern(_) = label
+}
+
+/**
+ * Holds if data can flow from `node1` to `node2` via a property pattern.
+ */
+private predicate fieldOrPropertyPatternRead(Node node1, ContentSet c, Node node2) {
+  exists(PatternExpr pattern, LabeledPatternExpr label |
+    node1.asExpr() = pattern and
+    propertyPatternQualifier(pattern, label) and
+    if pattern.getType() instanceof NullType
+    then c.isDynamicProperty(label.getLabel())
+    else
+      exists(FieldOrProperty f |
+        c = f.getContentSet() and
+        f.getName() = label.getLabel() and
+        pattern.getType().(ValueOrRefType).hasMember(f)
+      )
+  |
+    node2.asExpr() = label.(RecursivePatternExpr)
+    or
+    node2.asExpr() = label.(PropertyPatternExpr)
+    or
+    exists(AssignableDefinitions::PatternDefinition lvd |
+      node2.(AssignableDefinitionNode).getDefinition() = lvd and
+      label.(BindingPatternExpr).getVariableDeclExpr() = lvd.getDeclaration()
+    )
+  )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via a read of content `c`.
  */
@@ -2277,6 +2358,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
+  or
+  fieldOrPropertyPatternRead(node1, c, node2)
   or
   dynamicPropertyRead(node1.asExpr(), c, node2.asExpr())
   or
@@ -2677,7 +2760,7 @@ class CastNode extends Node {
     this.asExpr() instanceof Cast
     or
     this.(AssignableDefinitionNode).getDefinition() instanceof
-      AssignableDefinitions::PatternDefinition
+      AssignableDefinitions::TopLevelPatternDefinition
   }
 }
 

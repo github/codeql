@@ -10,6 +10,7 @@
 
 import python
 import semmle.python.ApiGraphs
+import semmle.python.Concepts
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.Flow
 import semmle.python.dataflow.new.RemoteFlowSources
@@ -62,7 +63,7 @@ class CherryPyRequest extends RemoteFlowSource::Range {
 }
 
 module CorsBypassConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node node) { node instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node node) {
     exists(StringStartswithCall s |

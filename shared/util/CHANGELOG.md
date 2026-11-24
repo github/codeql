@@ -1,3 +1,23 @@
+## 2.0.50
+
+No user-facing changes.
+
+## 2.0.49
+
+No user-facing changes.
+
+## 2.0.48
+
+No user-facing changes.
+
+## 2.0.47
+
+No user-facing changes.
+
+## 2.0.46
+
+No user-facing changes.
+
 ## 2.0.45
 
 No user-facing changes.

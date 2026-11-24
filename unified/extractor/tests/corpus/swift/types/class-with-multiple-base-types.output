@@ -9,6 +9,7 @@ sourceFile
       item:
         classDecl
           attributes:
+          modifiers:
           name: identifier "Button"
           inheritanceClause:
             inheritanceClause
@@ -28,7 +29,6 @@ sourceFile
               leftBrace: {
               rightBrace: }
               members:
-          modifiers:
           classKeyword: class
 
 ---
@@ -45,3 +45,8 @@ top_level source="⟨body⟩"
               type: identifier "Control" source="Control"
             base_type source="⟨type⟩"
               type: identifier "Drawable" source="Drawable"
+          member:
+            constructor_declaration source=""
+              modifier: modifier "generated" source=""
+              name_node: identifier "init" source=""
+              body: block source=""

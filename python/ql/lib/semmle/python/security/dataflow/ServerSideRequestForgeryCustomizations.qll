@@ -50,10 +50,9 @@ module ServerSideRequestForgery {
    */
   deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
-  /**
-   * An active threat-model source, considered as a flow source.
-   */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
+  /** An active threat-model source, considered as a flow source. */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+  }
 
   /** The URL of an HTTP request, considered as a sink. */
   class HttpRequestUrlAsSink extends Sink {
@@ -164,7 +163,7 @@ module ServerSideRequestForgery {
         ["isalnum", "isalpha", "isdecimal", "isdigit", "isidentifier", "isnumeric", "isspace"])
       or
       branch = true and
-      call = API::moduleImport("re").getMember(["match", "fullmatch"]).getACall() and
+      call = API::moduleImport("re").getMember(["match", "prefixmatch", "fullmatch"]).getACall() and
       strNode = [call.getArg(1), call.getArgByName("string")]
       or
       branch = true and
@@ -172,7 +171,7 @@ module ServerSideRequestForgery {
         API::moduleImport("re")
             .getMember("compile")
             .getReturn()
-            .getMember(["match", "fullmatch"])
+            .getMember(["match", "prefixmatch", "fullmatch"])
             .getACall() and
       strNode = [call.getArg(0), call.getArgByName("string")]
     )

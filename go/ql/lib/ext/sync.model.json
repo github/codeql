@@ -1,0 +1,22 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "summaryModel"
+      },
+      "data": [
+        ["sync", "Map", true, "CompareAndSwap", "", "", "Argument[2]", "Argument[receiver]", "taint", "manual"],
+        ["sync", "Map", true, "Load", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["sync", "Map", true, "LoadOrStore", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["sync", "Map", true, "LoadOrStore", "", "", "Argument[1]", "Argument[receiver]", "taint", "manual"],
+        ["sync", "Map", true, "LoadOrStore", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"],
+        ["sync", "Map", true, "Store", "", "", "Argument[1]", "Argument[receiver]", "taint", "manual"],
+        ["sync", "Map", true, "Swap", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"],
+        ["sync", "Map", true, "Swap", "", "", "Argument[1]", "Argument[receiver]", "taint", "manual"],
+        ["sync", "Pool", true, "Get", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"],
+        ["sync", "Pool", true, "Put", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]
+      ]
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-// semmle-extractor-options: --gnu_version 150000
+// semmle-extractor-options: --gnu_version 170000
 
 __attribute__ ((aligned(8))) int v;
 bool b_has_attribute1 = __builtin_has_attribute(v, aligned);
@@ -35,3 +35,6 @@ bool b_is_invocable2 = __is_invocable(f_type, bool);
 
 bool b_is_nothrow_invocable1 = __is_nothrow_invocable(f_type);
 bool b_is_nothrow_invocable2 = __is_nothrow_invocable(f_type, bool);
+
+bool b_is_structural1 = __builtin_is_structural(int);
+bool b_is_structural2 = __builtin_is_structural(int&&);

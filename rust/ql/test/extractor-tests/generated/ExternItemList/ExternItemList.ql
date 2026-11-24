@@ -4,7 +4,7 @@ import TestUtils
 
 query predicate instances(ExternItemList x) { toBeTested(x) and not x.isUnknown() }
 
-query predicate getAttr(ExternItemList x, int index, Attr getAttr) {
+query predicate getAttr(ExternItemList x, int index, AnyAttr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 

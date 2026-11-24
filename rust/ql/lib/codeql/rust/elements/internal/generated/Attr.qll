@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
+import codeql.rust.elements.internal.AnyAttrImpl::Impl as AnyAttrImpl
 import codeql.rust.elements.Meta
 
 /**
@@ -26,7 +26,7 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Attr` class directly.
    * Use the subclass `Attr`, where the following predicates are available.
    */
-  class Attr extends Synth::TAttr, AstNodeImpl::AstNode {
+  class Attr extends Synth::TAttr, AnyAttrImpl::AnyAttr {
     override string getAPrimaryQlClass() { result = "Attr" }
 
     override string toStringImpl() { result = this.getAPrimaryQlClass() }

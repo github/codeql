@@ -1,3 +1,23 @@
+## 1.7.80
+
+No user-facing changes.
+
+## 1.7.79
+
+No user-facing changes.
+
+## 1.7.78
+
+No user-facing changes.
+
+## 1.7.77
+
+No user-facing changes.
+
+## 1.7.76
+
+No user-facing changes.
+
 ## 1.7.75
 
 No user-facing changes.

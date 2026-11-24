@@ -273,7 +273,7 @@ named:
     endOfFileToken: _token
   accessorDecl:
     attributes*: [attribute, ifConfigDecl]
-    modifier?: declModifier
+    modifiers*: declModifier
     accessorSpecifier: _token
     parameters?: accessorParameters
     effectSpecifiers?: accessorEffectSpecifiers

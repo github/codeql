@@ -380,6 +380,8 @@ module ExprTrees {
 
   class LiteralExprTree extends LeafTree instanceof LiteralExpr { }
 
+  class CfgPredExprTree extends LeafTree instanceof CfgPredExpr { }
+
   abstract class LoopingExprTree extends PostOrderTree {
     override predicate propagatesAbnormal(AstNode child) { child = this.getLoopBody() }
 
@@ -501,20 +503,6 @@ module ExprTrees {
 
   class OffsetOfExprTree extends LeafTree instanceof OffsetOfExpr { }
 
-  class ParenExprTree extends ControlFlowTree, ParenExpr {
-    private ControlFlowTree expr;
-
-    ParenExprTree() { expr = super.getExpr() }
-
-    override predicate propagatesAbnormal(AstNode child) { expr.propagatesAbnormal(child) }
-
-    override predicate first(AstNode first) { expr.first(first) }
-
-    override predicate last(AstNode last, Completion c) { expr.last(last, c) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
-  }
-
   class PathExprTree extends LeafTree instanceof PathExpr { }
 
   class RangeExprTree extends StandardPostOrderTree instanceof RangeExpr {
@@ -630,6 +618,8 @@ module PatternTrees {
 
   class RestPatTree extends LeafTree, RestPat { }
 
+  class CfgPredPatTree extends LeafTree, CfgPredPat { }
+
   class LiteralPatTree extends StandardPostOrderTree, LiteralPat {
     override AstNode getChildNode(int i) { i = 0 and result = this.getLiteral() }
   }
@@ -648,20 +638,6 @@ module PatternTrees {
       // Successful pattern step to this
       c.(MatchCompletion).succeeded() and succ = this and last(this.getPat(_), pred, c)
     }
-  }
-
-  class ParenPatTree extends ControlFlowTree, ParenPat {
-    private ControlFlowTree pat;
-
-    ParenPatTree() { pat = this.getPat() }
-
-    override predicate propagatesAbnormal(AstNode child) { pat.propagatesAbnormal(child) }
-
-    override predicate first(AstNode first) { pat.first(first) }
-
-    override predicate last(AstNode last, Completion c) { pat.last(last, c) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
 
   class PathPatTree extends LeafTree, PathPat { }

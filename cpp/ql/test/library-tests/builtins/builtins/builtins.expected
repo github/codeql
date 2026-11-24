@@ -1,4 +1,12 @@
 | choose_expr.c:3:13:3:42 | __builtin_choose_expr |
+| spaceship.cpp:22:41:22:101 | __builtin_lt_synthesizes_from_spaceship |
+| spaceship.cpp:23:41:23:89 | __builtin_lt_synthesizes_from_spaceship |
+| spaceship.cpp:24:41:24:101 | __builtin_gt_synthesizes_from_spaceship |
+| spaceship.cpp:25:41:25:89 | __builtin_gt_synthesizes_from_spaceship |
+| spaceship.cpp:26:41:26:101 | __builtin_le_synthesizes_from_spaceship |
+| spaceship.cpp:27:41:27:89 | __builtin_le_synthesizes_from_spaceship |
+| spaceship.cpp:28:41:28:101 | __builtin_ge_synthesizes_from_spaceship |
+| spaceship.cpp:29:41:29:89 | __builtin_ge_synthesizes_from_spaceship |
 | types.c:4:9:4:57 | __builtin_types_compatible_p |
 | types.c:6:16:6:65 | __builtin_types_compatible_p |
 | varargs.c:7:5:7:32 | __builtin_va_start |

@@ -1,0 +1,8 @@
+instances
+| gen_cfg_pred_pat.rs:10:9:10:25 | CfgPredPat |
+| gen_cfg_pred_pat.rs:11:9:11:42 | CfgPredPat |
+| gen_cfg_pred_pat.rs:12:9:12:53 | CfgPredPat |
+getCfgPredicate
+| gen_cfg_pred_pat.rs:10:9:10:25 | CfgPredPat | gen_cfg_pred_pat.rs:10:21:10:24 | CfgAtom |
+| gen_cfg_pred_pat.rs:11:9:11:42 | CfgPredPat | gen_cfg_pred_pat.rs:11:21:11:41 | CfgAtom |
+| gen_cfg_pred_pat.rs:12:9:12:53 | CfgPredPat | gen_cfg_pred_pat.rs:12:21:12:52 | CfgComposite |

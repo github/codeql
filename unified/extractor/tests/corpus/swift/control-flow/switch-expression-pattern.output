@@ -341,7 +341,11 @@ top_level source="⟨body⟩"
                           value: identifier "offset" source="offset"
                     array_literal source="[⟨element⟩]"
                       element: identifier "value" source="value"
-                    map_literal "[key: value]" source="[key: value]"
+                    map_literal source="[⟨element⟩]"
+                      element:
+                        key_value_pair source="⟨key⟩: ⟨value⟩"
+                          key: identifier "key" source="key"
+                          value: identifier "value" source="value"
                     call_expr source="⟨argument⟩?"
                       callee:
                         member_access_expr source=""

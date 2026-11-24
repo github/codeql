@@ -37,6 +37,8 @@ query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode
 
 query predicate cfgNodes(Cfg::Node n) { any() }
 
+query predicate cfgCycles(Cfg::Node n) { n.getASuccessor+() = n }
+
 query predicate dfNodes(DataFlow::Node e) { any() }
 
 query predicate argumentNodes(DataFlow::ArgumentNode e) { any() }
@@ -46,6 +48,21 @@ query predicate usesIds(UsesStep s, string a) { s.getId() = a }
 query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = l }
 
 query predicate scopes(Cfg::CfgScope c) { any() }
+
+query predicate workflowScopes(Cfg::WorkflowScope c) { any() }
+
+query predicate compositeActionScopes(Cfg::CompositeActionScope c) { any() }
+
+query predicate workflowCfgNodes(Cfg::AstCfgNode node) {
+  node.getAstNode() instanceof Workflow and
+  node.getEnclosingCallable() = node.getAstNode()
+}
+
+query predicate entryScopes(Cfg::EntryNode entry, Cfg::CfgScope scope) {
+  scope = entry.getEnclosingCallable()
+}
+
+query predicate normalExitNodes(Cfg::AnnotatedExitNode exit) { exit instanceof Cfg::NormalExitNode }
 
 query predicate sources(string action, string version, string output, string kind, string provenance) {
   actionsSourceModel(action, version, output, kind, provenance)

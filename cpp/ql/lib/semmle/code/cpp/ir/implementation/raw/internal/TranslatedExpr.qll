@@ -107,7 +107,12 @@ abstract class TranslatedExpr extends TranslatedElement {
   }
 
   final private TranslatedExpr getImplicitDestructorCall(int index) {
-    result.getExpr() = expr.getImplicitDestructorCall(index)
+    result.getExpr() =
+      rank[index + 1](DestructorCall dc, int i |
+        dc = expr.getImplicitDestructorCall(i) and not isConditionalTemporaryDestructorCall(dc)
+      |
+        dc order by i
+      )
   }
 
   final override predicate hasAnImplicitDestructorCall() {

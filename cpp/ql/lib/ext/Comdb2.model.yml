@@ -1,0 +1,11 @@
+# Partial model of the Comdb2 C API.
+# https://bloomberg.github.io/comdb2/c_api.html
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sinkModel
+    data: # namespace, type, subtypes, name, signature, ext, input, kind, provenance
+      # Both functions interpret the second argument as SQL. The typed variant
+      # specifies result-column types; bound parameter values are passed separately.
+      - ["", "", False, "cdb2_run_statement", "", "", "Argument[*1]", "sql-injection", "manual"]
+      - ["", "", False, "cdb2_run_statement_typed", "", "", "Argument[*1]", "sql-injection", "manual"]

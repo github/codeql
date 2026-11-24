@@ -14,6 +14,7 @@
 
 import go
 import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
+private import semmle.go.controlflow.Guards
 
 /**
  * A flag indicating a check for satisfied permissions or test configuration.
@@ -59,11 +60,7 @@ module UntrustedToAllowOriginHeaderConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(ControlFlow::ConditionGuardNode cgn |
-      cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
-    |
-      cgn.dominates(node.getBasicBlock())
-    )
+    flagControls(any(AllowedFlag f), node.getBasicBlock())
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkHW(sink, _) }
@@ -171,9 +168,9 @@ class MapRead extends DataFlow::ElementReadNode {
 module FromUntrustedConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
-  predicate isSink(DataFlow::Node sink) { isSinkCgn(sink, _) }
+  predicate isSink(DataFlow::Node sink) { isSinkGuard(sink, _) }
 
-  additional predicate isSinkCgn(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn) {
+  additional predicate isSinkGuard(DataFlow::Node sink, Guard guard) {
     exists(IfStmt ifs |
       exists(Expr operand |
         operand = ifs.getCondition().getAChildExpr*() and
@@ -202,7 +199,7 @@ module FromUntrustedConfig implements DataFlow::ConfigSig {
         )
       )
     |
-      cgn.getCondition() = ifs.getCondition()
+      guard = ifs.getCondition()
     )
   }
 }
@@ -217,10 +214,10 @@ module FromUntrustedFlow = TaintTracking::Global<FromUntrustedConfig>;
  * Holds if the provided `allowOriginHW` is also destination of a `ActiveThreatModelSource`.
  */
 predicate flowsToGuardedByCheckOnUntrusted(DataFlow::ExprNode allowOriginHW) {
-  exists(DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |
-    FromUntrustedFlow::flowTo(sink) and FromUntrustedConfig::isSinkCgn(sink, cgn)
+  exists(DataFlow::Node sink, Guard guard |
+    FromUntrustedFlow::flowTo(sink) and FromUntrustedConfig::isSinkGuard(sink, guard)
   |
-    cgn.dominates(allowOriginHW.getBasicBlock())
+    guard.controls(allowOriginHW.getBasicBlock(), _)
   )
 }
 
@@ -233,9 +230,5 @@ where
     allowOriginIsNull(allowOriginHW, message)
   ) and
   not flowsToGuardedByCheckOnUntrusted(allowOriginHW) and
-  not exists(ControlFlow::ConditionGuardNode cgn |
-    cgn.ensures(any(AllowedFlag f).getAFlag().getANode(), _)
-  |
-    cgn.dominates(allowOriginHW.getBasicBlock())
-  )
+  not flagControls(any(AllowedFlag f), allowOriginHW.getBasicBlock())
 select allowOriginHW, message

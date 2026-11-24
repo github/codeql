@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/loop-variable-float
- * @tags correctness
+ * @tags quality
+ *       correctness
  *       reliability
  *       external/jsf
  */

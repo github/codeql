@@ -252,7 +252,10 @@ ArgumentPosition decodeUnknownArgumentPosition(AccessPathSyntax::AccessPathToken
  * `encodeContent` predicate.
  */
 bindingset[token]
-ContentSet decodeUnknownContent(AccessPathSyntax::AccessPathTokenBase token) { none() }
+ContentSet decodeUnknownContent(AccessPathSyntax::AccessPathTokenBase token) {
+  token.getName() = "Member" and
+  result.asPropertyName() = token.getAnArgument()
+}
 
 /**
  * Gets a return kind corresponding to the unknown token `token`.

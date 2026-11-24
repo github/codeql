@@ -7,7 +7,7 @@
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AddressableImpl::Impl as AddressableImpl
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.ConstArg
 import codeql.rust.elements.FieldList
 import codeql.rust.elements.Name
@@ -35,15 +35,15 @@ module Generated {
     /**
      * Gets the `index`th attr of this variant (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertVariantToRaw(this).(Raw::Variant).getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this variant.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this variant.

@@ -140,18 +140,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfAttr(Attr e, int index, string partialPredicateCall) {
-    exists(int n, int nMeta |
-      n = 0 and
-      nMeta = n + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getMeta() and partialPredicateCall = "Meta()"
-      )
-    )
-  }
-
   private Element getImmediateChildOfExternItemList(
     ExternItemList e, int index, string partialPredicateCall
   ) {
@@ -1056,6 +1044,18 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfAttr(Attr e, int index, string partialPredicateCall) {
+    exists(int n, int nMeta |
+      n = 0 and
+      nMeta = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getMeta() and partialPredicateCall = "Meta()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfAwaitExpr(AwaitExpr e, int index, string partialPredicateCall) {
     exists(int n, int nAttr, int nExpr |
       n = 0 and
@@ -1225,6 +1225,32 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfCfgPredExpr(
+    CfgPredExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate() and partialPredicateCall = "CfgPredicate()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCfgPredPat(CfgPredPat e, int index, string partialPredicateCall) {
+    exists(int n, int nCfgPredicate |
+      n = 0 and
+      nCfgPredicate = n + 1 and
+      (
+        none()
+        or
+        index = n and result = e.getCfgPredicate() and partialPredicateCall = "CfgPredicate()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfClosureExpr(
     ClosureExpr e, int index, string partialPredicateCall
   ) {
@@ -1332,6 +1358,10 @@ private module Impl {
         index = n and result = e.getPat() and partialPredicateCall = "Pat()"
       )
     )
+  }
+
+  private Element getImmediateChildOfDocComment(DocComment e, int index, string partialPredicateCall) {
+    none()
   }
 
   private Element getImmediateChildOfDynTraitTypeRepr(
@@ -1658,13 +1688,17 @@ private module Impl {
   }
 
   private Element getImmediateChildOfMacroExpr(MacroExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nMacroCall |
+    exists(int n, int nAttr, int nMacroCall |
       n = 0 and
-      nMacroCall = n + 1 and
+      nAttr = n + e.getNumberOfAttrs() and
+      nMacroCall = nAttr + 1 and
       (
         none()
         or
-        index = n and result = e.getMacroCall() and partialPredicateCall = "MacroCall()"
+        result = e.getAttr(index - n) and
+        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
+        or
+        index = nAttr and result = e.getMacroCall() and partialPredicateCall = "MacroCall()"
       )
     )
   }
@@ -1811,34 +1845,6 @@ private module Impl {
         index = nAttr and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
         or
         index = nTypeRepr and result = e.getPat() and partialPredicateCall = "Pat()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfParenExpr(ParenExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nAttr, int nExpr |
-      n = 0 and
-      nAttr = n + e.getNumberOfAttrs() and
-      nExpr = nAttr + 1 and
-      (
-        none()
-        or
-        result = e.getAttr(index - n) and
-        partialPredicateCall = "Attr(" + (index - n).toString() + ")"
-        or
-        index = nAttr and result = e.getExpr() and partialPredicateCall = "Expr()"
-      )
-    )
-  }
-
-  private Element getImmediateChildOfParenPat(ParenPat e, int index, string partialPredicateCall) {
-    exists(int n, int nPat |
-      n = 0 and
-      nPat = n + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getPat() and partialPredicateCall = "Pat()"
       )
     )
   }
@@ -2100,16 +2106,20 @@ private module Impl {
   }
 
   private Element getImmediateChildOfStructExpr(StructExpr e, int index, string partialPredicateCall) {
-    exists(int n, int nPath, int nStructExprFieldList |
+    exists(int n, int nPath, int nAttr, int nStructExprFieldList |
       n = 0 and
       nPath = n + 1 and
-      nStructExprFieldList = nPath + 1 and
+      nAttr = nPath + e.getNumberOfAttrs() and
+      nStructExprFieldList = nAttr + 1 and
       (
         none()
         or
         index = n and result = e.getPath() and partialPredicateCall = "Path()"
         or
-        index = nPath and
+        result = e.getAttr(index - nPath) and
+        partialPredicateCall = "Attr(" + (index - nPath).toString() + ")"
+        or
+        index = nAttr and
         result = e.getStructExprFieldList() and
         partialPredicateCall = "StructExprFieldList()"
       )
@@ -3219,8 +3229,6 @@ private module Impl {
     or
     result = getImmediateChildOfAssocItemList(e, index, partialAccessor)
     or
-    result = getImmediateChildOfAttr(e, index, partialAccessor)
-    or
     result = getImmediateChildOfExternItemList(e, index, partialAccessor)
     or
     result = getImmediateChildOfForBinder(e, index, partialAccessor)
@@ -3325,6 +3333,8 @@ private module Impl {
     or
     result = getImmediateChildOfAssocTypeArg(e, index, partialAccessor)
     or
+    result = getImmediateChildOfAttr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBecomeExpr(e, index, partialAccessor)
@@ -3347,6 +3357,10 @@ private module Impl {
     or
     result = getImmediateChildOfCfgMeta(e, index, partialAccessor)
     or
+    result = getImmediateChildOfCfgPredExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCfgPredPat(e, index, partialAccessor)
+    or
     result = getImmediateChildOfClosureExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfComment(e, index, partialAccessor)
@@ -3360,6 +3374,8 @@ private module Impl {
     result = getImmediateChildOfContinueExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfDerefPat(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfDocComment(e, index, partialAccessor)
     or
     result = getImmediateChildOfDynTraitTypeRepr(e, index, partialAccessor)
     or
@@ -3422,10 +3438,6 @@ private module Impl {
     result = getImmediateChildOfOrPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfParam(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfParenExpr(e, index, partialAccessor)
-    or
-    result = getImmediateChildOfParenPat(e, index, partialAccessor)
     or
     result = getImmediateChildOfParenTypeRepr(e, index, partialAccessor)
     or

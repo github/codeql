@@ -1,3 +1,43 @@
+## 3.0.2
+
+No user-facing changes.
+
+## 3.0.1
+
+### Minor Analysis Improvements
+
+* Checks of the form `isNaN(parseInt(x))` and `isNaN(parseFloat(x))` are no longer treated as checking that `x` is a number, since `parseInt` and `parseFloat` only validate a numeric prefix of `x`. This can reveal previously missed alerts, for example from `js/shell-command-constructed-from-input` and `js/unsafe-jquery-plugin`.
+* The command injection queries now properly recognize argument arrays passed to `spawn` and `execFile` as sinks when the `shell` option is enabled.
+* The sensitive data heuristics treat names built on `trusted_schema`, such as SQLite's `set_trusted_schema` setting, as non-sensitive. This removes false positive results from queries that use the sensitive data library (for example `js/clear-text-logging`).
+* Regular expression checks using multiline (`m`) or unknown flags are no longer treated as generic taint sanitizers just because the pattern is anchored with `^` and `$`. This can reveal previously missed alerts, including command injection and reflected cross-site scripting.
+* Added modeling of the `@modelcontextprotocol/sdk` and `@modelcontextprotocol/server` (the official Model Context Protocol SDK) and `fastmcp` npm packages. The arguments of MCP tool, resource and prompt callbacks and the requests that handlers of the low-level `Server` receive are now sources of the opt-in `ai` threat model, as their values are produced by a language model. The request headers and the bearer token that the SDK passes to a callback are sources of the `remote` threat model.
+* Added flow summaries for schema parsing with the `zod` npm package: data now flows from the argument of `parse`, `safeParse`, `parseAsync` and `safeParseAsync` to the parsed result.
+
+## 3.0.0
+
+### Breaking Changes
+
+* The `SEMMLE_TYPESCRIPT_HOME` environment variable is no longer supported. The JavaScript/TypeScript extractor now ignores the environment variable and always uses its bundled TypeScript compiler.
+
+### Minor Analysis Improvements
+
+* Added taint steps for `String.prototype.trimStart`, `trimEnd`, and `normalize`.
+* Fixed the flow summary for `Array.prototype.flatMap`. The `thisArg` argument now flows to the callback's `this` instead of its index parameter.
+
+## 2.10.4
+
+No user-facing changes.
+
+## 2.10.3
+
+### Minor Analysis Improvements
+
+* The Workflow SDK directives `"use workflow"` and `"use step"` are now recognized as known directives, so the `js/unknown-directive` query no longer flags them.
+
+### Bug Fixes
+
+* Improved Hapi route handler and request input tracking through custom route registration helpers and higher-order function wrappers.
+
 ## 2.10.2
 
 ### Minor Analysis Improvements
@@ -653,7 +693,7 @@ No user-facing changes.
 
 ### New Features
 
-* Improved support for [Restify](http://restify.com/) framework, leading to more results when scanning applications developed with this framework.
+* Improved support for [Restify](https://restify.com/) framework, leading to more results when scanning applications developed with this framework.
 * Added support for the [Spife](https://github.com/npm/spife) framework.
 
 ### Minor Analysis Improvements

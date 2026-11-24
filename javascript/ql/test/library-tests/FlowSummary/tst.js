@@ -299,3 +299,11 @@ function m18() {
   sink(dynamicParam1("safe", ...[source()])); // NOT OK
   sink(dynamicParam1(source(), ...["safe"])); // OK
 }
+
+function m19() {
+  const constructedMap = new Map([["key", source()]]);
+  for (const [key, value] of constructedMap) {
+    sink(key);   // OK
+    sink(value); // NOT OK
+  }
+}

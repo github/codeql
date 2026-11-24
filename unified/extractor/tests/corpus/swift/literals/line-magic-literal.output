@@ -35,4 +35,6 @@ top_level source="⟨body⟩"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "currentLine" source="currentLine"
-          value: unsupported_node "#line" source="#line"
+          value:
+            macro_call_expr source="#⟨macro_name_node⟩"
+              macro_name_node: identifier "line" source="line"

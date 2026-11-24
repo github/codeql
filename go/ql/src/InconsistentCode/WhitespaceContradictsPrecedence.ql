@@ -67,6 +67,7 @@ class HarmlessNestedExpr extends BinaryExpr {
  */
 predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   inner = outer.getAChildExpr() and
+  not isParenthesized(inner, _) and
   not inner instanceof AssocNestedExpr and
   not inner instanceof HarmlessNestedExpr
 }

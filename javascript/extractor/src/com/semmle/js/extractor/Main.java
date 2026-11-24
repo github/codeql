@@ -376,7 +376,7 @@ public class Main {
     argsParser.addFlag(
         P_TYPESCRIPT_RAM,
         1,
-        "Amount of memory allocated to the TypeScript compiler process. The default is 1G.");
+        "Amount of memory assigned to the Node.js process's V8 old-space limit. The default is 1G.");
     argsParser.addToleratedFlag(P_DEBUG_EXCLUSIONS, 0);
     argsParser.addTrailingParam("files", "Files and directories to extract.");
     return argsParser;

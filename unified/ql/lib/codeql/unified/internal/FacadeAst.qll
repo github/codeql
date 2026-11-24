@@ -4,8 +4,11 @@
 overlay[local?]
 module;
 
+private import unified as U
+private import AstPlugin
 private import codeql.files.FileSystem
 private import codeql.unified.internal.NameBinding as NameBinding
+private import codeql.unified.internal.typeinference.TypeMention as TypeMention
 
 module Unified {
   private import Ast::Unified as G
@@ -16,8 +19,17 @@ module Unified {
     /** Gets the file containing this AST node. */
     File getFile() { result = this.getLocation().getFile() }
 
+    private predicate isGenerated() {
+      this.hasModifier("generated")
+      or
+      this.getParent().isGenerated()
+    }
+
     /** Holds if this AST node comes from ordinary source code. */
-    predicate fromSource() { this.getFile().fromSource() }
+    predicate fromSource() {
+      this.getFile().fromSource() and
+      not this.isGenerated()
+    }
 
     /** Holds if this AST node has a modifier with the given text. */
     predicate hasModifier(string text) {
@@ -27,7 +39,9 @@ module Unified {
       )
     }
 
-    /** Gets the nearest enclosing class declaration, if any. */
+    /**
+     * Gets the nearest syntactically enclosing class declaration, if any.
+     */
     ClassLikeDeclaration getEnclosingClass() {
       exists(AstNode parent | parent = this.getParent() |
         result = parent
@@ -37,11 +51,22 @@ module Unified {
       )
     }
 
+    /**
+     * Gets the nearest resolved enclosing class declaration, if any.
+     */
+    ClassLikeDeclaration getEnclosingClassResolved() { result = this.getEnclosingClass().resolve() }
+
     private AstNode overrideEnclosingCallableParent() {
       exists(FunctionExpr func |
         // Capture declarations are evaluated as part of the outer context, and
         // considered to be captured by the function expression.
         this = func.getACaptureDeclaration() and
+        result = func.getParent()
+      )
+      or
+      exists(FunctionDeclaration func |
+        // The name of a function declaration is a variable belonging to the enclosing callable.
+        this = func.getNameNode() and
         result = func.getParent()
       )
     }
@@ -117,7 +142,7 @@ module Unified {
 
   class Argument extends G::Argument {
     /** Gets the name of this argument. */
-    string getName() { result = this.getNameNode().getValue() }
+    string getName() { result = this.getNameNode().getValue() and result != "_" }
 
     /** Holds if this is a positional argument. */
     predicate isPositional() { not exists(this.getName()) }
@@ -143,21 +168,129 @@ module Unified {
     string getLabelName() { result = this.getLabelNameNode().getValue() }
   }
 
+  class Member extends G::Member {
+    /** Gets the unqualified name of this member or a fallback name such as `(anonymous function)` if it has no explicit name. */
+    string getNameOrFallback() {
+      result = this.getNameNode().getValue()
+      or
+      not exists(this.getNameNode()) and
+      (
+        this instanceof ConstructorDeclaration and
+        result = "(constructor)"
+        or
+        this instanceof DestructorDeclaration and
+        result = "(destructor)"
+        or
+        this instanceof FunctionDeclaration and
+        result = "(anonymous function)"
+        or
+        this instanceof VariableDeclaration and
+        result = "(pattern assignment)" // this case is only reachable when the target is a destructuring pattern
+        or
+        this instanceof InitializerDeclaration and
+        result = "(initializer block)"
+        or
+        exists(ClassLikeDeclaration cls | this = cls |
+          result = NameBinding::getIdentifierFromRef(cls.getExtensionTarget()).getValue()
+          or
+          not exists(cls.getExtensionTarget()) and
+          result = "(anonymous class)"
+        )
+        or
+        this instanceof TypeAliasDeclaration and
+        result = "(anonymous type alias)"
+        or
+        this instanceof AssociatedTypeDeclaration and
+        result = "(anonymous associated type)"
+        or
+        this instanceof UnsupportedNode and
+        result = "(unsupported node)"
+        or
+        this instanceof UnhandledNode and
+        result = "(unhandled node)"
+      )
+    }
+
+    /**
+     * Gets the name of this member qualified by the short names of each immediately-enclosing class.
+     */
+    string getQualifiedName() { result = QualifiedName<getParentClass/1>::getQualifiedName(this) }
+  }
+
+  private signature ClassLikeDeclaration getDeclaringClassSig(Member m);
+
+  private module QualifiedName<getDeclaringClassSig/1 getDeclaringClass> {
+    string getQualifiedName(Member m) {
+      result = getQualifiedName(getDeclaringClass(m)) + "." + m.getNameOrFallback()
+      or
+      not exists(getDeclaringClass(m)) and
+      result = m.getNameOrFallback()
+    }
+  }
+
+  private ClassLikeDeclaration getParentClass(Member m) {
+    result.getAMemberIncludingExtensions() = m
+  }
+
+  private ClassLikeDeclaration getEnclosingClass(Member m) { result.getAMember() = m }
+
+  /**
+   * Similar to `Member.getQualifiedName`, but avoids a dependency on name binding, making
+   * it suitable for use in `toString` predicates.
+   */
+  private predicate getQualifiedNameForToString =
+    QualifiedName<getEnclosingClass/1>::getQualifiedName/1;
+
   class ClassLikeDeclaration extends G::ClassLikeDeclaration {
     /** Gets the name of this declaration. */
     string getName() { result = this.getNameNode().getValue() }
 
-    /** Gets a direct base class of this class. */
+    /** Gets a direct base class of this class, where type aliases are resolved. */
+    pragma[nomagic]
     ClassLikeDeclaration getABaseClass() {
-      result.getNameNode() =
-        NameBinding::getStaticBindingTarget(NameBinding::getIdentifierFromRef(this.getABaseType()
-                .getType()))
+      result = this.getABaseType().getType().(TypeMention::TypeMention).getClassLikeDeclaration()
+    }
+
+    /**
+     * Gets the target of this extension class, or this class itself if it is not an extension.
+     */
+    pragma[nomagic]
+    ClassLikeDeclaration resolve() {
+      not exists(this.getExtensionTarget()) and
+      result = this
+      or
+      exists(NameBinding::NamespaceNode ns |
+        ns.isStaticMemberNamespace(result) and
+        ns.getAnExtension().isStaticMemberNamespace(this)
+      )
+    }
+
+    /**
+     * Gets a member of this class, including members from extensions.
+     */
+    Member getAMemberIncludingExtensions() {
+      exists(ClassLikeDeclaration cls |
+        this = cls.resolve() and
+        result = cls.getAMember()
+      )
+    }
+
+    override string toString() {
+      result =
+        concat(getClassLikeDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
     }
   }
 
   class ConstructorDeclaration extends G::ConstructorDeclaration {
     /** Gets the name of this constructor. */
     string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result =
+        concat(getConstructorDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
+    }
   }
 
   class ContinueExpr extends G::ContinueExpr {
@@ -168,6 +301,26 @@ module Unified {
   class FunctionDeclaration extends G::FunctionDeclaration {
     /** Gets the name of this function. */
     string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result =
+        concat(getFunctionDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
+    }
+  }
+
+  class VariableDeclaration extends G::VariableDeclaration {
+    /** Gets the name node of this variable declaration, if any. */
+    override Identifier getNameNode() { result = this.getPattern() }
+
+    /** Gets the name of the variable being declared, if any. */
+    string getName() { result = this.getNameNode().getValue() }
+
+    override string toString() {
+      result =
+        concat(getVariableDeclarationKeyword(this) + " ") +
+          concat(getQualifiedNameForToString(this))
+    }
   }
 
   class LabeledStmt extends G::LabeledStmt {
@@ -215,6 +368,12 @@ module Unified {
           p order by p.getParentIndex()
         )
     }
+  }
+
+  /** A tuple expression. */
+  class TupleExpr extends G::TupleExpr {
+    /** Gets the number of elements in this tuple expression. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
   }
 
   class TypeAliasDeclaration extends G::TypeAliasDeclaration {
@@ -273,5 +432,94 @@ module Unified {
     int getNumberOfPositionalArguments() {
       result = count(Argument arg | arg = this.getAnArgument() and arg.isPositional())
     }
+  }
+
+  /** A function expression. */
+  class FunctionExpr extends G::FunctionExpr {
+    /**
+     * Gets the number of implicit positional parameters of this function.
+     *
+     * These are parameters that are not declared, but are inferred from
+     * occurrences in this function's body such as Swift's `$0`, `$1`, `$2`, ...
+     */
+    int getNumberOfImplicitParameters() {
+      result = max(int n | exists(getImplicitFunctionExprParamName(this, n)) | n) + 1
+      or
+      not exists(getImplicitFunctionExprParamName(this, _)) and
+      result = 0
+    }
+
+    /** Gets the number of explicit or implicit parameters of this function. */
+    int getNumberOfParameters() {
+      this.getNumberOfImplicitParameters() > 0 and
+      result = this.getNumberOfImplicitParameters()
+      or
+      this.getNumberOfImplicitParameters() = 0 and
+      result = count(this.getAParameter())
+    }
+  }
+
+  class ArrayLiteral extends G::ArrayLiteral {
+    /** Gets the number of elements in this array literal. */
+    int getNumberOfElements() { result = count(this.getAnElement()) }
+  }
+
+  /**
+   * A declaration of a getter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" } // getter declaration
+   * }
+   * var x: String { "42" } // getter declaration
+   * ```
+   */
+  final class GetterDeclaration extends AccessorDeclaration {
+    GetterDeclaration() { this.getAccessorKind().getValue() = "get" }
+  }
+
+  /**
+   * A declaration of a setter associated with a variable or field.
+   *
+   * For example, in Swift:
+   * ```swift
+   * var x: String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter declaration
+   * }
+   * ```
+   */
+  final class SetterDeclaration extends AccessorDeclaration {
+    SetterDeclaration() { this.getAccessorKind().getValue() = "set" }
+  }
+
+  /**
+   * A function declaration with a parameter whose external name is the reserved name `#newValue`,
+   * representing a setter that is invoked via call syntax when a call appears as an assignment
+   * target or is otherwise updated in place. Such a call to `foo` invokes the setter method named
+   * `foo`, rather than the ordinary method `foo`, passing the new value as the `#newValue` argument.
+   *
+   * For example, the setter of a Swift subscript declaration:
+   * ```swift
+   * subscript(i: Int) -> String {
+   *   get { "42" }
+   *   set { print(newValue) } // setter method declaration, with parameters `i` and `newValue`
+   * }
+   * ```
+   */
+  final class SetterMethodDeclaration extends FunctionDeclaration {
+    SetterMethodDeclaration() {
+      this.getAParameter().getExternalNameNode().getValue() = "#newValue"
+    }
+  }
+
+  /** An `if` statement or conditional expression. */
+  class IfExpr extends G::IfExpr {
+    /** Holds if this expression represents conditional compilation. */
+    predicate isConditionalCompilation() { this.hasModifier("conditional_compilation") }
+
+    /** Gets then `then` or `else` branch. */
+    Expr getABranch() { result = [this.getThen(), this.getElse()] }
   }
 }

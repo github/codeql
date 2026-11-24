@@ -104,6 +104,7 @@ overlay[local?]
 module;
 
 private import go
+private import semmle.go.controlflow.Guards
 private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
@@ -459,24 +460,23 @@ private module Cached {
   private newtype TKindModelPair =
     TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
 
-  private boolean convertAcceptingValue(Public::AcceptingValue av) {
-    av.isTrue() and result = true
+  private GuardValue convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result.asBooleanValue() = true
     or
-    av.isFalse() and result = false
-    // Remaining cases are not supported yet, they depend on the shared Guards library.
-    // or
-    // av.isNoException() and result.getDualValue().isThrowsException()
-    // or
-    // av.isZero() and result.asIntValue() = 0
-    // or
-    // av.isNotZero() and result.getDualValue().asIntValue() = 0
-    // or
-    // av.isNull() and result.isNullValue()
-    // or
-    // av.isNotNull() and result.isNonNullValue()
+    av.isFalse() and result.asBooleanValue() = false
+    or
+    av.isNoException() and result.getDualValue().isThrowsException()
+    or
+    av.isZero() and result.asIntValue() = 0
+    or
+    av.isNotZero() and result.getDualValue().asIntValue() = 0
+    or
+    av.isNull() and result.isNullValue()
+    or
+    av.isNotNull() and result.isNonNullValue()
   }
 
-  private predicate barrierGuardChecks(DataFlow::Node g, Expr e, boolean gv, TKindModelPair kmp) {
+  private predicate barrierGuardChecks(Guard g, Expr e, GuardValue gv, TKindModelPair kmp) {
     exists(
       SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingValue,
       string kind, string model
@@ -486,7 +486,7 @@ private module Cached {
       kmp = TMkPair(kind, model) and
       gv = convertAcceptingValue(acceptingValue)
     |
-      g.asExpr().(CallExpr).getAnArgument() = e // TODO: qualifier?
+      g.(CallExpr).getAnArgument() = e // TODO: qualifier?
     )
   }
 
@@ -500,7 +500,7 @@ private module Cached {
       isBarrierNode(n, kind, model) and n.asNode() = node
     )
     or
-    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+    DataFlow::ParameterizedBarrierGuardValue<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
         model)) = node
   }
 }

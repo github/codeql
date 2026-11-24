@@ -1,10 +1,51 @@
-let d = ["a": 1, "b": 2]
+let key = "a"
+let value = 1
+let d = [key: value, "b": 2]
+let empty: [String: Int] = [:]
 
 ---
 
 sourceFile
   endOfFileToken: endOfFile
   statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    stringLiteralExpr
+                      closingQuote: "
+                      openingQuote: "
+                      segments:
+                        stringSegment
+                          content: stringSegment "a"
+              pattern:
+                identifierPattern
+                  identifier: identifier "key"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    integerLiteralExpr
+                      literal: integerLiteral "1"
+              pattern:
+                identifierPattern
+                  identifier: identifier "value"
     codeBlockItem
       item:
         variableDecl
@@ -25,15 +66,11 @@ sourceFile
                           colon: :
                           trailingComma: ,
                           value:
-                            integerLiteralExpr
-                              literal: integerLiteral "1"
+                            declReferenceExpr
+                              baseName: identifier "value"
                           key:
-                            stringLiteralExpr
-                              closingQuote: "
-                              openingQuote: "
-                              segments:
-                                stringSegment
-                                  content: stringSegment "a"
+                            declReferenceExpr
+                              baseName: identifier "key"
                         dictionaryElement
                           colon: :
                           value:
@@ -49,14 +86,73 @@ sourceFile
               pattern:
                 identifierPattern
                   identifier: identifier "d"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    dictionaryExpr
+                      leftSquare: [
+                      rightSquare: ]
+                      content: :
+              pattern:
+                identifierPattern
+                  identifier: identifier "empty"
+              typeAnnotation:
+                typeAnnotation
+                  colon: :
+                  type:
+                    dictionaryType
+                      colon: :
+                      leftSquare: [
+                      rightSquare: ]
+                      value:
+                        identifierType
+                          name: identifier "Int"
+                      key:
+                        identifierType
+                          name: identifier "String"
 
 ---
 
 top_level source="⟨body⟩"
   body:
-    block source="⟨stmt⟩"
+    block source="⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩"
       stmt:
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
+          pattern: identifier "key" source="key"
+          value: string_literal "\"a\"" source="\"a\""
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "value" source="value"
+          value: int_literal "1" source="1"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
           pattern: identifier "d" source="d"
-          value: map_literal "[\"a\": 1, \"b\": 2]" source="[\"a\": 1, \"b\": 2]"
+          value:
+            map_literal source="[⟨element⟩, ⟨element⟩]"
+              element:
+                key_value_pair source="⟨key⟩: ⟨value⟩"
+                  key: identifier "key" source="key"
+                  value: identifier "value" source="value"
+                key_value_pair source="⟨key⟩: ⟨value⟩"
+                  key: string_literal "\"b\"" source="\"b\""
+                  value: int_literal "2" source="2"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩: ⟨type⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "empty" source="empty"
+          type:
+            generic_type_expr source="[⟨type_argument⟩: ⟨type_argument⟩]"
+              base: identifier "Dictionary" source=""
+              type_argument:
+                identifier "String" source="String"
+                identifier "Int" source="Int"
+          value: map_literal "[:]" source="[:]"

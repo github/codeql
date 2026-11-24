@@ -6,8 +6,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id cpp/dubious-null-check
- * @tags reliability
- *       readability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import cpp

@@ -140,10 +140,19 @@ module ControlFlow {
     /** Holds if this node sets variable or constant `v` to `rhs`. */
     predicate writes(ValueEntity v, DataFlow::Node rhs) { super.writes(v, rhs.asInstruction()) }
 
-    /** Holds if this node defines SSA variable `v` to be `rhs`. */
-    predicate definesSsaVariable(SsaVariable v, DataFlow::Node rhs) {
-      super.getLhs().asSsaVariable() = v and
+    /** Holds if this node defines SSA definition `def` to be `rhs`. */
+    predicate definesSsaDefinition(SsaDefinition def, DataFlow::Node rhs) {
+      super.getLhs().asSsaDefinition() = def and
       super.getRhs() = rhs.asInstruction()
+    }
+
+    /**
+     * DEPRECATED: Use `definesSsaDefinition` instead.
+     *
+     * Holds if this node defines SSA variable `v` to be `rhs`.
+     */
+    deprecated predicate definesSsaVariable(SsaVariable v, DataFlow::Node rhs) {
+      this.definesSsaDefinition(v, rhs)
     }
 
     /**
@@ -258,10 +267,12 @@ module ControlFlow {
   }
 
   /**
+   * DEPRECATED: Use `Guard` from `semmle.go.controlflow.Guards` instead.
+   *
    * A control-flow node recording the fact that a certain expression has a known
    * Boolean value at this point in the program.
    */
-  class ConditionGuardNode extends IR::Instruction {
+  deprecated class ConditionGuardNode extends IR::Instruction {
     Expr cond;
     boolean outcome;
 
@@ -292,43 +303,69 @@ module ControlFlow {
       b = false
     }
 
-    /** Holds if this guard ensures that the result of `nd` is `b`. */
-    predicate ensures(DataFlow::Node nd, boolean b) {
+    /**
+     * DEPRECATED: Use `Guard.controls` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that the result of `nd` is `b`.
+     */
+    deprecated predicate ensures(DataFlow::Node nd, boolean b) {
       this.ensuresAux(any(Expr e | nd = DataFlow::exprNode(e)), b)
     }
 
-    /** Holds if this guard ensures that `lesser <= greater + bias` holds. */
-    predicate ensuresLeq(DataFlow::Node lesser, DataFlow::Node greater, int bias) {
+    /**
+     * DEPRECATED: Use `guardEnsuresLeq` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that `lesser <= greater + bias` holds.
+     */
+    deprecated predicate ensuresLeq(DataFlow::Node lesser, DataFlow::Node greater, int bias) {
       exists(DataFlow::RelationalComparisonNode rel, boolean b |
-        this.ensures(rel, b) and
+        this.ensuresAux(rel.asExpr(), b) and
         rel.leq(b, lesser, greater, bias)
       )
       or
-      this.ensuresEq(lesser, greater) and
+      exists(DataFlow::EqualityTestNode eq, boolean b |
+        this.ensuresAux(eq.asExpr(), b) and
+        eq.eq(b, lesser, greater)
+      ) and
       bias = 0
     }
 
-    /** Holds if this guard ensures that `i = j` holds. */
-    predicate ensuresEq(DataFlow::Node i, DataFlow::Node j) {
+    /**
+     * DEPRECATED: Use `guardEnsuresEq` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that `i = j` holds.
+     */
+    deprecated predicate ensuresEq(DataFlow::Node i, DataFlow::Node j) {
       exists(DataFlow::EqualityTestNode eq, boolean b |
-        this.ensures(eq, b) and
-        eq.eq(b, i, j)
-      )
-    }
-
-    /** Holds if this guard ensures that `i != j` holds. */
-    predicate ensuresNeq(DataFlow::Node i, DataFlow::Node j) {
-      exists(DataFlow::EqualityTestNode eq, boolean b |
-        this.ensures(eq, b.booleanNot()) and
+        this.ensuresAux(eq.asExpr(), b) and
         eq.eq(b, i, j)
       )
     }
 
     /**
+     * DEPRECATED: Use `guardEnsuresNeq` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
+     * Holds if this guard ensures that `i != j` holds.
+     */
+    deprecated predicate ensuresNeq(DataFlow::Node i, DataFlow::Node j) {
+      exists(DataFlow::EqualityTestNode eq, boolean b |
+        this.ensuresAux(eq.asExpr(), b.booleanNot()) and
+        eq.eq(b, i, j)
+      )
+    }
+
+    /**
+     * DEPRECATED: Use `Guard.controls` from `semmle.go.controlflow.Guards`
+     * instead.
+     *
      * Holds if this guard dominates basic block `bb`, that is, the guard
      * is known to hold at `bb`.
      */
-    predicate dominates(ReachableBasicBlock bb) {
+    deprecated predicate dominates(ReachableBasicBlock bb) {
       this = bb.getANode() or
       this.dominates(bb.getImmediateDominator())
     }

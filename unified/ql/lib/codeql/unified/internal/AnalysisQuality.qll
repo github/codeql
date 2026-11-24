@@ -4,6 +4,8 @@ private import codeql.unified.internal.NameBinding
 private import codeql.unified.internal.dataflow.DataFlowCall
 private import codeql.unified.internal.dataflow.DataFlowCallable
 private import codeql.unified.internal.dataflow.CallGraph
+private import codeql.unified.internal.typeinference.Type as Type
+private import codeql.unified.internal.typeinference.TypeMention
 
 /** Stats about name nodes that static name binding could resolve. */
 module StaticNameResolutionStats implements EntityStatsSig {
@@ -13,7 +15,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
    */
   private predicate resolvesToValue(Identifier name) {
     exists(AstNode decl |
-      decl = getStaticBindingTarget(name).getDeclaration() and
+      decl = getStaticBindingTargetFromIdentifier(name).getDeclaration() and
       not decl instanceof ClassLikeDeclaration and
       not decl instanceof TypeAliasDeclaration and
       not decl instanceof TypeParameter and
@@ -49,7 +51,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
     }
 
     NameBindingNode getTarget() {
-      result.asIdentifier() = getStaticBindingTarget(this)
+      result.asIdentifier() = getStaticBindingTargetFromIdentifier(this)
       or
       result.isModuleScopeNode(_) and
       result.(NamespaceNode).ref().isIdentifier(this)
@@ -109,6 +111,44 @@ module CallGraphStats implements EntityStatsSig {
 
 module CallGraphStatsReport = EntityReportStats<CallGraphStats>;
 
+module TypeMentionStats implements EntityStatsSig {
+  class Candidate extends ExprTypeMention {
+    predicate isOk() { this.getType() = any(Type::Type t | not t instanceof Type::UnknownType) }
+  }
+
+  string getOkText() { result = "resolvable type mentions" }
+
+  string getNotOkText() { result = "unresolvable type mentions" }
+}
+
+module TypeMentionStatsReport = EntityReportStats<TypeMentionStats>;
+
+module TaintReach {
+  private class Candidate extends DataFlow::Node {
+    Candidate() { exists(this.asExpr()) }
+  }
+
+  module TaintReachConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node node) { Models::isSource(node, ["local", "remote"]) }
+
+    predicate isSink(DataFlow::Node node) { node instanceof Candidate }
+  }
+
+  module TaintReachFlow = TaintTracking::Global<TaintReachConfig>;
+
+  DataFlow::Node taintedNode() { TaintReachFlow::flowTo(result) }
+
+  int numberOfTaintedNodes() { result = count(taintedNode()) }
+
+  int numberOfCandidates() { result = count(Candidate c) }
+
+  int perMillionNodes() {
+    result = ((numberOfTaintedNodes() * 1000000.0) / numberOfCandidates()).floor()
+    or
+    numberOfCandidates() = 0 and result = 0
+  }
+}
+
 /**
  * Gets summary statistics about taint.
  */
@@ -123,11 +163,11 @@ predicate taintStats(string key, int value) {
   or
   key = "Taint edges - number of edges" and none()
   or
-  key = "Taint reach - nodes tainted" and none()
+  key = "Taint reach - nodes tainted" and value = TaintReach::numberOfTaintedNodes()
   or
   key = "Taint reach - total non-summary nodes" and none()
   or
-  key = "Taint reach - per million nodes" and none()
+  key = "Taint reach - per million nodes" and value = TaintReach::perMillionNodes()
   or
   key = "Taint sinks - query sinks" and value = count(DataFlow::Node n | Models::isSink(n, _))
   or

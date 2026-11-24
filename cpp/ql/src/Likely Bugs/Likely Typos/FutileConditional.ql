@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id cpp/empty-if
- * @tags reliability
- *       readability
+ * @tags quality
+ *       maintainability
+ *       useless-code
  */
 
 import cpp

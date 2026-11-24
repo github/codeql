@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
 
@@ -30,15 +30,17 @@ module Generated {
     /**
      * Gets the `index`th attr of this index expression (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertIndexExprToRaw(this).(Raw::IndexExpr).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertIndexExprToRaw(this)
+              .(Raw::IndexExpr)
+              .getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this index expression.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this index expression.

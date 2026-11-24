@@ -114,3 +114,44 @@ tar.extractall(members=tar, filter=extraction_filter) # $ Alert # unsafe
 
 tar = tarfile.open(unsafe_filename_tar)
 tar.extractall(members=safemembers(tar), filter=extraction_filter) # safe -- we assume `safemembers` makes up for the unsafe filter
+
+# Keyword `member` argument to `extract`
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+for entry in tar:
+    tar.extract(member=entry, path="/tmp/unpack/") # $ Alert
+
+# Positional `members` argument to `extractall`
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall("/tmp/unpack/", tar) # $ Alert
+
+tar = tarfile.open(unsafe_filename_tar)
+tar.extractall("/tmp/unpack/", safemembers(tar)) # safe
+
+# `None` selects all archive members, just like an omitted `members` argument.
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+tar.extractall("/tmp/unpack/", None) # $ Alert
+tar.extractall("/tmp/unpack/", members=None) # $ Alert
+
+members = None
+tar.extractall("/tmp/unpack/", members) # $ Alert
+
+tar.extractall("/tmp/unpack/", None, filter=None) # $ Alert
+tar.extractall("/tmp/unpack/", members=None, filter="fully_trusted") # $ Alert
+tar.extractall("/tmp/unpack/", members=None, filter="data") # safe
+tar.extractall("/tmp/unpack/", []) # safe
+tar.extractall("/tmp/unpack/", members=[]) # safe
+
+
+def extract_with_default_members(tar, path=".", members=None, *, numeric_owner=False):
+    tar.extractall(path, members, numeric_owner=numeric_owner) # $ Alert
+
+
+def extract_with_default_members_kw(tar, path=".", *, members=None, numeric_owner=False):
+    tar.extractall(path, members=members, numeric_owner=numeric_owner) # $ Alert
+
+
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+extract_with_default_members(tar, "/tmp/unpack/")
+
+tar = tarfile.open(unsafe_filename_tar) # $ Source
+extract_with_default_members_kw(tar, "/tmp/unpack/")

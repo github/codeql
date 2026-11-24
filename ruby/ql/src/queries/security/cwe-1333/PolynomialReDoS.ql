@@ -9,7 +9,6 @@
  * @id rb/polynomial-redos
  * @tags security
  *       external/cwe/cwe-1333
- *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 

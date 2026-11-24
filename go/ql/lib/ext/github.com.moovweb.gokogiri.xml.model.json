@@ -1,0 +1,26 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "packageGrouping"
+      },
+      "data": [
+        ["gokogiri/xml", "github.com/moovweb/gokogiri/xml"],
+        ["gokogiri/xml", "github.com/jbowtie/gokogiri/xml"]
+      ]
+    },
+    {
+      "addsTo": {
+        "pack": "codeql/go-all",
+        "extensible": "sinkModel"
+      },
+      "data": [
+        ["group:gokogiri/xml", "Node", true, "Search", "", "", "Argument[0]", "xpath-injection", "manual"],
+        ["group:gokogiri/xml", "Node", true, "SearchWithVariables", "", "", "Argument[0]", "xpath-injection", "manual"],
+        ["group:gokogiri/xml", "Node", true, "EvalXPath", "", "", "Argument[0]", "xpath-injection", "manual"],
+        ["group:gokogiri/xml", "Node", true, "EvalXPathAsBoolean", "", "", "Argument[0]", "xpath-injection", "manual"]
+      ]
+    }
+  ]
+}

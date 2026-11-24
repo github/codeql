@@ -364,7 +364,7 @@ void forward_test() {
 
     ConstructableFromInt c = f.get();
     ymlSink(c.s); // $ ir
-    ymlSink(c.ul); // clean
+    ymlSink(c.ul); // $ SPURIOUS: ir
   }
   {
     Forwarder<ConstructableFromInt> f;
@@ -372,13 +372,14 @@ void forward_test() {
     f.forward(ul);
 
     ConstructableFromInt c = f.get();
-    ymlSink(c.s); // clean
+    ymlSink(c.s); // $ SPURIOUS: ir
     ymlSink(c.ul); // $ ir
   }
 }
 
 template<typename T>
 struct Container {
+	using value_type = T;
   template<typename... Args>
   void emplace(int pos, Args&&... args);
 
@@ -414,6 +415,16 @@ void forward_test_model() {
 
   Element e = c.get();
   ymlSink(e.x); // $ ir
+}
+
+void forward_test_member_alias_scalar() {
+  Container<int> scalar;
+  scalar.emplace(0, ymlSource());
+  ymlSink(scalar.get()); // $ ir
+
+  Container<int*> pointer;
+  pointer.emplace(0, ymlSourcePtr());
+  ymlSink(*pointer.get()); // $ ir
 }
 
 struct ElementWithDefaultArgument {

@@ -16,9 +16,8 @@ impl<'de, T: From<String>> Visitor<'de> for VectorVisitor<T> {
         formatter.write_str("either a sequence, or a comma or newline separated string")
     }
 
-    fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Vec<T>, E> {
-        Ok(value
-            .split(['\n', ','])
+    fn visit_str<E: serde::de::Error>(self, v: &str) -> Result<Vec<T>, E> {
+        Ok(v.split(['\n', ','])
             .map(|s| T::from(s.to_owned()))
             .collect())
     }
@@ -44,9 +43,8 @@ impl<'de, S: BuildHasher + Default> Visitor<'de> for MapVisitor<S> {
         )
     }
 
-    fn visit_str<E: serde::de::Error>(self, value: &str) -> Result<Self::Value, E> {
-        Ok(value
-            .split(['\n', ','])
+    fn visit_str<E: serde::de::Error>(self, v: &str) -> Result<Self::Value, E> {
+        Ok(v.split(['\n', ','])
             .map(|s| match s.split_once('=') {
                 Some((key, value)) => (key.to_owned(), Some(value.to_owned())),
                 None => (s.to_owned(), None),
@@ -62,7 +60,7 @@ impl<'de, S: BuildHasher + Default> Visitor<'de> for MapVisitor<S> {
         while let Some(el) = seq.next_element::<String>()? {
             match el.split_once('=') {
                 None => {
-                    ret.insert(el.to_owned(), None);
+                    ret.insert(el, None);
                 }
                 Some((key, value)) => {
                     ret.insert(key.to_owned(), Some(value.to_owned()));

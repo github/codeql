@@ -4,10 +4,54 @@
 
 private import unified
 private import AllDataFlow
+private import codeql.unified.internal.ExprPositions
+private import codeql.unified.internal.typeinference.TypeInference as T
+
+private predicate isReferenceType(T::Type t) {
+  // todo: type parameters with type constraints
+  t.asClass().hasModifier(["actor", "class"])
+}
 
 private class SwiftDataFlowPlugin extends DataFlowPlugin {
   // Note: For now we assume all code is Swift, but in the future we must restrict these rules to Swift-files
-  override predicate step(Node node1, Step step, Node node2) {
+  override predicate bypassContentSet(ContentSet contents) {
+    contents.asSingleton().asNamedMember() = "some.0"
+  }
+
+  // Swift writes back mutated values of computed value-type properties via their setter
+  bindingset[expr]
+  override predicate mayWriteBackViaSetterCall(Expr expr) {
+    exists(boolean direct | isInWriteBackPosition(expr, direct) |
+      if direct = false then not isReferenceType(T::inferTypeUnique(expr)) else any()
+    )
+  }
+
+  override predicate exprStep(Expr expr1, Expr expr2, boolean mustFlow) {
+    mustFlow = true and
+    exists(UnaryExpr expr |
+      expr.getOperator().(PrefixOperator).getValue() = "&"
+      or
+      expr.getOperator().(PostfixOperator).getValue() = "!"
+    |
+      expr1 = expr.getOperand() and
+      expr2 = expr
+    )
+    or
+    mustFlow = true and
+    exists(TypeCastExpr expr |
+      // Type-cast operators:
+      // - "as": Safe upcast conversion
+      // - "as?": Wrap in Optional<T> if cast succeeds
+      // - "as!": Throw if cast fails
+      //
+      // Since we bypass Optional<T> content, we model all of these as must-flow steps.
+      expr.getOperator().getValue() = ["as", "as?", "as!"] and
+      expr1 = expr.getExpr() and
+      expr2 = expr
+    )
+  }
+
+  override predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     exists(BinaryExpr expr |
       expr.getOperator().getValue() = ["+", "+="] and
       node1.isResultValue([expr.getLeft(), expr.getRight()]) and
@@ -24,6 +68,91 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node1.isResultValue(call.getArgument(0).getValue()) and
       step.value() and
       node2.isResultValue(call)
+      or
+      // Simple flow in and out of subscript operators
+      call.getCallee().(MemberAccess).getMemberName() = "subscript" and
+      (
+        node1.isReceiverArgument(call) and
+        step.readArrayElement() and
+        node2.isResultValue(call)
+        or
+        exists(DataFlowCall setter |
+          setter.asSetterCall() = call and
+          node1.isSetterValueArgument(setter) and
+          step.storeArrayElement() and
+          node2.isReceiverPostUpdateEx(setter)
+        )
+      )
+    )
+    or
+    exists(UnaryExpr expr |
+      expr.getOperator().(PrefixOperator).getValue() =
+        ["try", "try!", "try?", "await", "borrow", "consume", "copy", "unsafe"] and
+      node1.isResultValue(expr.getOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
+    )
+    or
+    exists(NullCoalescingExpr expr |
+      // We bypass Optional<T> content so we add value-flow out of both operands of "??"
+      node1.isResultValue(expr.getAnOperand()) and
+      step.value() and
+      node2.isResultValue(expr)
+    )
+    or
+    // Taint flow through URL(string: x). TODO: Model with MaD and flow summaries
+    exists(CallExpr call |
+      call.getCallee().(Identifier).getValue() = ["URL", "NSURL"] and
+      node1.isResultValue(call.getNamedArgument("string")) and
+      step.taint() and
+      node2.isResultValue(call)
+    )
+    or
+    // Singleton blocks propagate their value upwards, e.g. in `if expr { expr } else { expr }`
+    exists(Block block |
+      not exists(block.getStmt(1)) and
+      node1.isResultValue(block.getStmt(0)) and
+      step.value() and
+      node2.isResultValue(block)
     )
   }
+}
+
+/**
+ * Holds if `expr` is target of an assignment or 'inout' argument,
+ * or the base of such an expression, e.g. `x` in `x.f1.f2 = foo()`
+ */
+private predicate isInWriteBackPosition(Expr expr, boolean direct) {
+  isInAssignmentContext(expr, _) and
+  direct = false
+  or
+  // Arguments to an 'inout' parameter must be prefixed with '&'
+  exists(UnaryExpr unary |
+    unary.getOperator().(PrefixOperator).getValue() = "&" and
+    unary.getOperand() = expr
+    // TODO: support custom operators with an 'inout' parameter, which lack the '&' indicator
+  ) and
+  direct = true
+  or
+  // The receiver of a call to a 'mutating' function counts as an 'inout' argument
+  exists(CallExpr call, Callable target |
+    target = T::resolveCallTarget(call) and
+    target.hasModifier("mutating") and
+    expr = call.getCallee().(MemberAccessExpr).getBase()
+  ) and
+  direct = true
+  or
+  exists(MemberAccessExpr member |
+    isInWriteBackPosition(member, _) and
+    expr = member.getBase() and
+    direct = false
+  )
+  or
+  // A call in write-back position, such as `x.p[i]` in `x.p[i] = y`, is a call to a setter,
+  // which mutates its receiver. Propagate to the callee so the receiver `x.p` is also written back.
+  exists(CallExpr call |
+    isInWriteBackPosition(call, _) and
+    expr = call.getCallee() and
+    direct = false
+  )
 }

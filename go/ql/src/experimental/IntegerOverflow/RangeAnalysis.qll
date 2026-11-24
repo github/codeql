@@ -1,8 +1,7 @@
 import go
+private import semmle.go.controlflow.Guards
 
-Expr getAUse(SsaDefinition def) {
-  result = def.getVariable().getAUse().(IR::EvalInstruction).getExpr()
-}
+Expr getAUse(SsaDefinition def) { result = def.getARead() }
 
 /**
  * Gets the upper bound of expression `expr`.
@@ -32,44 +31,44 @@ float getAnUpperBound(Expr expr) {
   then result = expr.getNumericValue()
   else (
     //if this expression is an identifier
-    exists(SsaVariable v, Ident identifier |
+    exists(SsaDefinition v, Ident identifier |
       identifier = expr and
       identifier.refersTo(v.getSourceVariable()) and
-      v.getAUse() = IR::evalExprInstruction(identifier) and
+      getAUse(v) = identifier and
       (
         if
           //if a condition expression exists before and one of the operand happens to be the identifier, we use this condition expression to narrow down the range.
           exists(
-            ControlFlow::ConditionGuardNode n, DataFlow::Node lesser, DataFlow::Node greater,
+            Guard n, boolean branch, DataFlow::Node lesser, DataFlow::Node greater,
             ReachableBasicBlock bb
           |
-            n.ensuresLeq(lesser, greater, _) and
-            IR::evalExprInstruction(lesser.asExpr()) = v.getAUse() and
-            n.dominates(bb) and
+            guardEnsuresLeq(n, branch, lesser, greater, _) and
+            lesser.asExpr() = getAUse(v) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
             not exists(Expr e |
-              e = v.getAUse().(IR::EvalInstruction).getExpr() and
+              e = getAUse(v) and
               e.getParent*() = greater.asExpr()
             )
           )
         then
           exists(
-            ControlFlow::ConditionGuardNode n, ReachableBasicBlock bb, DataFlow::Node lesser,
+            Guard n, boolean branch, ReachableBasicBlock bb, DataFlow::Node lesser,
             DataFlow::Node greater, int bias
           |
-            n.dominates(bb) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
-            n.ensuresLeq(lesser, greater, bias) and
-            v.getAUse() = IR::evalExprInstruction(lesser.asExpr()) and
+            guardEnsuresLeq(n, branch, lesser, greater, bias) and
+            getAUse(v) = lesser.asExpr() and
             not exists(Expr e |
-              e = v.getAUse().(IR::EvalInstruction).getExpr() and
+              e = getAUse(v) and
               e.getParent*() = greater.asExpr()
             ) and
             result = getAnUpperBound(greater.asExpr()) + bias
           )
         else
           //If not, find the corresponding `SsaDefinition`, then call `getAnSsaUpperBound` on it.
-          result = getAnSsaUpperBound(v.getDefinition())
+          result = getAnSsaUpperBound(v)
       )
     )
     or
@@ -183,37 +182,37 @@ float getALowerBound(Expr expr) {
     result = expr.getExactValue().toFloat()
   else (
     //if this expression is an identifer
-    exists(SsaVariable v, Ident identifier |
+    exists(SsaDefinition v, Ident identifier |
       identifier = expr and
       identifier.refersTo(v.getSourceVariable()) and
-      v.getAUse() = IR::evalExprInstruction(identifier) and
+      getAUse(v) = identifier and
       (
         //if exists a condition expression before this identifier
         if
           exists(
-            ControlFlow::ConditionGuardNode n, DataFlow::Node greater, DataFlow::Node lesser,
+            Guard n, boolean branch, DataFlow::Node greater, DataFlow::Node lesser,
             ReachableBasicBlock bb
           |
-            n.ensuresLeq(lesser, greater, _) and
-            IR::evalExprInstruction(greater.asExpr()) = v.getAUse() and
-            n.dominates(bb) and
+            guardEnsuresLeq(n, branch, lesser, greater, _) and
+            greater.asExpr() = getAUse(v) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
             not exists(Expr e |
-              e = v.getAUse().(IR::EvalInstruction).getExpr() and
+              e = getAUse(v) and
               e.getParent*() = lesser.asExpr()
             )
           )
         then
           exists(
-            ControlFlow::ConditionGuardNode n, ReachableBasicBlock bb, DataFlow::Node lesser,
+            Guard n, boolean branch, ReachableBasicBlock bb, DataFlow::Node lesser,
             DataFlow::Node greater, int bias, float lbs
           |
-            n.dominates(bb) and
+            n.controls(bb, branch) and
             bb.getANode() = IR::evalExprInstruction(identifier) and
-            n.ensuresLeq(lesser, greater, bias) and
-            v.getAUse() = IR::evalExprInstruction(greater.asExpr()) and
+            guardEnsuresLeq(n, branch, lesser, greater, bias) and
+            getAUse(v) = greater.asExpr() and
             not exists(Expr e |
-              e = v.getAUse().(IR::EvalInstruction).getExpr() and
+              e = getAUse(v) and
               e.getParent*() = lesser.asExpr()
             ) and
             lbs = getALowerBound(lesser.asExpr()) and
@@ -221,7 +220,7 @@ float getALowerBound(Expr expr) {
           )
         else
           //find corresponding SSA definition and calls `getAnSsaLowerBound` on it.
-          result = getAnSsaLowerBound(v.getDefinition())
+          result = getAnSsaLowerBound(v)
       )
     )
     or
@@ -338,20 +337,20 @@ float getALowerBound(Expr expr) {
 float getAnSsaUpperBound(SsaDefinition def) {
   not recursiveSelfDef(def) and
   (
-    def instanceof SsaExplicitDefinition and
-    exists(SsaExplicitDefinition explicitDef | explicitDef = def |
+    def instanceof SsaExplicitWrite and
+    exists(SsaExplicitWrite explicitDef | explicitDef = def |
       //SSA definition corresponding to a `SimpleAssignStmt`
-      if explicitDef.getInstruction() instanceof IR::AssignInstruction
+      if explicitDef.getDefinition() instanceof IR::AssignInstruction
       then
         exists(IR::AssignInstruction assignInstr, SimpleAssignStmt simpleAssign |
-          assignInstr = explicitDef.getInstruction() and
+          assignInstr = explicitDef.getDefinition() and
           assignInstr.getRhs().(IR::EvalInstruction).getExpr() = simpleAssign.getRhs() and
           result = getAnUpperBound(simpleAssign.getRhs())
         )
         or
         //SSA definition corresponding to a ValueSpec(used in a variable declaration)
         exists(IR::AssignInstruction declInstr, ValueSpec vs, int i, Expr init |
-          declInstr = explicitDef.getInstruction() and
+          declInstr = explicitDef.getDefinition() and
           declInstr = IR::initInstruction(vs, i) and
           init = vs.getInit(i) and
           result = getAnUpperBound(init)
@@ -359,10 +358,10 @@ float getAnSsaUpperBound(SsaDefinition def) {
         or
         //SSA definition corresponding to an `AddAssignStmt` (x += y) or `SubAssignStmt` (x -= y)
         exists(
-          IR::AssignInstruction assignInstr, SsaExplicitDefinition prevDef,
+          IR::AssignInstruction assignInstr, SsaExplicitWrite prevDef,
           CompoundAssignStmt compoundAssign, float prevBound, float delta
         |
-          assignInstr = explicitDef.getInstruction() and
+          assignInstr = explicitDef.getDefinition() and
           getAUse(prevDef) = compoundAssign.getLhs() and
           assignInstr = IR::assignInstruction(compoundAssign, 0) and
           prevBound = getAnSsaUpperBound(prevDef) and
@@ -379,11 +378,11 @@ float getAnSsaUpperBound(SsaDefinition def) {
       else
         //SSA definition corresponding to an `IncDecStmt`
         if
-          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+          explicitDef.getDefinition().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
             IncDecStmt
         then
           exists(IncDecStmt incOrDec, float exprLB |
-            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
+            explicitDef.getDefinition().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getAnUpperBound(incOrDec.getOperand()) and
             (
               //IncStmt(x++)
@@ -401,9 +400,9 @@ float getAnSsaUpperBound(SsaDefinition def) {
           )
         else (
           //SSA definition coreponding to the init of the parameter
-          explicitDef.getInstruction() instanceof IR::InitParameterInstruction and
+          explicitDef.getDefinition() instanceof IR::InitParameterInstruction and
           exists(IR::InitParameterInstruction instr, Parameter p |
-            instr = explicitDef.getInstruction() and
+            instr = explicitDef.getDefinition() and
             IR::initParamInstruction(p) = instr and
             result = typeMaxValue(p.getType())
           )
@@ -411,10 +410,10 @@ float getAnSsaUpperBound(SsaDefinition def) {
     )
     or
     //this SSA definition is a phi node.
-    def instanceof SsaPhiNode and
-    exists(SsaPhiNode phi |
+    def instanceof SsaPhiDefinition and
+    exists(SsaPhiDefinition phi |
       phi = def and
-      result = getAnSsaUpperBound(phi.getAnInput().getDefinition())
+      result = getAnSsaUpperBound(phi.getAnInput())
     )
   )
 }
@@ -425,20 +424,20 @@ float getAnSsaUpperBound(SsaDefinition def) {
 float getAnSsaLowerBound(SsaDefinition def) {
   not recursiveSelfDef(def) and
   (
-    def instanceof SsaExplicitDefinition and
-    exists(SsaExplicitDefinition explicitDef | explicitDef = def |
-      if explicitDef.getInstruction() instanceof IR::AssignInstruction
+    def instanceof SsaExplicitWrite and
+    exists(SsaExplicitWrite explicitDef | explicitDef = def |
+      if explicitDef.getDefinition() instanceof IR::AssignInstruction
       then
         //SimpleAssignStmt
         exists(IR::AssignInstruction assignInstr, SimpleAssignStmt simpleAssign |
-          assignInstr = explicitDef.getInstruction() and
+          assignInstr = explicitDef.getDefinition() and
           assignInstr.getRhs().(IR::EvalInstruction).getExpr() = simpleAssign.getRhs() and
           result = getALowerBound(simpleAssign.getRhs())
         )
         or
         //ValueSpec
         exists(IR::AssignInstruction declInstr, ValueSpec vs, int i, Expr init |
-          declInstr = explicitDef.getInstruction() and
+          declInstr = explicitDef.getDefinition() and
           declInstr = IR::initInstruction(vs, i) and
           init = vs.getInit(i) and
           result = getALowerBound(init)
@@ -446,10 +445,10 @@ float getAnSsaLowerBound(SsaDefinition def) {
         or
         //AddAssignStmt(x += y)
         exists(
-          IR::AssignInstruction assignInstr, SsaExplicitDefinition prevDef,
+          IR::AssignInstruction assignInstr, SsaExplicitWrite prevDef,
           CompoundAssignStmt compoundAssign, float prevBound, float delta
         |
-          assignInstr = explicitDef.getInstruction() and
+          assignInstr = explicitDef.getDefinition() and
           getAUse(prevDef) = compoundAssign.getLhs() and
           assignInstr = IR::assignInstruction(compoundAssign, 0) and
           prevBound = getAnSsaLowerBound(prevDef) and
@@ -466,11 +465,11 @@ float getAnSsaLowerBound(SsaDefinition def) {
       else
         //IncDecStmt
         if
-          explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
+          explicitDef.getDefinition().(IR::EvalCompoundAssignRhsInstruction).getStmt() instanceof
             IncDecStmt
         then
           exists(IncDecStmt incOrDec, float exprLB |
-            explicitDef.getInstruction().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
+            explicitDef.getDefinition().(IR::EvalCompoundAssignRhsInstruction).getStmt() = incOrDec and
             exprLB = getALowerBound(incOrDec.getOperand()) and
             (
               //IncStmt(x++)
@@ -488,9 +487,9 @@ float getAnSsaLowerBound(SsaDefinition def) {
           )
         else (
           //init of the function parameter
-          explicitDef.getInstruction() instanceof IR::InitParameterInstruction and
+          explicitDef.getDefinition() instanceof IR::InitParameterInstruction and
           exists(IR::InitParameterInstruction instr, Parameter p |
-            instr = explicitDef.getInstruction() and
+            instr = explicitDef.getDefinition() and
             IR::initParamInstruction(p) = instr and
             result = typeMinValue(p.getType())
           )
@@ -498,10 +497,10 @@ float getAnSsaLowerBound(SsaDefinition def) {
     )
     or
     //phi node
-    def instanceof SsaPhiNode and
-    exists(SsaPhiNode phi |
+    def instanceof SsaPhiDefinition and
+    exists(SsaPhiDefinition phi |
       phi = def and
-      result = getAnSsaLowerBound(phi.getAnInput().getDefinition())
+      result = getAnSsaLowerBound(phi.getAnInput())
     )
   )
 }
@@ -514,13 +513,13 @@ float getAnSsaLowerBound(SsaDefinition def) {
 predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
   //SSA definition corresponding to a `SimpleAssignStmt`
   exists(SimpleAssignStmt simpleAssign |
-    nextDef.(SsaExplicitDefinition).getInstruction() = IR::assignInstruction(simpleAssign, _) and
+    nextDef.(SsaExplicitWrite).getDefinition() = IR::assignInstruction(simpleAssign, _) and
     ssaDependsOnExpr(prevDef, simpleAssign.getRhs())
   )
   or
   //SSA definition corresponding to a `ValueSpec`(used in variable declaration)
   exists(IR::AssignInstruction declInstr, ValueSpec vs, int i, Expr init |
-    declInstr = nextDef.(SsaExplicitDefinition).getInstruction() and
+    declInstr = nextDef.(SsaExplicitWrite).getDefinition() and
     declInstr = IR::initInstruction(vs, i) and
     init = vs.getInit(i) and
     ssaDependsOnExpr(prevDef, init)
@@ -529,7 +528,7 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
   //SSA definition corresponding to a `AddAssignStmt` or `SubAssignStmt`
   exists(CompoundAssignStmt compoundAssign |
     (compoundAssign instanceof AddAssignStmt or compoundAssign instanceof SubAssignStmt) and
-    nextDef.(SsaExplicitDefinition).getInstruction() = IR::assignInstruction(compoundAssign, 0) and
+    nextDef.(SsaExplicitWrite).getDefinition() = IR::assignInstruction(compoundAssign, 0) and
     (
       getAUse(prevDef) = compoundAssign.getLhs() or
       ssaDependsOnExpr(prevDef, compoundAssign.getRhs())
@@ -538,17 +537,14 @@ predicate ssaDependsOnSsa(SsaDefinition nextDef, SsaDefinition prevDef) {
   or
   //SSA definition corresponding to a `IncDecStmt`
   exists(IncDecStmt incDec |
-    nextDef
-        .(SsaExplicitDefinition)
-        .getInstruction()
-        .(IR::EvalCompoundAssignRhsInstruction)
-        .getStmt() = incDec and
+    nextDef.(SsaExplicitWrite).getDefinition().(IR::EvalCompoundAssignRhsInstruction).getStmt() =
+      incDec and
     ssaDependsOnExpr(prevDef, incDec.getOperand())
   )
   or
   //if `nextDef` corresponding to the init of a parameter, there is no corresponding `prevDef`
   //if `nextDef` is a phi node and `prevDef` is one of the input of the phi node, then `nextDef` depends on `prevDef` directly.
-  exists(SsaPhiNode phi | nextDef = phi and phi.getAnInput().getDefinition() = prevDef)
+  exists(SsaPhiDefinition phi | nextDef = phi and phi.getAnInput() = prevDef)
 }
 
 /**

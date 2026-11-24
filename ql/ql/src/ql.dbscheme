@@ -555,6 +555,11 @@ ql_module_implements(
   unique int implements: @ql_signature_expr ref
 );
 
+ql_module_name(
+  unique int ql_module: @ql_module ref,
+  unique int name: @ql_module_name ref
+);
+
 #keyset[ql_module, index]
 ql_module_parameter(
   int ql_module: @ql_module ref,
@@ -572,8 +577,7 @@ ql_module_child(
 );
 
 ql_module_def(
-  unique int id: @ql_module,
-  int name: @ql_module_name ref
+  unique int id: @ql_module
 );
 
 ql_module_alias_body_def(

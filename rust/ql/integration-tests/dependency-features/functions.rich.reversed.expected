@@ -1,0 +1,4 @@
+| source/first/src/lib.rs:2:5:2:18 | ...::a(...) | alpha::a |
+| source/first/src/lib.rs:3:5:3:17 | ...::b(...) | beta::b |
+| source/second/src/lib.rs:2:5:2:18 | ...::b(...) | alpha::b |
+| source/second/src/lib.rs:3:5:3:17 | ...::a(...) | beta::a |

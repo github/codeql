@@ -23,6 +23,7 @@
 use std::collections::BTreeMap;
 
 use codeql_extractor::extractor::ExtraToken;
+use serde::Deserialize;
 use serde_json::Value;
 use yeast::{Ast, Id, NodeContent, Point, Range};
 
@@ -192,23 +193,33 @@ fn classify(node: &Value) -> Result<KindInfo, String> {
 /// Iterate over a node object's structural (field, value) pairs in a stable
 /// order, skipping metadata keys.
 fn field_entries(node: &Value) -> Vec<(&str, &Value)> {
-    node.as_object()
-        .map(|map| {
-            map.iter()
-                .filter(|(k, _)| !is_metadata_key(k))
-                .map(|(k, v)| (k.as_str(), v))
-                .collect()
-        })
-        .unwrap_or_default()
+    node.as_object().map_or_default(|map| {
+        map.iter()
+            .filter(|(k, _)| !is_metadata_key(k))
+            .map(|(k, v)| (k.as_str(), v))
+            .collect()
+    })
 }
 
-/// The child node objects held by a field value, which is either a single node
-/// object or an array of them (an elided collection).
+/// The child node objects held by a field value.
+///
+/// Collection nodes are elided by the Swift serializer, so nested collections
+/// can produce nested arrays (notably inside `UnexpectedNodesSyntax`). Flatten
+/// arrays recursively to preserve the intended collection elision.
 fn children_of(value: &Value) -> Vec<&Value> {
-    match value {
-        Value::Array(items) => items.iter().collect(),
-        other => vec![other],
+    fn collect<'a>(value: &'a Value, children: &mut Vec<&'a Value>) {
+        if let Value::Array(items) = value {
+            for item in items {
+                collect(item, children);
+            }
+        } else {
+            children.push(value);
+        }
     }
+
+    let mut children = Vec::new();
+    collect(value, &mut children);
+    children
 }
 
 /// Recursively build `node` (and its descendants) into `ast`, returning its id.
@@ -312,7 +323,12 @@ const SWIFT_NODE_TYPES: &str = include_str!("../../../swift_node_types.yml");
 /// authoritative swift-syntax schema ([`SWIFT_NODE_TYPES`]); the adapter only
 /// ever consumes swift-syntax input, so the schema is not a parameter.
 pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
-    let root: Value = serde_json::from_str(json).map_err(|e| format!("invalid JSON: {e}"))?;
+    let mut deserializer = serde_json::Deserializer::from_str(json);
+    deserializer.disable_recursion_limit();
+    let root = Value::deserialize(&mut deserializer).map_err(|e| format!("invalid JSON: {e}"))?;
+    deserializer
+        .end()
+        .map_err(|e| format!("invalid JSON: {e}"))?;
     let locations = LocationTable::from_root(&root)?;
 
     let mut ast = Ast::with_schema(yeast::node_types_yaml::schema_from_yaml(SWIFT_NODE_TYPES)?);
@@ -329,6 +345,14 @@ pub fn json_to_ast(json: &str) -> Result<AdaptedTree, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn deeply_nested_json(depth: usize) -> String {
+        let mut child = r#"{"$pos":0,"$end":0,"kind":"sourceFile"}"#.to_string();
+        for _ in 0..depth {
+            child = format!(r#"{{"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#);
+        }
+        format!(r#"{{"$lineStarts":[0],"$pos":0,"$end":0,"kind":"sourceFile","child":{child}}}"#)
+    }
 
     /// A hand-written JSON tree exercising layout nodes, a named (varying)
     /// token, a fixed keyword token, and an elided collection field — so the
@@ -457,13 +481,53 @@ mod tests {
     }
 
     #[test]
+    fn flattens_nested_elided_collections() {
+        let json = r#"{
+            "$lineStarts": [0],
+            "$pos": 0,
+            "$end": 20,
+            "kind": "sourceFile",
+            "unexpected": [
+                {
+                    "$pos": 0,
+                    "$end": 1,
+                    "kind": "token",
+                    "tokenKind": "leftBrace",
+                    "text": "{"
+                },
+                [
+                    {
+                        "$pos": 2,
+                        "$end": 20,
+                        "kind": "precedenceGroupAssociativity"
+                    }
+                ]
+            ]
+        }"#;
+        let ast = json_to_ast(json)
+            .expect("adapter should flatten nested collections")
+            .ast;
+
+        assert!(
+            ast.nodes()
+                .iter()
+                .any(|node| node.kind_name() == "precedenceGroupAssociativity")
+        );
+    }
+
+    #[test]
     fn rejects_invalid_line_starts() {
         let json = r#"{"$lineStarts":[1],"$pos":0,"$end":0,"kind":"sourceFile"}"#;
-        let error = match json_to_ast(json) {
-            Ok(_) => panic!("invalid line starts should fail"),
-            Err(error) => error,
+        let Err(error) = json_to_ast(json) else {
+            panic!("invalid line starts should fail");
         };
         assert!(error.contains("must start with offset 0"), "{error}");
+    }
+
+    #[test]
+    fn accepts_deeply_nested_json() {
+        let json = deeply_nested_json(256);
+        json_to_ast(&json).expect("adapter should accept JSON nested beyond serde_json's default");
     }
 
     #[test]

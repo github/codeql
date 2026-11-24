@@ -16,21 +16,6 @@
 		<PaketRootPath>$(MSBuildThisFileDirectory)..\</PaketRootPath>
 		<PaketRestoreCacheFile>$(PaketRootPath)paket-files\paket.restore.cached</PaketRestoreCacheFile>
 		<PaketLockFilePath>$(PaketRootPath)paket.lock</PaketLockFilePath>
-		<PaketBootstrapperStyle>classic</PaketBootstrapperStyle>
-		<PaketBootstrapperStyle Condition="Exists('$(PaketToolsPath)paket.bootstrapper.proj')">proj</PaketBootstrapperStyle>
-		<PaketExeImage>assembly</PaketExeImage>
-		<PaketExeImage Condition=" '$(PaketBootstrapperStyle)' == 'proj' ">native</PaketExeImage>
-		<MonoPath Condition="'$(MonoPath)' == '' AND Exists('/Library/Frameworks/Mono.framework/Commands/mono')">/Library/Frameworks/Mono.framework/Commands/mono</MonoPath>
-		<MonoPath Condition="'$(MonoPath)' == ''">mono</MonoPath>
-
-		<!-- PaketBootStrapper  -->
-		<PaketBootStrapperExePath Condition=" '$(PaketBootStrapperExePath)' == '' AND Exists('$(PaketRootPath)paket.bootstrapper.exe')">$(PaketRootPath)paket.bootstrapper.exe</PaketBootStrapperExePath>
-		<PaketBootStrapperExePath Condition=" '$(PaketBootStrapperExePath)' == '' ">$(PaketToolsPath)paket.bootstrapper.exe</PaketBootStrapperExePath>
-		<PaketBootStrapperExeDir Condition=" Exists('$(PaketBootStrapperExePath)') " >$([System.IO.Path]::GetDirectoryName("$(PaketBootStrapperExePath)"))\</PaketBootStrapperExeDir>
-
-		<PaketBootStrapperCommand Condition=" '$(OS)' == 'Windows_NT' ">"$(PaketBootStrapperExePath)"</PaketBootStrapperCommand>
-		<PaketBootStrapperCommand Condition=" '$(OS)' != 'Windows_NT' ">$(MonoPath) --runtime=v4.0.30319 "$(PaketBootStrapperExePath)"</PaketBootStrapperCommand>
-
 		<!-- Disable automagic references for F# DotNet SDK -->
 		<!-- This will not do anything for other project types -->
 		<!-- see https://github.com/fsharp/fslang-design/blob/master/tooling/FST-1002-fsharp-in-dotnet-sdk.md -->
@@ -47,29 +32,32 @@
 	</PropertyGroup>
 
 	<!-- Resolve how paket should be called -->
-	<!-- Current priority is: local (1: repo root, 2: .paket folder) => 3: as CLI tool => as bootstrapper (4: proj Bootstrapper style, 5: BootstrapperExeDir) => 6: global path variable -->
+	<!-- Current priority is: local tool, when the tool manifest declares paket => tool installed with tool-path (1: repo root, 2: .paket folder) => 3: local tool found by running 'dotnet paket' => 4: global path variable -->
+	<!-- A paket installed with tool-path is skipped, with the warning PAKET0001, when the tool manifest declares paket: it can be an older Paket, such as the paket.exe or bootstrapper of Paket 11. -->
 	<Target Name="SetPaketCommand" >
-		<!-- Test if paket is available in the standard locations. If so, that takes priority. Case 1/2 - non-windows specific -->
-		<PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
-			<!-- no windows, try native paket as default, root => tool -->
-			<PaketExePath Condition=" '$(PaketExePath)' == '' AND Exists('$(PaketRootPath)paket') ">$(PaketRootPath)paket</PaketExePath>
-			<PaketExePath Condition=" '$(PaketExePath)' == '' AND Exists('$(PaketToolsPath)paket') ">$(PaketToolsPath)paket</PaketExePath>
-		</PropertyGroup>
-
-		<!-- Test if paket is available in the standard locations. If so, that takes priority. Case 2/2 - same across platforms -->
+		<!-- Is CLI configured to be used in the closest "dotnet-tools.json" or ".config/dotnet-tools.json" from the root up? - can result in a false negative, which the 'dotnet paket' test below can make up for. -->
+		<!-- Only the "paket" tool counts, as in #r "paket:". Unlike dotnet and #r "paket:", only the closest manifest of each name is read, and an "isRoot" one doesn't stop the lookup: MSBuild can't loop. -->
+		<!-- So the outcome is a false positive when dotnet stops at an "isRoot" manifest without paket before it gets to the closest one of the other name, in the same folder or above, which declares paket. -->
 		<PropertyGroup>
-			<!-- root => tool -->
-			<PaketExePath Condition=" '$(PaketExePath)' == '' AND Exists('$(PaketRootPath)paket.exe') ">$(PaketRootPath)paket.exe</PaketExePath>
-			<PaketExePath Condition=" '$(PaketExePath)' == '' AND Exists('$(PaketToolsPath)paket.exe') ">$(PaketToolsPath)paket.exe</PaketExePath>
-		</PropertyGroup>
-
-		<!-- If paket hasn't be found in standard locations, test for CLI tool usage. -->
-		<!-- First test: Is CLI configured to be used in "dotnet-tools.json"? - can result in a false negative; only a positive outcome is reliable. -->
-		<PropertyGroup Condition=" '$(PaketExePath)' == '' ">
-			<_DotnetToolsJson Condition="Exists('$(PaketRootPath)/.config/dotnet-tools.json')">$([System.IO.File]::ReadAllText("$(PaketRootPath)/.config/dotnet-tools.json"))</_DotnetToolsJson>
-			<_ConfigContainsPaket Condition=" '$(_DotnetToolsJson)' != ''">$(_DotnetToolsJson.Contains('"paket"'))</_ConfigContainsPaket>
+			<_PaketFullRootPath>$([System.IO.Path]::GetFullPath('$(PaketRootPath)'))</_PaketFullRootPath>
+			<_DotnetToolsJsonDir>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_PaketFullRootPath)', '.config/dotnet-tools.json'))</_DotnetToolsJsonDir>
+			<_DotnetToolsJson Condition=" '$(_DotnetToolsJsonDir)' != '' ">$([System.IO.File]::ReadAllText("$(_DotnetToolsJsonDir)/.config/dotnet-tools.json"))</_DotnetToolsJson>
+			<_RootDotnetToolsJsonDir>$([MSBuild]::GetDirectoryNameOfFileAbove('$(_PaketFullRootPath)', 'dotnet-tools.json'))</_RootDotnetToolsJsonDir>
+			<_DotnetToolsJson Condition=" '$(_RootDotnetToolsJsonDir)' != '' ">$(_DotnetToolsJson)$([System.IO.File]::ReadAllText("$(_RootDotnetToolsJsonDir)/dotnet-tools.json"))</_DotnetToolsJson>
+			<_ConfigContainsPaket Condition=" '$(_DotnetToolsJson)' != ''">$([System.Text.RegularExpressions.Regex]::IsMatch(`$(_DotnetToolsJson)`, `(?i)"paket"\s*:\s*\{`))</_ConfigContainsPaket>
 			<_ConfigContainsPaket Condition=" '$(_ConfigContainsPaket)' == ''">false</_ConfigContainsPaket>
 		</PropertyGroup>
+
+		<!-- Test if paket is installed with tool-path in the standard locations. If so, it runs, unless the tool manifest declares paket. -->
+		<!-- Only a file counts: Exists() also takes a folder, such as a project folder named Paket on a case-insensitive file system. -->
+		<PropertyGroup Condition=" '$(PaketExePath)' == '' ">
+			<_PaketToolPathExeName Condition=" '$(OS)' != 'Windows_NT' ">paket</_PaketToolPathExeName>
+			<_PaketToolPathExeName Condition=" '$(OS)' == 'Windows_NT' ">paket.exe</_PaketToolPathExeName>
+			<_PaketToolPathExe Condition=" $([System.IO.File]::Exists('$(_PaketFullRootPath)$(_PaketToolPathExeName)')) ">$(_PaketFullRootPath)$(_PaketToolPathExeName)</_PaketToolPathExe>
+			<_PaketToolPathExe Condition=" '$(_PaketToolPathExe)' == '' AND $([System.IO.File]::Exists('$(PaketToolsPath)$(_PaketToolPathExeName)')) ">$(PaketToolsPath)$(_PaketToolPathExeName)</_PaketToolPathExe>
+			<PaketExePath Condition=" '$(_PaketToolPathExe)' != '' AND !$(_ConfigContainsPaket) ">$(_PaketToolPathExe)</PaketExePath>
+		</PropertyGroup>
+		<Warning Condition=" '$(PaketExePath)' == '' AND '$(_PaketToolPathExe)' != '' " Code="PAKET0001" Text="Ignoring $(_PaketToolPathExe): the tool manifest declares paket, which runs instead. Delete it if it is an older Paket, such as the paket.exe or bootstrapper of Paket 11, or add PAKET0001 to NoWarn." />
 
 		<!-- Second test: Call 'dotnet paket' and see if it returns without an error. Mute all the output. Only run if previous test failed and the test has not been disabled. -->
 		<!-- WARNING: This method can lead to processes hanging forever, and should be used as little as possible. See https://github.com/fsprojects/Paket/issues/3705 for details. -->
@@ -82,21 +70,15 @@
 			<_PaketCommand>dotnet paket</_PaketCommand>
 		</PropertyGroup>
 
-		<!-- If neither local files nor CLI tool can be found, final attempt is searching for boostrapper config before falling back to global path variable. -->
+		<!-- If neither local files nor CLI tool can be found, use the global path, where a global tool is. -->
 		<PropertyGroup Condition=" '$(PaketExePath)' == '' AND '$(_PaketCommand)' == '' ">
-			<!-- Test for bootstrapper setup -->
-			<PaketExePath Condition=" '$(PaketExePath)' == '' AND '$(PaketBootstrapperStyle)' == 'proj' ">$(PaketToolsPath)paket</PaketExePath>
-			<PaketExePath Condition=" '$(PaketExePath)' == '' AND Exists('$(PaketBootStrapperExeDir)') ">$(PaketBootStrapperExeDir)paket</PaketExePath>
-
-			<!-- If all else fails, use global path approach. -->
-			<PaketExePath Condition=" '$(PaketExePath)' == ''">paket</PaketExePath>
+			<PaketExePath>paket</PaketExePath>
 		</PropertyGroup>
 
 		<!-- If not using CLI, setup correct execution command. -->
 		<PropertyGroup Condition=" '$(_PaketCommand)' == '' ">
 			<_PaketExeExtension>$([System.IO.Path]::GetExtension("$(PaketExePath)"))</_PaketExeExtension>
 			<_PaketCommand Condition=" '$(_PaketCommand)' == '' AND '$(_PaketExeExtension)' == '.dll' ">dotnet "$(PaketExePath)"</_PaketCommand>
-			<_PaketCommand Condition=" '$(_PaketCommand)' == '' AND '$(OS)' != 'Windows_NT' AND '$(_PaketExeExtension)' == '.exe' ">$(MonoPath) --runtime=v4.0.30319 "$(PaketExePath)"</_PaketCommand>
 			<_PaketCommand Condition=" '$(_PaketCommand)' == '' ">"$(PaketExePath)"</_PaketCommand>
 		</PropertyGroup>
 
@@ -107,14 +89,13 @@
 
 	</Target>
 
-	<Target Name="PaketBootstrapping" Condition="Exists('$(PaketToolsPath)paket.bootstrapper.proj')">
-		<MSBuild Projects="$(PaketToolsPath)paket.bootstrapper.proj" Targets="Restore" />
-	</Target>
+	<!-- The bootstrapper is gone: kept empty for the projects that depend on it or call it -->
+	<Target Name="PaketBootstrapping" />
 
 	<!-- Official workaround for https://docs.microsoft.com/en-us/visualstudio/msbuild/getfilehash-task?view=vs-2019 -->
 	<UsingTask TaskName="Microsoft.Build.Tasks.GetFileHash" AssemblyName="Microsoft.Build.Tasks.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition=" '$(MSBuildSupportsHashing)' == 'true' And '$(DetectedMSBuildVersion)' &lt; '16.0.360' " />
 	<UsingTask TaskName="Microsoft.Build.Tasks.VerifyFileHash" AssemblyName="Microsoft.Build.Tasks.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Condition=" '$(MSBuildSupportsHashing)' == 'true' And '$(DetectedMSBuildVersion)' &lt; '16.0.360' " />
-	<Target Name="PaketRestore" Condition="'$(PaketRestoreDisabled)' != 'True'" BeforeTargets="_GenerateDotnetCliToolReferenceSpecs;_GenerateProjectRestoreGraphPerFramework;_GenerateRestoreGraphWalkPerFramework;CollectPackageReferences" DependsOnTargets="SetPaketCommand;PaketBootstrapping">
+	<Target Name="PaketRestore" Condition="'$(PaketRestoreDisabled)' != 'True'" BeforeTargets="_GenerateDotnetCliToolReferenceSpecs;_GenerateProjectRestoreGraphPerFramework;_GenerateRestoreGraphWalkPerFramework;CollectPackageReferences" DependsOnTargets="SetPaketCommand">
 
 		<!-- Step 1 Check if lockfile is properly restored (if the hash of the lockfile and the cache-file match) -->
 		<PropertyGroup>
@@ -165,8 +146,6 @@
 
 		<!-- Do a global restore if required -->
 		<Warning Text="This version of MSBuild (we assume '$(DetectedMSBuildVersion)' or older) doesn't support GetFileHash, so paket fast restore is disabled." Condition=" '$(MSBuildSupportsHashing)' != 'true' " />
-		<Error Text="Stop build because of PAKET_ERROR_ON_MSBUILD_EXEC and we always call the bootstrapper" Condition=" '$(PAKET_ERROR_ON_MSBUILD_EXEC)' == 'true' AND '$(PaketBootstrapperStyle)' == 'classic' AND Exists('$(PaketBootStrapperExePath)') AND !(Exists('$(PaketExePath)'))" />
-		<Exec Command='$(PaketBootStrapperCommand)' Condition=" '$(PaketBootstrapperStyle)' == 'classic' AND Exists('$(PaketBootStrapperExePath)') AND !(Exists('$(PaketExePath)'))" ContinueOnError="false" />
 		<Error Text="Stop build because of PAKET_ERROR_ON_MSBUILD_EXEC and we need a full restore (hashes don't match)" Condition=" '$(PAKET_ERROR_ON_MSBUILD_EXEC)' == 'true' AND '$(PaketRestoreRequired)' == 'true' AND '$(PaketDisableGlobalRestore)' != 'true'" />
 		<Exec Command='$(PaketCommand) restore' Condition=" '$(PaketRestoreRequired)' == 'true' AND '$(PaketDisableGlobalRestore)' != 'true' " ContinueOnError="false" />
 
@@ -201,6 +180,41 @@
 			<PaketRestoreRequired Condition=" '$(PaketRestoreReferencesFileHash)' == '$(PaketRestoreCachedHash)' ">false</PaketRestoreRequired>
 		</PropertyGroup>
 
+		<!-- Step 2 a-bis Detect changes in paket.lock since this project's
+		     last per-project restore. Step 2a alone misses the case where
+		     paket.references content is unchanged but paket.lock has been
+		     updated (e.g. a merge that bumps a transitive package version).
+		     Without this, the per-project paket.props under a redirected
+		     BaseIntermediateOutputPath stays stale and NuGet keeps resolving
+		     to the old version. The cache file recording the lock hash is
+		     written after a successful per-project restore, see Step 3. -->
+		<PropertyGroup>
+			<PaketProjectLockHashCacheFilePath>$(PaketIntermediateOutputPath)\$(MSBuildProjectFile).paket.lock.hash</PaketProjectLockHashCacheFilePath>
+		</PropertyGroup>
+		<!-- Compute current paket.lock hash here even if Step 1 was disabled
+		     (e.g. PaketDisableGlobalRestore=true) so the per-project check
+		     still works. -->
+		<PropertyGroup Condition=" '$(PaketProjectLockHashCurrent)' == '' AND '$(PaketRestoreLockFileHash)' != '' ">
+			<PaketProjectLockHashCurrent>$(PaketRestoreLockFileHash)</PaketProjectLockHashCurrent>
+		</PropertyGroup>
+		<GetFileHash Condition=" '$(MSBuildSupportsHashing)' == 'true' AND Exists('$(PaketLockFilePath)') AND '$(PaketProjectLockHashCurrent)' == '' " Files="$(PaketLockFilePath)" Algorithm="SHA256" HashEncoding="hex">
+			<Output TaskParameter="Hash" PropertyName="PaketProjectLockHashCurrent" />
+		</GetFileHash>
+		<PropertyGroup Condition=" '$(MSBuildSupportsHashing)' == 'true' AND Exists('$(PaketLockFilePath)') AND Exists('$(PaketProjectLockHashCacheFilePath)') ">
+			<PaketProjectLockHashCached>$([System.IO.File]::ReadAllText('$(PaketProjectLockHashCacheFilePath)').Trim())</PaketProjectLockHashCached>
+			<PaketRestoreRequired Condition=" '$(PaketProjectLockHashCurrent)' != '' AND '$(PaketProjectLockHashCached)' != '$(PaketProjectLockHashCurrent)' ">true</PaketRestoreRequired>
+			<PaketRestoreRequiredReason Condition=" '$(PaketProjectLockHashCurrent)' != '' AND '$(PaketProjectLockHashCached)' != '$(PaketProjectLockHashCurrent)' ">paket.lock content changed since last per-project restore</PaketRestoreRequiredReason>
+		</PropertyGroup>
+		<!-- First encounter: hash file does not exist but paket.lock does.
+		     This catches checkouts that have legacy per-project state from
+		     before this check was introduced (so Step 2b may not fire) but
+		     where paket.lock has since been bumped. After the per-project
+		     restore runs, Step 3 a-bis writes the cache file. -->
+		<PropertyGroup Condition=" '$(MSBuildSupportsHashing)' == 'true' AND Exists('$(PaketLockFilePath)') AND !Exists('$(PaketProjectLockHashCacheFilePath)') ">
+			<PaketRestoreRequired>true</PaketRestoreRequired>
+			<PaketRestoreRequiredReason>per-project paket.lock hash cache missing</PaketRestoreRequiredReason>
+		</PropertyGroup>
+
 		<PropertyGroup Condition="!Exists('$(PaketOriginalReferencesFilePath)') AND !Exists('$(PaketReferencesCachedFilePath)') ">
 			<!-- If both don't exist there is nothing to do. -->
 			<PaketRestoreRequired>false</PaketRestoreRequired>
@@ -217,6 +231,11 @@
 		<Error Text="Stop build because of PAKET_ERROR_ON_MSBUILD_EXEC and we detected a change ('$(PaketRestoreRequiredReason)') in the project file '$(MSBuildProjectFullPath)'" Condition=" '$(PAKET_ERROR_ON_MSBUILD_EXEC)' == 'true' AND '$(PaketRestoreRequired)' == 'true' " />
 		<Exec Command='$(PaketCommand) restore --project "$(MSBuildProjectFullPath)" --output-path "$(PaketIntermediateOutputPath)" --target-framework "$(TargetFrameworks)"' Condition=" '$(PaketRestoreRequired)' == 'true' AND '$(TargetFramework)' == '' " ContinueOnError="false" />
 		<Exec Command='$(PaketCommand) restore --project "$(MSBuildProjectFullPath)" --output-path "$(PaketIntermediateOutputPath)" --target-framework "$(TargetFramework)"' Condition=" '$(PaketRestoreRequired)' == 'true' AND '$(TargetFramework)' != '' " ContinueOnError="false" />
+
+		<!-- Step 3 a-bis After a successful per-project restore, stamp the
+		     paket.lock hash next to the per-project paket files. Step 2 a-bis
+		     reads this on the next call to detect lock-content changes. -->
+		<WriteLinesToFile Condition=" '$(MSBuildSupportsHashing)' == 'true' AND '$(PaketRestoreRequired)' == 'true' AND '$(PaketProjectLockHashCurrent)' != '' " File="$(PaketProjectLockHashCacheFilePath)" Lines="$(PaketProjectLockHashCurrent)" Overwrite="true" />
 
 		<!-- This shouldn't actually happen, but just to be sure. -->
 		<PropertyGroup>
@@ -315,6 +334,15 @@
 
 		<ItemGroup>
 			<_NuspecFiles Include="$(AdjustedNuspecOutputPath)\*.$(PackageVersion.Split(`+`)[0]).nuspec"/>
+			<!-- When include-symbols/include-source packing options are used, the SDK's GenerateNuspec
+			     target also produces a "*.symbols.nuspec" file alongside the regular nuspec. _NuspecFiles
+			     would then contain both files, and MSBuild joins multiple items with ";" when they are
+			     consumed as a single property (NuspecFileAbsolutePath below), producing an invalid path
+			     that later fails PackTask/dotnet pack with a "syntax is incorrect" error. _PrimaryNuspecFile
+			     picks the non-symbols nuspec to use for packing, while fix-nuspecs above still runs
+			     against all of them so both nuspecs get corrected. -->
+			<_PrimaryNuspecFile Include="@(_NuspecFiles)" Exclude="$(AdjustedNuspecOutputPath)\*.symbols.nuspec" Condition="@(_NuspecFiles) != ''" />
+			<_PrimaryNuspecFile Include="@(_NuspecFiles)" Condition="@(_PrimaryNuspecFile) == '' And @(_NuspecFiles) != ''" />
 		</ItemGroup>
 
 		<Error Text="Error Because of PAKET_ERROR_ON_MSBUILD_EXEC (not calling fix-nuspecs)" Condition=" '$(PAKET_ERROR_ON_MSBUILD_EXEC)' == 'true' " />
@@ -326,12 +354,15 @@
 		</ItemGroup>
 		<PropertyGroup>
 			<_ConditionsParameter></_ConditionsParameter>
-			<_ConditionsParameter Condition="@(_DefinedConditionProperties) != ''">--conditions @(_DefinedConditionProperties)</_ConditionsParameter>
+			<!-- Quoted like "@(_NuspecFiles)" below, and for the same reason: MSBuild joins an item
+			     list with ";", and Exec runs its command through /bin/sh on Unix, where ";" ends the
+			     command. Unquoted, a second condition was run as a shell command of its own. -->
+			<_ConditionsParameter Condition="@(_DefinedConditionProperties) != ''">--conditions "@(_DefinedConditionProperties)"</_ConditionsParameter>
 		</PropertyGroup>
 		<Exec Condition="@(_NuspecFiles) != ''" Command='$(PaketCommand) fix-nuspecs files "@(_NuspecFiles)" project-file "$(PaketProjectFile)" $(_ConditionsParameter)' />
 		<Error Condition="@(_NuspecFiles) == ''" Text='Could not find nuspec files in "$(AdjustedNuspecOutputPath)" (Version: "$(PackageVersion)"), therefore we cannot call "paket fix-nuspecs" and have to error out!' />
 
-		<ConvertToAbsolutePath Condition="@(_NuspecFiles) != ''" Paths="@(_NuspecFiles)">
+		<ConvertToAbsolutePath Condition="@(_PrimaryNuspecFile) != ''" Paths="@(_PrimaryNuspecFile)">
 			<Output TaskParameter="AbsolutePaths" PropertyName="NuspecFileAbsolutePath" />
 		</ConvertToAbsolutePath>
 
@@ -383,7 +414,10 @@
               PackageLicenseExpression="$(PackageLicenseExpression)"
               PackageLicenseExpressionVersion="$(PackageLicenseExpressionVersion)"
               Readme="$(PackageReadmeFile)"
-              NoDefaultExcludes="$(NoDefaultExcludes)"/>
+              NoDefaultExcludes="$(NoDefaultExcludes)"
+              NoWarn="$(NoWarn)"
+              TreatWarningsAsErrors="$(TreatWarningsAsErrors)"
+              WarningsAsErrors="$(WarningsAsErrors)"/>
 
 		<PackTask Condition="$(UseMSBuild16_0_Pack)"
 				  PackItem="$(PackProjectInputFile)"

@@ -5,7 +5,7 @@ use std::path::Path;
 use std::collections::BTreeSet as Set;
 use std::fs;
 
-/// A lookup table from TypeName to Entry.
+/// A lookup table from `TypeName` to `Entry`.
 pub type NodeTypeMap = BTreeMap<TypeName, Entry>;
 
 #[derive(Debug)]
@@ -17,9 +17,17 @@ pub struct Entry {
 
 #[derive(Debug)]
 pub enum EntryKind {
-    Union { members: Set<TypeName> },
-    Table { name: String, fields: Vec<Field> },
-    Token { kind_id: usize },
+    Union {
+        members: Set<TypeName>,
+        fields: Vec<Field>,
+    },
+    Table {
+        name: String,
+        fields: Vec<Field>,
+    },
+    Token {
+        kind_id: usize,
+    },
 }
 
 #[derive(Clone, Debug, Ord, PartialOrd, Eq, PartialEq)]
@@ -52,7 +60,7 @@ pub struct Field {
     pub parent: TypeName,
     pub type_info: FieldTypeInfo,
     /// The name of the field or None for the anonymous 'children'
-    /// entry from node_types.json
+    /// entry from `node_types.json`
     pub name: Option<String>,
     /// The name of the predicate to get this field.
     pub getter_name: String,
@@ -62,7 +70,7 @@ pub struct Field {
     pub storage: Storage,
 }
 
-fn name_for_field_or_child(name: &Option<String>) -> String {
+fn name_for_field_or_child(name: Option<&String>) -> String {
     match name {
         Some(name) => name.clone(),
         None => "child".to_owned(),
@@ -102,7 +110,7 @@ pub fn read_node_types_str(prefix: &str, node_types_json: &str) -> std::io::Resu
 
 fn convert_type(node_type: &NodeType) -> TypeName {
     TypeName {
-        kind: node_type.kind.to_string(),
+        kind: node_type.kind.clone(),
         named: node_type.named,
     }
 }
@@ -111,6 +119,7 @@ fn convert_types(node_types: &[NodeType]) -> Set<TypeName> {
     node_types.iter().map(convert_type).collect()
 }
 
+#[allow(clippy::too_many_lines)]
 pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
     let mut entries = NodeTypeMap::new();
     let mut token_kinds = Set::new();
@@ -130,21 +139,44 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         let flattened_name = &node_type_name(&node.kind, node.named);
         let dbscheme_name = escape_name(flattened_name);
         let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
-        let dbscheme_name = format!("{}_{}", prefix, dbscheme_name);
+        let dbscheme_name = format!("{prefix}_{dbscheme_name}");
         let subtypes = &node.subtypes;
         if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
+            let type_name = TypeName {
+                kind: node.kind.clone(),
+                named: node.named,
+            };
+            let mut fields = Vec::new();
+            for (field_name, field_info) in &node.fields {
+                add_field(
+                    prefix,
+                    &type_name,
+                    Some(field_name.clone()),
+                    field_info,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
+            if let Some(children) = &node.children {
+                add_field(
+                    prefix,
+                    &type_name,
+                    None,
+                    children,
+                    &mut fields,
+                    &token_kinds,
+                );
+            }
             entries.insert(
-                TypeName {
-                    kind: node.kind.clone(),
-                    named: node.named,
-                },
+                type_name,
                 Entry {
                     dbscheme_name,
                     ql_class_name,
                     kind: EntryKind::Union {
                         members: convert_types(subtypes),
+                        fields,
                     },
                 },
             );
@@ -156,8 +188,8 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 kind: node.kind.clone(),
                 named: node.named,
             };
-            let table_name = escape_name(&(format!("{}_def", flattened_name)));
-            let table_name = format!("{}_{}", prefix, table_name);
+            let table_name = escape_name(&(format!("{flattened_name}_def")));
+            let table_name = format!("{prefix}_{table_name}");
 
             let mut fields = Vec::new();
 
@@ -167,7 +199,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 add_field(
                     prefix,
                     &type_name,
-                    Some(field_name.to_string()),
+                    Some(field_name.clone()),
                     field_info,
                     &mut fields,
                     &token_kinds,
@@ -203,13 +235,13 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
             counter += 1;
             let unprefixed_name = node_type_name(&type_name.kind, true);
             Entry {
-                dbscheme_name: escape_name(&format!("{}_token_{}", prefix, unprefixed_name)),
+                dbscheme_name: escape_name(&format!("{prefix}_token_{unprefixed_name}")),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
                 kind: EntryKind::Token { kind_id: counter },
             }
         } else {
             Entry {
-                dbscheme_name: format!("{}_reserved_word", prefix),
+                dbscheme_name: format!("{prefix}_reserved_word"),
                 ql_class_name: "ReservedWord".to_owned(),
                 kind: EntryKind::Token { kind_id: 0 },
             }
@@ -228,7 +260,7 @@ fn add_field(
     token_kinds: &Set<TypeName>,
 ) {
     let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
-    let column_name = escape_name(&name_for_field_or_child(&field_name));
+    let column_name = escape_name(&name_for_field_or_child(field_name.as_ref()));
     let storage = if !field_info.multiple && field_info.required {
         // This field must appear exactly once, so we add it as
         // a column to the main table for the node type.
@@ -240,7 +272,7 @@ fn add_field(
             "{}_{}_{}",
             prefix,
             parent_flattened_name,
-            name_for_field_or_child(&field_name)
+            name_for_field_or_child(field_name.as_ref())
         ));
         Storage::Table {
             has_index,
@@ -262,7 +294,7 @@ fn add_field(
         for (counter, t) in converted_types.into_iter().enumerate() {
             let dbscheme_variant_name =
                 escape_name(&format!("{}_{}_{}", prefix, parent_flattened_name, t.kind));
-            field_token_ints.insert(t.kind.to_owned(), (counter, dbscheme_variant_name));
+            field_token_ints.insert(t.kind, (counter, dbscheme_variant_name));
         }
         FieldTypeInfo::ReservedWordInt(field_token_ints)
     } else if field_info.types.len() == 1 {
@@ -275,28 +307,26 @@ fn add_field(
                 "{}_{}_{}_type",
                 prefix,
                 parent_flattened_name,
-                name_for_field_or_child(&field_name)
+                name_for_field_or_child(field_name.as_ref())
             ),
             ql_class: "AstNode".to_owned(),
         }
     };
     let getter_name = format!(
         "get{}",
-        dbscheme_name_to_class_name(&escape_name(&name_for_field_or_child(&field_name)))
+        dbscheme_name_to_class_name(&escape_name(&name_for_field_or_child(field_name.as_ref())))
     );
     let getter_suffix = getter_name.strip_prefix("get").unwrap_or(&getter_name);
     let article = match getter_suffix.chars().next().map(|c| c.to_ascii_lowercase()) {
         Some('a' | 'e' | 'i' | 'o' | 'u') => "An",
         _ => "A",
     };
-    let any_getter_name = if field_info.multiple {
-        Some(format!("get{article}{getter_suffix}"))
-    } else {
-        None
-    };
+    let any_getter_name = field_info
+        .multiple
+        .then(|| format!("get{article}{getter_suffix}"));
     fields.push(Field {
         parent: TypeName {
-            kind: parent_type_name.kind.to_string(),
+            kind: parent_type_name.kind.clone(),
             named: parent_type_name.named,
         },
         type_info,
@@ -386,13 +416,14 @@ fn escape_name(name: &str) -> String {
             ':' => result.push_str("colon"),
             ';' => result.push_str("semicolon"),
             '"' => result.push_str("dquote"),
+            '\'' => result.push_str("squote"),
             '*' => result.push_str("star"),
             '+' => result.push_str("plus"),
             '-' => result.push_str("minus"),
             '@' => result.push_str("at"),
             _ if c.is_uppercase() => {
                 result.push('_');
-                result.push_str(&c.to_lowercase().to_string())
+                result.push_str(&c.to_lowercase().to_string());
             }
             _ => result.push(c),
         }
@@ -414,7 +445,7 @@ pub fn to_snake_case(word: &str) -> String {
     for c in word.chars() {
         if c.is_uppercase() {
             if !prev_upper {
-                result.push('_')
+                result.push('_');
             }
             prev_upper = true;
             result.push(c.to_ascii_lowercase());
@@ -425,8 +456,8 @@ pub fn to_snake_case(word: &str) -> String {
     }
     result
 }
-/// Given a valid dbscheme name (i.e. in snake case), produces the equivalent QL
-/// name (i.e. in CamelCase). For example, "foo_bar_baz" becomes "FooBarBaz".
+/// Given a valid dbscheme name (i.e. in `snake_case`), produces the equivalent QL
+/// name (i.e. in `CamelCase`). For example, `foo_bar_baz` becomes `FooBarBaz`.
 fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
     fn to_title_case(word: &str) -> String {
         let mut first = true;
@@ -444,8 +475,13 @@ fn dbscheme_name_to_class_name(dbscheme_name: &str) -> String {
     dbscheme_name
         .split('_')
         .map(to_title_case)
-        .collect::<Vec<String>>()
-        .join("")
+        .collect::<String>()
+}
+
+#[test]
+fn escape_name_quotes_test() {
+    assert_eq!("dquote", escape_name("\""));
+    assert_eq!("squote", escape_name("'"));
 }
 
 #[test]
@@ -453,4 +489,50 @@ fn to_snake_case_test() {
     assert_eq!("ruby", to_snake_case("Ruby"));
     assert_eq!("erb", to_snake_case("ERB"));
     assert_eq!("embedded_template", to_snake_case("EmbeddedTemplate"));
+}
+
+#[test]
+fn supertype_fields_are_preserved() {
+    let yaml = r"
+supertypes:
+  callable:
+    subtypes: [function]
+    fields:
+      parameter*: parameter
+      body?: block
+named:
+  function:
+  parameter:
+  block:
+";
+    let json = yeast::node_types_yaml::convert(yaml).unwrap();
+    let nodes = read_node_types_str("test", &json).unwrap();
+    let callable = nodes
+        .get(&TypeName {
+            kind: "callable".to_owned(),
+            named: true,
+        })
+        .unwrap();
+    let EntryKind::Union { fields, .. } = &callable.kind else {
+        panic!("callable should be a union");
+    };
+
+    assert_eq!(fields.len(), 2);
+    assert_eq!(fields[0].getter_name, "getBody");
+    assert!(matches!(
+        fields[0].storage,
+        Storage::Table {
+            has_index: false,
+            ..
+        }
+    ));
+    assert_eq!(fields[1].getter_name, "getParameter");
+    assert_eq!(fields[1].any_getter_name.as_deref(), Some("getAParameter"));
+    assert!(matches!(
+        fields[1].storage,
+        Storage::Table {
+            has_index: true,
+            ..
+        }
+    ));
 }

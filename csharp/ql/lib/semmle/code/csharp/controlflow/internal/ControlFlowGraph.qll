@@ -162,6 +162,8 @@ module Ast implements AstSig<Location> {
 
   class Stmt = CS::Stmt;
 
+  class LabeledStmt = CS::LabelStmt;
+
   class Expr = CS::Expr;
 
   class BlockStmt = CS::BlockStmt;
@@ -201,6 +203,10 @@ module Ast implements AstSig<Location> {
   class BreakStmt = CS::BreakStmt;
 
   class ContinueStmt = CS::ContinueStmt;
+
+  class FallthroughStmt extends Stmt {
+    FallthroughStmt() { none() }
+  }
 
   class GotoStmt = CS::GotoStmt;
 

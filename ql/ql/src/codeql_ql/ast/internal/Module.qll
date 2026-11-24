@@ -170,12 +170,12 @@ private predicate resolveImportQualifier(Import imp, ContainerOrModule m) {
 
 cached
 private module Cached {
-  private AstNode parent(AstNode n) {
-    result = n.getParent() and
-    not n instanceof Module
+  private Module getEnclosingModule0(AstNode n) {
+    result = n.getParent()
+    or
+    not n.getParent() instanceof Module and
+    result = getEnclosingModule0(n.getParent())
   }
-
-  private Module getEnclosingModule0(AstNode n) { result = parent*(n.getParent()) }
 
   cached
   ContainerOrModule getEnclosingModule(AstNode n) {
@@ -375,7 +375,8 @@ module ModConsistency {
 
   query predicate noName(AstNode mod) {
     mod instanceof Module and
-    not exists(mod.(Module).getName())
+    not exists(mod.(Module).getName()) and
+    not mod.getParent() instanceof TopLevel
     or
     mod instanceof ModuleExpr and
     not exists(mod.(ModuleExpr).getName())

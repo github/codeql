@@ -6,7 +6,7 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.Attr
+import codeql.rust.elements.AnyAttr
 import codeql.rust.elements.BlockExpr
 import codeql.rust.elements.Expr
 import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
@@ -39,15 +39,15 @@ module Generated {
     /**
      * Gets the `index`th attr of this if expression (0-based).
      */
-    Attr getAttr(int index) {
+    AnyAttr getAttr(int index) {
       result =
-        Synth::convertAttrFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getAttr(index))
+        Synth::convertAnyAttrFromRaw(Synth::convertIfExprToRaw(this).(Raw::IfExpr).getAttr(index))
     }
 
     /**
      * Gets any of the attrs of this if expression.
      */
-    final Attr getAnAttr() { result = this.getAttr(_) }
+    final AnyAttr getAnAttr() { result = this.getAttr(_) }
 
     /**
      * Gets the number of attrs of this if expression.

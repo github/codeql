@@ -80,9 +80,11 @@ module IR {
       typeSwitchCaseMatch(this, _)
       or
       // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
-      // have no `isIn` node. Use their combined after-node as the value-producing
-      // instruction, but not a value-specific after-node, which is already a
-      // `ConditionGuardInstruction`.
+      // have no `isIn` node. When such an expression is not in a conditional
+      // context (so it has a single combined after-node rather than per-branch
+      // value-after-nodes), use that after-node as the value-producing
+      // instruction. In conditional contexts the value is already split
+      // across branches, so no separate value instruction is needed.
       exists(Expr e |
         (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
         this.isAfter(e) and
@@ -489,6 +491,8 @@ module IR {
         lhs = MkLhs(this, _)
         or
         lhs = MkResultWriteTarget(this)
+        or
+        lhs = MkTypeSwitchImplicitVariableTarget(this, _)
       ) and
       initialization = false
       or
@@ -1010,14 +1014,13 @@ module IR {
    * An instruction corresponding to the implicit declaration and assignment of a variable
    * in a type switch case clause.
    */
-  class TypeSwitchImplicitVariableInstruction extends Instruction {
+  class TypeSwitchImplicitVariableInstruction extends WriteInstruction {
     CaseClause cc;
 
     TypeSwitchImplicitVariableInstruction() { typeSwitchCaseMatch(this, cc) }
 
-    override predicate writes(ValueEntity v, Instruction rhs) {
-      v = cc.getImplicitlyDeclaredVariable() and
-      exists(TypeSwitchStmt ts | cc = ts.getACase() | rhs = evalExprInstruction(ts.getExpr()))
+    override Instruction getRhs() {
+      exists(TypeSwitchStmt ts | cc = ts.getACase() and result = evalExprInstruction(ts.getExpr()))
     }
   }
 
@@ -1106,6 +1109,10 @@ module IR {
         exists(ret.getEnclosingFunction().getResultVar(idx)) and
         exists(ret.getAnExpr())
       )
+    } or
+    /** An implicitly declared variable in a type-switch case. */
+    MkTypeSwitchImplicitVariableTarget(ControlFlow::Node w, LocalVariable v) {
+      exists(CaseClause cc | typeSwitchCaseMatch(w, cc) and v = cc.getImplicitlyDeclaredVariable())
     }
 
   /** A representation of the target of a write instruction. */
@@ -1113,7 +1120,13 @@ module IR {
     ControlFlow::Node w;
 
     WriteTarget() {
-      this = MkLhs(w, _) or this = MkLiteralElementTarget(w) or this = MkResultWriteTarget(w)
+      this = MkLhs(w, _)
+      or
+      this = MkLiteralElementTarget(w)
+      or
+      this = MkResultWriteTarget(w)
+      or
+      this = MkTypeSwitchImplicitVariableTarget(w, _)
     }
 
     /** Gets the write instruction of which this is the target. */
@@ -1125,10 +1138,15 @@ module IR {
     /** Gets the name of the variable or field being written to, if any. */
     string getName() { none() }
 
-    /** Gets the SSA variable being written to, if any. */
-    SsaVariable asSsaVariable() {
-      this.getWrite() = result.getDefinition().(SsaExplicitDefinition).getInstruction()
-    }
+    /** Gets the SSA definition being written to, if any. */
+    SsaDefinition asSsaDefinition() { this.getWrite() = result.(SsaExplicitWrite).getDefinition() }
+
+    /**
+     * DEPRECATED: Use `asSsaDefinition` instead.
+     *
+     * Gets the SSA variable being written to, if any.
+     */
+    deprecated SsaVariable asSsaVariable() { result = this.asSsaDefinition() }
 
     /** Holds if `e` is the variable or field being written to. */
     predicate refersTo(ValueEntity e) { none() }
@@ -1156,6 +1174,22 @@ module IR {
       endline = 0 and
       endcolumn = 0
     }
+  }
+
+  /** An implicitly declared variable used as the target of a type-switch case write. */
+  class ImplicitVariableTarget extends WriteTarget {
+    LocalVariable variable;
+
+    ImplicitVariableTarget() { this = MkTypeSwitchImplicitVariableTarget(_, variable) }
+
+    override predicate refersTo(ValueEntity e) { e = variable }
+
+    override string getName() { result = variable.getName() }
+
+    /** Gets the variable this target refers to. */
+    Variable getVariable() { result = variable }
+
+    override Location getLocation() { result = variable.getLocation() }
   }
 
   /** A reference to a variable or constant, used as the target of a write. */

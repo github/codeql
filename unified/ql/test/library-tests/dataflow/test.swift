@@ -176,3 +176,100 @@ func t19() {
     sink(a)  // $ hasTaintFlow=t19.1
     sink(b)  // $ hasTaintFlow=t19.2
 }
+
+func t20() {
+    func foo(x: String, y: String) -> String { return x }
+    var x = source("t20.1")
+    var y = source("t20.2")
+    foo(x: x, y: y)
+    sink(x)  // $ hasValueFlow=t20.1
+    sink(y)  // $ hasValueFlow=t20.2
+}
+
+func asyncIdentity(_ s: String) async -> String { return s }
+
+func throwingIdentity(_ s: String) throws -> String { return s }
+
+func asyncThrowingIdentity(_ s: String) async throws -> String { return s }
+
+func t21() async {
+    sink(await asyncIdentity(source("t21.1")))  // $ hasValueFlow=t21.1
+}
+
+func t22() throws {
+    sink(try throwingIdentity(source("t22.1")))  // $ hasValueFlow=t22.1
+    let opt = try? throwingIdentity(source("t22.2"))
+    if let opt {
+        sink(opt)  // $ hasValueFlow=t22.2
+    }
+    sink(try! throwingIdentity(source("t22.3")))  // $ hasValueFlow=t22.3
+}
+
+func t23() async throws {
+    sink(try await asyncThrowingIdentity(source("t23.1")))  // $ hasValueFlow=t23.1
+    let opt = try? await asyncThrowingIdentity(source("t23.2"))
+    if let opt {
+        sink(opt)  // $ hasValueFlow=t23.2
+    }
+    sink(try! await asyncThrowingIdentity(source("t23.3")))  // $ hasValueFlow=t23.3
+}
+
+func t24() {
+    let x = source("t24.1")
+    sink(x as String)  // $ hasValueFlow=t24.1
+    sink(x as! String)  // $ hasValueFlow=t24.1
+    if let y = x as? String {
+        sink(y)  // $ hasValueFlow=t24.1
+    }
+}
+
+func t25() {
+    let x = [source("t25.1"), source("t25.2")]
+    for element in x {
+        sink(element)  // $ hasValueFlow=t25.1 hasValueFlow=t25.2
+    }
+
+}
+
+func t26() {
+    var opt = Optional.some(("x", "y"))
+    opt!.0 = source("t26.1")
+    sink(opt!.0)  // $ hasValueFlow=t26.1
+}
+
+func t27() {
+    func getOptional() throws -> String? {
+        return Optional.some(source("t27.1"))
+    }
+    // try? should not double-wrap in Optional
+    let x = try? getOptional()
+    if let x {
+        sink(x)  // $ hasValueFlow=t27.1
+    }
+}
+
+func t28() {
+    func getOptional() -> String? {
+        return Optional.some(source("t28.1"))
+    }
+    sink(getOptional() ?? "default")  // $ hasValueFlow=t28.1
+    sink("safe" ?? getOptional())  // $ hasValueFlow=t28.1
+}
+
+func t29() {
+    class Box {
+        var field: String = ""
+    }
+    let box = Box()
+    (box as! Box).field = source("t29.1")
+    sink(box.field)  // $ hasValueFlow=t29.1
+}
+
+func conditional(_ b: Bool) {
+    sink(b ? source("cond.1") : "clean")  // $ hasValueFlow=cond.1
+    sink(b ? "clean" : source("cond.2"))  // $ hasValueFlow=cond.2
+    let x = if b { source("cond.3") } else { "clean" }
+    sink(x)  // $ hasValueFlow=cond.3
+    func f() -> String { b ? source("cond.4") : "clean" }
+    sink(f())  // $ hasValueFlow=cond.4
+}

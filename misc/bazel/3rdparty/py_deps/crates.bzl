@@ -323,6 +323,7 @@ _NORMAL_DEPENDENCIES = {
             "anyhow": Label("@vendor_py//anyhow-1.0.95"),
             "clap": Label("@vendor_py//clap-4.5.30"),
             "regex": Label("@vendor_py//regex-1.11.1"),
+            "serde_json": Label("@vendor_py//serde_json-1.0.138"),
             "tree-sitter": Label("@vendor_py//tree-sitter-0.24.7"),
             "tree-sitter-graph": Label("@vendor_py//tree-sitter-graph-0.12.0"),
         },
@@ -456,6 +457,7 @@ _CONDITIONS = {
     "powerpc-unknown-linux-gnu": ["@rules_rust//rust/platform:powerpc-unknown-linux-gnu"],
     "riscv32imac-unknown-none-elf": ["@rules_rust//rust/platform:riscv32imac-unknown-none-elf"],
     "riscv32imc-unknown-none-elf": ["@rules_rust//rust/platform:riscv32imc-unknown-none-elf"],
+    "riscv64gc-unknown-fuchsia": ["@rules_rust//rust/platform:riscv64gc-unknown-fuchsia"],
     "riscv64gc-unknown-linux-gnu": ["@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu"],
     "riscv64gc-unknown-none-elf": ["@rules_rust//rust/platform:riscv64gc-unknown-none-elf"],
     "s390x-unknown-linux-gnu": ["@rules_rust//rust/platform:s390x-unknown-linux-gnu"],
@@ -988,6 +990,7 @@ def crate_repositories():
         struct(repo = "vendor_py__cc-1.2.14", is_dev_dep = False),
         struct(repo = "vendor_py__clap-4.5.30", is_dev_dep = False),
         struct(repo = "vendor_py__regex-1.11.1", is_dev_dep = False),
+        struct(repo = "vendor_py__serde_json-1.0.138", is_dev_dep = False),
         struct(repo = "vendor_py__tree-sitter-0.24.7", is_dev_dep = False),
         struct(repo = "vendor_py__tree-sitter-graph-0.12.0", is_dev_dep = False),
     ]

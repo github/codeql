@@ -11,8 +11,10 @@ dependencies:
   codeql/ssa: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/namebinding: ${workspace}
+  codeql/typeinference: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:
   - ext/*.model.yml
+  - ext/*.model.json
 warnOnImplicitThis: true
 compileForOverlayEval: true

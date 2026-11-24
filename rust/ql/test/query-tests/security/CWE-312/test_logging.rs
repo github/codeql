@@ -251,6 +251,50 @@ fn test_std(password: String, i: i32, opt_i: Option<i32>) {
     err.write(format!("message = {}\n", password).as_bytes()); // $ Alert[rust/cleartext-logging]
 }
 
+fn test_collections(harmless: String) {
+    // collection operations are not logging
+    let mut passwords = Vec::new();
+    passwords.insert(0, harmless.clone());
+    passwords.insert(1, harmless.clone());
+    _ = passwords.remove(1);
+    _ = passwords.swap_remove(0);
+
+    let mut password_queue = std::collections::VecDeque::new();
+    password_queue.push_back(harmless.clone());
+    password_queue.push_front(harmless.clone());
+    password_queue.insert(1, harmless.clone());
+    password_queue.append(&mut std::collections::VecDeque::from([harmless]));
+    password_queue.reserve(1);
+    password_queue.rotate_left(1);
+    password_queue.shrink_to(1);
+    _ = password_queue.remove(1);
+    password_queue.make_contiguous();
+}
+
+fn get_password_or_error() -> Result<String, std::io::Error> {
+    Ok("123456".to_string())
+}
+
+#[derive(Debug)]
+struct Outcome {
+    count: usize,
+}
+
+fn count_entries() -> Result<Outcome, std::io::Error> {
+    let _p = get_password_or_error()?;
+    Ok(Outcome { count: 1 })
+}
+
+fn test_try_operator() -> Result<(), std::io::Error> {
+    let value = get_password_or_error()?; // $ Source[rust/cleartext-logging]=try
+    info!("message = {}", value); // $ Alert[rust/cleartext-logging]=try
+
+    let outcome = count_entries()?;
+    info!("message = {:?}", outcome); // (the outcome does not contain the password)
+
+    Ok(())
+}
+
 fn main() {
     simple_logger::SimpleLogger::new().init().unwrap();
 
@@ -260,4 +304,6 @@ fn main() {
         "[encrypted]".to_string(),
     );
     test_std("123456".to_string(), 0, None);
+    test_collections("harmless".to_string());
+    _ = test_try_operator();
 }

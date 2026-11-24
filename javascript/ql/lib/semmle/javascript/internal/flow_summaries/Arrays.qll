@@ -290,7 +290,7 @@ class FlatMap extends SummarizedCallable::Range {
       output = "Argument[0].Parameter[2]"
       or
       input = "Argument[1]" and
-      output = "Argument[0].Parameter[1]"
+      output = "Argument[0].Parameter[this]"
       or
       input = "Argument[0].ReturnValue." + ["ArrayElement", "WithoutArrayElement"] and
       output = "ReturnValue.ArrayElement"

@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id cpp/virtual-call-in-constructor
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       readability
  *       language-features
  *       external/jsf

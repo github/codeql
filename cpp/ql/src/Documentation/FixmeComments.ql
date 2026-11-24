@@ -5,7 +5,8 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cpp/fixme-comment
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       documentation
  *       external/cwe/cwe-546
  */

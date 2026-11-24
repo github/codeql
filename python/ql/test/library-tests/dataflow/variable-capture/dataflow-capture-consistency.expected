@@ -15,3 +15,4 @@ closureAliasMustBeInSameScope
 variableAccessAstNesting
 uniqueCallableLocation
 consistencyOverview
+ambiguousReadNode

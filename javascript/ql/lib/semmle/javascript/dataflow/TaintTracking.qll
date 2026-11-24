@@ -455,10 +455,10 @@ module TaintTracking {
             name =
               [
                 "anchor", "big", "blink", "bold", "concat", "fixed", "fontcolor", "fontsize",
-                "italics", "link", "padEnd", "padStart", "repeat", "replace", "replaceAll", "slice",
-                "small", "strike", "sub", "substr", "substring", "sup", "toLocaleLowerCase",
-                "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim", "trimLeft", "trimRight",
-                "toWellFormed"
+                "italics", "link", "normalize", "padEnd", "padStart", "repeat", "replace",
+                "replaceAll", "slice", "small", "strike", "sub", "substr", "substring", "sup",
+                "toLocaleLowerCase", "toLocaleUpperCase", "toLowerCase", "toUpperCase", "trim",
+                "trimEnd", "trimLeft", "trimRight", "trimStart", "toWellFormed"
               ]
             or
             // sorted, interesting, properties of Object.prototype
@@ -988,13 +988,6 @@ module TaintTracking {
       isNaN = DataFlow::globalVarRef("isNaN").getACall() and guard = isNaN and polarity = false
     |
       operand = isNaN.getArgument(0).asExpr()
-      or
-      exists(DataFlow::CallNode parse |
-        parse = DataFlow::globalVarRef(["parseInt", "parseFloat"]).getACall()
-      |
-        parse = isNaN.getArgument(0) and
-        operand = parse.getArgument(0).asExpr()
-      )
       or
       exists(UnaryExpr unary | unary.getOperator() = ["+", "-"] |
         unary = isNaN.getArgument(0).asExpr() and

@@ -69,11 +69,19 @@ BlockComment getCommentAtStart(File file, int startLine) {
   result.getLocation().getStartLine() = startLine
 }
 
+pragma[noinline]
+private BlockComment getCommentFor(AstNode node) {
+  exists(Location loc |
+    canHaveQLDoc(node) and
+    loc = pragma[only_bind_out](node.getLocation()) and
+    result = getCommentAtEnd(loc.getFile(), loc.getStartLine() - 1)
+  )
+}
+
 from AstNode node, BlockComment comment, string nodeDescrip
 where
   (
-    canHaveQLDoc(node) and
-    comment = getCommentAtEnd(node.getLocation().getFile(), node.getLocation().getStartLine() - 1) and
+    comment = getCommentFor(node) and
     nodeDescrip = "the below code"
     or
     node instanceof TopLevel and

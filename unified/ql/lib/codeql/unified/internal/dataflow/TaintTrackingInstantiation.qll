@@ -7,6 +7,8 @@ module TaintTrackingInput implements InputSig<Location, DataFlowInput> {
 
   predicate defaultAdditionalTaintStep(Node src, Node sink, string model) {
     step(src, any(Step s | s.taint()), sink) and model = ""
+    or
+    FlowSummaryOutput::summaryLocalStep(src, sink, false, model)
   }
 
   bindingset[node]
