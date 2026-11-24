@@ -1,0 +1,38 @@
+#select
+| predicateInjection.swift:26:25:26:36 | remoteString | predicateInjection.swift:23:24:23:78 | String(...) | predicateInjection.swift:26:25:26:36 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | String(...) | user-provided value |
+| predicateInjection.swift:29:25:29:36 | remoteString | predicateInjection.swift:23:24:23:78 | String(...) | predicateInjection.swift:29:25:29:36 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | String(...) | user-provided value |
+| predicateInjection.swift:31:25:31:36 | remoteString | predicateInjection.swift:23:24:23:78 | String(...) | predicateInjection.swift:31:25:31:36 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | String(...) | user-provided value |
+| predicateInjection.swift:32:25:32:36 | remoteString | predicateInjection.swift:23:24:23:78 | String(...) | predicateInjection.swift:32:25:32:36 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | String(...) | user-provided value |
+| predicateInjection.swift:36:25:36:36 | remoteString | predicateInjection.swift:23:24:23:78 | String(...) | predicateInjection.swift:36:25:36:36 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | String(...) | user-provided value |
+| predicateInjection.swift:39:42:39:53 | remoteString | predicateInjection.swift:23:24:23:78 | String(...) | predicateInjection.swift:39:42:39:53 | remoteString | This predicate depends on a $@. | predicateInjection.swift:23:24:23:78 | String(...) | user-provided value |
+| predicateInjection.swift:46:25:46:51 | StringInterpolationExpr | predicateInjection.swift:44:24:44:79 | String(...) | predicateInjection.swift:46:25:46:51 | StringInterpolationExpr | This predicate depends on a $@. | predicateInjection.swift:44:24:44:79 | String(...) | user-provided value |
+| predicateInjection.swift:47:25:47:51 | ... + ... | predicateInjection.swift:44:24:44:79 | String(...) | predicateInjection.swift:47:25:47:51 | ... + ... | This predicate depends on a $@. | predicateInjection.swift:44:24:44:79 | String(...) | user-provided value |
+edges
+| predicateInjection.swift:23:9:23:20 | remoteString | predicateInjection.swift:26:25:26:36 | remoteString | provenance |  |
+| predicateInjection.swift:23:9:23:20 | remoteString | predicateInjection.swift:29:25:29:36 | remoteString | provenance |  |
+| predicateInjection.swift:23:9:23:20 | remoteString | predicateInjection.swift:31:25:31:36 | remoteString | provenance |  |
+| predicateInjection.swift:23:9:23:20 | remoteString | predicateInjection.swift:32:25:32:36 | remoteString | provenance |  |
+| predicateInjection.swift:23:9:23:20 | remoteString | predicateInjection.swift:36:25:36:36 | remoteString | provenance |  |
+| predicateInjection.swift:23:9:23:20 | remoteString | predicateInjection.swift:39:42:39:53 | remoteString | provenance |  |
+| predicateInjection.swift:23:24:23:78 | String(...) | predicateInjection.swift:23:9:23:20 | remoteString | provenance |  |
+| predicateInjection.swift:44:9:44:20 | remoteString | predicateInjection.swift:46:38:46:49 | remoteString | provenance |  |
+| predicateInjection.swift:44:9:44:20 | remoteString | predicateInjection.swift:47:40:47:51 | remoteString | provenance |  |
+| predicateInjection.swift:44:24:44:79 | String(...) | predicateInjection.swift:44:9:44:20 | remoteString | provenance |  |
+| predicateInjection.swift:46:38:46:49 | remoteString | predicateInjection.swift:46:25:46:51 | StringInterpolationExpr | provenance |  |
+| predicateInjection.swift:47:40:47:51 | remoteString | predicateInjection.swift:47:25:47:51 | ... + ... | provenance |  |
+nodes
+| predicateInjection.swift:23:9:23:20 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:23:24:23:78 | String(...) | semmle.label | String(...) |
+| predicateInjection.swift:26:25:26:36 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:29:25:29:36 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:31:25:31:36 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:32:25:32:36 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:36:25:36:36 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:39:42:39:53 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:44:9:44:20 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:44:24:44:79 | String(...) | semmle.label | String(...) |
+| predicateInjection.swift:46:25:46:51 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| predicateInjection.swift:46:38:46:49 | remoteString | semmle.label | remoteString |
+| predicateInjection.swift:47:25:47:51 | ... + ... | semmle.label | ... + ... |
+| predicateInjection.swift:47:40:47:51 | remoteString | semmle.label | remoteString |
+subpaths

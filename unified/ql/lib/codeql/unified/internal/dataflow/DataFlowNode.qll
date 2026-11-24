@@ -101,7 +101,11 @@ predicate performsVariableAccess(
   or
   exists(Callable callable |
     repr = callable and
-    var = getImplicitReceiverVariable(callable) and
+    (
+      var = getImplicitReceiverVariable(callable)
+      or
+      var.isImplicitFunctionExprParameter(callable, _)
+    ) and
     kind.isWrite() and
     cfgNode.(ControlFlow::EntryNode).getEnclosingCallable() = callable
   )
@@ -118,8 +122,14 @@ newtype TDataFlowNode =
     not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
   } or
   TCallableNode(DataFlowCallable callable) or
-  TImplicitParameterNode(DataFlowCallable callable, ImplicitParameterPosition pos) {
-    not exists(callable.asSummarizedCallable()) // represented by TSummaryNode
+  TImplicitParameterNode(DataFlowCallable callable, ParameterPosition pos) {
+    not exists(callable.asSummarizedCallable()) and // represented by TSummaryNode
+    (
+      pos instanceof ImplicitParameterPosition
+      or
+      pos.asPositional() =
+        [0 .. callable.asSourceCallable().(FunctionExpr).getNumberOfImplicitParameters() - 1]
+    )
   } or
   TImplicitArgumentNode(DataFlowCall call, ImplicitArgumentPosition pos, Boolean isPost) {
     not call.isSummaryCall(_, _) // represented by TSummaryNode
@@ -205,7 +215,7 @@ class BuilderNode extends TDataFlowNodeStage1 {
   predicate isReturnNodeEx(DataFlowCallable callable) { this = TReturnNode(callable) }
 
   /** Holds if this node represents an implicit parameter of `callable`. */
-  predicate isImplicitParameter(DataFlowCallable callable, ImplicitParameterPosition pos) {
+  predicate isImplicitParameter(DataFlowCallable callable, ParameterPosition pos) {
     this = TImplicitParameterNode(callable, pos)
   }
 

@@ -15,9 +15,13 @@ module DataFlowInput implements InputSig<Location> {
 
   class ContentSet = D::ContentSet;
 
-  class ContentApprox = Content; // TODO
+  class ContentApprox = D::ContentApprox;
 
-  ContentApprox getContentApprox(Content c) { result = c } // TODO
+  ContentApprox getContentApprox(Content c) {
+    result = c
+    or
+    result.asNamedMember() = c.asField().getName()
+  }
 
   //
   // Parameter, argument, return, and out nodes and their positions/kinds
@@ -98,7 +102,7 @@ module DataFlowInput implements InputSig<Location> {
   private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition pos) {
     exists(Argument arg |
       n.asExpr() = arg.getValue() and
-      call.asExplicitCall().getAnArgument() = arg
+      call.getCallExpr().getAnArgument() = arg
     |
       pos.asPositional() = arg.getPositionalIndex()
       or
@@ -108,7 +112,13 @@ module DataFlowInput implements InputSig<Location> {
     n.(BuilderNode).isImplicitArgument(call, pos, false)
     or
     n.(BuilderNode).isSetterValueArgument(call) and
-    pos.asPositional() = 0
+    if call.asSetterCall() instanceof CallExpr
+    then
+      // A setter method takes the new value as a named parameter, `#newValue`
+      pos.asNamed() = "#newValue"
+    else
+      // A property setter takes the new value as its only parameter
+      pos.asPositional() = 0
     or
     exists(FlowSummaryOutput::SummaryNode callee |
       FlowSummaryOutput::summaryArgumentNode(callee, getSummaryNode(n), pos) and

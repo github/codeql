@@ -46,34 +46,6 @@ class DbDataReaderParameterStoredFlowSource extends DatabaseInputSource {
   }
 }
 
-/** An expression that accesses a method of `DbDataReader` or a sub-class. */
-deprecated class DbDataReaderMethodStoredFlowSource extends DataFlow::Node {
-  DbDataReaderMethodStoredFlowSource() {
-    this.asExpr().(MethodCall).getTarget().getDeclaringType() =
-      any(SystemDataCommon::DbDataReader dataReader).getASubType*()
-  }
-}
-
-/** An expression that accesses a property of `DbDataReader` or a sub-class. */
-deprecated class DbDataReaderPropertyStoredFlowSource extends DataFlow::Node {
-  DbDataReaderPropertyStoredFlowSource() {
-    this.asExpr().(PropertyAccess).getTarget().getDeclaringType() =
-      any(SystemDataCommon::DbDataReader dataReader).getASubType*()
-  }
-}
-
-/**
- * DEPRECATED: Use `EntityFramework::StoredFlowSource` and `NHibernate::StoredFlowSource` instead.
- *
- * A read of a mapped property.
- */
-deprecated class ORMMappedProperty extends DataFlow::Node {
-  ORMMappedProperty() {
-    this instanceof EntityFramework::StoredFlowSource or
-    this instanceof NHibernate::StoredFlowSource
-  }
-}
-
 private class ExternalDatabaseInputSource extends DatabaseInputSource {
   ExternalDatabaseInputSource() { sourceNode(this, "database") }
 }

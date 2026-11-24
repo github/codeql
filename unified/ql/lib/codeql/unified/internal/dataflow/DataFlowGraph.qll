@@ -24,14 +24,21 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isLocalVariableWrite(callable, getImplicitReceiverVariable(callable))
   )
   or
-  exists(CallExpr call, Expr receiverExpr |
-    receiverExpr = call.getCallee().(MemberAccessExpr).getBase()
+  exists(FunctionExpr fe, LocalVariable var, ParameterPosition pos |
+    var.isImplicitFunctionExprParameter(fe, pos.asPositional()) and
+    node1.isImplicitParameter(toDataFlowCallable(fe), pos) and
+    step.value() and
+    node2.isLocalVariableWrite(fe, var)
+  )
+  or
+  exists(DataFlowCall call, Expr receiverExpr |
+    receiverExpr = call.getCallExpr().getCallee().(MemberAccessExpr).getBase()
   |
     node1.isResultValue(receiverExpr) and
     step.value() and
-    node2.isReceiverArgument(call)
+    node2.isReceiverArgumentEx(call)
     or
-    node1.isReceiverPostUpdate(call) and
+    node1.isReceiverPostUpdateEx(call) and
     step.value() and
     node2.isPostUpdate(receiverExpr)
   )
@@ -46,12 +53,14 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
     node2.isPostUpdate(call.getCallee())
   )
   or
-  exists(CallExpr call, UnqualifiedMemberAccess callee | callee = call.getCallee() |
+  exists(DataFlowCall call, UnqualifiedMemberAccess callee |
+    callee = call.getCallExpr().getCallee()
+  |
     node1.isLocalVariableRead(callee, callee.getImplicitQualifierVariable()) and
     step.value() and
-    node2.isReceiverArgument(call)
+    node2.isReceiverArgumentEx(call)
     or
-    node1.isReceiverPostUpdate(call) and
+    node1.isReceiverPostUpdateEx(call) and
     step.value() and
     node2.isLocalVariablePostUpdate(callee, callee.getImplicitQualifierVariable())
   )
@@ -92,11 +101,11 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   or
   exists(UnqualifiedMemberAccess access | access.isInstanceAccess() |
     node1.isLocalVariableRead(access, access.getImplicitQualifierVariable()) and
-    step.readName(access.getMemberName()) and
+    step.read(ContentSet::member(access)) and
     node2.isResultValue(access)
     or
     (node1.isIncomingValue(access) or node1.isPostUpdate(access)) and
-    step.storeName(access.getMemberName()) and
+    step.store(ContentSet::member(access)) and
     node2.isLocalVariablePostUpdate(access, access.getImplicitQualifierVariable())
     or
     // Pass the receiver along to the getter/setter invoked by this expression
@@ -129,11 +138,11 @@ predicate step(BuilderNode node1, Step step, BuilderNode node2) {
   or
   exists(MemberAccessExpr expr |
     node1.isResultValue(expr.getBase()) and
-    step.readName(expr.getMemberName()) and
+    step.read(ContentSet::member(expr)) and
     node2.isResultValue(expr)
     or
     (node1.isIncomingValue(expr) or node1.isPostUpdate(expr)) and
-    step.storeName(expr.getMemberName()) and
+    step.store(ContentSet::member(expr)) and
     node2.isPostUpdate(expr.getBase())
     or
     // Pass the receiver along to the getter/setter invoked by this expression

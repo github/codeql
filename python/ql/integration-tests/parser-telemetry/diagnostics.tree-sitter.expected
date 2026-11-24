@@ -1,0 +1,18 @@
+{
+  "attributes": {
+    "old_parser_file_count": 0,
+    "tree_sitter_parser_file_count": 1
+  },
+  "markdownMessage": "Internal parser telemetry for the Python extractor.\n\nNo action needed.",
+  "severity": "note",
+  "source": {
+    "extractorName": "python",
+    "id": "py/extractor/parser-statistics",
+    "name": "Python parser statistics"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

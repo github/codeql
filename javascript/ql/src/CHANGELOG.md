@@ -1,3 +1,7 @@
+## 2.5.2
+
+No user-facing changes.
+
 ## 2.5.1
 
 ### Minor Analysis Improvements

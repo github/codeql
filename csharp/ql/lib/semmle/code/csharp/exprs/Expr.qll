@@ -87,14 +87,6 @@ class Expr extends ControlFlowElement, @expr {
   Expr stripCasts() { result = this }
 
   /**
-   * DEPRECATED: Use `stripImplicit` instead.
-   *
-   * Gets an expression that is the result of stripping (recursively) all
-   * implicit casts from this expression, if any.
-   */
-  deprecated Expr stripImplicitCasts() { result = this.stripImplicit() }
-
-  /**
    * Gets an expression that is the result of stripping (recursively) all
    * implicit casts and implicit ToString calls from this expression, if any.
    */
@@ -179,7 +171,7 @@ class LocalVariableDeclExpr extends Expr, @local_var_decl_expr {
     result = "_"
   }
 
-  /** Gets the variable access used in this declaration, if any. */
+  /** Gets the defining variable access used in this declaration, if any. */
   LocalVariableAccess getAccess() {
     result = this.getChild(0) or
     result = this // `out` argument
