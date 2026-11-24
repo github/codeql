@@ -40,6 +40,8 @@ module Types {
       SEED() or
       SM4() or
       SKIPJACK() or
+      TWOFISH() or
+      SALSA20() or
       OtherSymmetricCipherType()
 
     newtype TAsymmetricCipherType =
@@ -120,6 +122,10 @@ module Types {
       type = SM4() and name = "SM4" and s = Block()
       or
       type = SKIPJACK() and name = "Skipjack" and s = Block()
+      or
+      type = TWOFISH() and name = "Twofish" and s = Block()
+      or
+      type = SALSA20() and name = "Salsa20" and s = Stream()
       or
       type = OtherSymmetricCipherType() and
       name = "UnknownSymmetricCipher" and
@@ -218,6 +224,7 @@ module Types {
       SIV() or // Misuse-resistant encryption, used in secure storage
       OCB() or // Efficient AEAD mode
       KWP() or
+      LRW() or // Insecure tweakable block cipher mode
       OFB() or
       PCBC() or
       OtherMode()
@@ -241,6 +248,8 @@ module Types {
         this = OCB() and result = "OCB"
         or
         this = CFB() and result = "CFB"
+        or
+        this = LRW() and result = "LRW"
         or
         this = OFB() and result = "OFB"
       }
@@ -329,6 +338,7 @@ module Types {
     DH() or // Diffie-Hellman
     EDH() or // Ephemeral Diffie-Hellman
     ECDH() or // Elliptic Curve Diffie-Hellman
+    ECMQV() or // Elliptic Curve Menezes-Qu-Vanstone
     // NOTE: for now ESDH is considered simply EDH
     //ESDH() or // Ephemeral-Static Diffie-Hellman
     // Note: x25519 and x448 are applications of ECDH
@@ -341,6 +351,8 @@ module Types {
       this = EDH() and result = "EDH"
       or
       this = ECDH() and result = "ECDH"
+      or
+      this = ECMQV() and result = "ECMQV"
       or
       this = OtherKeyAgreementType() and result = "UnknownKeyAgreementType"
     }
@@ -469,15 +481,21 @@ module Types {
       or
       curveName = "CURVE448" and keySize = 448 and curveFamily = CURVE448()
       or
-      // TODO: separate these into key agreement logic or sign/verify (ECDSA / ECDH)
-      // or
-      // curveName = "X25519" and keySize = 255 and curveFamily = CURVE25519()
-      // or
-      // curveName = "ED25519" and keySize = 255 and curveFamily = CURVE25519()
-      // or
-      // curveName = "ED448" and keySize = 448 and curveFamily = CURVE448()
-      // or
-      // curveName = "X448" and keySize = 448 and curveFamily = CURVE448()
+      curveName = "X25519" and keySize = 255 and curveFamily = CURVE25519()
+      or
+      curveName = "ED25519" and keySize = 255 and curveFamily = CURVE25519()
+      or
+      curveName = "ED448" and keySize = 448 and curveFamily = CURVE448()
+      or
+      curveName = "X448" and keySize = 448 and curveFamily = CURVE448()
+      or
+      // NIST P-curve aliases
+      curveName = "P-256" and keySize = 256 and curveFamily = SEC()
+      or
+      curveName = "P-384" and keySize = 384 and curveFamily = SEC()
+      or
+      curveName = "P-521" and keySize = 521 and curveFamily = SEC()
+      or
       curveName = "SM2" and keySize in [256, 512] and curveFamily = SM2()
     )
   }
