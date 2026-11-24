@@ -214,7 +214,11 @@ predicate insecureAlgorithm(string name, string reason) {
     "It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead."
   or
   // 3TDEA (Triple DES) has different names across JCA, JSSE, and Bouncy Castle.
-  name = ["DES[-_]?ede(Wrap)?", "Triple[-_]?DES", "3[-_]?DES", "DES[-_]?3"] and
+  name =
+    [
+      "DES[-_]?ede((RFC3211)?Wrap)?", "(?i)PBEWithSHA1AndDESede", "Triple[-_]?DES", "3[-_]?DES",
+      "DES[-_]?3"
+    ] and
   reason =
     "It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead."
   or

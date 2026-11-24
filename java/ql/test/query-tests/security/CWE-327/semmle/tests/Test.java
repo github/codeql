@@ -52,6 +52,12 @@ class Test {
 				// BAD: Triple DES (3TDEA) and Skipjack are disallowed by NIST SP 800-131A Rev. 2
 				cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding"); // $ Alert[java/weak-cryptographic-algorithm]
 				cipher = Cipher.getInstance("DESEDE"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("DESedeRFC3211Wrap"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("DESEDERFC3211WRAP"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("desederfc3211wrap"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWithSHA1AndDESedE"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWITHSHA1ANDDESEDE"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("pbewithsha1anddesede"); // $ Alert[java/weak-cryptographic-algorithm]
 				cipher = Cipher.getInstance("TripleDES"); // $ Alert[java/weak-cryptographic-algorithm]
 				cipher = Cipher.getInstance("3DES"); // $ Alert[java/weak-cryptographic-algorithm]
 				cipher = Cipher.getInstance("SKIPJACK"); // $ Alert[java/weak-cryptographic-algorithm]

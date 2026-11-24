@@ -1,2 +1,2 @@
-| Test.java:50:4:50:17 | super(...) | Test.java:50:10:50:15 | "some" |
-| Test.java:54:3:54:38 | getInstance(...) | Test.java:54:29:54:37 | "another" |
+| Test.java:56:4:56:17 | super(...) | Test.java:56:10:56:15 | "some" |
+| Test.java:60:3:60:38 | getInstance(...) | Test.java:60:29:60:37 | "another" |

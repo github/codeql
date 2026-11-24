@@ -7,10 +7,16 @@
 | Test.java:49:14:49:55 | getInstance(...) | Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | Cryptographic algorithm $@ is insecure. CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead. | Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | AES/cbc/Pkcs5Padding |
 | Test.java:53:14:53:58 | getInstance(...) | Test.java:53:33:53:57 | "DESede/CBC/PKCS5Padding" | Test.java:53:33:53:57 | "DESede/CBC/PKCS5Padding" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:53:33:53:57 | "DESede/CBC/PKCS5Padding" | DESede/CBC/PKCS5Padding |
 | Test.java:54:14:54:41 | getInstance(...) | Test.java:54:33:54:40 | "DESEDE" | Test.java:54:33:54:40 | "DESEDE" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:54:33:54:40 | "DESEDE" | DESEDE |
-| Test.java:55:14:55:44 | getInstance(...) | Test.java:55:33:55:43 | "TripleDES" | Test.java:55:33:55:43 | "TripleDES" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:55:33:55:43 | "TripleDES" | TripleDES |
-| Test.java:56:14:56:39 | getInstance(...) | Test.java:56:33:56:38 | "3DES" | Test.java:56:33:56:38 | "3DES" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:56:33:56:38 | "3DES" | 3DES |
-| Test.java:57:14:57:43 | getInstance(...) | Test.java:57:33:57:42 | "SKIPJACK" | Test.java:57:33:57:42 | "SKIPJACK" | Cryptographic algorithm $@ is insecure. It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:57:33:57:42 | "SKIPJACK" | SKIPJACK |
-| Test.java:58:14:58:43 | getInstance(...) | Test.java:58:33:58:42 | "Skipjack" | Test.java:58:33:58:42 | "Skipjack" | Cryptographic algorithm $@ is insecure. It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:58:33:58:42 | "Skipjack" | Skipjack |
+| Test.java:55:14:55:52 | getInstance(...) | Test.java:55:33:55:51 | "DESedeRFC3211Wrap" | Test.java:55:33:55:51 | "DESedeRFC3211Wrap" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:55:33:55:51 | "DESedeRFC3211Wrap" | DESedeRFC3211Wrap |
+| Test.java:56:14:56:52 | getInstance(...) | Test.java:56:33:56:51 | "DESEDERFC3211WRAP" | Test.java:56:33:56:51 | "DESEDERFC3211WRAP" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:56:33:56:51 | "DESEDERFC3211WRAP" | DESEDERFC3211WRAP |
+| Test.java:57:14:57:52 | getInstance(...) | Test.java:57:33:57:51 | "desederfc3211wrap" | Test.java:57:33:57:51 | "desederfc3211wrap" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:57:33:57:51 | "desederfc3211wrap" | desederfc3211wrap |
+| Test.java:58:14:58:55 | getInstance(...) | Test.java:58:33:58:54 | "PBEWithSHA1AndDESedE" | Test.java:58:33:58:54 | "PBEWithSHA1AndDESedE" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:58:33:58:54 | "PBEWithSHA1AndDESedE" | PBEWithSHA1AndDESedE |
+| Test.java:59:14:59:55 | getInstance(...) | Test.java:59:33:59:54 | "PBEWITHSHA1ANDDESEDE" | Test.java:59:33:59:54 | "PBEWITHSHA1ANDDESEDE" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:59:33:59:54 | "PBEWITHSHA1ANDDESEDE" | PBEWITHSHA1ANDDESEDE |
+| Test.java:60:14:60:55 | getInstance(...) | Test.java:60:33:60:54 | "pbewithsha1anddesede" | Test.java:60:33:60:54 | "pbewithsha1anddesede" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:60:33:60:54 | "pbewithsha1anddesede" | pbewithsha1anddesede |
+| Test.java:61:14:61:44 | getInstance(...) | Test.java:61:33:61:43 | "TripleDES" | Test.java:61:33:61:43 | "TripleDES" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:61:33:61:43 | "TripleDES" | TripleDES |
+| Test.java:62:14:62:39 | getInstance(...) | Test.java:62:33:62:38 | "3DES" | Test.java:62:33:62:38 | "3DES" | Cryptographic algorithm $@ is insecure. It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:62:33:62:38 | "3DES" | 3DES |
+| Test.java:63:14:63:43 | getInstance(...) | Test.java:63:33:63:42 | "SKIPJACK" | Test.java:63:33:63:42 | "SKIPJACK" | Cryptographic algorithm $@ is insecure. It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:63:33:63:42 | "SKIPJACK" | SKIPJACK |
+| Test.java:64:14:64:43 | getInstance(...) | Test.java:64:33:64:42 | "Skipjack" | Test.java:64:33:64:42 | "Skipjack" | Cryptographic algorithm $@ is insecure. It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST. Consider using AES instead. | Test.java:64:33:64:42 | "Skipjack" | Skipjack |
 edges
 nodes
 | Test.java:19:45:19:49 | "DES" | semmle.label | "DES" |
@@ -21,8 +27,14 @@ nodes
 | Test.java:49:33:49:54 | "AES/cbc/Pkcs5Padding" | semmle.label | "AES/cbc/Pkcs5Padding" |
 | Test.java:53:33:53:57 | "DESede/CBC/PKCS5Padding" | semmle.label | "DESede/CBC/PKCS5Padding" |
 | Test.java:54:33:54:40 | "DESEDE" | semmle.label | "DESEDE" |
-| Test.java:55:33:55:43 | "TripleDES" | semmle.label | "TripleDES" |
-| Test.java:56:33:56:38 | "3DES" | semmle.label | "3DES" |
-| Test.java:57:33:57:42 | "SKIPJACK" | semmle.label | "SKIPJACK" |
-| Test.java:58:33:58:42 | "Skipjack" | semmle.label | "Skipjack" |
+| Test.java:55:33:55:51 | "DESedeRFC3211Wrap" | semmle.label | "DESedeRFC3211Wrap" |
+| Test.java:56:33:56:51 | "DESEDERFC3211WRAP" | semmle.label | "DESEDERFC3211WRAP" |
+| Test.java:57:33:57:51 | "desederfc3211wrap" | semmle.label | "desederfc3211wrap" |
+| Test.java:58:33:58:54 | "PBEWithSHA1AndDESedE" | semmle.label | "PBEWithSHA1AndDESedE" |
+| Test.java:59:33:59:54 | "PBEWITHSHA1ANDDESEDE" | semmle.label | "PBEWITHSHA1ANDDESEDE" |
+| Test.java:60:33:60:54 | "pbewithsha1anddesede" | semmle.label | "pbewithsha1anddesede" |
+| Test.java:61:33:61:43 | "TripleDES" | semmle.label | "TripleDES" |
+| Test.java:62:33:62:38 | "3DES" | semmle.label | "3DES" |
+| Test.java:63:33:63:42 | "SKIPJACK" | semmle.label | "SKIPJACK" |
+| Test.java:64:33:64:42 | "Skipjack" | semmle.label | "Skipjack" |
 subpaths
