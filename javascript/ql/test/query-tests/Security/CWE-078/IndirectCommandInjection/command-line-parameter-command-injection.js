@@ -147,3 +147,9 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 
 	cp.execFile(program.opts().pizzaType, ["foo", "bar"]);
 });
+
+(function() {
+	const command = "ls " + process.argv[2]; // $ Source
+	cp.spawn("env", ["sh", "-c", command]); // $ Alert
+	cp.spawn("nice", ["echo", "sh", "-c", command]);
+});
