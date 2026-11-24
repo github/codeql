@@ -54,32 +54,49 @@ pub fn project_toolchain() -> io::Result<process::Output> {
 /// features. Older dated nightlies are replaced with the oldest nightly known
 /// to be compatible with our rust-analyzer version.
 pub fn select_toolchain() -> String {
-    let project_toolchain = project_toolchain()
-        .ok()
-        .filter(|output| output.status.success())
-        .and_then(|output| String::from_utf8(output.stdout).ok())
-        .unwrap_or_default();
-    select_toolchain_from_project_toolchain(&project_toolchain)
+    let stdout = |command: io::Result<process::Output>| {
+        command
+            .ok()
+            .filter(|output| output.status.success())
+            .and_then(|output| String::from_utf8(output.stdout).ok())
+            .unwrap_or_default()
+    };
+    let project_toolchain = stdout(project_toolchain());
+    let rustc_version = stdout(process::Command::new("rustc").arg("--version").output());
+    select_toolchain_from_project_toolchain(&project_toolchain, &rustc_version)
 }
 
-fn select_toolchain_from_project_toolchain(project_toolchain: &str) -> String {
+/// A toolchain is nightly when its name says so, or when its compiler reports a
+/// nightly or dev build (e.g. `rustc 1.102.0-nightly (277240238 2026-11-23)`), which
+/// covers custom toolchains linked with `rustup toolchain link`.
+fn select_toolchain_from_project_toolchain(project_toolchain: &str, rustc_version: &str) -> String {
+    let nightly_rustc = rustc_version
+        .split_whitespace()
+        .nth(1)
+        .is_some_and(|version| version.ends_with("-nightly") || version.ends_with("-dev"));
     let nightly_toolchain = project_toolchain
         .split_whitespace()
         .next()
-        .filter(|toolchain| toolchain.starts_with("nightly"))
-        .map(str::to_owned)
-        .map(cap_nightly_toolchain);
+        .filter(|toolchain| toolchain.starts_with("nightly") || nightly_rustc)
+        .map(|toolchain| cap_nightly_toolchain(toolchain.to_owned(), rustc_version));
     nightly_toolchain.unwrap_or_else(|| FIXED_RUST_TOOLCHAIN.to_owned())
 }
 
-fn cap_nightly_toolchain(nightly_toolchain: String) -> String {
-    if let Some(project_date) = nightly_date(&nightly_toolchain)
+fn cap_nightly_toolchain(nightly_toolchain: String, rustc_version: &str) -> String {
+    if let Some(project_date) =
+        nightly_date(&nightly_toolchain).or_else(|| rustc_commit_date(rustc_version))
         && project_date < MINIMUM_NIGHTLY_DATE
     {
         format!("nightly-{MINIMUM_NIGHTLY_DATE}")
     } else {
         nightly_toolchain
     }
+}
+
+/// Parse the commit date from `rustc --version` output.
+fn rustc_commit_date(rustc_version: &str) -> Option<NaiveDate> {
+    let date = rustc_version.trim().strip_suffix(')')?.rsplit(' ').next()?;
+    NaiveDate::parse_from_str(date, "%Y-%m-%d").ok()
 }
 
 /// Parse the date from a nightly toolchain string.
@@ -104,12 +121,16 @@ pub fn log_project_toolchain() {
 
 #[cfg(test)]
 mod tests {
-    use super::{MINIMUM_NIGHTLY_DATE, select_toolchain_from_project_toolchain};
+    use super::{
+        FIXED_RUST_TOOLCHAIN, MINIMUM_NIGHTLY_DATE, select_toolchain_from_project_toolchain,
+    };
+
+    const STABLE_RUSTC: &str = "rustc 1.100.0 (d3a0b1a7f 2026-10-29)";
 
     #[test]
     fn preserves_rolling_nightly_toolchain() {
         assert_eq!(
-            select_toolchain_from_project_toolchain("nightly-aarch64-apple-darwin"),
+            select_toolchain_from_project_toolchain("nightly-aarch64-apple-darwin", STABLE_RUSTC),
             "nightly-aarch64-apple-darwin"
         );
     }
@@ -117,11 +138,14 @@ mod tests {
     #[test]
     fn replaces_old_dated_nightly_toolchain() {
         assert_eq!(
-            select_toolchain_from_project_toolchain("nightly-2025-07-15-aarch64-apple-darwin"),
+            select_toolchain_from_project_toolchain(
+                "nightly-2025-07-15-aarch64-apple-darwin",
+                STABLE_RUSTC
+            ),
             format!("nightly-{MINIMUM_NIGHTLY_DATE}")
         );
         assert_eq!(
-            select_toolchain_from_project_toolchain("nightly-2025-07-15"),
+            select_toolchain_from_project_toolchain("nightly-2025-07-15", STABLE_RUSTC),
             format!("nightly-{MINIMUM_NIGHTLY_DATE}")
         );
     }
@@ -129,7 +153,10 @@ mod tests {
     #[test]
     fn preserves_minimum_dated_nightly_toolchain() {
         assert_eq!(
-            select_toolchain_from_project_toolchain("nightly-2026-07-15-aarch64-apple-darwin"),
+            select_toolchain_from_project_toolchain(
+                "nightly-2026-07-15-aarch64-apple-darwin",
+                STABLE_RUSTC
+            ),
             "nightly-2026-07-15-aarch64-apple-darwin"
         );
     }
@@ -137,7 +164,10 @@ mod tests {
     #[test]
     fn preserves_newer_dated_nightly_toolchain() {
         assert_eq!(
-            select_toolchain_from_project_toolchain("nightly-2026-09-01-aarch64-apple-darwin"),
+            select_toolchain_from_project_toolchain(
+                "nightly-2026-09-01-aarch64-apple-darwin",
+                STABLE_RUSTC
+            ),
             "nightly-2026-09-01-aarch64-apple-darwin"
         );
     }
@@ -145,12 +175,52 @@ mod tests {
     #[test]
     fn preserves_unrecognized_nightly_toolchain() {
         assert_eq!(
-            select_toolchain_from_project_toolchain("nightly-custom"),
+            select_toolchain_from_project_toolchain("nightly-custom", STABLE_RUSTC),
             "nightly-custom"
         );
         assert_eq!(
-            select_toolchain_from_project_toolchain("nightly-2026-99-99-aarch64-apple-darwin"),
+            select_toolchain_from_project_toolchain(
+                "nightly-2026-99-99-aarch64-apple-darwin",
+                STABLE_RUSTC
+            ),
             "nightly-2026-99-99-aarch64-apple-darwin"
+        );
+    }
+
+    #[test]
+    fn replaces_stable_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain(
+                "stable-x86_64-unknown-linux-gnu (default)",
+                STABLE_RUSTC
+            ),
+            FIXED_RUST_TOOLCHAIN
+        );
+    }
+
+    #[test]
+    fn preserves_linked_nightly_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain(
+                "rustc-master (default)",
+                "rustc 1.102.0-nightly (277240238 2026-11-23)\n"
+            ),
+            "rustc-master"
+        );
+        assert_eq!(
+            select_toolchain_from_project_toolchain("stage1 (default)", "rustc 1.102.0-dev\n"),
+            "stage1"
+        );
+    }
+
+    #[test]
+    fn replaces_old_linked_nightly_toolchain() {
+        assert_eq!(
+            select_toolchain_from_project_toolchain(
+                "my-nightly (default)",
+                "rustc 1.90.0-nightly (0123456789 2025-07-15)"
+            ),
+            format!("nightly-{MINIMUM_NIGHTLY_DATE}")
         );
     }
 
