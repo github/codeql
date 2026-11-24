@@ -199,11 +199,6 @@ module BoostorgAsio {
       not result.getLocation().getFile().toString().matches("%/boost/asio/%") and
       result.fromSource()
     }
-
-    /**
-     * DEPRECATED: Use `getAConstructorCall` instead.
-     */
-    deprecated ConstructorCall getAContructorCall() { result = this.getAConstructorCall() }
   }
 
   /**
