@@ -103,9 +103,7 @@ private predicate isConstantNumber(Expr e) {
     not v.isParameter() and
     not v.isNamespaceExport() and
     not v = any(EnhancedForLoop loop).getAnIterationVariable() and
-    not exists(EnhancedForLoop loop |
-      loop.getIteratorExpr().stripParens() = v.getAnAccess()
-    ) and
+    not exists(EnhancedForLoop loop | loop.getIteratorExpr().stripParens() = v.getAnAccess()) and
     forex(Expr assigned | assigned = v.getAnAssignedExpr() | isConstantNumber(assigned)) and
     forall(VarAccess write |
       write = v.getAnAccess() and
