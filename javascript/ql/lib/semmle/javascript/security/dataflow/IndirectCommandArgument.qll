@@ -95,10 +95,10 @@ private DataFlow::Node argumentListElement(DataFlow::SourceNode args) {
 
 /** Holds if the first `n` elements are recognized `env` options. */
 private predicate envOptions(DataFlow::ArrayCreationNode args, int n) {
-  n = 0
+  n = 0 and args.getSize() >= 0
   or
   envOptions(args, n - 1) and
-  args.getElement(n - 1).getALocalSource().getStringValue() = ["-i", "--ignore-environment", "-"]
+  args.getElement(n - 1).getALocalSource().getStringValue() = ["-i", "--ignore-environment"]
   or
   envOptions(args, n - 1) and
   args.getElement(n - 1).getALocalSource().getStringValue().regexpMatch("--unset=.+")
@@ -109,19 +109,49 @@ private predicate envOptions(DataFlow::ArrayCreationNode args, int n) {
   not args.getElement(n - 1).asExpr() instanceof SpreadElement
 }
 
-/** Holds if the first `n` elements are recognized `env` options and assignments. */
+/** Holds if `element` is an environment assignment, possibly with a dynamic value. */
+private predicate isEnvAssignment(DataFlow::Node element) {
+  exists(string value |
+    value = element.getStringValue() and
+    value.regexpMatch("[A-Za-z_][A-Za-z0-9_]*=.*")
+  )
+  or
+  exists(AddExpr add |
+    add = element.asExpr() and
+    add.getLeftOperand().getStringValue().regexpMatch("[A-Za-z_][A-Za-z0-9_]*=")
+  )
+  or
+  exists(DataFlow::Node prefix |
+    prefix = StringConcatenation::getFirstOperand(element) and
+    prefix.getStringValue().regexpMatch("[A-Za-z_][A-Za-z0-9_]*=")
+  )
+}
+
+/** Holds if the first `n` elements are recognized `env` options, delimiter, and assignments. */
 private predicate envPrefix(DataFlow::ArrayCreationNode args, int n) {
   envOptions(args, n)
   or
-  envOptions(args, n - 1) and args.getElement(n - 1).getStringValue() = "--"
+  envOptions(args, n - 1) and
+  args.getElement(n - 1).getALocalSource().getStringValue() = ["--", "-"]
+  or
+  envOptions(args, n - 1) and
+  (
+    isEnvAssignment(args.getElement(n - 1))
+    or
+    isEnvAssignment(args.getElement(n - 1).getALocalSource())
+  )
   or
   envPrefix(args, n - 1) and
-  args.getElement(n - 1).getALocalSource().getStringValue().regexpMatch("[^=]+=.*")
+  (
+    isEnvAssignment(args.getElement(n - 1))
+    or
+    isEnvAssignment(args.getElement(n - 1).getALocalSource())
+  )
 }
 
 /** Holds if the first `n` elements are recognized `nice` options. */
 private predicate nicePrefix(DataFlow::ArrayCreationNode args, int n) {
-  n = 0
+  n = 0 and args.getSize() >= 0
   or
   nicePrefix(args, n - 1) and
   args.getElement(n - 1)
@@ -135,6 +165,16 @@ private predicate nicePrefix(DataFlow::ArrayCreationNode args, int n) {
   not args.getElement(n - 1).asExpr() instanceof SpreadElement
 }
 
+/** Holds if the first `n` elements after a shell are supported shell options. */
+private predicate shellOptions(DataFlow::ArrayCreationNode args, int shellIndex, int n) {
+  n = 0 and
+  exists(args.getElement(shellIndex))
+  or
+  shellOptions(args, shellIndex, n - 1) and
+  args.getElement(shellIndex + n).getALocalSource().getStringValue() =
+    ["-a", "-b", "-C", "-e", "-f", "-h", "-k", "-l", "-m", "-n", "-p", "-t", "-u", "-v", "-x"]
+}
+
 /** Holds if a launcher runs the shell at index `i` in its argument array. */
 private predicate launcherShell(SystemCommandExecution sys, DataFlow::ArrayCreationNode args, int i) {
   exists(string launcher | launcher = commandArgument(sys).getStringValue() |
@@ -144,16 +184,56 @@ private predicate launcherShell(SystemCommandExecution sys, DataFlow::ArrayCreat
     (
       nicePrefix(args, i)
       or
-      nicePrefix(args, i - 1) and args.getElement(i - 1).getStringValue() = "--"
+      nicePrefix(args, i - 1) and
+      args.getElement(i - 1).getALocalSource().getStringValue() = "--"
     )
   )
 }
 
 /** Holds if the array can reach the call without its elements being modified. */
 private predicate positionalArrayReaches(
-  DataFlow::ArrayCreationNode args, ControlFlowNode node, ControlFlowNode use
+  DataFlow::ArrayCreationNode args, ControlFlowNode node, SystemCommandExecution sys
 ) {
-  node = use
+  args = positionalArgumentList(sys, DataFlow::TypeBackTracker::end()) and
+  exists(int i | launcherShell(sys, args, i)) and
+  (
+    node = sys.asExpr()
+    or
+    not exists(DataFlow::PropWrite write |
+      write = args.getAPropertyWrite() and
+      write.getWriteNode() = node and
+      (
+        not exists(write.getPropertyName())
+        or
+        write.getPropertyName().regexpMatch("([0-9]+|length)")
+      )
+    ) and
+    not exists(DeleteExpr del, DataFlow::PropRef ref |
+      del.getOperand().flow() = ref and
+      args.flowsTo(ref.getBase()) and
+      del = node and
+      (
+        not exists(ref.getPropertyName())
+        or
+        ref.getPropertyName().regexpMatch("[0-9]+")
+      )
+    ) and
+    not exists(DataFlow::MethodCallNode call |
+      call =
+        args.getAMethodCall([
+            "copyWithin", "fill", "pop", "push", "reverse", "shift", "sort", "splice", "unshift"
+          ]) and
+      node = call.asExpr()
+    ) and
+    positionalArrayReaches(args, node.getASuccessor(), sys)
+  )
+}
+
+/** Holds if an array reaches `use` without its positional elements being modified. */
+private predicate positionalArrayReachesUse(
+  DataFlow::SourceNode args, ControlFlowNode node, ControlFlowNode use
+) {
+  node = use and args.getFile() = use.getFile()
   or
   not exists(DataFlow::PropWrite write |
     write = args.getAPropertyWrite() and
@@ -164,6 +244,16 @@ private predicate positionalArrayReaches(
       write.getPropertyName().regexpMatch("([0-9]+|length)")
     )
   ) and
+  not exists(DeleteExpr del, DataFlow::PropRef ref |
+    del.getOperand().flow() = ref and
+    args.flowsTo(ref.getBase()) and
+    del = node and
+    (
+      not exists(ref.getPropertyName())
+      or
+      ref.getPropertyName().regexpMatch("[0-9]+")
+    )
+  ) and
   not exists(DataFlow::MethodCallNode call |
     call =
       args.getAMethodCall([
@@ -171,7 +261,69 @@ private predicate positionalArrayReaches(
         ]) and
     node = call.asExpr()
   ) and
-  positionalArrayReaches(args, node.getASuccessor(), use)
+  positionalArrayReachesUse(args, node.getASuccessor(), use)
+}
+
+/** Holds if a launcher call uses a wrapper's array parameter. */
+private predicate positionalWrapperArray(
+  SystemCommandExecution sys, DataFlow::ArrayCreationNode args, DataFlow::InvokeNode wrapperCall,
+  Function wrapper
+) {
+  exists(int argsIndex |
+    sys.asExpr().getContainer() = wrapper and
+    wrapperCall.getACallee() = wrapper and
+    args = wrapperCall.getArgument(argsIndex).getALocalSource() and
+    positionalArrayReachesUse(args, args.asExpr().getASuccessor(), wrapperCall.asExpr()) and
+    positionalArrayReachesUse(args, wrapper.getStart(), sys.asExpr()) and
+    exists(DataFlow::ParameterNode argsParam, VarAccess access |
+      argsParam.getParameter() = wrapper.getParameter(argsIndex) and
+      access = sys.getArgumentList().asExpr() and
+      access.getVariable() = argsParam.getParameter().getAVariable() and
+      positionalArrayReachesUse(argsParam, wrapper.getStart(), sys.asExpr())
+    )
+  )
+}
+
+/** Holds if one wrapper call launches `env` or `nice` with `args`. */
+private predicate wrappedLauncherShell(
+  SystemCommandExecution sys, DataFlow::ArrayCreationNode args, DataFlow::InvokeNode wrapperCall,
+  Function wrapper, int i
+) {
+  exists(
+    DataFlow::ParameterNode launcherParam, DataFlow::ParameterNode argsParam, string launcher,
+    int launcherIndex, int argsIndex
+  |
+    wrapperCall.getACallee() = wrapper and
+    sys.asExpr().getContainer() = wrapper and
+    launcherParam = sys.getACommandArgument().getALocalSource() and
+    argsParam = sys.getArgumentList().getALocalSource() and
+    launcherParam.getParameter() = wrapper.getParameter(launcherIndex) and
+    argsParam.getParameter() = wrapper.getParameter(argsIndex) and
+    args = wrapperCall.getArgument(argsIndex).getALocalSource() and
+    launcher = wrapperCall.getInvokeExpr().getArgument(launcherIndex).getStringValue()
+  |
+    launcher = ["env", "/usr/bin/env", "/bin/env"] and envPrefix(args, i)
+    or
+    launcher = ["nice", "/usr/bin/nice", "/bin/nice"] and
+    (
+      nicePrefix(args, i)
+      or
+      nicePrefix(args, i - 1) and
+      args.getElement(i - 1).getALocalSource().getStringValue() = "--"
+    )
+  )
+  or
+  exists(string launcher | launcher = sys.getACommandArgument().getStringValue() |
+    launcher = ["env", "/usr/bin/env", "/bin/env"] and envPrefix(args, i)
+    or
+    launcher = ["nice", "/usr/bin/nice", "/bin/nice"] and
+    (
+      nicePrefix(args, i)
+      or
+      nicePrefix(args, i - 1) and
+      args.getElement(i - 1).getALocalSource().getStringValue() = "--"
+    )
+  )
 }
 
 /**
@@ -209,15 +361,37 @@ predicate isIndirectCommandArgument(DataFlow::Node source, SystemCommandExecutio
   or
   exists(DataFlow::ArrayCreationNode args, int i, string dashC |
     args = positionalArgumentList(sys, DataFlow::TypeBackTracker::end()) and
-    (
-      args.asExpr().getContainer() != sys.asExpr().getContainer()
-      or
-      positionalArrayReaches(args, args.asExpr().getASuccessor(), sys.asExpr())
+    not exists(VarAccess access |
+      access = sys.getACommandArgument().asExpr() and access.getVariable().isParameter()
     ) and
+    not exists(DataFlow::ParameterNode parameter |
+      parameter = sys.getACommandArgument().getALocalSource()
+    ) and
+    positionalArrayReaches(args, args.asExpr().getASuccessor(), sys) and
     launcherShell(sys, args, i) and
     shellCmd(args.getElement(i).getALocalSource().asExpr(), dashC) and
-    args.getElement(i + 1).mayHaveStringValue(dashC) and
-    source = args.getElement(i + 2) and
+    exists(int optionCount, int cIndex |
+      shellOptions(args, i, optionCount) and
+      cIndex = i + optionCount + 1 and
+      args.getElement(cIndex).getALocalSource().getStringValue() = dashC and
+      source = args.getElement(cIndex + 1)
+    ) and
+    not source.asExpr() instanceof SpreadElement
+  )
+  or
+  exists(
+    DataFlow::ArrayCreationNode args, int i, string dashC, DataFlow::InvokeNode wrapperCall,
+    Function wrapper
+  |
+    positionalWrapperArray(sys, args, wrapperCall, wrapper) and
+    wrappedLauncherShell(sys, args, wrapperCall, wrapper, i) and
+    shellCmd(args.getElement(i).getALocalSource().asExpr(), dashC) and
+    exists(int optionCount, int cIndex |
+      shellOptions(args, i, optionCount) and
+      cIndex = i + optionCount + 1 and
+      args.getElement(cIndex).getALocalSource().getStringValue() = dashC and
+      source = args.getElement(cIndex + 1)
+    ) and
     not source.asExpr() instanceof SpreadElement
   )
 }
