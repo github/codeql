@@ -14,12 +14,5 @@ nuget xunit.runner.utility
 nuget Microsoft.NET.Test.Sdk
 nuget Microsoft.CodeAnalysis.CSharp 5.12.0
 nuget Microsoft.CodeAnalysis 5.12.0
-nuget Microsoft.Build 18.9.6
+nuget Microsoft.Build 18.12.2
 nuget Microsoft.VisualStudio.SolutionPersistence
-# Microsoft.Build 18.12.2 requires .NET 11, so pin its dependencies below
-# to versions compatible with .NET 10.
-# Remove these three explicit dependency entries when upgrading Microsoft.Build to 18.12.2 or newer.
-# That upgrade also requires building the extractor with .NET 11 and targeting .NET 11.
-nuget Microsoft.Build.Framework 18.9.6
-nuget Microsoft.Build.Utilities.Core 18.9.6
-nuget Microsoft.NET.StringTools 18.9.6
