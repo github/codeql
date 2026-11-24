@@ -1,6 +1,6 @@
 /**
  * @name Encryption using ECB
- * @description Using the ECB encryption mode makes code vulnerable to replay attacks.
+ * @description Using the ECB encryption mode can reveal patterns in encrypted data.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
