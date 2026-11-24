@@ -5,6 +5,10 @@ func sink(_ s: Any) -> String { return "" }
 
 class FieldBox {
     var field: String = ""
+
+    func setField(_ value: String) {
+        self.field = value
+    }
 }
 
 class OtherFieldBox {
@@ -18,6 +22,15 @@ func resolvedFields() {
     box.field = source("fields.resolved")
     sink(box.field)  // $ hasValueFlow=fields.resolved
     sink((box as! OtherFieldBox).field)
+}
+
+func postfixConditionalFieldWrite() {
+    let box = FieldBox()
+    box
+        #if FIRST
+            .setField(source("fields.postfix-write"))
+        #endif
+    sink(box.field)  // $ MISSING: hasValueFlow=fields.postfix-write
 }
 
 func inheritedFields() {

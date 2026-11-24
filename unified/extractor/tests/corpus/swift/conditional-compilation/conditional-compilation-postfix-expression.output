@@ -5,6 +5,66 @@ let result = value
         .bar("hi")
     #endif
 
+let branches = makeValue()
+    #if FIRST
+        .foo(.argument).bar[0]!
+    #elseif SECOND
+        .otherMember
+    #else
+        .baz()
+    #endif
+
+let noElse = makeValue()
+    #if FIRST
+        .foo()
+    #elseif SECOND
+        .bar()
+    #endif
+
+let emptyBranch = value
+    #if FIRST
+        .foo()
+    #else
+    #endif
+
+let nested = value
+    #if FIRST
+        .foo()
+            #if SECOND
+                .bar()
+            #else
+                .baz()
+            #endif
+    #else
+        .otherMember
+    #endif
+
+let inChain = value.foo()
+    #if CHAIN
+        .bar()
+    #endif
+
+let nestedWithoutBase = value
+    #if FIRST
+        #if SECOND
+            .foo()
+        #else
+            .bar()
+        #endif
+    #else
+        .baz()
+    #endif
+
+let postfixChain = baseExpr
+    #if CONDITION_1
+        #if CONDITION_2
+            .someMethod()
+        #endif
+        #if CONDITION_3
+            .otherMethod()
+        #endif
+    #endif
+
 ---
 
 sourceFile
@@ -76,14 +136,534 @@ sourceFile
               pattern:
                 identifierPattern
                   identifier: identifier "result"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "makeValue"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                forceUnwrapExpr
+                                  expression:
+                                    subscriptCallExpr
+                                      leftSquare: [
+                                      rightSquare: ]
+                                      arguments:
+                                        labeledExpr
+                                          expression:
+                                            integerLiteralExpr
+                                              literal: integerLiteral "0"
+                                      additionalTrailingClosures:
+                                      calledExpression:
+                                        memberAccessExpr
+                                          period: .
+                                          declName:
+                                            declReferenceExpr
+                                              baseName: identifier "bar"
+                                          base:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                                labeledExpr
+                                                  expression:
+                                                    memberAccessExpr
+                                                      period: .
+                                                      declName:
+                                                        declReferenceExpr
+                                                          baseName: identifier "argument"
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                memberAccessExpr
+                                                  period: .
+                                                  declName:
+                                                    declReferenceExpr
+                                                      baseName: identifier "foo"
+                                  exclamationMark: !
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "FIRST"
+                              poundKeyword: #if
+                            ifConfigClause
+                              elements:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "otherMember"
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "SECOND"
+                              poundKeyword: #elseif
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "baz"
+                              poundKeyword: #else
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "branches"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            declReferenceExpr
+                              baseName: identifier "makeValue"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "foo"
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "FIRST"
+                              poundKeyword: #if
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "bar"
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "SECOND"
+                              poundKeyword: #elseif
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "noElse"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "value"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "foo"
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "FIRST"
+                              poundKeyword: #if
+                            ifConfigClause
+                              poundKeyword: #else
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "emptyBranch"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "value"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                postfixIfConfigExpr
+                                  base:
+                                    functionCallExpr
+                                      leftParen: (
+                                      rightParen: )
+                                      arguments:
+                                      additionalTrailingClosures:
+                                      calledExpression:
+                                        memberAccessExpr
+                                          period: .
+                                          declName:
+                                            declReferenceExpr
+                                              baseName: identifier "foo"
+                                  config:
+                                    ifConfigDecl
+                                      clauses:
+                                        ifConfigClause
+                                          elements:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                memberAccessExpr
+                                                  period: .
+                                                  declName:
+                                                    declReferenceExpr
+                                                      baseName: identifier "bar"
+                                          condition:
+                                            declReferenceExpr
+                                              baseName: identifier "SECOND"
+                                          poundKeyword: #if
+                                        ifConfigClause
+                                          elements:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                memberAccessExpr
+                                                  period: .
+                                                  declName:
+                                                    declReferenceExpr
+                                                      baseName: identifier "baz"
+                                          poundKeyword: #else
+                                      poundEndif: #endif
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "FIRST"
+                              poundKeyword: #if
+                            ifConfigClause
+                              elements:
+                                memberAccessExpr
+                                  period: .
+                                  declName:
+                                    declReferenceExpr
+                                      baseName: identifier "otherMember"
+                              poundKeyword: #else
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "nested"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        functionCallExpr
+                          leftParen: (
+                          rightParen: )
+                          arguments:
+                          additionalTrailingClosures:
+                          calledExpression:
+                            memberAccessExpr
+                              period: .
+                              declName:
+                                declReferenceExpr
+                                  baseName: identifier "foo"
+                              base:
+                                declReferenceExpr
+                                  baseName: identifier "value"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "bar"
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "CHAIN"
+                              poundKeyword: #if
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "inChain"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "value"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                postfixIfConfigExpr
+                                  config:
+                                    ifConfigDecl
+                                      clauses:
+                                        ifConfigClause
+                                          elements:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                memberAccessExpr
+                                                  period: .
+                                                  declName:
+                                                    declReferenceExpr
+                                                      baseName: identifier "foo"
+                                          condition:
+                                            declReferenceExpr
+                                              baseName: identifier "SECOND"
+                                          poundKeyword: #if
+                                        ifConfigClause
+                                          elements:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                memberAccessExpr
+                                                  period: .
+                                                  declName:
+                                                    declReferenceExpr
+                                                      baseName: identifier "bar"
+                                          poundKeyword: #else
+                                      poundEndif: #endif
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "FIRST"
+                              poundKeyword: #if
+                            ifConfigClause
+                              elements:
+                                functionCallExpr
+                                  leftParen: (
+                                  rightParen: )
+                                  arguments:
+                                  additionalTrailingClosures:
+                                  calledExpression:
+                                    memberAccessExpr
+                                      period: .
+                                      declName:
+                                        declReferenceExpr
+                                          baseName: identifier "baz"
+                              poundKeyword: #else
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "nestedWithoutBase"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    postfixIfConfigExpr
+                      base:
+                        declReferenceExpr
+                          baseName: identifier "baseExpr"
+                      config:
+                        ifConfigDecl
+                          clauses:
+                            ifConfigClause
+                              elements:
+                                postfixIfConfigExpr
+                                  base:
+                                    postfixIfConfigExpr
+                                      config:
+                                        ifConfigDecl
+                                          clauses:
+                                            ifConfigClause
+                                              elements:
+                                                functionCallExpr
+                                                  leftParen: (
+                                                  rightParen: )
+                                                  arguments:
+                                                  additionalTrailingClosures:
+                                                  calledExpression:
+                                                    memberAccessExpr
+                                                      period: .
+                                                      declName:
+                                                        declReferenceExpr
+                                                          baseName: identifier "someMethod"
+                                              condition:
+                                                declReferenceExpr
+                                                  baseName: identifier "CONDITION_2"
+                                              poundKeyword: #if
+                                          poundEndif: #endif
+                                  config:
+                                    ifConfigDecl
+                                      clauses:
+                                        ifConfigClause
+                                          elements:
+                                            functionCallExpr
+                                              leftParen: (
+                                              rightParen: )
+                                              arguments:
+                                              additionalTrailingClosures:
+                                              calledExpression:
+                                                memberAccessExpr
+                                                  period: .
+                                                  declName:
+                                                    declReferenceExpr
+                                                      baseName: identifier "otherMethod"
+                                          condition:
+                                            declReferenceExpr
+                                              baseName: identifier "CONDITION_3"
+                                          poundKeyword: #if
+                                      poundEndif: #endif
+                              condition:
+                                declReferenceExpr
+                                  baseName: identifier "CONDITION_1"
+                              poundKeyword: #if
+                          poundEndif: #endif
+              pattern:
+                identifierPattern
+                  identifier: identifier "postfixChain"
 
 ---
 
 top_level source="⟨body⟩"
   body:
-    block source="⟨stmt⟩"
+    block source="⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "result" source="result"
           value: unsupported_node "value\n    #if DEBUG\n        .foo(1)\n    #else\n        .bar(\"hi\")\n    #endif" source="value\n    #if DEBUG\n        .foo(1)\n    #else\n        .bar(\"hi\")\n    #endif"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "branches" source="branches"
+          value: unsupported_node "makeValue()\n    #if FIRST\n        .foo(.argument).bar[0]!\n    #elseif SECOND\n        .otherMember\n    #else\n        .baz()\n    #endif" source="makeValue()\n    #if FIRST\n        .foo(.argument).bar[0]!\n    #elseif SECOND\n        .otherMember\n    #else\n        .baz()\n    #endif"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "noElse" source="noElse"
+          value: unsupported_node "makeValue()\n    #if FIRST\n        .foo()\n    #elseif SECOND\n        .bar()\n    #endif" source="makeValue()\n    #if FIRST\n        .foo()\n    #elseif SECOND\n        .bar()\n    #endif"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "emptyBranch" source="emptyBranch"
+          value: unsupported_node "value\n    #if FIRST\n        .foo()\n    #else\n    #endif" source="value\n    #if FIRST\n        .foo()\n    #else\n    #endif"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "nested" source="nested"
+          value: unsupported_node "value\n    #if FIRST\n        .foo()\n            #if SECOND\n                .bar()\n            #else\n                .baz()\n            #endif\n    #else\n        .otherMember\n    #endif" source="value\n    #if FIRST\n        .foo()\n            #if SECOND\n                .bar()\n            #else\n                .baz()\n            #endif\n    #else\n        .otherMember\n    #endif"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "inChain" source="inChain"
+          value: unsupported_node "value.foo()\n    #if CHAIN\n        .bar()\n    #endif" source="value.foo()\n    #if CHAIN\n        .bar()\n    #endif"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "nestedWithoutBase" source="nestedWithoutBase"
+          value: unsupported_node "value\n    #if FIRST\n        #if SECOND\n            .foo()\n        #else\n            .bar()\n        #endif\n    #else\n        .baz()\n    #endif" source="value\n    #if FIRST\n        #if SECOND\n            .foo()\n        #else\n            .bar()\n        #endif\n    #else\n        .baz()\n    #endif"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "postfixChain" source="postfixChain"
+          value: unsupported_node "baseExpr\n    #if CONDITION_1\n        #if CONDITION_2\n            .someMethod()\n        #endif\n        #if CONDITION_3\n            .otherMethod()\n        #endif\n    #endif" source="baseExpr\n    #if CONDITION_1\n        #if CONDITION_2\n            .someMethod()\n        #endif\n        #if CONDITION_3\n            .otherMethod()\n        #endif\n    #endif"
