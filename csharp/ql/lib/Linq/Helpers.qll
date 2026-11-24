@@ -20,6 +20,12 @@ private int numStmts(ForEachStmt fes) {
   else result = 1
 }
 
+private predicate supportsLinqEarlyReturn(ForEachStmt fes) {
+  not fes.isAsync() and
+  not fes.getVariable().isCaptured() and
+  fes.getElementType() = fes.getVariable().getType()
+}
+
 private predicate returnsLoopVariable(ForEachStmt fes, Stmt s) {
   exists(ReturnStmt ret |
     ret = s.stripSingletonBlocks() and
@@ -205,9 +211,7 @@ predicate missedAllOpportunity(ForEachStmtGenericEnumerable fes) {
     LinqFilterOpportunity<linqAllCandidate/2>::missed(fes, _)
     or
     LinqFilterOpportunity<linqAllReturnCandidate/2>::missed(fes, _) and
-    not fes.isAsync() and
-    not fes.getVariable().isCaptured() and
-    fes.getElementType() = fes.getVariable().getType() and
+    supportsLinqEarlyReturn(fes) and
     returnAfterForeach(fes).getExpr().stripImplicit().(BoolLiteral).getBoolValue() = true
   )
 }
@@ -324,10 +328,8 @@ predicate missedFirstOrDefaultOpportunity(ForEachStmtGenericEnumerable fes, IfSt
   // The loop only checks whether the current element is the first match.
   LinqFilterOpportunity<linqFirstOrDefaultCandidate/2>::missed(fes, is) and
   numStmts(fes) = 1 and
-  not fes.isAsync() and
-  not fes.getVariable().isCaptured() and
+  supportsLinqEarlyReturn(fes) and
   returnsLoopVariable(fes, is.getThen()) and
-  fes.getElementType() = fes.getVariable().getType() and
   returnsDefaultValueAfterForeach(fes)
 }
 
