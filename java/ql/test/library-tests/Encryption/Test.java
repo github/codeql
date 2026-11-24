@@ -11,6 +11,12 @@ class Test {
 			"des_function",
 			"function_using_des",
 			"EncryptWithDES",
+			"DESede",
+			"DESedeWrap",
+			"TripleDES",
+			"3DES",
+			"SKIPJACK",
+			"Skipjack",
 			"RC2",
 			"RC4",
 			"ARCFOUR",
@@ -21,6 +27,9 @@ class Test {
 	List<String> goodStrings = Arrays.asList(
 			"AES",
 			"AES_function",
+			"ChaCha20",
+			"ChaCha20-Poly1305",
+			"ChaCha20Poly1305",
 			// false negative - can't think of a good way to detect this without
 			// catching things we shouldn't
 			"AESEncryption");

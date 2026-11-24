@@ -3,9 +3,15 @@
 | Test.java:11:4:11:17 | "des_function" | It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead. |
 | Test.java:12:4:12:23 | "function_using_des" | It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead. |
 | Test.java:13:4:13:19 | "EncryptWithDES" | It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead. |
-| Test.java:14:4:14:8 | "RC2" | It is vulnerable to related-key attacks. Consider using AES instead. |
-| Test.java:15:4:15:8 | "RC4" | It has multiple vulnerabilities, including biases in its output and susceptibility to several attacks. Consider using AES instead. |
-| Test.java:16:4:16:12 | "ARCFOUR" | It has multiple vulnerabilities, including biases in its output and susceptibility to several attacks. Consider using AES instead. |
-| Test.java:17:4:17:8 | "RC5" | It is vulnerable to differential and related-key attacks. Consider using AES instead. |
-| Test.java:18:4:18:22 | "AES/ECB/NoPadding" | ECB mode, as in AES/ECB/NoPadding for example, is vulnerable to replay and other attacks. Consider using GCM instead. |
-| Test.java:19:4:19:25 | "AES/CBC/PKCS5Padding" | CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead. |
+| Test.java:14:4:14:11 | "DESede" | It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. |
+| Test.java:15:4:15:15 | "DESedeWrap" | It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. |
+| Test.java:16:4:16:14 | "TripleDES" | It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. |
+| Test.java:17:4:17:9 | "3DES" | It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead. |
+| Test.java:18:4:18:13 | "SKIPJACK" | It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST. Consider using AES instead. |
+| Test.java:19:4:19:13 | "Skipjack" | It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST. Consider using AES instead. |
+| Test.java:20:4:20:8 | "RC2" | It is vulnerable to related-key attacks. Consider using AES instead. |
+| Test.java:21:4:21:8 | "RC4" | It has multiple vulnerabilities, including biases in its output and susceptibility to several attacks. Consider using AES instead. |
+| Test.java:22:4:22:12 | "ARCFOUR" | It has multiple vulnerabilities, including biases in its output and susceptibility to several attacks. Consider using AES instead. |
+| Test.java:23:4:23:8 | "RC5" | It is vulnerable to differential and related-key attacks. Consider using AES instead. |
+| Test.java:24:4:24:22 | "AES/ECB/NoPadding" | ECB mode, as in AES/ECB/NoPadding for example, is vulnerable to replay and other attacks. Consider using GCM instead. |
+| Test.java:25:4:25:25 | "AES/CBC/PKCS5Padding" | CBC mode with PKCS#5 or PKCS#7 padding is vulnerable to padding oracle attacks. Consider using GCM instead. |
