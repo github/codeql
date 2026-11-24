@@ -29,10 +29,16 @@ private predicate returnsLoopVariable(ForEachStmt fes, Stmt s) {
 
 private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
 
-private predicate returnsDefaultValueAfterForeach(ForEachStmt fes) {
-  exists(BlockStmt enclosingBlock, int i, Type elementType, ReturnStmt ret |
+private ReturnStmt returnAfterForeach(ForEachStmt fes) {
+  exists(BlockStmt enclosingBlock, int i |
     enclosingBlock.getStmt(i) = fes and
-    enclosingBlock.getStmt(i + 1) = ret and
+    enclosingBlock.getStmt(i + 1) = result
+  )
+}
+
+private predicate returnsDefaultValueAfterForeach(ForEachStmt fes) {
+  exists(Type elementType, ReturnStmt ret |
+    ret = returnAfterForeach(fes) and
     elementType = fes.getVariable().getType()
   |
     ret.getExpr().stripImplicit() instanceof NullLiteral and
@@ -123,6 +129,10 @@ private predicate acceptableForLinqCapture(Expr e) {
     pa = e.getAChildExpr*()
   |
     p.isOutOrRef() or p.isIn() or p.isReadonlyRef()
+  ) and
+  not exists(LocalScopeVariable v |
+    v.getAnAccess() = e.getAChildExpr*() and
+    (v.isRef() or v.getType().isRefLikeType())
   )
 }
 
@@ -132,7 +142,7 @@ private module LinqFilterOpportunity<linqCandidateSig/2 linqCandidate> {
   predicate missed(ForEachStmtGenericEnumerable fes, Stmt s) {
     s = firstStmt(fes) and
     // The linq candidate expression accesses the loop variable, and the
-    // candidate doesn't access an in, out, or ref parameter.
+    // candidate can be captured in a LINQ lambda.
     exists(Expr candidate | linqCandidate(s, candidate) |
       fes.getVariable().getAnAccess() = candidate.getAChildExpr*() and
       acceptableForLinqCapture(candidate)
@@ -144,7 +154,7 @@ private module LinqMapOpportunity<linqCandidateSig/2 linqCandidate> {
   predicate missed(ForEachStmt fes, Stmt s) {
     s = firstStmt(fes) and
     // The linq candidate (and only the candidate) expression accesses the loop variable and the
-    // candidate doesn't access an in, out, or ref parameter.
+    // candidate can be captured in a LINQ lambda.
     exists(Expr candidate | linqCandidate(s, candidate) |
       forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
         va = candidate.getAChildExpr*()
@@ -174,13 +184,9 @@ private predicate linqAllReturnCandidate(Stmt s, Expr e) {
       e = is.getCondition() and
       not exists(is.getElse()) and
       not e.getAChildExpr*() instanceof AwaitExpr and
-      not exists(LocalScopeVariable v |
-        v.getAnAccess() = e.getAChildExpr*() and
-        (v.isRef() or v.getType().isRefLikeType())
-      ) and
       exists(ReturnStmt ret |
         ret = is.getThen().stripSingletonBlocks() and
-        ret.getExpr().stripImplicit().(BoolLiteral).toString() = "false"
+        ret.getExpr().stripImplicit().(BoolLiteral).getBoolValue() = false
       )
     )
 }
@@ -202,11 +208,7 @@ predicate missedAllOpportunity(ForEachStmtGenericEnumerable fes) {
     not fes.isAsync() and
     not fes.getVariable().isCaptured() and
     fes.getElementType() = fes.getVariable().getType() and
-    exists(BlockStmt enclosingBlock, int i, ReturnStmt ret |
-      enclosingBlock.getStmt(i) = fes and
-      enclosingBlock.getStmt(i + 1) = ret and
-      ret.getExpr().stripImplicit().(BoolLiteral).toString() = "true"
-    )
+    returnAfterForeach(fes).getExpr().stripImplicit().(BoolLiteral).getBoolValue() = true
   )
 }
 

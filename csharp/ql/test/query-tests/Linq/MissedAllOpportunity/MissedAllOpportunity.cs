@@ -185,6 +185,20 @@ class MissedAllOpportunity
         return true;
     }
 
+    public void AssignFalseWithRefLocal(List<int> lst, ref int x)
+    {
+        ref var y = ref x;
+        var allEven = true;
+        foreach (int i in lst)
+        {
+            if (i % 2 != y)
+            {
+                allEven = false;
+                break;
+            }
+        }
+    }
+
     // Framework stubs omit the ref modifier on Span<T> and ReadOnlySpan<T>.
     public ref struct RefLikeLimits<T>
     {
