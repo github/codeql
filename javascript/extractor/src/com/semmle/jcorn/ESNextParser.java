@@ -398,8 +398,7 @@ public class ESNextParser extends JSXParser {
   }
 
   /*
-   * Support for proposed language feature "Dynamic import"
-   * (https://github.com/tc39/proposal-dynamic-import).
+   * Support for `import.meta` and dynamic `import(...)` at the start of an expression statement.
    */
   @Override
   protected Statement parseImport(Position startLoc) {
@@ -408,7 +407,11 @@ public class ESNextParser extends JSXParser {
     int startPos = this.start;
     SourceLocation loc = new SourceLocation(startLoc);
     this.next();
-    if (this.eat(TokenType.parenL)) {
+    if (this.eat(TokenType.dot)) {
+      MetaProperty meta = parseImportMeta(startLoc);
+      Expression expr = parseExpressionFromAtom(meta, startPos, startLoc, false);
+      return parseExpressionStatement(false, startLoc, expr);
+    } else if (this.eat(TokenType.parenL)) {
       DynamicImport di = parseDynamicImport(startLoc);
       Expression expr = parseSubscripts(di, startPos, startLoc, false);
       return parseExpressionStatement(false, startLoc, expr);
