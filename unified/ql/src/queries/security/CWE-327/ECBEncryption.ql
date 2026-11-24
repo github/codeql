@@ -20,7 +20,6 @@ module EcbEncryptionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { Models::isSource(node, "ecb-block-mode") }
 
   predicate isSink(DataFlow::Node node) { Models::isSink(node, "encryption-block-mode") }
-  // TODO: Model CommonCrypto ECB options and modes, also unsupported by original Swift.
 }
 
 module EcbEncryptionFlow = DataFlow::Global<EcbEncryptionConfig>;
