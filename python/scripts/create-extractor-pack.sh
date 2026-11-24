@@ -24,6 +24,10 @@ cd "$(dirname "$0")/.."
 (cd extractor/tsg-python && cargo build --release)
 tsg_bin="extractor/tsg-python/target/release/tsg-python"
 
+# Build the yeast-python Rust binary in the repository Cargo workspace.
+cargo build --release --package yeast-python
+yeast_bin="../target/release/yeast-python"
+
 # Generate python3src.zip from the Python extractor source.
 # make_zips.py creates the zip in the source directory and then copies it to the
 # given output directory. We use a temporary directory to avoid a same-file copy
@@ -65,3 +69,4 @@ cp -r downgrades extractor-pack/
 
 # Platform-specific Rust binary
 cp "${tsg_bin}" extractor-pack/tools/${platform}/tsg-python
+cp "${yeast_bin}" extractor-pack/tools/${platform}/yeast-python
