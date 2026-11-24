@@ -2453,6 +2453,8 @@ inferType
 | closures.swift:148:5:148:5 | _ |  | {EXTERNAL LOCATION} | String |
 | closures.swift:148:5:148:14 | ... = ... |  | {EXTERNAL LOCATION} | String |
 | closures.swift:148:9:148:14 | result |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:2:29:2:41 | Block |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:2:38:2:39 | "" |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:4:24:6:5 | Block |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |

@@ -5,6 +5,10 @@ func sink(_ s: Any) -> String { return "" }
 
 class FieldBox {
     var field: String = ""
+
+    func setField(_ value: String) {
+        self.field = value
+    }
 }
 
 class OtherFieldBox {
@@ -18,6 +22,15 @@ func resolvedFields() {
     box.field = source("fields.resolved")
     sink(box.field)  // $ hasValueFlow=fields.resolved
     sink((box as! OtherFieldBox).field)
+}
+
+func postfixConditionalFieldWrite() {
+    let box = FieldBox()
+    box
+        #if FIRST
+            .setField(source("fields.postfix-write"))
+        #endif
+    sink(box.field)  // $ MISSING: hasValueFlow=fields.postfix-write
 }
 
 func inheritedFields() {
@@ -94,4 +107,74 @@ func protocolFieldWrite() {
     sink(box.field)  // $ MISSING: hasValueFlow=fields.protocol (aliasing)
     let box2 = p as! OtherFieldBox
     sink(box2.field)  // $ SPURIOUS: hasValueFlow=fields.protocol
+}
+
+extension FieldBox {
+    func withField(_ value: String) -> FieldBox {
+        let box = FieldBox()
+        box.field = value
+        return box
+    }
+
+    func keep() -> FieldBox {
+        return self
+    }
+}
+
+func postfixConditionalValueFlow() {
+    let branches = FieldBox()
+        #if FIRST
+            .withField(source("fields.postfix-if"))
+        #else
+            .withField(source("fields.postfix-else"))
+        #endif
+    sink(branches.field)  // $ MISSING: hasValueFlow=fields.postfix-if hasValueFlow=fields.postfix-else
+
+    let noElse = FieldBox().withField(source("fields.postfix-no-else"))
+        #if FIRST
+            .withField("clean")
+        #endif
+    sink(noElse.field)  // $ MISSING: hasValueFlow=fields.postfix-no-else
+
+    let emptyBranch = FieldBox().withField(source("fields.postfix-empty"))
+        #if FIRST
+            .withField("clean")
+        #else
+        #endif
+    sink(emptyBranch.field)  // $ MISSING: hasValueFlow=fields.postfix-empty
+
+    let inChain = FieldBox()
+        #if FIRST
+            .withField(source("fields.postfix-in-chain"))
+        #endif
+        .field
+    sink(inChain)  // $ MISSING: hasValueFlow=fields.postfix-in-chain
+
+    let nested = FieldBox().withField(source("fields.postfix-nested-base"))
+        #if FIRST
+            .keep()
+            #if SECOND
+                .withField(source("fields.postfix-nested-inner"))
+            #endif
+        #endif
+    sink(nested.field)  // $ MISSING: hasValueFlow=fields.postfix-nested-base hasValueFlow=fields.postfix-nested-inner
+
+    let nestedNoBase = FieldBox().withField(source("fields.postfix-nested-nobase"))
+        #if FIRST
+            #if SECOND
+                .withField(source("fields.postfix-nested-nobase-inner"))
+            #endif
+        #endif
+    sink(nestedNoBase.field)  // $ MISSING: hasValueFlow=fields.postfix-nested-nobase hasValueFlow=fields.postfix-nested-nobase-inner
+
+    let chain = FieldBox().withField(source("fields.postfix-chain-base"))
+        #if FIRST
+            #if SECOND
+                .withField(source("fields.postfix-chain-second"))
+            #endif
+            #if THIRD
+                .withField(source("fields.postfix-chain-third"))
+            #endif
+        #endif
+    sink(chain.field)  // $ MISSING: hasValueFlow=fields.postfix-chain-base hasValueFlow=fields.postfix-chain-second hasValueFlow=fields.postfix-chain-third
 }
