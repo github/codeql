@@ -3,15 +3,15 @@
   "qhelp.dtd">
 <qhelp>
   <overview>
-    <p>ECB should not be used as a mode for encryption. With a fixed key, identical plaintext blocks always produce identical ciphertext blocks. This reveals patterns in the plaintext, even when the ciphertext cannot be decrypted.</p>
+    <p>ECB should not be used as a mode for encryption. With a fixed key, identical plaintext blocks always produce identical ciphertext blocks. This can expose sensitive information by revealing patterns in the plaintext.</p>
   </overview>
 
   <recommendation>
-    <p>Use an authenticated encryption mode such as GCM where available. If CBC is used, generate a fresh, unpredictable initialization vector for each encryption and use a separate message authentication mechanism to protect ciphertext integrity. Changing the cipher mode alone does not prevent replay attacks.</p>
+    <p>Use an authenticated encryption mode such as GCM where available. If CBC is used, generate a fresh, unpredictable initialization vector for each encryption and use a separate message authentication mechanism to protect ciphertext integrity.</p>
   </recommendation>
 
   <example>
-    <p>The following example shows six cases of instantiating a cipher with different block modes. In the 'BAD' cases, the mode of encryption is ECB, which reveals patterns in the plaintext. In the 'GOOD' cases, the encryption mode is CBC with a randomly generated initialization vector, avoiding ECB's deterministic encryption of individual blocks. Authentication of the ciphertext is not shown.</p>
+    <p>The following example shows six cases of instantiating a cipher with different block modes. In the 'BAD' cases, the encryption mode is ECB, which reveals patterns in the plaintext. In the 'GOOD' cases, the encryption mode is CBC with a randomly generated initialization vector, avoiding this issue. Authentication of the ciphertext is not shown.</p>
     <sample src="ECBEncryption.swift" />
   </example>
 
