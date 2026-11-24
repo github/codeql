@@ -30,3 +30,7 @@ query predicate unscopedSsaNode(DataFlow::Node node) {
     region.(BasicBlock).getScope() = node.getRoot()
   )
 }
+
+query predicate ssaDefinitionWithoutUniqueNode(SsaDefinition def) {
+  count(DataFlow::SsaNode node | node.getDefinition() = def) != 1
+}
