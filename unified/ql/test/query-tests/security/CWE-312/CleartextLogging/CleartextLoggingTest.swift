@@ -146,6 +146,7 @@ class LogFile {
     func error(_ msg: String) {}
     func critical(_ criticalMsg: String) {}
     func fatal(_ str: String) {}
+    func fatal_opt(_ str: String?) {}
 }
 
 // custom
@@ -420,6 +421,11 @@ func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, se
     logger.error(msg) // $ Sink[unified/swift/cleartext-logging]
     logger.critical(msg) // $ Sink[unified/swift/cleartext-logging]
     logger.fatal(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.fatal_opt(msg) // $ Sink[unified/swift/cleartext-logging]
+
+    let msg_opt = authKey.isEmpty ? nil : "authKey: " + authKey // $ Alert[unified/swift/cleartext-logging]
+    logger.fatal(msg_opt ?? "") // $ Sink[unified/swift/cleartext-logging]
+    logger.fatal_opt(msg_opt) // $ Sink[unified/swift/cleartext-logging]
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging

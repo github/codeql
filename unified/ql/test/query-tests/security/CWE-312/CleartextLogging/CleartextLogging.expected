@@ -1,258 +1,272 @@
 #select
 | CleartextLoggingBad.swift:2:35:2:42 | password | CleartextLoggingBad.swift:2:35:2:42 | password | CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | written |
-| CleartextLoggingTest.swift:167:11:167:18 | password | CleartextLoggingTest.swift:167:11:167:18 | password | CleartextLoggingTest.swift:167:11:167:18 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:167:11:167:18 | password | written |
 | CleartextLoggingTest.swift:168:11:168:18 | password | CleartextLoggingTest.swift:168:11:168:18 | password | CleartextLoggingTest.swift:168:11:168:18 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:168:11:168:18 | password | written |
-| CleartextLoggingTest.swift:169:26:169:33 | password | CleartextLoggingTest.swift:169:26:169:33 | password | CleartextLoggingTest.swift:169:26:169:33 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:169:26:169:33 | password | written |
-| CleartextLoggingTest.swift:170:11:170:18 | password | CleartextLoggingTest.swift:170:11:170:18 | password | CleartextLoggingTest.swift:170:11:170:18 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:170:11:170:18 | password | written |
-| CleartextLoggingTest.swift:171:26:171:33 | password | CleartextLoggingTest.swift:171:26:171:33 | password | CleartextLoggingTest.swift:171:26:171:33 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:171:26:171:33 | password | written |
-| CleartextLoggingTest.swift:172:42:172:49 | password | CleartextLoggingTest.swift:172:42:172:49 | password | CleartextLoggingTest.swift:172:42:172:49 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:172:42:172:49 | password | written |
-| CleartextLoggingTest.swift:179:11:179:18 | password | CleartextLoggingTest.swift:179:11:179:18 | password | CleartextLoggingTest.swift:179:11:179:18 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:179:11:179:18 | password | written |
-| CleartextLoggingTest.swift:180:17:180:24 | password | CleartextLoggingTest.swift:180:17:180:24 | password | CleartextLoggingTest.swift:180:17:180:24 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:180:17:180:24 | password | written |
-| CleartextLoggingTest.swift:181:24:181:31 | password | CleartextLoggingTest.swift:181:24:181:31 | password | CleartextLoggingTest.swift:181:24:181:31 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:181:24:181:31 | password | written |
-| CleartextLoggingTest.swift:182:14:182:21 | password | CleartextLoggingTest.swift:182:14:182:21 | password | CleartextLoggingTest.swift:182:11:182:23 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:182:11:182:23 | StringInterpolationExpr | written |
-| CleartextLoggingTest.swift:183:29:183:36 | password | CleartextLoggingTest.swift:183:29:183:36 | password | CleartextLoggingTest.swift:183:18:183:38 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:183:18:183:38 | getVaList(...) | written |
-| CleartextLoggingTest.swift:184:36:184:43 | password | CleartextLoggingTest.swift:184:36:184:43 | password | CleartextLoggingTest.swift:184:21:184:45 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:184:21:184:45 | getVaList(...) | written |
-| CleartextLoggingTest.swift:191:16:191:23 | password | CleartextLoggingTest.swift:191:16:191:23 | password | CleartextLoggingTest.swift:191:13:191:25 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:191:13:191:25 | StringInterpolationExpr | written |
-| CleartextLoggingTest.swift:197:16:197:26 | bankAccount | CleartextLoggingTest.swift:197:16:197:26 | bankAccount | CleartextLoggingTest.swift:197:13:197:28 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:197:13:197:28 | StringInterpolationExpr | written |
-| CleartextLoggingTest.swift:220:11:220:20 | passphrase | CleartextLoggingTest.swift:220:11:220:20 | passphrase | CleartextLoggingTest.swift:220:11:220:20 | passphrase | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:220:11:220:20 | passphrase | written |
-| CleartextLoggingTest.swift:221:11:221:21 | pass_phrase | CleartextLoggingTest.swift:221:11:221:21 | pass_phrase | CleartextLoggingTest.swift:221:11:221:21 | pass_phrase | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:221:11:221:21 | pass_phrase | written |
-| CleartextLoggingTest.swift:250:10:250:22 | getPassword(...) | CleartextLoggingTest.swift:250:10:250:22 | getPassword(...) | CleartextLoggingTest.swift:251:8:251:8 | y | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:251:8:251:8 | y | written |
-| CleartextLoggingTest.swift:255:8:255:17 | ... .password | CleartextLoggingTest.swift:255:8:255:17 | ... .password | CleartextLoggingTest.swift:255:8:255:17 | ... .password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:255:8:255:17 | ... .password | written |
-| CleartextLoggingTest.swift:256:8:256:21 | ... .passwords(...) | CleartextLoggingTest.swift:256:8:256:21 | ... .passwords(...) | CleartextLoggingTest.swift:256:8:256:21 | ... .passwords(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:256:8:256:21 | ... .passwords(...) | written |
-| CleartextLoggingTest.swift:257:13:257:30 | ... .optionalPassword | CleartextLoggingTest.swift:257:13:257:30 | ... .optionalPassword | CleartextLoggingTest.swift:258:9:258:9 | v | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:258:9:258:9 | v | written |
-| CleartextLoggingTest.swift:260:8:260:25 | ... .optionalPassword | CleartextLoggingTest.swift:260:8:260:25 | ... .optionalPassword | CleartextLoggingTest.swift:260:8:260:26 | ... ! | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:260:8:260:26 | ... ! | written |
-| CleartextLoggingTest.swift:262:8:262:22 | ... .getPassword(...) | CleartextLoggingTest.swift:262:8:262:22 | ... .getPassword(...) | CleartextLoggingTest.swift:262:8:262:22 | ... .getPassword(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:262:8:262:22 | ... .getPassword(...) | written |
-| CleartextLoggingTest.swift:265:11:265:21 | ... .password | CleartextLoggingTest.swift:265:11:265:21 | ... .password | CleartextLoggingTest.swift:265:11:265:21 | ... .password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:265:11:265:21 | ... .password | written |
-| CleartextLoggingTest.swift:266:11:266:26 | ... .getPassword(...) | CleartextLoggingTest.swift:266:11:266:26 | ... .getPassword(...) | CleartextLoggingTest.swift:266:11:266:26 | ... .getPassword(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:266:11:266:26 | ... .getPassword(...) | written |
-| CleartextLoggingTest.swift:267:12:267:22 | ... .password | CleartextLoggingTest.swift:267:12:267:22 | ... .password | CleartextLoggingTest.swift:267:11:267:24 | ... ! | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:267:11:267:24 | ... ! | written |
-| CleartextLoggingTest.swift:270:11:270:23 | ... .password | CleartextLoggingTest.swift:270:11:270:23 | ... .password | CleartextLoggingTest.swift:270:11:270:23 | ... .password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:270:11:270:23 | ... .password | written |
-| CleartextLoggingTest.swift:271:11:271:28 | ... .getPassword(...) | CleartextLoggingTest.swift:271:11:271:28 | ... .getPassword(...) | CleartextLoggingTest.swift:271:11:271:28 | ... .getPassword(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:271:11:271:28 | ... .getPassword(...) | written |
-| CleartextLoggingTest.swift:290:8:290:18 | ... .password | CleartextLoggingTest.swift:290:8:290:18 | ... .password | CleartextLoggingTest.swift:290:8:290:24 | ... .value | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:290:8:290:24 | ... .value | written |
-| CleartextLoggingTest.swift:291:8:291:22 | ... .passwords(...) | CleartextLoggingTest.swift:291:8:291:22 | ... .passwords(...) | CleartextLoggingTest.swift:291:8:291:28 | ... .value | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:291:8:291:28 | ... .value | written |
-| CleartextLoggingTest.swift:292:8:292:26 | ... .optionalPassword | CleartextLoggingTest.swift:292:8:292:26 | ... .optionalPassword | CleartextLoggingTest.swift:292:8:292:33 | ... .value | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:292:8:292:33 | ... .value | written |
-| CleartextLoggingTest.swift:293:9:293:27 | ... .optionalPassword | CleartextLoggingTest.swift:293:9:293:27 | ... .optionalPassword | CleartextLoggingTest.swift:293:8:293:36 | ... ! | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:293:8:293:36 | ... ! | written |
-| CleartextLoggingTest.swift:296:8:296:18 | ... .password | CleartextLoggingTest.swift:296:8:296:18 | ... .password | CleartextLoggingTest.swift:296:8:296:29 | ... .getValue(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:296:8:296:29 | ... .getValue(...) | written |
-| CleartextLoggingTest.swift:297:8:297:22 | ... .passwords(...) | CleartextLoggingTest.swift:297:8:297:22 | ... .passwords(...) | CleartextLoggingTest.swift:297:8:297:33 | ... .getValue(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:297:8:297:33 | ... .getValue(...) | written |
-| CleartextLoggingTest.swift:298:8:298:26 | ... .optionalPassword | CleartextLoggingTest.swift:298:8:298:26 | ... .optionalPassword | CleartextLoggingTest.swift:298:8:298:38 | ... .getValue(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:298:8:298:38 | ... .getValue(...) | written |
-| CleartextLoggingTest.swift:299:8:299:26 | ... .optionalPassword | CleartextLoggingTest.swift:299:8:299:26 | ... .optionalPassword | CleartextLoggingTest.swift:299:8:299:44 | ... ?? ... | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:299:8:299:44 | ... ?? ... | written |
-| CleartextLoggingTest.swift:322:8:322:15 | password | CleartextLoggingTest.swift:322:8:322:15 | password | CleartextLoggingTest.swift:322:8:322:15 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:322:8:322:15 | password | written |
-| CleartextLoggingTest.swift:325:18:325:25 | password | CleartextLoggingTest.swift:325:18:325:25 | password | CleartextLoggingTest.swift:325:8:325:25 | ... + ... | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:325:8:325:25 | ... + ... | written |
-| CleartextLoggingTest.swift:343:18:343:25 | password | CleartextLoggingTest.swift:343:18:343:25 | password | CleartextLoggingTest.swift:344:8:344:16 | myString9 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:344:8:344:16 | myString9 | written |
-| CleartextLoggingTest.swift:347:19:347:26 | password | CleartextLoggingTest.swift:347:19:347:26 | password | CleartextLoggingTest.swift:349:8:349:17 | myString10 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:349:8:349:17 | myString10 | written |
-| CleartextLoggingTest.swift:354:2:354:9 | password | CleartextLoggingTest.swift:354:2:354:9 | password | CleartextLoggingTest.swift:355:8:355:17 | myString12 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:355:8:355:17 | myString12 | written |
-| CleartextLoggingTest.swift:357:8:357:15 | password | CleartextLoggingTest.swift:357:8:357:15 | password | CleartextLoggingTest.swift:357:8:357:15 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:357:8:357:15 | password | written |
-| CleartextLoggingTest.swift:383:72:383:85 | passwordString | CleartextLoggingTest.swift:383:72:383:85 | passwordString | CleartextLoggingTest.swift:383:69:383:101 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:383:69:383:101 | StringInterpolationExpr | written |
-| CleartextLoggingTest.swift:386:64:386:77 | passwordString | CleartextLoggingTest.swift:386:64:386:77 | passwordString | CleartextLoggingTest.swift:386:61:386:93 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:386:61:386:93 | StringInterpolationExpr | written |
-| CleartextLoggingTest.swift:387:103:387:116 | passwordString | CleartextLoggingTest.swift:387:103:387:116 | passwordString | CleartextLoggingTest.swift:387:92:387:118 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:387:92:387:118 | getVaList(...) | written |
-| CleartextLoggingTest.swift:394:26:394:39 | passwordString | CleartextLoggingTest.swift:394:26:394:39 | passwordString | CleartextLoggingTest.swift:394:23:394:55 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:394:23:394:55 | StringInterpolationExpr | written |
-| CleartextLoggingTest.swift:395:54:395:67 | passwordString | CleartextLoggingTest.swift:395:54:395:67 | passwordString | CleartextLoggingTest.swift:395:43:395:69 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:395:43:395:69 | getVaList(...) | written |
-| CleartextLoggingTest.swift:401:18:401:24 | authKey | CleartextLoggingTest.swift:401:18:401:24 | authKey | CleartextLoggingTest.swift:401:18:401:24 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:401:18:401:24 | authKey | written |
-| CleartextLoggingTest.swift:402:25:402:32 | authKey2 | CleartextLoggingTest.swift:402:25:402:32 | authKey2 | CleartextLoggingTest.swift:402:18:402:33 | String(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:402:18:402:33 | String(...) | written |
-| CleartextLoggingTest.swift:403:22:403:28 | authKey | CleartextLoggingTest.swift:403:22:403:28 | authKey | CleartextLoggingTest.swift:403:22:403:28 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:403:22:403:28 | authKey | written |
-| CleartextLoggingTest.swift:404:31:404:37 | authKey | CleartextLoggingTest.swift:404:31:404:37 | authKey | CleartextLoggingTest.swift:404:31:404:37 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:404:31:404:37 | authKey | written |
-| CleartextLoggingTest.swift:405:33:405:39 | authKey | CleartextLoggingTest.swift:405:33:405:39 | authKey | CleartextLoggingTest.swift:405:16:405:40 | NSString(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:405:16:405:40 | NSString(...) | written |
-| CleartextLoggingTest.swift:406:13:406:19 | authKey | CleartextLoggingTest.swift:406:13:406:19 | authKey | CleartextLoggingTest.swift:406:13:406:19 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:406:13:406:19 | authKey | written |
-| CleartextLoggingTest.swift:407:24:407:30 | authKey | CleartextLoggingTest.swift:407:24:407:30 | authKey | CleartextLoggingTest.swift:407:24:407:30 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:407:24:407:30 | authKey | written |
-| CleartextLoggingTest.swift:409:19:409:26 | authKey3 | CleartextLoggingTest.swift:409:19:409:26 | authKey3 | CleartextLoggingTest.swift:409:19:409:26 | authKey3 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:409:19:409:26 | authKey3 | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:414:16:414:18 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:414:16:414:18 | msg | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:415:18:415:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:415:18:415:20 | msg | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:416:18:416:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:416:18:416:20 | msg | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:417:17:417:37 | NSString(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:417:17:417:37 | NSString(...) | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:418:19:418:21 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:418:19:418:21 | msg | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:419:20:419:22 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:419:20:419:22 | msg | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:420:18:420:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:420:18:420:20 | msg | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:421:21:421:23 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:421:21:421:23 | msg | written |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:422:18:422:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:422:18:422:20 | msg | written |
-| CleartextLoggingTest.swift:430:29:430:36 | password | CleartextLoggingTest.swift:430:29:430:36 | password | CleartextLoggingTest.swift:430:29:430:36 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:430:29:430:36 | password | written |
-| CleartextLoggingTest.swift:431:28:431:33 | secret | CleartextLoggingTest.swift:431:28:431:33 | secret | CleartextLoggingTest.swift:431:28:431:33 | secret | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:431:28:431:33 | secret | written |
-| CleartextLoggingTest.swift:439:11:439:24 | globalPassword | CleartextLoggingTest.swift:439:11:439:24 | globalPassword | CleartextLoggingTest.swift:439:11:439:24 | globalPassword | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:439:11:439:24 | globalPassword | written |
-| CleartextLoggingTest.swift:471:11:471:30 | Secret(...) | CleartextLoggingTest.swift:471:11:471:30 | Secret(...) | CleartextLoggingTest.swift:471:11:471:30 | Secret(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:471:11:471:30 | Secret(...) | written |
+| CleartextLoggingTest.swift:169:11:169:18 | password | CleartextLoggingTest.swift:169:11:169:18 | password | CleartextLoggingTest.swift:169:11:169:18 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:169:11:169:18 | password | written |
+| CleartextLoggingTest.swift:170:26:170:33 | password | CleartextLoggingTest.swift:170:26:170:33 | password | CleartextLoggingTest.swift:170:26:170:33 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:170:26:170:33 | password | written |
+| CleartextLoggingTest.swift:171:11:171:18 | password | CleartextLoggingTest.swift:171:11:171:18 | password | CleartextLoggingTest.swift:171:11:171:18 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:171:11:171:18 | password | written |
+| CleartextLoggingTest.swift:172:26:172:33 | password | CleartextLoggingTest.swift:172:26:172:33 | password | CleartextLoggingTest.swift:172:26:172:33 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:172:26:172:33 | password | written |
+| CleartextLoggingTest.swift:173:42:173:49 | password | CleartextLoggingTest.swift:173:42:173:49 | password | CleartextLoggingTest.swift:173:42:173:49 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:173:42:173:49 | password | written |
+| CleartextLoggingTest.swift:180:11:180:18 | password | CleartextLoggingTest.swift:180:11:180:18 | password | CleartextLoggingTest.swift:180:11:180:18 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:180:11:180:18 | password | written |
+| CleartextLoggingTest.swift:181:17:181:24 | password | CleartextLoggingTest.swift:181:17:181:24 | password | CleartextLoggingTest.swift:181:17:181:24 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:181:17:181:24 | password | written |
+| CleartextLoggingTest.swift:182:24:182:31 | password | CleartextLoggingTest.swift:182:24:182:31 | password | CleartextLoggingTest.swift:182:24:182:31 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:182:24:182:31 | password | written |
+| CleartextLoggingTest.swift:183:14:183:21 | password | CleartextLoggingTest.swift:183:14:183:21 | password | CleartextLoggingTest.swift:183:11:183:23 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:183:11:183:23 | StringInterpolationExpr | written |
+| CleartextLoggingTest.swift:184:29:184:36 | password | CleartextLoggingTest.swift:184:29:184:36 | password | CleartextLoggingTest.swift:184:18:184:38 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:184:18:184:38 | getVaList(...) | written |
+| CleartextLoggingTest.swift:185:36:185:43 | password | CleartextLoggingTest.swift:185:36:185:43 | password | CleartextLoggingTest.swift:185:21:185:45 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:185:21:185:45 | getVaList(...) | written |
+| CleartextLoggingTest.swift:192:16:192:23 | password | CleartextLoggingTest.swift:192:16:192:23 | password | CleartextLoggingTest.swift:192:13:192:25 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:192:13:192:25 | StringInterpolationExpr | written |
+| CleartextLoggingTest.swift:198:16:198:26 | bankAccount | CleartextLoggingTest.swift:198:16:198:26 | bankAccount | CleartextLoggingTest.swift:198:13:198:28 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:198:13:198:28 | StringInterpolationExpr | written |
+| CleartextLoggingTest.swift:221:11:221:20 | passphrase | CleartextLoggingTest.swift:221:11:221:20 | passphrase | CleartextLoggingTest.swift:221:11:221:20 | passphrase | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:221:11:221:20 | passphrase | written |
+| CleartextLoggingTest.swift:222:11:222:21 | pass_phrase | CleartextLoggingTest.swift:222:11:222:21 | pass_phrase | CleartextLoggingTest.swift:222:11:222:21 | pass_phrase | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:222:11:222:21 | pass_phrase | written |
+| CleartextLoggingTest.swift:251:10:251:22 | getPassword(...) | CleartextLoggingTest.swift:251:10:251:22 | getPassword(...) | CleartextLoggingTest.swift:252:8:252:8 | y | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:252:8:252:8 | y | written |
+| CleartextLoggingTest.swift:256:8:256:17 | ... .password | CleartextLoggingTest.swift:256:8:256:17 | ... .password | CleartextLoggingTest.swift:256:8:256:17 | ... .password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:256:8:256:17 | ... .password | written |
+| CleartextLoggingTest.swift:257:8:257:21 | ... .passwords(...) | CleartextLoggingTest.swift:257:8:257:21 | ... .passwords(...) | CleartextLoggingTest.swift:257:8:257:21 | ... .passwords(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:257:8:257:21 | ... .passwords(...) | written |
+| CleartextLoggingTest.swift:258:13:258:30 | ... .optionalPassword | CleartextLoggingTest.swift:258:13:258:30 | ... .optionalPassword | CleartextLoggingTest.swift:259:9:259:9 | v | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:259:9:259:9 | v | written |
+| CleartextLoggingTest.swift:261:8:261:25 | ... .optionalPassword | CleartextLoggingTest.swift:261:8:261:25 | ... .optionalPassword | CleartextLoggingTest.swift:261:8:261:26 | ... ! | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:261:8:261:26 | ... ! | written |
+| CleartextLoggingTest.swift:263:8:263:22 | ... .getPassword(...) | CleartextLoggingTest.swift:263:8:263:22 | ... .getPassword(...) | CleartextLoggingTest.swift:263:8:263:22 | ... .getPassword(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:263:8:263:22 | ... .getPassword(...) | written |
+| CleartextLoggingTest.swift:266:11:266:21 | ... .password | CleartextLoggingTest.swift:266:11:266:21 | ... .password | CleartextLoggingTest.swift:266:11:266:21 | ... .password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:266:11:266:21 | ... .password | written |
+| CleartextLoggingTest.swift:267:11:267:26 | ... .getPassword(...) | CleartextLoggingTest.swift:267:11:267:26 | ... .getPassword(...) | CleartextLoggingTest.swift:267:11:267:26 | ... .getPassword(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:267:11:267:26 | ... .getPassword(...) | written |
+| CleartextLoggingTest.swift:268:12:268:22 | ... .password | CleartextLoggingTest.swift:268:12:268:22 | ... .password | CleartextLoggingTest.swift:268:11:268:24 | ... ! | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:268:11:268:24 | ... ! | written |
+| CleartextLoggingTest.swift:271:11:271:23 | ... .password | CleartextLoggingTest.swift:271:11:271:23 | ... .password | CleartextLoggingTest.swift:271:11:271:23 | ... .password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:271:11:271:23 | ... .password | written |
+| CleartextLoggingTest.swift:272:11:272:28 | ... .getPassword(...) | CleartextLoggingTest.swift:272:11:272:28 | ... .getPassword(...) | CleartextLoggingTest.swift:272:11:272:28 | ... .getPassword(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:272:11:272:28 | ... .getPassword(...) | written |
+| CleartextLoggingTest.swift:291:8:291:18 | ... .password | CleartextLoggingTest.swift:291:8:291:18 | ... .password | CleartextLoggingTest.swift:291:8:291:24 | ... .value | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:291:8:291:24 | ... .value | written |
+| CleartextLoggingTest.swift:292:8:292:22 | ... .passwords(...) | CleartextLoggingTest.swift:292:8:292:22 | ... .passwords(...) | CleartextLoggingTest.swift:292:8:292:28 | ... .value | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:292:8:292:28 | ... .value | written |
+| CleartextLoggingTest.swift:293:8:293:26 | ... .optionalPassword | CleartextLoggingTest.swift:293:8:293:26 | ... .optionalPassword | CleartextLoggingTest.swift:293:8:293:33 | ... .value | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:293:8:293:33 | ... .value | written |
+| CleartextLoggingTest.swift:294:9:294:27 | ... .optionalPassword | CleartextLoggingTest.swift:294:9:294:27 | ... .optionalPassword | CleartextLoggingTest.swift:294:8:294:36 | ... ! | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:294:8:294:36 | ... ! | written |
+| CleartextLoggingTest.swift:297:8:297:18 | ... .password | CleartextLoggingTest.swift:297:8:297:18 | ... .password | CleartextLoggingTest.swift:297:8:297:29 | ... .getValue(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:297:8:297:29 | ... .getValue(...) | written |
+| CleartextLoggingTest.swift:298:8:298:22 | ... .passwords(...) | CleartextLoggingTest.swift:298:8:298:22 | ... .passwords(...) | CleartextLoggingTest.swift:298:8:298:33 | ... .getValue(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:298:8:298:33 | ... .getValue(...) | written |
+| CleartextLoggingTest.swift:299:8:299:26 | ... .optionalPassword | CleartextLoggingTest.swift:299:8:299:26 | ... .optionalPassword | CleartextLoggingTest.swift:299:8:299:38 | ... .getValue(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:299:8:299:38 | ... .getValue(...) | written |
+| CleartextLoggingTest.swift:300:8:300:26 | ... .optionalPassword | CleartextLoggingTest.swift:300:8:300:26 | ... .optionalPassword | CleartextLoggingTest.swift:300:8:300:44 | ... ?? ... | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:300:8:300:44 | ... ?? ... | written |
+| CleartextLoggingTest.swift:323:8:323:15 | password | CleartextLoggingTest.swift:323:8:323:15 | password | CleartextLoggingTest.swift:323:8:323:15 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:323:8:323:15 | password | written |
+| CleartextLoggingTest.swift:326:18:326:25 | password | CleartextLoggingTest.swift:326:18:326:25 | password | CleartextLoggingTest.swift:326:8:326:25 | ... + ... | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:326:8:326:25 | ... + ... | written |
+| CleartextLoggingTest.swift:344:18:344:25 | password | CleartextLoggingTest.swift:344:18:344:25 | password | CleartextLoggingTest.swift:345:8:345:16 | myString9 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:345:8:345:16 | myString9 | written |
+| CleartextLoggingTest.swift:348:19:348:26 | password | CleartextLoggingTest.swift:348:19:348:26 | password | CleartextLoggingTest.swift:350:8:350:17 | myString10 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:350:8:350:17 | myString10 | written |
+| CleartextLoggingTest.swift:355:2:355:9 | password | CleartextLoggingTest.swift:355:2:355:9 | password | CleartextLoggingTest.swift:356:8:356:17 | myString12 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:356:8:356:17 | myString12 | written |
+| CleartextLoggingTest.swift:358:8:358:15 | password | CleartextLoggingTest.swift:358:8:358:15 | password | CleartextLoggingTest.swift:358:8:358:15 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:358:8:358:15 | password | written |
+| CleartextLoggingTest.swift:384:72:384:85 | passwordString | CleartextLoggingTest.swift:384:72:384:85 | passwordString | CleartextLoggingTest.swift:384:69:384:101 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:384:69:384:101 | StringInterpolationExpr | written |
+| CleartextLoggingTest.swift:387:64:387:77 | passwordString | CleartextLoggingTest.swift:387:64:387:77 | passwordString | CleartextLoggingTest.swift:387:61:387:93 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:387:61:387:93 | StringInterpolationExpr | written |
+| CleartextLoggingTest.swift:388:103:388:116 | passwordString | CleartextLoggingTest.swift:388:103:388:116 | passwordString | CleartextLoggingTest.swift:388:92:388:118 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:388:92:388:118 | getVaList(...) | written |
+| CleartextLoggingTest.swift:395:26:395:39 | passwordString | CleartextLoggingTest.swift:395:26:395:39 | passwordString | CleartextLoggingTest.swift:395:23:395:55 | StringInterpolationExpr | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:395:23:395:55 | StringInterpolationExpr | written |
+| CleartextLoggingTest.swift:396:54:396:67 | passwordString | CleartextLoggingTest.swift:396:54:396:67 | passwordString | CleartextLoggingTest.swift:396:43:396:69 | getVaList(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:396:43:396:69 | getVaList(...) | written |
+| CleartextLoggingTest.swift:402:18:402:24 | authKey | CleartextLoggingTest.swift:402:18:402:24 | authKey | CleartextLoggingTest.swift:402:18:402:24 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:402:18:402:24 | authKey | written |
+| CleartextLoggingTest.swift:403:25:403:32 | authKey2 | CleartextLoggingTest.swift:403:25:403:32 | authKey2 | CleartextLoggingTest.swift:403:18:403:33 | String(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:403:18:403:33 | String(...) | written |
+| CleartextLoggingTest.swift:404:22:404:28 | authKey | CleartextLoggingTest.swift:404:22:404:28 | authKey | CleartextLoggingTest.swift:404:22:404:28 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:404:22:404:28 | authKey | written |
+| CleartextLoggingTest.swift:405:31:405:37 | authKey | CleartextLoggingTest.swift:405:31:405:37 | authKey | CleartextLoggingTest.swift:405:31:405:37 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:405:31:405:37 | authKey | written |
+| CleartextLoggingTest.swift:406:33:406:39 | authKey | CleartextLoggingTest.swift:406:33:406:39 | authKey | CleartextLoggingTest.swift:406:16:406:40 | NSString(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:406:16:406:40 | NSString(...) | written |
+| CleartextLoggingTest.swift:407:13:407:19 | authKey | CleartextLoggingTest.swift:407:13:407:19 | authKey | CleartextLoggingTest.swift:407:13:407:19 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:407:13:407:19 | authKey | written |
+| CleartextLoggingTest.swift:408:24:408:30 | authKey | CleartextLoggingTest.swift:408:24:408:30 | authKey | CleartextLoggingTest.swift:408:24:408:30 | authKey | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:408:24:408:30 | authKey | written |
+| CleartextLoggingTest.swift:410:19:410:26 | authKey3 | CleartextLoggingTest.swift:410:19:410:26 | authKey3 | CleartextLoggingTest.swift:410:19:410:26 | authKey3 | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:410:19:410:26 | authKey3 | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:415:16:415:18 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:415:16:415:18 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:416:18:416:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:416:18:416:20 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:417:18:417:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:417:18:417:20 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:418:17:418:37 | NSString(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:418:17:418:37 | NSString(...) | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:419:19:419:21 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:419:19:419:21 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:420:20:420:22 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:420:20:420:22 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:421:18:421:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:421:18:421:20 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:422:21:422:23 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:422:21:422:23 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:423:18:423:20 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:423:18:423:20 | msg | written |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:424:22:424:24 | msg | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:424:22:424:24 | msg | written |
+| CleartextLoggingTest.swift:426:57:426:63 | authKey | CleartextLoggingTest.swift:426:57:426:63 | authKey | CleartextLoggingTest.swift:427:18:427:30 | ... ?? ... | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:427:18:427:30 | ... ?? ... | written |
+| CleartextLoggingTest.swift:426:57:426:63 | authKey | CleartextLoggingTest.swift:426:57:426:63 | authKey | CleartextLoggingTest.swift:428:22:428:28 | msg_opt | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:428:22:428:28 | msg_opt | written |
+| CleartextLoggingTest.swift:436:29:436:36 | password | CleartextLoggingTest.swift:436:29:436:36 | password | CleartextLoggingTest.swift:436:29:436:36 | password | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:436:29:436:36 | password | written |
+| CleartextLoggingTest.swift:437:28:437:33 | secret | CleartextLoggingTest.swift:437:28:437:33 | secret | CleartextLoggingTest.swift:437:28:437:33 | secret | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:437:28:437:33 | secret | written |
+| CleartextLoggingTest.swift:445:11:445:24 | globalPassword | CleartextLoggingTest.swift:445:11:445:24 | globalPassword | CleartextLoggingTest.swift:445:11:445:24 | globalPassword | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:445:11:445:24 | globalPassword | written |
+| CleartextLoggingTest.swift:477:11:477:30 | Secret(...) | CleartextLoggingTest.swift:477:11:477:30 | Secret(...) | CleartextLoggingTest.swift:477:11:477:30 | Secret(...) | This sensitive information is to $@ to a log file. | CleartextLoggingTest.swift:477:11:477:30 | Secret(...) | written |
 edges
 | CleartextLoggingBad.swift:2:33:2:43 | interpolation(...) | CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | provenance |  |
 | CleartextLoggingBad.swift:2:35:2:42 | password | CleartextLoggingBad.swift:2:33:2:43 | interpolation(...) | provenance |  |
-| CleartextLoggingTest.swift:182:12:182:22 | interpolation(...) | CleartextLoggingTest.swift:182:11:182:23 | StringInterpolationExpr | provenance |  |
-| CleartextLoggingTest.swift:182:14:182:21 | password | CleartextLoggingTest.swift:182:12:182:22 | interpolation(...) | provenance |  |
-| CleartextLoggingTest.swift:183:28:183:37 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:183:18:183:38 | getVaList(...) | provenance |  |
-| CleartextLoggingTest.swift:183:29:183:36 | password | CleartextLoggingTest.swift:183:28:183:37 | ArrayLiteral [ArrayElement] | provenance |  |
-| CleartextLoggingTest.swift:184:31:184:44 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:184:21:184:45 | getVaList(...) | provenance |  |
-| CleartextLoggingTest.swift:184:36:184:43 | password | CleartextLoggingTest.swift:184:31:184:44 | ArrayLiteral [ArrayElement] | provenance |  |
-| CleartextLoggingTest.swift:191:14:191:24 | interpolation(...) | CleartextLoggingTest.swift:191:13:191:25 | StringInterpolationExpr | provenance |  |
-| CleartextLoggingTest.swift:191:16:191:23 | password | CleartextLoggingTest.swift:191:14:191:24 | interpolation(...) | provenance |  |
-| CleartextLoggingTest.swift:197:14:197:27 | interpolation(...) | CleartextLoggingTest.swift:197:13:197:28 | StringInterpolationExpr | provenance |  |
-| CleartextLoggingTest.swift:197:16:197:26 | bankAccount | CleartextLoggingTest.swift:197:14:197:27 | interpolation(...) | provenance |  |
-| CleartextLoggingTest.swift:250:6:250:6 | y | CleartextLoggingTest.swift:251:8:251:8 | y | provenance |  |
-| CleartextLoggingTest.swift:250:10:250:22 | getPassword(...) | CleartextLoggingTest.swift:250:6:250:6 | y | provenance |  |
-| CleartextLoggingTest.swift:257:5:257:9 | ... .some(...) | CleartextLoggingTest.swift:257:9:257:9 | v | provenance |  |
-| CleartextLoggingTest.swift:257:9:257:9 | v | CleartextLoggingTest.swift:258:9:258:9 | v | provenance |  |
-| CleartextLoggingTest.swift:257:13:257:30 | ... .optionalPassword | CleartextLoggingTest.swift:257:5:257:9 | ... .some(...) | provenance |  |
-| CleartextLoggingTest.swift:260:8:260:25 | ... .optionalPassword | CleartextLoggingTest.swift:260:8:260:26 | ... ! | provenance |  |
-| CleartextLoggingTest.swift:267:12:267:22 | ... .password | CleartextLoggingTest.swift:267:11:267:24 | ... ! | provenance |  |
-| CleartextLoggingTest.swift:290:8:290:18 | ... .password | CleartextLoggingTest.swift:290:8:290:24 | ... .value | provenance | Config |
-| CleartextLoggingTest.swift:291:8:291:22 | ... .passwords(...) | CleartextLoggingTest.swift:291:8:291:28 | ... .value | provenance | Config |
-| CleartextLoggingTest.swift:292:8:292:26 | ... .optionalPassword | CleartextLoggingTest.swift:292:8:292:27 | ... ! | provenance |  |
-| CleartextLoggingTest.swift:292:8:292:27 | ... ! | CleartextLoggingTest.swift:292:8:292:33 | ... .value | provenance | Config |
-| CleartextLoggingTest.swift:293:9:293:27 | ... .optionalPassword | CleartextLoggingTest.swift:293:9:293:34 | ... .value | provenance | Config |
-| CleartextLoggingTest.swift:293:9:293:34 | ... .value | CleartextLoggingTest.swift:293:8:293:36 | ... ! | provenance |  |
-| CleartextLoggingTest.swift:296:8:296:18 | ... .password | CleartextLoggingTest.swift:296:8:296:27 | ... .getValue | provenance | Config |
-| CleartextLoggingTest.swift:296:8:296:27 | ... .getValue | CleartextLoggingTest.swift:296:8:296:29 | ... .getValue(...) | provenance | Config |
-| CleartextLoggingTest.swift:297:8:297:22 | ... .passwords(...) | CleartextLoggingTest.swift:297:8:297:31 | ... .getValue | provenance | Config |
-| CleartextLoggingTest.swift:297:8:297:31 | ... .getValue | CleartextLoggingTest.swift:297:8:297:33 | ... .getValue(...) | provenance | Config |
-| CleartextLoggingTest.swift:298:8:298:26 | ... .optionalPassword | CleartextLoggingTest.swift:298:8:298:27 | ... ! | provenance |  |
-| CleartextLoggingTest.swift:298:8:298:27 | ... ! | CleartextLoggingTest.swift:298:8:298:36 | ... .getValue | provenance | Config |
-| CleartextLoggingTest.swift:298:8:298:36 | ... .getValue | CleartextLoggingTest.swift:298:8:298:38 | ... .getValue(...) | provenance | Config |
-| CleartextLoggingTest.swift:299:8:299:26 | ... .optionalPassword | CleartextLoggingTest.swift:299:8:299:36 | ... .getValue | provenance | Config |
+| CleartextLoggingTest.swift:183:12:183:22 | interpolation(...) | CleartextLoggingTest.swift:183:11:183:23 | StringInterpolationExpr | provenance |  |
+| CleartextLoggingTest.swift:183:14:183:21 | password | CleartextLoggingTest.swift:183:12:183:22 | interpolation(...) | provenance |  |
+| CleartextLoggingTest.swift:184:28:184:37 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:184:18:184:38 | getVaList(...) | provenance |  |
+| CleartextLoggingTest.swift:184:29:184:36 | password | CleartextLoggingTest.swift:184:28:184:37 | ArrayLiteral [ArrayElement] | provenance |  |
+| CleartextLoggingTest.swift:185:31:185:44 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:185:21:185:45 | getVaList(...) | provenance |  |
+| CleartextLoggingTest.swift:185:36:185:43 | password | CleartextLoggingTest.swift:185:31:185:44 | ArrayLiteral [ArrayElement] | provenance |  |
+| CleartextLoggingTest.swift:192:14:192:24 | interpolation(...) | CleartextLoggingTest.swift:192:13:192:25 | StringInterpolationExpr | provenance |  |
+| CleartextLoggingTest.swift:192:16:192:23 | password | CleartextLoggingTest.swift:192:14:192:24 | interpolation(...) | provenance |  |
+| CleartextLoggingTest.swift:198:14:198:27 | interpolation(...) | CleartextLoggingTest.swift:198:13:198:28 | StringInterpolationExpr | provenance |  |
+| CleartextLoggingTest.swift:198:16:198:26 | bankAccount | CleartextLoggingTest.swift:198:14:198:27 | interpolation(...) | provenance |  |
+| CleartextLoggingTest.swift:251:6:251:6 | y | CleartextLoggingTest.swift:252:8:252:8 | y | provenance |  |
+| CleartextLoggingTest.swift:251:10:251:22 | getPassword(...) | CleartextLoggingTest.swift:251:6:251:6 | y | provenance |  |
+| CleartextLoggingTest.swift:258:5:258:9 | ... .some(...) | CleartextLoggingTest.swift:258:9:258:9 | v | provenance |  |
+| CleartextLoggingTest.swift:258:9:258:9 | v | CleartextLoggingTest.swift:259:9:259:9 | v | provenance |  |
+| CleartextLoggingTest.swift:258:13:258:30 | ... .optionalPassword | CleartextLoggingTest.swift:258:5:258:9 | ... .some(...) | provenance |  |
+| CleartextLoggingTest.swift:261:8:261:25 | ... .optionalPassword | CleartextLoggingTest.swift:261:8:261:26 | ... ! | provenance |  |
+| CleartextLoggingTest.swift:268:12:268:22 | ... .password | CleartextLoggingTest.swift:268:11:268:24 | ... ! | provenance |  |
+| CleartextLoggingTest.swift:291:8:291:18 | ... .password | CleartextLoggingTest.swift:291:8:291:24 | ... .value | provenance | Config |
+| CleartextLoggingTest.swift:292:8:292:22 | ... .passwords(...) | CleartextLoggingTest.swift:292:8:292:28 | ... .value | provenance | Config |
+| CleartextLoggingTest.swift:293:8:293:26 | ... .optionalPassword | CleartextLoggingTest.swift:293:8:293:27 | ... ! | provenance |  |
+| CleartextLoggingTest.swift:293:8:293:27 | ... ! | CleartextLoggingTest.swift:293:8:293:33 | ... .value | provenance | Config |
+| CleartextLoggingTest.swift:294:9:294:27 | ... .optionalPassword | CleartextLoggingTest.swift:294:9:294:34 | ... .value | provenance | Config |
+| CleartextLoggingTest.swift:294:9:294:34 | ... .value | CleartextLoggingTest.swift:294:8:294:36 | ... ! | provenance |  |
+| CleartextLoggingTest.swift:297:8:297:18 | ... .password | CleartextLoggingTest.swift:297:8:297:27 | ... .getValue | provenance | Config |
+| CleartextLoggingTest.swift:297:8:297:27 | ... .getValue | CleartextLoggingTest.swift:297:8:297:29 | ... .getValue(...) | provenance | Config |
+| CleartextLoggingTest.swift:298:8:298:22 | ... .passwords(...) | CleartextLoggingTest.swift:298:8:298:31 | ... .getValue | provenance | Config |
+| CleartextLoggingTest.swift:298:8:298:31 | ... .getValue | CleartextLoggingTest.swift:298:8:298:33 | ... .getValue(...) | provenance | Config |
+| CleartextLoggingTest.swift:299:8:299:26 | ... .optionalPassword | CleartextLoggingTest.swift:299:8:299:27 | ... ! | provenance |  |
+| CleartextLoggingTest.swift:299:8:299:27 | ... ! | CleartextLoggingTest.swift:299:8:299:36 | ... .getValue | provenance | Config |
 | CleartextLoggingTest.swift:299:8:299:36 | ... .getValue | CleartextLoggingTest.swift:299:8:299:38 | ... .getValue(...) | provenance | Config |
-| CleartextLoggingTest.swift:299:8:299:38 | ... .getValue(...) | CleartextLoggingTest.swift:299:8:299:44 | ... ?? ... | provenance |  |
-| CleartextLoggingTest.swift:325:18:325:25 | password | CleartextLoggingTest.swift:325:8:325:25 | ... + ... | provenance |  |
-| CleartextLoggingTest.swift:343:18:343:25 | password | CleartextLoggingTest.swift:344:8:344:16 | myString9 | provenance |  |
-| CleartextLoggingTest.swift:347:19:347:26 | password | CleartextLoggingTest.swift:349:8:349:17 | myString10 | provenance |  |
-| CleartextLoggingTest.swift:354:2:354:9 | password | CleartextLoggingTest.swift:354:21:354:31 | [post] & ... | provenance |  |
-| CleartextLoggingTest.swift:354:21:354:31 | [post] & ... | CleartextLoggingTest.swift:355:8:355:17 | myString12 | provenance |  |
-| CleartextLoggingTest.swift:383:70:383:86 | interpolation(...) | CleartextLoggingTest.swift:383:69:383:101 | StringInterpolationExpr | provenance |  |
-| CleartextLoggingTest.swift:383:72:383:85 | passwordString | CleartextLoggingTest.swift:383:70:383:86 | interpolation(...) | provenance |  |
-| CleartextLoggingTest.swift:386:62:386:78 | interpolation(...) | CleartextLoggingTest.swift:386:61:386:93 | StringInterpolationExpr | provenance |  |
-| CleartextLoggingTest.swift:386:64:386:77 | passwordString | CleartextLoggingTest.swift:386:62:386:78 | interpolation(...) | provenance |  |
-| CleartextLoggingTest.swift:387:102:387:117 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:387:92:387:118 | getVaList(...) | provenance |  |
-| CleartextLoggingTest.swift:387:103:387:116 | passwordString | CleartextLoggingTest.swift:387:102:387:117 | ArrayLiteral [ArrayElement] | provenance |  |
-| CleartextLoggingTest.swift:394:24:394:40 | interpolation(...) | CleartextLoggingTest.swift:394:23:394:55 | StringInterpolationExpr | provenance |  |
-| CleartextLoggingTest.swift:394:26:394:39 | passwordString | CleartextLoggingTest.swift:394:24:394:40 | interpolation(...) | provenance |  |
-| CleartextLoggingTest.swift:395:53:395:68 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:395:43:395:69 | getVaList(...) | provenance |  |
-| CleartextLoggingTest.swift:395:54:395:67 | passwordString | CleartextLoggingTest.swift:395:53:395:68 | ArrayLiteral [ArrayElement] | provenance |  |
-| CleartextLoggingTest.swift:402:25:402:32 | authKey2 | CleartextLoggingTest.swift:402:18:402:33 | String(...) | provenance |  |
-| CleartextLoggingTest.swift:405:33:405:39 | authKey | CleartextLoggingTest.swift:405:16:405:40 | NSString(...) | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:414:16:414:18 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:415:18:415:20 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:416:18:416:20 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:417:34:417:36 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:418:19:418:21 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:419:20:419:22 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:420:18:420:20 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:421:21:421:23 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | CleartextLoggingTest.swift:422:18:422:20 | msg | provenance |  |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | CleartextLoggingTest.swift:413:9:413:11 | msg | provenance |  |
-| CleartextLoggingTest.swift:417:34:417:36 | msg | CleartextLoggingTest.swift:417:17:417:37 | NSString(...) | provenance |  |
+| CleartextLoggingTest.swift:300:8:300:26 | ... .optionalPassword | CleartextLoggingTest.swift:300:8:300:36 | ... .getValue | provenance | Config |
+| CleartextLoggingTest.swift:300:8:300:36 | ... .getValue | CleartextLoggingTest.swift:300:8:300:38 | ... .getValue(...) | provenance | Config |
+| CleartextLoggingTest.swift:300:8:300:38 | ... .getValue(...) | CleartextLoggingTest.swift:300:8:300:44 | ... ?? ... | provenance |  |
+| CleartextLoggingTest.swift:326:18:326:25 | password | CleartextLoggingTest.swift:326:8:326:25 | ... + ... | provenance |  |
+| CleartextLoggingTest.swift:344:18:344:25 | password | CleartextLoggingTest.swift:345:8:345:16 | myString9 | provenance |  |
+| CleartextLoggingTest.swift:348:19:348:26 | password | CleartextLoggingTest.swift:350:8:350:17 | myString10 | provenance |  |
+| CleartextLoggingTest.swift:355:2:355:9 | password | CleartextLoggingTest.swift:355:21:355:31 | [post] & ... | provenance |  |
+| CleartextLoggingTest.swift:355:21:355:31 | [post] & ... | CleartextLoggingTest.swift:356:8:356:17 | myString12 | provenance |  |
+| CleartextLoggingTest.swift:384:70:384:86 | interpolation(...) | CleartextLoggingTest.swift:384:69:384:101 | StringInterpolationExpr | provenance |  |
+| CleartextLoggingTest.swift:384:72:384:85 | passwordString | CleartextLoggingTest.swift:384:70:384:86 | interpolation(...) | provenance |  |
+| CleartextLoggingTest.swift:387:62:387:78 | interpolation(...) | CleartextLoggingTest.swift:387:61:387:93 | StringInterpolationExpr | provenance |  |
+| CleartextLoggingTest.swift:387:64:387:77 | passwordString | CleartextLoggingTest.swift:387:62:387:78 | interpolation(...) | provenance |  |
+| CleartextLoggingTest.swift:388:102:388:117 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:388:92:388:118 | getVaList(...) | provenance |  |
+| CleartextLoggingTest.swift:388:103:388:116 | passwordString | CleartextLoggingTest.swift:388:102:388:117 | ArrayLiteral [ArrayElement] | provenance |  |
+| CleartextLoggingTest.swift:395:24:395:40 | interpolation(...) | CleartextLoggingTest.swift:395:23:395:55 | StringInterpolationExpr | provenance |  |
+| CleartextLoggingTest.swift:395:26:395:39 | passwordString | CleartextLoggingTest.swift:395:24:395:40 | interpolation(...) | provenance |  |
+| CleartextLoggingTest.swift:396:53:396:68 | ArrayLiteral [ArrayElement] | CleartextLoggingTest.swift:396:43:396:69 | getVaList(...) | provenance |  |
+| CleartextLoggingTest.swift:396:54:396:67 | passwordString | CleartextLoggingTest.swift:396:53:396:68 | ArrayLiteral [ArrayElement] | provenance |  |
+| CleartextLoggingTest.swift:403:25:403:32 | authKey2 | CleartextLoggingTest.swift:403:18:403:33 | String(...) | provenance |  |
+| CleartextLoggingTest.swift:406:33:406:39 | authKey | CleartextLoggingTest.swift:406:16:406:40 | NSString(...) | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:415:16:415:18 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:416:18:416:20 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:417:18:417:20 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:418:34:418:36 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:419:19:419:21 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:420:20:420:22 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:421:18:421:20 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:422:21:422:23 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:423:18:423:20 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | CleartextLoggingTest.swift:424:22:424:24 | msg | provenance |  |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | CleartextLoggingTest.swift:414:9:414:11 | msg | provenance |  |
+| CleartextLoggingTest.swift:418:34:418:36 | msg | CleartextLoggingTest.swift:418:17:418:37 | NSString(...) | provenance |  |
+| CleartextLoggingTest.swift:426:9:426:15 | msg_opt | CleartextLoggingTest.swift:427:18:427:24 | msg_opt | provenance |  |
+| CleartextLoggingTest.swift:426:9:426:15 | msg_opt | CleartextLoggingTest.swift:428:22:428:28 | msg_opt | provenance |  |
+| CleartextLoggingTest.swift:426:57:426:63 | authKey | CleartextLoggingTest.swift:426:9:426:15 | msg_opt | provenance |  |
+| CleartextLoggingTest.swift:427:18:427:24 | msg_opt | CleartextLoggingTest.swift:427:18:427:30 | ... ?? ... | provenance |  |
 nodes
 | CleartextLoggingBad.swift:2:7:2:44 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
 | CleartextLoggingBad.swift:2:33:2:43 | interpolation(...) | semmle.label | interpolation(...) |
 | CleartextLoggingBad.swift:2:35:2:42 | password | semmle.label | password |
-| CleartextLoggingTest.swift:167:11:167:18 | password | semmle.label | password |
 | CleartextLoggingTest.swift:168:11:168:18 | password | semmle.label | password |
-| CleartextLoggingTest.swift:169:26:169:33 | password | semmle.label | password |
-| CleartextLoggingTest.swift:170:11:170:18 | password | semmle.label | password |
-| CleartextLoggingTest.swift:171:26:171:33 | password | semmle.label | password |
-| CleartextLoggingTest.swift:172:42:172:49 | password | semmle.label | password |
-| CleartextLoggingTest.swift:179:11:179:18 | password | semmle.label | password |
-| CleartextLoggingTest.swift:180:17:180:24 | password | semmle.label | password |
-| CleartextLoggingTest.swift:181:24:181:31 | password | semmle.label | password |
-| CleartextLoggingTest.swift:182:11:182:23 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| CleartextLoggingTest.swift:182:12:182:22 | interpolation(...) | semmle.label | interpolation(...) |
-| CleartextLoggingTest.swift:182:14:182:21 | password | semmle.label | password |
-| CleartextLoggingTest.swift:183:18:183:38 | getVaList(...) | semmle.label | getVaList(...) |
-| CleartextLoggingTest.swift:183:28:183:37 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
-| CleartextLoggingTest.swift:183:29:183:36 | password | semmle.label | password |
-| CleartextLoggingTest.swift:184:21:184:45 | getVaList(...) | semmle.label | getVaList(...) |
-| CleartextLoggingTest.swift:184:31:184:44 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
-| CleartextLoggingTest.swift:184:36:184:43 | password | semmle.label | password |
-| CleartextLoggingTest.swift:191:13:191:25 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| CleartextLoggingTest.swift:191:14:191:24 | interpolation(...) | semmle.label | interpolation(...) |
-| CleartextLoggingTest.swift:191:16:191:23 | password | semmle.label | password |
-| CleartextLoggingTest.swift:197:13:197:28 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| CleartextLoggingTest.swift:197:14:197:27 | interpolation(...) | semmle.label | interpolation(...) |
-| CleartextLoggingTest.swift:197:16:197:26 | bankAccount | semmle.label | bankAccount |
-| CleartextLoggingTest.swift:220:11:220:20 | passphrase | semmle.label | passphrase |
-| CleartextLoggingTest.swift:221:11:221:21 | pass_phrase | semmle.label | pass_phrase |
-| CleartextLoggingTest.swift:250:6:250:6 | y | semmle.label | y |
-| CleartextLoggingTest.swift:250:10:250:22 | getPassword(...) | semmle.label | getPassword(...) |
-| CleartextLoggingTest.swift:251:8:251:8 | y | semmle.label | y |
-| CleartextLoggingTest.swift:255:8:255:17 | ... .password | semmle.label | ... .password |
-| CleartextLoggingTest.swift:256:8:256:21 | ... .passwords(...) | semmle.label | ... .passwords(...) |
-| CleartextLoggingTest.swift:257:5:257:9 | ... .some(...) | semmle.label | ... .some(...) |
-| CleartextLoggingTest.swift:257:9:257:9 | v | semmle.label | v |
-| CleartextLoggingTest.swift:257:13:257:30 | ... .optionalPassword | semmle.label | ... .optionalPassword |
+| CleartextLoggingTest.swift:169:11:169:18 | password | semmle.label | password |
+| CleartextLoggingTest.swift:170:26:170:33 | password | semmle.label | password |
+| CleartextLoggingTest.swift:171:11:171:18 | password | semmle.label | password |
+| CleartextLoggingTest.swift:172:26:172:33 | password | semmle.label | password |
+| CleartextLoggingTest.swift:173:42:173:49 | password | semmle.label | password |
+| CleartextLoggingTest.swift:180:11:180:18 | password | semmle.label | password |
+| CleartextLoggingTest.swift:181:17:181:24 | password | semmle.label | password |
+| CleartextLoggingTest.swift:182:24:182:31 | password | semmle.label | password |
+| CleartextLoggingTest.swift:183:11:183:23 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| CleartextLoggingTest.swift:183:12:183:22 | interpolation(...) | semmle.label | interpolation(...) |
+| CleartextLoggingTest.swift:183:14:183:21 | password | semmle.label | password |
+| CleartextLoggingTest.swift:184:18:184:38 | getVaList(...) | semmle.label | getVaList(...) |
+| CleartextLoggingTest.swift:184:28:184:37 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
+| CleartextLoggingTest.swift:184:29:184:36 | password | semmle.label | password |
+| CleartextLoggingTest.swift:185:21:185:45 | getVaList(...) | semmle.label | getVaList(...) |
+| CleartextLoggingTest.swift:185:31:185:44 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
+| CleartextLoggingTest.swift:185:36:185:43 | password | semmle.label | password |
+| CleartextLoggingTest.swift:192:13:192:25 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| CleartextLoggingTest.swift:192:14:192:24 | interpolation(...) | semmle.label | interpolation(...) |
+| CleartextLoggingTest.swift:192:16:192:23 | password | semmle.label | password |
+| CleartextLoggingTest.swift:198:13:198:28 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| CleartextLoggingTest.swift:198:14:198:27 | interpolation(...) | semmle.label | interpolation(...) |
+| CleartextLoggingTest.swift:198:16:198:26 | bankAccount | semmle.label | bankAccount |
+| CleartextLoggingTest.swift:221:11:221:20 | passphrase | semmle.label | passphrase |
+| CleartextLoggingTest.swift:222:11:222:21 | pass_phrase | semmle.label | pass_phrase |
+| CleartextLoggingTest.swift:251:6:251:6 | y | semmle.label | y |
+| CleartextLoggingTest.swift:251:10:251:22 | getPassword(...) | semmle.label | getPassword(...) |
+| CleartextLoggingTest.swift:252:8:252:8 | y | semmle.label | y |
+| CleartextLoggingTest.swift:256:8:256:17 | ... .password | semmle.label | ... .password |
+| CleartextLoggingTest.swift:257:8:257:21 | ... .passwords(...) | semmle.label | ... .passwords(...) |
+| CleartextLoggingTest.swift:258:5:258:9 | ... .some(...) | semmle.label | ... .some(...) |
 | CleartextLoggingTest.swift:258:9:258:9 | v | semmle.label | v |
-| CleartextLoggingTest.swift:260:8:260:25 | ... .optionalPassword | semmle.label | ... .optionalPassword |
-| CleartextLoggingTest.swift:260:8:260:26 | ... ! | semmle.label | ... ! |
-| CleartextLoggingTest.swift:262:8:262:22 | ... .getPassword(...) | semmle.label | ... .getPassword(...) |
-| CleartextLoggingTest.swift:265:11:265:21 | ... .password | semmle.label | ... .password |
-| CleartextLoggingTest.swift:266:11:266:26 | ... .getPassword(...) | semmle.label | ... .getPassword(...) |
-| CleartextLoggingTest.swift:267:11:267:24 | ... ! | semmle.label | ... ! |
-| CleartextLoggingTest.swift:267:12:267:22 | ... .password | semmle.label | ... .password |
-| CleartextLoggingTest.swift:270:11:270:23 | ... .password | semmle.label | ... .password |
-| CleartextLoggingTest.swift:271:11:271:28 | ... .getPassword(...) | semmle.label | ... .getPassword(...) |
-| CleartextLoggingTest.swift:290:8:290:18 | ... .password | semmle.label | ... .password |
-| CleartextLoggingTest.swift:290:8:290:24 | ... .value | semmle.label | ... .value |
-| CleartextLoggingTest.swift:291:8:291:22 | ... .passwords(...) | semmle.label | ... .passwords(...) |
-| CleartextLoggingTest.swift:291:8:291:28 | ... .value | semmle.label | ... .value |
-| CleartextLoggingTest.swift:292:8:292:26 | ... .optionalPassword | semmle.label | ... .optionalPassword |
-| CleartextLoggingTest.swift:292:8:292:27 | ... ! | semmle.label | ... ! |
-| CleartextLoggingTest.swift:292:8:292:33 | ... .value | semmle.label | ... .value |
-| CleartextLoggingTest.swift:293:8:293:36 | ... ! | semmle.label | ... ! |
-| CleartextLoggingTest.swift:293:9:293:27 | ... .optionalPassword | semmle.label | ... .optionalPassword |
-| CleartextLoggingTest.swift:293:9:293:34 | ... .value | semmle.label | ... .value |
-| CleartextLoggingTest.swift:296:8:296:18 | ... .password | semmle.label | ... .password |
-| CleartextLoggingTest.swift:296:8:296:27 | ... .getValue | semmle.label | ... .getValue |
-| CleartextLoggingTest.swift:296:8:296:29 | ... .getValue(...) | semmle.label | ... .getValue(...) |
-| CleartextLoggingTest.swift:297:8:297:22 | ... .passwords(...) | semmle.label | ... .passwords(...) |
-| CleartextLoggingTest.swift:297:8:297:31 | ... .getValue | semmle.label | ... .getValue |
-| CleartextLoggingTest.swift:297:8:297:33 | ... .getValue(...) | semmle.label | ... .getValue(...) |
-| CleartextLoggingTest.swift:298:8:298:26 | ... .optionalPassword | semmle.label | ... .optionalPassword |
-| CleartextLoggingTest.swift:298:8:298:27 | ... ! | semmle.label | ... ! |
-| CleartextLoggingTest.swift:298:8:298:36 | ... .getValue | semmle.label | ... .getValue |
-| CleartextLoggingTest.swift:298:8:298:38 | ... .getValue(...) | semmle.label | ... .getValue(...) |
+| CleartextLoggingTest.swift:258:13:258:30 | ... .optionalPassword | semmle.label | ... .optionalPassword |
+| CleartextLoggingTest.swift:259:9:259:9 | v | semmle.label | v |
+| CleartextLoggingTest.swift:261:8:261:25 | ... .optionalPassword | semmle.label | ... .optionalPassword |
+| CleartextLoggingTest.swift:261:8:261:26 | ... ! | semmle.label | ... ! |
+| CleartextLoggingTest.swift:263:8:263:22 | ... .getPassword(...) | semmle.label | ... .getPassword(...) |
+| CleartextLoggingTest.swift:266:11:266:21 | ... .password | semmle.label | ... .password |
+| CleartextLoggingTest.swift:267:11:267:26 | ... .getPassword(...) | semmle.label | ... .getPassword(...) |
+| CleartextLoggingTest.swift:268:11:268:24 | ... ! | semmle.label | ... ! |
+| CleartextLoggingTest.swift:268:12:268:22 | ... .password | semmle.label | ... .password |
+| CleartextLoggingTest.swift:271:11:271:23 | ... .password | semmle.label | ... .password |
+| CleartextLoggingTest.swift:272:11:272:28 | ... .getPassword(...) | semmle.label | ... .getPassword(...) |
+| CleartextLoggingTest.swift:291:8:291:18 | ... .password | semmle.label | ... .password |
+| CleartextLoggingTest.swift:291:8:291:24 | ... .value | semmle.label | ... .value |
+| CleartextLoggingTest.swift:292:8:292:22 | ... .passwords(...) | semmle.label | ... .passwords(...) |
+| CleartextLoggingTest.swift:292:8:292:28 | ... .value | semmle.label | ... .value |
+| CleartextLoggingTest.swift:293:8:293:26 | ... .optionalPassword | semmle.label | ... .optionalPassword |
+| CleartextLoggingTest.swift:293:8:293:27 | ... ! | semmle.label | ... ! |
+| CleartextLoggingTest.swift:293:8:293:33 | ... .value | semmle.label | ... .value |
+| CleartextLoggingTest.swift:294:8:294:36 | ... ! | semmle.label | ... ! |
+| CleartextLoggingTest.swift:294:9:294:27 | ... .optionalPassword | semmle.label | ... .optionalPassword |
+| CleartextLoggingTest.swift:294:9:294:34 | ... .value | semmle.label | ... .value |
+| CleartextLoggingTest.swift:297:8:297:18 | ... .password | semmle.label | ... .password |
+| CleartextLoggingTest.swift:297:8:297:27 | ... .getValue | semmle.label | ... .getValue |
+| CleartextLoggingTest.swift:297:8:297:29 | ... .getValue(...) | semmle.label | ... .getValue(...) |
+| CleartextLoggingTest.swift:298:8:298:22 | ... .passwords(...) | semmle.label | ... .passwords(...) |
+| CleartextLoggingTest.swift:298:8:298:31 | ... .getValue | semmle.label | ... .getValue |
+| CleartextLoggingTest.swift:298:8:298:33 | ... .getValue(...) | semmle.label | ... .getValue(...) |
 | CleartextLoggingTest.swift:299:8:299:26 | ... .optionalPassword | semmle.label | ... .optionalPassword |
+| CleartextLoggingTest.swift:299:8:299:27 | ... ! | semmle.label | ... ! |
 | CleartextLoggingTest.swift:299:8:299:36 | ... .getValue | semmle.label | ... .getValue |
 | CleartextLoggingTest.swift:299:8:299:38 | ... .getValue(...) | semmle.label | ... .getValue(...) |
-| CleartextLoggingTest.swift:299:8:299:44 | ... ?? ... | semmle.label | ... ?? ... |
-| CleartextLoggingTest.swift:322:8:322:15 | password | semmle.label | password |
-| CleartextLoggingTest.swift:325:8:325:25 | ... + ... | semmle.label | ... + ... |
-| CleartextLoggingTest.swift:325:18:325:25 | password | semmle.label | password |
-| CleartextLoggingTest.swift:343:18:343:25 | password | semmle.label | password |
-| CleartextLoggingTest.swift:344:8:344:16 | myString9 | semmle.label | myString9 |
-| CleartextLoggingTest.swift:347:19:347:26 | password | semmle.label | password |
-| CleartextLoggingTest.swift:349:8:349:17 | myString10 | semmle.label | myString10 |
-| CleartextLoggingTest.swift:354:2:354:9 | password | semmle.label | password |
-| CleartextLoggingTest.swift:354:21:354:31 | [post] & ... | semmle.label | [post] & ... |
-| CleartextLoggingTest.swift:355:8:355:17 | myString12 | semmle.label | myString12 |
-| CleartextLoggingTest.swift:357:8:357:15 | password | semmle.label | password |
-| CleartextLoggingTest.swift:383:69:383:101 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| CleartextLoggingTest.swift:383:70:383:86 | interpolation(...) | semmle.label | interpolation(...) |
-| CleartextLoggingTest.swift:383:72:383:85 | passwordString | semmle.label | passwordString |
-| CleartextLoggingTest.swift:386:61:386:93 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| CleartextLoggingTest.swift:386:62:386:78 | interpolation(...) | semmle.label | interpolation(...) |
-| CleartextLoggingTest.swift:386:64:386:77 | passwordString | semmle.label | passwordString |
-| CleartextLoggingTest.swift:387:92:387:118 | getVaList(...) | semmle.label | getVaList(...) |
-| CleartextLoggingTest.swift:387:102:387:117 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
-| CleartextLoggingTest.swift:387:103:387:116 | passwordString | semmle.label | passwordString |
-| CleartextLoggingTest.swift:394:23:394:55 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
-| CleartextLoggingTest.swift:394:24:394:40 | interpolation(...) | semmle.label | interpolation(...) |
-| CleartextLoggingTest.swift:394:26:394:39 | passwordString | semmle.label | passwordString |
-| CleartextLoggingTest.swift:395:43:395:69 | getVaList(...) | semmle.label | getVaList(...) |
-| CleartextLoggingTest.swift:395:53:395:68 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
-| CleartextLoggingTest.swift:395:54:395:67 | passwordString | semmle.label | passwordString |
-| CleartextLoggingTest.swift:401:18:401:24 | authKey | semmle.label | authKey |
-| CleartextLoggingTest.swift:402:18:402:33 | String(...) | semmle.label | String(...) |
-| CleartextLoggingTest.swift:402:25:402:32 | authKey2 | semmle.label | authKey2 |
-| CleartextLoggingTest.swift:403:22:403:28 | authKey | semmle.label | authKey |
-| CleartextLoggingTest.swift:404:31:404:37 | authKey | semmle.label | authKey |
-| CleartextLoggingTest.swift:405:16:405:40 | NSString(...) | semmle.label | NSString(...) |
-| CleartextLoggingTest.swift:405:33:405:39 | authKey | semmle.label | authKey |
-| CleartextLoggingTest.swift:406:13:406:19 | authKey | semmle.label | authKey |
-| CleartextLoggingTest.swift:407:24:407:30 | authKey | semmle.label | authKey |
-| CleartextLoggingTest.swift:409:19:409:26 | authKey3 | semmle.label | authKey3 |
-| CleartextLoggingTest.swift:413:9:413:11 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:413:29:413:35 | authKey | semmle.label | authKey |
-| CleartextLoggingTest.swift:414:16:414:18 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:415:18:415:20 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:300:8:300:26 | ... .optionalPassword | semmle.label | ... .optionalPassword |
+| CleartextLoggingTest.swift:300:8:300:36 | ... .getValue | semmle.label | ... .getValue |
+| CleartextLoggingTest.swift:300:8:300:38 | ... .getValue(...) | semmle.label | ... .getValue(...) |
+| CleartextLoggingTest.swift:300:8:300:44 | ... ?? ... | semmle.label | ... ?? ... |
+| CleartextLoggingTest.swift:323:8:323:15 | password | semmle.label | password |
+| CleartextLoggingTest.swift:326:8:326:25 | ... + ... | semmle.label | ... + ... |
+| CleartextLoggingTest.swift:326:18:326:25 | password | semmle.label | password |
+| CleartextLoggingTest.swift:344:18:344:25 | password | semmle.label | password |
+| CleartextLoggingTest.swift:345:8:345:16 | myString9 | semmle.label | myString9 |
+| CleartextLoggingTest.swift:348:19:348:26 | password | semmle.label | password |
+| CleartextLoggingTest.swift:350:8:350:17 | myString10 | semmle.label | myString10 |
+| CleartextLoggingTest.swift:355:2:355:9 | password | semmle.label | password |
+| CleartextLoggingTest.swift:355:21:355:31 | [post] & ... | semmle.label | [post] & ... |
+| CleartextLoggingTest.swift:356:8:356:17 | myString12 | semmle.label | myString12 |
+| CleartextLoggingTest.swift:358:8:358:15 | password | semmle.label | password |
+| CleartextLoggingTest.swift:384:69:384:101 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| CleartextLoggingTest.swift:384:70:384:86 | interpolation(...) | semmle.label | interpolation(...) |
+| CleartextLoggingTest.swift:384:72:384:85 | passwordString | semmle.label | passwordString |
+| CleartextLoggingTest.swift:387:61:387:93 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| CleartextLoggingTest.swift:387:62:387:78 | interpolation(...) | semmle.label | interpolation(...) |
+| CleartextLoggingTest.swift:387:64:387:77 | passwordString | semmle.label | passwordString |
+| CleartextLoggingTest.swift:388:92:388:118 | getVaList(...) | semmle.label | getVaList(...) |
+| CleartextLoggingTest.swift:388:102:388:117 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
+| CleartextLoggingTest.swift:388:103:388:116 | passwordString | semmle.label | passwordString |
+| CleartextLoggingTest.swift:395:23:395:55 | StringInterpolationExpr | semmle.label | StringInterpolationExpr |
+| CleartextLoggingTest.swift:395:24:395:40 | interpolation(...) | semmle.label | interpolation(...) |
+| CleartextLoggingTest.swift:395:26:395:39 | passwordString | semmle.label | passwordString |
+| CleartextLoggingTest.swift:396:43:396:69 | getVaList(...) | semmle.label | getVaList(...) |
+| CleartextLoggingTest.swift:396:53:396:68 | ArrayLiteral [ArrayElement] | semmle.label | ArrayLiteral [ArrayElement] |
+| CleartextLoggingTest.swift:396:54:396:67 | passwordString | semmle.label | passwordString |
+| CleartextLoggingTest.swift:402:18:402:24 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:403:18:403:33 | String(...) | semmle.label | String(...) |
+| CleartextLoggingTest.swift:403:25:403:32 | authKey2 | semmle.label | authKey2 |
+| CleartextLoggingTest.swift:404:22:404:28 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:405:31:405:37 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:406:16:406:40 | NSString(...) | semmle.label | NSString(...) |
+| CleartextLoggingTest.swift:406:33:406:39 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:407:13:407:19 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:408:24:408:30 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:410:19:410:26 | authKey3 | semmle.label | authKey3 |
+| CleartextLoggingTest.swift:414:9:414:11 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:414:29:414:35 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:415:16:415:18 | msg | semmle.label | msg |
 | CleartextLoggingTest.swift:416:18:416:20 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:417:17:417:37 | NSString(...) | semmle.label | NSString(...) |
-| CleartextLoggingTest.swift:417:34:417:36 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:418:19:418:21 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:419:20:419:22 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:420:18:420:20 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:421:21:421:23 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:422:18:422:20 | msg | semmle.label | msg |
-| CleartextLoggingTest.swift:430:29:430:36 | password | semmle.label | password |
-| CleartextLoggingTest.swift:431:28:431:33 | secret | semmle.label | secret |
-| CleartextLoggingTest.swift:439:11:439:24 | globalPassword | semmle.label | globalPassword |
-| CleartextLoggingTest.swift:471:11:471:30 | Secret(...) | semmle.label | Secret(...) |
+| CleartextLoggingTest.swift:417:18:417:20 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:418:17:418:37 | NSString(...) | semmle.label | NSString(...) |
+| CleartextLoggingTest.swift:418:34:418:36 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:419:19:419:21 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:420:20:420:22 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:421:18:421:20 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:422:21:422:23 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:423:18:423:20 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:424:22:424:24 | msg | semmle.label | msg |
+| CleartextLoggingTest.swift:426:9:426:15 | msg_opt | semmle.label | msg_opt |
+| CleartextLoggingTest.swift:426:57:426:63 | authKey | semmle.label | authKey |
+| CleartextLoggingTest.swift:427:18:427:24 | msg_opt | semmle.label | msg_opt |
+| CleartextLoggingTest.swift:427:18:427:30 | ... ?? ... | semmle.label | ... ?? ... |
+| CleartextLoggingTest.swift:428:22:428:28 | msg_opt | semmle.label | msg_opt |
+| CleartextLoggingTest.swift:436:29:436:36 | password | semmle.label | password |
+| CleartextLoggingTest.swift:437:28:437:33 | secret | semmle.label | secret |
+| CleartextLoggingTest.swift:445:11:445:24 | globalPassword | semmle.label | globalPassword |
+| CleartextLoggingTest.swift:477:11:477:30 | Secret(...) | semmle.label | Secret(...) |
 subpaths
