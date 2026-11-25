@@ -551,33 +551,24 @@ private module Input implements InputSig1, InputSig2 {
     not Ast::getChild(pattern, _) instanceof Ast::Pattern
   }
 
-  predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
-    kind.isMatching() and
-    n = any(Rust::TryExpr e).getExpr()
-  }
-
   predicate preOrderExpr(Ast::Expr e) {
     e instanceof Rust::LoopingExpr
     or
     e instanceof Rust::LetExpr
-    or
-    e instanceof Rust::TryExpr
   }
 
-  predicate postOrInOrder(Ast::AstNode n) { n instanceof Rust::MacroCall }
-
-  private string tryReturnTag() { result = "[try-return]" }
+  predicate postOrInOrder(Ast::AstNode n) {
+    n instanceof Rust::MacroCall
+    or
+    n instanceof Rust::TryExpr
+  }
 
   private string letElseDivergeTag() { result = "[let-else-diverge]" }
 
   predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
     t instanceof DirectSuccessor and
-    (
-      n instanceof Rust::TryExpr and tag = tryReturnTag()
-      or
-      n = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
-      tag = letElseDivergeTag()
-    )
+    n = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
+    tag = letElseDivergeTag()
   }
 
   private predicate letStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
@@ -624,24 +615,13 @@ private module Input implements InputSig1, InputSig2 {
     )
   }
 
-  private predicate tryStep(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(Rust::TryExpr try |
-      n1.isBefore(try) and n2.isBefore(try.getExpr())
-      or
-      n1.isAfterMatch(try.getExpr()) and n2.isAfter(try)
-      or
-      n1.isAfterNonMatch(try.getExpr()) and
-      n2.isAdditional(try, tryReturnTag())
-    )
-  }
-
   predicate beginAbruptCompletion(
     Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {
     ast instanceof Rust::TryExpr and
-    n.isAdditional(ast, tryReturnTag()) and
+    n.isIn(ast) and
     c.asSimpleAbruptCompletion() instanceof ReturnSuccessor and
-    always = true
+    always = false
     or
     ast instanceof Ast::DivergingMatchExpr and
     n.isIn(ast) and
@@ -664,7 +644,5 @@ private module Input implements InputSig1, InputSig2 {
     letExprStep(n1, n2)
     or
     emptyMatchStep(n1, n2)
-    or
-    tryStep(n1, n2)
   }
 }

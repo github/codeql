@@ -436,25 +436,21 @@ dominates
 | test.rs:301:13:301:13 | After a [true] | test.rs:301:13:301:13 | After a [true] |
 | test.rs:311:5:313:5 | Entry | test.rs:311:5:313:5 | Entry |
 | test.rs:311:5:313:5 | Entry | test.rs:311:5:313:5 | Normal Exit |
-| test.rs:311:5:313:5 | Entry | test.rs:312:12:312:27 | After s.parse() [match] |
-| test.rs:311:5:313:5 | Entry | test.rs:312:12:312:27 | After s.parse() [no-match] |
+| test.rs:311:5:313:5 | Entry | test.rs:312:12:312:28 | After TryExpr |
 | test.rs:311:5:313:5 | Normal Exit | test.rs:311:5:313:5 | Normal Exit |
-| test.rs:312:12:312:27 | After s.parse() [match] | test.rs:312:12:312:27 | After s.parse() [match] |
-| test.rs:312:12:312:27 | After s.parse() [no-match] | test.rs:312:12:312:27 | After s.parse() [no-match] |
+| test.rs:312:12:312:28 | After TryExpr | test.rs:312:12:312:28 | After TryExpr |
 | test.rs:315:5:320:5 | Entry | test.rs:315:5:320:5 | Entry |
 | test.rs:315:5:320:5 | Entry | test.rs:315:5:320:5 | Normal Exit |
 | test.rs:315:5:320:5 | Entry | test.rs:316:9:319:9 | After match ... { ... } |
-| test.rs:315:5:320:5 | Entry | test.rs:316:15:316:15 | After b [match] |
-| test.rs:315:5:320:5 | Entry | test.rs:316:15:316:15 | After b [no-match] |
+| test.rs:315:5:320:5 | Entry | test.rs:316:15:316:16 | After TryExpr |
 | test.rs:315:5:320:5 | Entry | test.rs:317:13:317:16 | After true [match] |
 | test.rs:315:5:320:5 | Entry | test.rs:317:13:317:16 | After true [no-match] |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:315:5:320:5 | Normal Exit |
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:316:9:319:9 | After match ... { ... } |
-| test.rs:316:15:316:15 | After b [match] | test.rs:316:9:319:9 | After match ... { ... } |
-| test.rs:316:15:316:15 | After b [match] | test.rs:316:15:316:15 | After b [match] |
-| test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [match] |
-| test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [no-match] |
-| test.rs:316:15:316:15 | After b [no-match] | test.rs:316:15:316:15 | After b [no-match] |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:316:9:319:9 | After match ... { ... } |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:316:15:316:16 | After TryExpr |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:317:13:317:16 | After true [match] |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:317:13:317:16 | After true [no-match] |
 | test.rs:317:13:317:16 | After true [match] | test.rs:317:13:317:16 | After true [match] |
 | test.rs:317:13:317:16 | After true [no-match] | test.rs:317:13:317:16 | After true [no-match] |
 | test.rs:326:5:332:5 | Entry | test.rs:326:5:332:5 | Entry |
@@ -1139,24 +1135,20 @@ postDominance
 | test.rs:311:5:313:5 | Entry | test.rs:311:5:313:5 | Entry |
 | test.rs:311:5:313:5 | Normal Exit | test.rs:311:5:313:5 | Entry |
 | test.rs:311:5:313:5 | Normal Exit | test.rs:311:5:313:5 | Normal Exit |
-| test.rs:311:5:313:5 | Normal Exit | test.rs:312:12:312:27 | After s.parse() [match] |
-| test.rs:311:5:313:5 | Normal Exit | test.rs:312:12:312:27 | After s.parse() [no-match] |
-| test.rs:312:12:312:27 | After s.parse() [match] | test.rs:312:12:312:27 | After s.parse() [match] |
-| test.rs:312:12:312:27 | After s.parse() [no-match] | test.rs:312:12:312:27 | After s.parse() [no-match] |
+| test.rs:311:5:313:5 | Normal Exit | test.rs:312:12:312:28 | After TryExpr |
+| test.rs:312:12:312:28 | After TryExpr | test.rs:312:12:312:28 | After TryExpr |
 | test.rs:315:5:320:5 | Entry | test.rs:315:5:320:5 | Entry |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:315:5:320:5 | Entry |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:315:5:320:5 | Normal Exit |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:316:9:319:9 | After match ... { ... } |
-| test.rs:315:5:320:5 | Normal Exit | test.rs:316:15:316:15 | After b [match] |
-| test.rs:315:5:320:5 | Normal Exit | test.rs:316:15:316:15 | After b [no-match] |
+| test.rs:315:5:320:5 | Normal Exit | test.rs:316:15:316:16 | After TryExpr |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:317:13:317:16 | After true [match] |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:317:13:317:16 | After true [no-match] |
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:316:9:319:9 | After match ... { ... } |
-| test.rs:316:9:319:9 | After match ... { ... } | test.rs:316:15:316:15 | After b [match] |
+| test.rs:316:9:319:9 | After match ... { ... } | test.rs:316:15:316:16 | After TryExpr |
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:317:13:317:16 | After true [match] |
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:317:13:317:16 | After true [no-match] |
-| test.rs:316:15:316:15 | After b [match] | test.rs:316:15:316:15 | After b [match] |
-| test.rs:316:15:316:15 | After b [no-match] | test.rs:316:15:316:15 | After b [no-match] |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:316:15:316:16 | After TryExpr |
 | test.rs:317:13:317:16 | After true [match] | test.rs:317:13:317:16 | After true [match] |
 | test.rs:317:13:317:16 | After true [no-match] | test.rs:317:13:317:16 | After true [no-match] |
 | test.rs:326:5:332:5 | Entry | test.rs:326:5:332:5 | Entry |
@@ -1582,14 +1574,12 @@ immediateDominator
 | test.rs:301:13:301:13 | After a [false] | test.rs:300:5:305:5 | Entry |
 | test.rs:301:13:301:13 | After a [true] | test.rs:300:5:305:5 | Entry |
 | test.rs:311:5:313:5 | Normal Exit | test.rs:311:5:313:5 | Entry |
-| test.rs:312:12:312:27 | After s.parse() [match] | test.rs:311:5:313:5 | Entry |
-| test.rs:312:12:312:27 | After s.parse() [no-match] | test.rs:311:5:313:5 | Entry |
+| test.rs:312:12:312:28 | After TryExpr | test.rs:311:5:313:5 | Entry |
 | test.rs:315:5:320:5 | Normal Exit | test.rs:315:5:320:5 | Entry |
-| test.rs:316:9:319:9 | After match ... { ... } | test.rs:316:15:316:15 | After b [match] |
-| test.rs:316:15:316:15 | After b [match] | test.rs:315:5:320:5 | Entry |
-| test.rs:316:15:316:15 | After b [no-match] | test.rs:315:5:320:5 | Entry |
-| test.rs:317:13:317:16 | After true [match] | test.rs:316:15:316:15 | After b [match] |
-| test.rs:317:13:317:16 | After true [no-match] | test.rs:316:15:316:15 | After b [match] |
+| test.rs:316:9:319:9 | After match ... { ... } | test.rs:316:15:316:16 | After TryExpr |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:315:5:320:5 | Entry |
+| test.rs:317:13:317:16 | After true [match] | test.rs:316:15:316:16 | After TryExpr |
+| test.rs:317:13:317:16 | After true [no-match] | test.rs:316:15:316:16 | After TryExpr |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:326:5:332:5 | Entry |
 | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | test.rs:326:5:332:5 | Entry |
 | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:326:5:332:5 | Entry |
@@ -1841,15 +1831,8 @@ controls
 | test.rs:296:5:298:5 | Entry | test.rs:297:9:297:9 | After a [true] | true |
 | test.rs:300:5:305:5 | Entry | test.rs:301:13:301:13 | After a [false] | false |
 | test.rs:300:5:305:5 | Entry | test.rs:301:13:301:13 | After a [true] | true |
-| test.rs:311:5:313:5 | Entry | test.rs:312:12:312:27 | After s.parse() [match] | match |
-| test.rs:311:5:313:5 | Entry | test.rs:312:12:312:27 | After s.parse() [no-match] | no-match |
-| test.rs:315:5:320:5 | Entry | test.rs:316:9:319:9 | After match ... { ... } | match |
-| test.rs:315:5:320:5 | Entry | test.rs:316:15:316:15 | After b [match] | match |
-| test.rs:315:5:320:5 | Entry | test.rs:316:15:316:15 | After b [no-match] | no-match |
-| test.rs:315:5:320:5 | Entry | test.rs:317:13:317:16 | After true [match] | match |
-| test.rs:315:5:320:5 | Entry | test.rs:317:13:317:16 | After true [no-match] | match |
-| test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [match] | match |
-| test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [no-match] | no-match |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:317:13:317:16 | After true [match] | match |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:317:13:317:16 | After true [no-match] | no-match |
 | test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | no-match |
 | test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | match |
 | test.rs:326:5:332:5 | Entry | test.rs:328:32:328:37 | After ... < ... [false] | match |
@@ -2078,12 +2061,8 @@ successor
 | test.rs:296:5:298:5 | Entry | test.rs:297:9:297:9 | After a [true] | true |
 | test.rs:300:5:305:5 | Entry | test.rs:301:13:301:13 | After a [false] | false |
 | test.rs:300:5:305:5 | Entry | test.rs:301:13:301:13 | After a [true] | true |
-| test.rs:311:5:313:5 | Entry | test.rs:312:12:312:27 | After s.parse() [match] | match |
-| test.rs:311:5:313:5 | Entry | test.rs:312:12:312:27 | After s.parse() [no-match] | no-match |
-| test.rs:315:5:320:5 | Entry | test.rs:316:15:316:15 | After b [match] | match |
-| test.rs:315:5:320:5 | Entry | test.rs:316:15:316:15 | After b [no-match] | no-match |
-| test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [match] | match |
-| test.rs:316:15:316:15 | After b [match] | test.rs:317:13:317:16 | After true [no-match] | no-match |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:317:13:317:16 | After true [match] | match |
+| test.rs:316:15:316:16 | After TryExpr | test.rs:317:13:317:16 | After true [no-match] | no-match |
 | test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | After ...::Some(...) [no-match] | no-match |
 | test.rs:326:5:332:5 | Entry | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | match |
 | test.rs:328:13:328:27 | [OuterPatternMatch] ...::Some(...) | test.rs:328:32:328:37 | After ... < ... [false] | false |
@@ -2280,10 +2259,10 @@ joinBlockPredecessor
 | test.rs:296:5:298:5 | Normal Exit | test.rs:297:9:297:9 | After a [true] | 1 |
 | test.rs:300:5:305:5 | Normal Exit | test.rs:301:13:301:13 | After a [false] | 0 |
 | test.rs:300:5:305:5 | Normal Exit | test.rs:301:13:301:13 | After a [true] | 1 |
-| test.rs:311:5:313:5 | Normal Exit | test.rs:312:12:312:27 | After s.parse() [match] | 1 |
-| test.rs:311:5:313:5 | Normal Exit | test.rs:312:12:312:27 | After s.parse() [no-match] | 0 |
-| test.rs:315:5:320:5 | Normal Exit | test.rs:316:9:319:9 | After match ... { ... } | 1 |
-| test.rs:315:5:320:5 | Normal Exit | test.rs:316:15:316:15 | After b [no-match] | 0 |
+| test.rs:311:5:313:5 | Normal Exit | test.rs:311:5:313:5 | Entry | 1 |
+| test.rs:311:5:313:5 | Normal Exit | test.rs:312:12:312:28 | After TryExpr | 0 |
+| test.rs:315:5:320:5 | Normal Exit | test.rs:315:5:320:5 | Entry | 1 |
+| test.rs:315:5:320:5 | Normal Exit | test.rs:316:9:319:9 | After match ... { ... } | 0 |
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:317:13:317:16 | After true [match] | 1 |
 | test.rs:316:9:319:9 | After match ... { ... } | test.rs:317:13:317:16 | After true [no-match] | 0 |
 | test.rs:327:9:331:9 | After match maybe_digit { ... } | test.rs:328:32:328:37 | After ... < ... [true] | 0 |
