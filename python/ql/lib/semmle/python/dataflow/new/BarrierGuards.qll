@@ -48,6 +48,3 @@ private predicate constCompare(DataFlow::GuardNode g, ControlFlowNode node, bool
 class ConstCompareBarrier extends DataFlow::Node {
   ConstCompareBarrier() { this = DataFlow::BarrierGuard<constCompare/3>::getABarrierNode() }
 }
-
-/** DEPRECATED: Use ConstCompareBarrier instead. */
-deprecated class StringConstCompareBarrier = ConstCompareBarrier;
