@@ -3,10 +3,10 @@ class Postfix {
 }
 
 func testPostfixConditionalCompilation() {
-  let a = Postfix()  // $ MISSING: type=a:String target=Postfix.init
+  let a = Postfix()  // $ type=a:String target=Postfix.init
     #if FIRST
-      .toString()  // $ MISSING: target=Postfix.toString
+      .toString()  // $ target=Postfix.toString
     #else
-      .toString()  // $ MISSING: target=Postfix.toString
+      .toString()  // $ target=Postfix.toString
     #endif
 }

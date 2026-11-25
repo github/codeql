@@ -315,6 +315,83 @@ edges
 | fields.swift:108:9:108:12 | box2 [field] | fields.swift:109:10:109:13 | box2 [field] | provenance |  |
 | fields.swift:108:16:108:16 | p [field] | fields.swift:108:9:108:12 | box2 [field] | provenance |  |
 | fields.swift:109:10:109:13 | box2 [field] | fields.swift:109:10:109:19 | ... .field | provenance |  |
+| fields.swift:113:22:113:26 | value | fields.swift:115:21:115:25 | value | provenance |  |
+| fields.swift:115:9:115:11 | [post] box [field] | fields.swift:116:16:116:18 | box [field] | provenance |  |
+| fields.swift:115:9:115:17 | ... .field | fields.swift:115:9:115:11 | [post] box [field] | provenance |  |
+| fields.swift:115:21:115:25 | value | fields.swift:115:9:115:17 | ... .field | provenance |  |
+| fields.swift:125:9:125:16 | branches [field] | fields.swift:131:10:131:17 | branches [field] | provenance |  |
+| fields.swift:127:13:127:51 | ... .withField(...) [field] | fields.swift:125:9:125:16 | branches [field] | provenance |  |
+| fields.swift:127:24:127:50 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:127:24:127:50 | source(...) | fields.swift:127:13:127:51 | ... .withField(...) [field] | provenance |  |
+| fields.swift:129:13:129:53 | ... .withField(...) [field] | fields.swift:125:9:125:16 | branches [field] | provenance |  |
+| fields.swift:129:24:129:52 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:129:24:129:52 | source(...) | fields.swift:129:13:129:53 | ... .withField(...) [field] | provenance |  |
+| fields.swift:131:10:131:17 | branches [field] | fields.swift:131:10:131:23 | ... .field | provenance |  |
+| fields.swift:133:9:133:14 | noElse [field] | fields.swift:137:10:137:15 | noElse [field] | provenance |  |
+| fields.swift:133:18:133:17 | #base [field] | fields.swift:135:32:135:31 | #base [field] | provenance |  |
+| fields.swift:133:18:133:71 | ... .withField(...) [field] | fields.swift:133:18:133:17 | #base [field] | provenance |  |
+| fields.swift:133:39:133:70 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:133:39:133:70 | source(...) | fields.swift:133:18:133:71 | ... .withField(...) [field] | provenance |  |
+| fields.swift:135:32:135:31 | #base [field] | fields.swift:133:9:133:14 | noElse [field] | provenance |  |
+| fields.swift:137:10:137:15 | noElse [field] | fields.swift:137:10:137:21 | ... .field | provenance |  |
+| fields.swift:139:9:139:19 | emptyBranch [field] | fields.swift:144:10:144:20 | emptyBranch [field] | provenance |  |
+| fields.swift:139:23:139:22 | #base [field] | fields.swift:142:14:142:13 | #base [field] | provenance |  |
+| fields.swift:139:23:139:74 | ... .withField(...) [field] | fields.swift:139:23:139:22 | #base [field] | provenance |  |
+| fields.swift:139:44:139:73 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:139:44:139:73 | source(...) | fields.swift:139:23:139:74 | ... .withField(...) [field] | provenance |  |
+| fields.swift:142:14:142:13 | #base [field] | fields.swift:139:9:139:19 | emptyBranch [field] | provenance |  |
+| fields.swift:144:10:144:20 | emptyBranch [field] | fields.swift:144:10:144:26 | ... .field | provenance |  |
+| fields.swift:146:9:146:15 | inChain | fields.swift:151:10:151:16 | inChain | provenance |  |
+| fields.swift:146:19:149:14 | Block [field] | fields.swift:146:19:150:14 | ... .field | provenance |  |
+| fields.swift:146:19:150:14 | ... .field | fields.swift:146:9:146:15 | inChain | provenance |  |
+| fields.swift:148:13:148:57 | ... .withField(...) [field] | fields.swift:146:19:149:14 | Block [field] | provenance |  |
+| fields.swift:148:24:148:56 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:148:24:148:56 | source(...) | fields.swift:148:13:148:57 | ... .withField(...) [field] | provenance |  |
+| fields.swift:153:9:153:14 | nested [field] | fields.swift:160:10:160:15 | nested [field] | provenance |  |
+| fields.swift:153:18:153:17 | #base [field] | fields.swift:155:13:155:12 | #base [field] | provenance |  |
+| fields.swift:153:18:153:17 | #base [field] | fields.swift:158:19:158:18 | #base [field] | provenance |  |
+| fields.swift:153:18:153:75 | ... .withField(...) [field] | fields.swift:153:18:153:17 | #base [field] | provenance |  |
+| fields.swift:153:39:153:74 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:153:39:153:74 | source(...) | fields.swift:153:18:153:75 | ... .withField(...) [field] | provenance |  |
+| fields.swift:155:13:155:12 | #base [field] | fields.swift:120:16:120:19 | self [field] | provenance |  |
+| fields.swift:155:13:155:12 | #base [field] | fields.swift:155:13:155:19 | ... .keep(...) [field] | provenance |  |
+| fields.swift:155:13:155:12 | #base [field] | fields.swift:157:66:157:65 | #base [field] | provenance |  |
+| fields.swift:155:13:155:19 | ... .keep(...) [field] | fields.swift:155:13:155:12 | #base [field] | provenance |  |
+| fields.swift:157:17:157:65 | ... .withField(...) [field] | fields.swift:153:9:153:14 | nested [field] | provenance |  |
+| fields.swift:157:28:157:64 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:157:28:157:64 | source(...) | fields.swift:157:17:157:65 | ... .withField(...) [field] | provenance |  |
+| fields.swift:157:66:157:65 | #base [field] | fields.swift:153:9:153:14 | nested [field] | provenance |  |
+| fields.swift:158:19:158:18 | #base [field] | fields.swift:153:9:153:14 | nested [field] | provenance |  |
+| fields.swift:160:10:160:15 | nested [field] | fields.swift:160:10:160:21 | ... .field | provenance |  |
+| fields.swift:162:9:162:20 | nestedNoBase [field] | fields.swift:168:10:168:21 | nestedNoBase [field] | provenance |  |
+| fields.swift:162:24:162:23 | #base [field] | fields.swift:165:73:165:72 | #base [field] | provenance |  |
+| fields.swift:162:24:162:23 | #base [field] | fields.swift:166:19:166:18 | #base [field] | provenance |  |
+| fields.swift:162:24:162:83 | ... .withField(...) [field] | fields.swift:162:24:162:23 | #base [field] | provenance |  |
+| fields.swift:162:45:162:82 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:162:45:162:82 | source(...) | fields.swift:162:24:162:83 | ... .withField(...) [field] | provenance |  |
+| fields.swift:165:17:165:72 | ... .withField(...) [field] | fields.swift:162:9:162:20 | nestedNoBase [field] | provenance |  |
+| fields.swift:165:28:165:71 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:165:28:165:71 | source(...) | fields.swift:165:17:165:72 | ... .withField(...) [field] | provenance |  |
+| fields.swift:165:73:165:72 | #base [field] | fields.swift:162:9:162:20 | nestedNoBase [field] | provenance |  |
+| fields.swift:166:19:166:18 | #base [field] | fields.swift:162:9:162:20 | nestedNoBase [field] | provenance |  |
+| fields.swift:168:10:168:21 | nestedNoBase [field] | fields.swift:168:10:168:27 | ... .field | provenance |  |
+| fields.swift:170:9:170:13 | chain [field] | fields.swift:179:10:179:14 | chain [field] | provenance |  |
+| fields.swift:170:17:170:16 | #base [field] | fields.swift:173:66:173:65 | #base [field] | provenance |  |
+| fields.swift:170:17:170:16 | #base [field] | fields.swift:177:19:177:18 | #base [field] | provenance |  |
+| fields.swift:170:17:170:73 | ... .withField(...) [field] | fields.swift:170:17:170:16 | #base [field] | provenance |  |
+| fields.swift:170:38:170:72 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:170:38:170:72 | source(...) | fields.swift:170:17:170:73 | ... .withField(...) [field] | provenance |  |
+| fields.swift:172:13:172:12 | #base [field] | fields.swift:176:65:176:64 | #base [field] | provenance |  |
+| fields.swift:173:17:173:65 | ... .withField(...) [field] | fields.swift:172:13:172:12 | #base [field] | provenance |  |
+| fields.swift:173:28:173:64 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:173:28:173:64 | source(...) | fields.swift:173:17:173:65 | ... .withField(...) [field] | provenance |  |
+| fields.swift:173:66:173:65 | #base [field] | fields.swift:172:13:172:12 | #base [field] | provenance |  |
+| fields.swift:176:17:176:64 | ... .withField(...) [field] | fields.swift:170:9:170:13 | chain [field] | provenance |  |
+| fields.swift:176:28:176:63 | source(...) | fields.swift:113:22:113:26 | value | provenance |  |
+| fields.swift:176:28:176:63 | source(...) | fields.swift:176:17:176:64 | ... .withField(...) [field] | provenance |  |
+| fields.swift:176:65:176:64 | #base [field] | fields.swift:170:9:170:13 | chain [field] | provenance |  |
+| fields.swift:177:19:177:18 | #base [field] | fields.swift:170:9:170:13 | chain [field] | provenance |  |
+| fields.swift:179:10:179:14 | chain [field] | fields.swift:179:10:179:20 | ... .field | provenance |  |
 | flow-summaries.swift:2:9:2:9 | x | flow-summaries.swift:3:35:3:35 | x | provenance |  |
 | flow-summaries.swift:2:13:2:26 | source(...) | flow-summaries.swift:2:9:2:9 | x | provenance |  |
 | flow-summaries.swift:3:9:3:9 | y | flow-summaries.swift:4:10:4:10 | y | provenance |  |
@@ -1084,6 +1161,76 @@ nodes
 | fields.swift:108:16:108:16 | p [field] | semmle.label | p [field] |
 | fields.swift:109:10:109:13 | box2 [field] | semmle.label | box2 [field] |
 | fields.swift:109:10:109:19 | ... .field | semmle.label | ... .field |
+| fields.swift:113:22:113:26 | value | semmle.label | value |
+| fields.swift:115:9:115:11 | [post] box [field] | semmle.label | [post] box [field] |
+| fields.swift:115:9:115:17 | ... .field | semmle.label | ... .field |
+| fields.swift:115:21:115:25 | value | semmle.label | value |
+| fields.swift:116:16:116:18 | box [field] | semmle.label | box [field] |
+| fields.swift:120:16:120:19 | self [field] | semmle.label | self [field] |
+| fields.swift:125:9:125:16 | branches [field] | semmle.label | branches [field] |
+| fields.swift:127:13:127:51 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:127:24:127:50 | source(...) | semmle.label | source(...) |
+| fields.swift:129:13:129:53 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:129:24:129:52 | source(...) | semmle.label | source(...) |
+| fields.swift:131:10:131:17 | branches [field] | semmle.label | branches [field] |
+| fields.swift:131:10:131:23 | ... .field | semmle.label | ... .field |
+| fields.swift:133:9:133:14 | noElse [field] | semmle.label | noElse [field] |
+| fields.swift:133:18:133:17 | #base [field] | semmle.label | #base [field] |
+| fields.swift:133:18:133:71 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:133:39:133:70 | source(...) | semmle.label | source(...) |
+| fields.swift:135:32:135:31 | #base [field] | semmle.label | #base [field] |
+| fields.swift:137:10:137:15 | noElse [field] | semmle.label | noElse [field] |
+| fields.swift:137:10:137:21 | ... .field | semmle.label | ... .field |
+| fields.swift:139:9:139:19 | emptyBranch [field] | semmle.label | emptyBranch [field] |
+| fields.swift:139:23:139:22 | #base [field] | semmle.label | #base [field] |
+| fields.swift:139:23:139:74 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:139:44:139:73 | source(...) | semmle.label | source(...) |
+| fields.swift:142:14:142:13 | #base [field] | semmle.label | #base [field] |
+| fields.swift:144:10:144:20 | emptyBranch [field] | semmle.label | emptyBranch [field] |
+| fields.swift:144:10:144:26 | ... .field | semmle.label | ... .field |
+| fields.swift:146:9:146:15 | inChain | semmle.label | inChain |
+| fields.swift:146:19:149:14 | Block [field] | semmle.label | Block [field] |
+| fields.swift:146:19:150:14 | ... .field | semmle.label | ... .field |
+| fields.swift:148:13:148:57 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:148:24:148:56 | source(...) | semmle.label | source(...) |
+| fields.swift:151:10:151:16 | inChain | semmle.label | inChain |
+| fields.swift:153:9:153:14 | nested [field] | semmle.label | nested [field] |
+| fields.swift:153:18:153:17 | #base [field] | semmle.label | #base [field] |
+| fields.swift:153:18:153:75 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:153:39:153:74 | source(...) | semmle.label | source(...) |
+| fields.swift:155:13:155:12 | #base [field] | semmle.label | #base [field] |
+| fields.swift:155:13:155:12 | #base [field] | semmle.label | #base [field] |
+| fields.swift:155:13:155:19 | ... .keep(...) [field] | semmle.label | ... .keep(...) [field] |
+| fields.swift:157:17:157:65 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:157:28:157:64 | source(...) | semmle.label | source(...) |
+| fields.swift:157:66:157:65 | #base [field] | semmle.label | #base [field] |
+| fields.swift:158:19:158:18 | #base [field] | semmle.label | #base [field] |
+| fields.swift:160:10:160:15 | nested [field] | semmle.label | nested [field] |
+| fields.swift:160:10:160:21 | ... .field | semmle.label | ... .field |
+| fields.swift:162:9:162:20 | nestedNoBase [field] | semmle.label | nestedNoBase [field] |
+| fields.swift:162:24:162:23 | #base [field] | semmle.label | #base [field] |
+| fields.swift:162:24:162:83 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:162:45:162:82 | source(...) | semmle.label | source(...) |
+| fields.swift:165:17:165:72 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:165:28:165:71 | source(...) | semmle.label | source(...) |
+| fields.swift:165:73:165:72 | #base [field] | semmle.label | #base [field] |
+| fields.swift:166:19:166:18 | #base [field] | semmle.label | #base [field] |
+| fields.swift:168:10:168:21 | nestedNoBase [field] | semmle.label | nestedNoBase [field] |
+| fields.swift:168:10:168:27 | ... .field | semmle.label | ... .field |
+| fields.swift:170:9:170:13 | chain [field] | semmle.label | chain [field] |
+| fields.swift:170:17:170:16 | #base [field] | semmle.label | #base [field] |
+| fields.swift:170:17:170:73 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:170:38:170:72 | source(...) | semmle.label | source(...) |
+| fields.swift:172:13:172:12 | #base [field] | semmle.label | #base [field] |
+| fields.swift:173:17:173:65 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:173:28:173:64 | source(...) | semmle.label | source(...) |
+| fields.swift:173:66:173:65 | #base [field] | semmle.label | #base [field] |
+| fields.swift:176:17:176:64 | ... .withField(...) [field] | semmle.label | ... .withField(...) [field] |
+| fields.swift:176:28:176:63 | source(...) | semmle.label | source(...) |
+| fields.swift:176:65:176:64 | #base [field] | semmle.label | #base [field] |
+| fields.swift:177:19:177:18 | #base [field] | semmle.label | #base [field] |
+| fields.swift:179:10:179:14 | chain [field] | semmle.label | chain [field] |
+| fields.swift:179:10:179:20 | ... .field | semmle.label | ... .field |
 | flow-summaries.swift:2:9:2:9 | x | semmle.label | x |
 | flow-summaries.swift:2:13:2:26 | source(...) | semmle.label | source(...) |
 | flow-summaries.swift:3:9:3:9 | y | semmle.label | y |
@@ -1562,6 +1709,19 @@ subpaths
 | capture.swift:60:13:60:13 | x | capture.swift:56:22:56:24 | arg | capture.swift:57:9:57:9 | [post] y [0] | capture.swift:61:10:61:10 | y [0] |
 | capture.swift:93:9:93:9 | x | capture.swift:99:16:99:16 | x | capture.swift:99:16:99:16 | x | capture.swift:94:13:94:19 | local(...) |
 | fields.swift:75:10:75:12 | sub [field] | fields.swift:66:15:66:19 | super [field] | fields.swift:66:15:66:25 | ... .field | fields.swift:75:10:75:18 | ... .field |
+| fields.swift:127:24:127:50 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:127:13:127:51 | ... .withField(...) [field] |
+| fields.swift:129:24:129:52 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:129:13:129:53 | ... .withField(...) [field] |
+| fields.swift:133:39:133:70 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:133:18:133:71 | ... .withField(...) [field] |
+| fields.swift:139:44:139:73 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:139:23:139:74 | ... .withField(...) [field] |
+| fields.swift:148:24:148:56 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:148:13:148:57 | ... .withField(...) [field] |
+| fields.swift:153:39:153:74 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:153:18:153:75 | ... .withField(...) [field] |
+| fields.swift:155:13:155:12 | #base [field] | fields.swift:120:16:120:19 | self [field] | fields.swift:120:16:120:19 | self [field] | fields.swift:155:13:155:19 | ... .keep(...) [field] |
+| fields.swift:157:28:157:64 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:157:17:157:65 | ... .withField(...) [field] |
+| fields.swift:162:45:162:82 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:162:24:162:83 | ... .withField(...) [field] |
+| fields.swift:165:28:165:71 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:165:17:165:72 | ... .withField(...) [field] |
+| fields.swift:170:38:170:72 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:170:17:170:73 | ... .withField(...) [field] |
+| fields.swift:173:28:173:64 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:173:17:173:65 | ... .withField(...) [field] |
+| fields.swift:176:28:176:63 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:176:17:176:64 | ... .withField(...) [field] |
 | flow-summaries.swift:54:35:54:48 | source(...) | flow-summaries.swift:54:53:54:53 | y | flow-summaries.swift:54:65:54:65 | y | flow-summaries.swift:54:10:54:67 | ... .throughCallback(...) |
 | flow-summaries.swift:55:35:55:48 | source(...) | flow-summaries.swift:55:53:55:53 | y | flow-summaries.swift:55:65:55:71 | ... + ... | flow-summaries.swift:55:10:55:73 | ... .throughCallback(...) |
 | subscripts.swift:21:12:21:25 | source(...) | subscripts.swift:15:19:15:21 | key | subscripts.swift:16:19:16:21 | key | subscripts.swift:21:10:21:26 | ... .subscript(...) |
@@ -1686,6 +1846,18 @@ testFailures
 | fields.swift:99:10:99:22 | ... .field | fields.swift:92:17:92:41 | source(...) | fields.swift:99:10:99:22 | ... .field | $@ | fields.swift:92:17:92:41 | source(...) | source(...) |
 | fields.swift:106:10:106:16 | ... .field | fields.swift:105:15:105:39 | source(...) | fields.swift:106:10:106:16 | ... .field | $@ | fields.swift:105:15:105:39 | source(...) | source(...) |
 | fields.swift:109:10:109:19 | ... .field | fields.swift:105:15:105:39 | source(...) | fields.swift:109:10:109:19 | ... .field | $@ | fields.swift:105:15:105:39 | source(...) | source(...) |
+| fields.swift:131:10:131:23 | ... .field | fields.swift:127:24:127:50 | source(...) | fields.swift:131:10:131:23 | ... .field | $@ | fields.swift:127:24:127:50 | source(...) | source(...) |
+| fields.swift:131:10:131:23 | ... .field | fields.swift:129:24:129:52 | source(...) | fields.swift:131:10:131:23 | ... .field | $@ | fields.swift:129:24:129:52 | source(...) | source(...) |
+| fields.swift:137:10:137:21 | ... .field | fields.swift:133:39:133:70 | source(...) | fields.swift:137:10:137:21 | ... .field | $@ | fields.swift:133:39:133:70 | source(...) | source(...) |
+| fields.swift:144:10:144:26 | ... .field | fields.swift:139:44:139:73 | source(...) | fields.swift:144:10:144:26 | ... .field | $@ | fields.swift:139:44:139:73 | source(...) | source(...) |
+| fields.swift:151:10:151:16 | inChain | fields.swift:148:24:148:56 | source(...) | fields.swift:151:10:151:16 | inChain | $@ | fields.swift:148:24:148:56 | source(...) | source(...) |
+| fields.swift:160:10:160:21 | ... .field | fields.swift:153:39:153:74 | source(...) | fields.swift:160:10:160:21 | ... .field | $@ | fields.swift:153:39:153:74 | source(...) | source(...) |
+| fields.swift:160:10:160:21 | ... .field | fields.swift:157:28:157:64 | source(...) | fields.swift:160:10:160:21 | ... .field | $@ | fields.swift:157:28:157:64 | source(...) | source(...) |
+| fields.swift:168:10:168:27 | ... .field | fields.swift:162:45:162:82 | source(...) | fields.swift:168:10:168:27 | ... .field | $@ | fields.swift:162:45:162:82 | source(...) | source(...) |
+| fields.swift:168:10:168:27 | ... .field | fields.swift:165:28:165:71 | source(...) | fields.swift:168:10:168:27 | ... .field | $@ | fields.swift:165:28:165:71 | source(...) | source(...) |
+| fields.swift:179:10:179:20 | ... .field | fields.swift:170:38:170:72 | source(...) | fields.swift:179:10:179:20 | ... .field | $@ | fields.swift:170:38:170:72 | source(...) | source(...) |
+| fields.swift:179:10:179:20 | ... .field | fields.swift:173:28:173:64 | source(...) | fields.swift:179:10:179:20 | ... .field | $@ | fields.swift:173:28:173:64 | source(...) | source(...) |
+| fields.swift:179:10:179:20 | ... .field | fields.swift:176:28:176:63 | source(...) | fields.swift:179:10:179:20 | ... .field | $@ | fields.swift:176:28:176:63 | source(...) | source(...) |
 | flow-summaries.swift:4:10:4:10 | y | flow-summaries.swift:2:13:2:26 | source(...) | flow-summaries.swift:4:10:4:10 | y | $@ | flow-summaries.swift:2:13:2:26 | source(...) | source(...) |
 | flow-summaries.swift:11:14:11:14 | y | flow-summaries.swift:8:13:8:26 | source(...) | flow-summaries.swift:11:14:11:14 | y | $@ | flow-summaries.swift:8:13:8:26 | source(...) | source(...) |
 | flow-summaries.swift:18:10:18:10 | y | flow-summaries.swift:16:18:16:31 | source(...) | flow-summaries.swift:18:10:18:10 | y | $@ | flow-summaries.swift:16:18:16:31 | source(...) | source(...) |

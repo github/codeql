@@ -2455,6 +2455,18 @@ inferType
 | closures.swift:148:9:148:14 | result |  | {EXTERNAL LOCATION} | String |
 | conditional-compilation.swift:2:29:2:41 | Block |  | {EXTERNAL LOCATION} | String |
 | conditional-compilation.swift:2:38:2:39 | "" |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:6:7:6:7 | a |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:6:11:6:10 | #base |  | conditional-compilation.swift:1:1:3:1 | Postfix |
+| conditional-compilation.swift:6:11:6:17 | Postfix |  | conditional-compilation.swift:1:1:3:1 | Postfix |
+| conditional-compilation.swift:6:11:6:19 | Postfix(...) |  | conditional-compilation.swift:1:1:3:1 | Postfix |
+| conditional-compilation.swift:6:11:11:10 | Block |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:7:5:11:10 | IfExpr |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:8:7:8:6 | #base |  | conditional-compilation.swift:1:1:3:1 | Postfix |
+| conditional-compilation.swift:8:7:8:17 | ... .toString(...) |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:8:7:8:17 | Block |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:9:5:10:17 | Block |  | {EXTERNAL LOCATION} | String |
+| conditional-compilation.swift:10:7:10:6 | #base |  | conditional-compilation.swift:1:1:3:1 | Postfix |
+| conditional-compilation.swift:10:7:10:17 | ... .toString(...) |  | {EXTERNAL LOCATION} | String |
 | constructors.swift:2:12:2:12 | x |  | {EXTERNAL LOCATION} | Int |
 | constructors.swift:4:24:6:5 | Block |  | constructors.swift:1:1:7:1 | C1 |
 | constructors.swift:5:9:5:12 | self |  | constructors.swift:1:1:7:1 | C1 |
