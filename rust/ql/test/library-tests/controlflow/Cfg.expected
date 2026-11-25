@@ -1594,8 +1594,7 @@ edges
 | test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | After n [match] | match |
 | test.rs:363:18:363:18 | n | test.rs:363:18:363:18 | n |  |
 | test.rs:363:23:363:23 | a | test.rs:363:13:363:19 | Some(...) |  |
-| test.rs:363:30:363:56 | After { ... } | test.rs:363:30:363:56 | [let-else-diverge] { ... } |  |
-| test.rs:363:30:363:56 | [let-else-diverge] { ... } | test.rs:362:5:365:5 | Exceptional Exit | exception |
+| test.rs:363:30:363:56 | After { ... } | test.rs:362:5:365:5 | Exceptional Exit | exception |
 | test.rs:363:30:363:56 | { ... } | test.rs:363:32:363:54 | Before MacroExpr |  |
 | test.rs:363:32:363:37 | ...::panic_fmt | test.rs:363:39:363:53 | Before MacroExpr |  |
 | test.rs:363:32:363:54 | After MacroExpr | test.rs:363:30:363:56 | After { ... } |  |

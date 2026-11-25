@@ -563,14 +563,6 @@ private module Input implements InputSig1, InputSig2 {
     n instanceof Rust::TryExpr
   }
 
-  private string letElseDivergeTag() { result = "[let-else-diverge]" }
-
-  predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
-    t instanceof DirectSuccessor and
-    n = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
-    tag = letElseDivergeTag()
-  }
-
   private predicate letStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::LetStmt let |
       n1.isBefore(let) and
@@ -587,9 +579,6 @@ private module Input implements InputSig1, InputSig2 {
       or
       n1.isAfterNonMatch(let.getPat()) and
       n2.isBefore(let.getLetElse().getBlockExpr())
-      or
-      n1.isAfter(let.getLetElse().getBlockExpr()) and
-      n2.isAdditional(let.getLetElse().getBlockExpr(), letElseDivergeTag())
     )
   }
 
@@ -629,7 +618,7 @@ private module Input implements InputSig1, InputSig2 {
     always = true
     or
     ast = any(Rust::LetStmt let).getLetElse().getBlockExpr() and
-    n.isAdditional(ast, letElseDivergeTag()) and
+    n.isAfter(ast) and
     c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
     always = true
   }

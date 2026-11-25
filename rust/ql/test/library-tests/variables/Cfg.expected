@@ -454,8 +454,7 @@ edges
 | main.rs:101:14:101:14 | x | main.rs:101:14:101:14 | After x [match] | match |
 | main.rs:101:14:101:14 | x | main.rs:101:14:101:14 | x |  |
 | main.rs:102:7:102:7 | x | main.rs:101:9:101:15 | Some(...) |  |
-| main.rs:103:10:108:5 | After { ... } | main.rs:103:10:108:5 | [let-else-diverge] { ... } |  |
-| main.rs:103:10:108:5 | [let-else-diverge] { ... } | main.rs:99:1:110:1 | Exceptional Exit | exception |
+| main.rs:103:10:108:5 | After { ... } | main.rs:99:1:110:1 | Exceptional Exit | exception |
 | main.rs:103:10:108:5 | { ... } | main.rs:104:9:105:14 | let ... = x |  |
 | main.rs:104:9:105:14 | After let ... = x | main.rs:106:9:106:30 | ExprStmt |  |
 | main.rs:104:9:105:14 | let ... = x | main.rs:105:13:105:13 | x |  |

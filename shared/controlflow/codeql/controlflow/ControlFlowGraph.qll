@@ -2729,6 +2729,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           query predicate invalidAbruptCompletionOrigin(AstNode ast, PreControlFlowNode node) {
             Input2::beginAbruptCompletion(ast, node, _, _) and
             not node.isIn(ast) and
+            not node.isAfter(ast) and
             not node.isAdditional(ast, _)
           }
 
