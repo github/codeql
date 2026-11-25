@@ -214,7 +214,7 @@ private predicate selectorLabel(Selector selector, int n, string label, boolean 
     rawLabel = selector.getArgLabels().splitAt(":", n) and
     rawLabel != ""
   |
-    if rawLabel.matches("%?")
+    if rawLabel.endsWith("?")
     then label = rawLabel.prefix(rawLabel.length() - 1) and optional = true
     else (
       label = rawLabel and optional = false
@@ -306,9 +306,10 @@ class Selector extends TSelector {
   bindingset[this, argLabels]
   pragma[inline_late]
   private predicate matchesArgLabels(string argLabels) {
-    if this.hasOptionalArgument()
-    then argLabels.regexpMatch(this.getArgLabelsRegexp())
-    else argLabels = this.getArgLabels()
+    argLabels.regexpMatch(this.getArgLabelsRegexp())
+    or
+    not this.hasOptionalArgument() and
+    argLabels = this.getArgLabels()
   }
 
   /** Holds if `name,joinLabels` should be used to join with `methodCallSelector`. */
