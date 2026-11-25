@@ -440,10 +440,6 @@ pub fn extract_parsed(
     desugarer: &dyn yeast::Desugarer,
 ) -> Result<(), String> {
     let path_str = file_paths::normalize_and_transform_path(path, transformer);
-    let source_root = std::env::current_dir()
-        .ok()
-        .and_then(|d| d.canonicalize().ok());
-    let diagnostics_path = file_paths::relativize_for_diagnostic(path, source_root.as_deref());
     let span = tracing::span!(tracing::Level::TRACE, "extract", file = %path_str);
     let _enter = span.enter();
     tracing::debug!("extracting: {}", path_str);
@@ -452,6 +448,38 @@ pub fn extract_parsed(
     let ast = desugarer
         .run_from_ast(parsed.ast)
         .map_err(|e| format!("Desugaring failed: {e}"))?;
+
+    extract_output_ast(
+        language_prefix,
+        schema,
+        diagnostics_writer,
+        trap_writer,
+        transformer,
+        path,
+        source,
+        &ast,
+        &parsed.extras,
+    )?;
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn extract_output_ast(
+    language_prefix: &str,
+    schema: &NodeTypeMap,
+    diagnostics_writer: &mut diagnostics::LogWriter,
+    trap_writer: &mut trap::Writer,
+    transformer: Option<&file_paths::PathTransformer>,
+    path: &Path,
+    source: &[u8],
+    ast: &yeast::OutputAst,
+    extras: &[ExtraToken],
+) -> Result<std::collections::BTreeMap<yeast::OutputId, trap::Label>, String> {
+    let path_str = file_paths::normalize_and_transform_path(path, transformer);
+    let source_root = std::env::current_dir()
+        .ok()
+        .and_then(|directory| directory.canonicalize().ok());
+    let diagnostics_path = file_paths::relativize_for_diagnostic(path, source_root.as_deref());
 
     trap_writer.comment(format!("Auto-generated TRAP file for {path_str}"));
     let file_label = populate_file(trap_writer, path, transformer);
@@ -465,13 +493,11 @@ pub fn extract_parsed(
         schema,
     );
 
-    traverse_yeast(&ast, &mut visitor);
-    // Comments and other `extra` tokens are not part of the desugared AST; emit
-    // them directly from the parser's side channel.
-    for extra in &parsed.extras {
+    traverse_yeast(ast, &mut visitor);
+    for extra in extras {
         visitor.emit_extra(extra);
     }
-    Ok(())
+    Ok(visitor.output_labels)
 }
 
 /// A lightweight [`AstNode`] over a piece of side-channel `extra` content
@@ -554,6 +580,7 @@ struct Visitor<'a> {
     /// matched against the dbscheme for the node. If the expectations are met
     /// the corresponding row definitions are added to the trap output.
     stack: Vec<(trap::Label, usize, Vec<ChildNode>)>,
+    output_labels: Map<yeast::OutputId, trap::Label>,
 }
 
 impl<'a> Visitor<'a> {
@@ -578,7 +605,17 @@ impl<'a> Visitor<'a> {
             trivia_tokeninfo_table_name: format!("{language_prefix}_trivia_tokeninfo"),
             schema,
             stack: Vec::new(),
+            output_labels: Map::new(),
         }
+    }
+
+    fn enter_output_node<N: AstNode>(&mut self, id: yeast::OutputId, node: &N) -> bool {
+        let recurse = self.enter_node(node);
+        if recurse {
+            let label = self.stack.last().expect("entered node must be on stack").0;
+            self.output_labels.insert(id, label);
+        }
+        recurse
     }
 
     /// Emit an `extra` token (a location row plus a `trivia_tokeninfo` row) for
@@ -1051,16 +1088,16 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
 
 fn traverse_yeast(tree: &yeast::OutputAst, visitor: &mut Visitor) {
     let mut cursor = tree.walk();
-    visitor.enter_node(cursor.node());
+    visitor.enter_output_node(cursor.node_id(), cursor.node());
     let mut recurse = true;
     loop {
         if recurse && cursor.goto_first_child() {
-            recurse = visitor.enter_node(cursor.node());
+            recurse = visitor.enter_output_node(cursor.node_id(), cursor.node());
         } else {
             visitor.leave_node(cursor.field_name(), cursor.node());
 
             if cursor.goto_next_sibling() {
-                recurse = visitor.enter_node(cursor.node());
+                recurse = visitor.enter_output_node(cursor.node_id(), cursor.node());
             } else if cursor.goto_parent() {
                 recurse = false;
             } else {

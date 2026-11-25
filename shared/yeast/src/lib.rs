@@ -1663,6 +1663,10 @@ impl<C: Clone> Runner<'_, C> {
         }
     }
 
+    pub fn run_from_ast_with_ctx(&self, ast: Ast, user_ctx: &C) -> Result<OutputAst, String> {
+        self.run_once(ast, user_ctx)
+    }
+
     fn run_once_inner(&self, ast: Ast, user_ctx: &C) -> OutputAst {
         if self.phases.len() != 1 {
             translation_failure("YEAST requires exactly one translation phase");
@@ -1742,7 +1746,7 @@ pub trait Desugarer: Send + Sync {
 /// Stores the language and a pre-built schema so that per-call cost is bounded
 /// to constructing a transient
 /// [`Runner`] and cloning the schema (no YAML re-parsing).
-pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
+pub struct ConcreteDesugarer<C: Default + Clone + 'static> {
     /// The input tree-sitter language, or `None` for a custom (non-tree-sitter)
     /// front-end that only ever desugars an externally-built AST
     /// (`run_from_ast`).
@@ -1752,7 +1756,12 @@ pub struct ConcreteDesugarer<C: Default + Clone + Send + Sync + 'static> {
     config: DesugaringConfig<C>,
 }
 
-impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
+impl<C: Default + Clone + 'static> ConcreteDesugarer<C> {
+    pub fn run_from_ast_with_ctx(&self, ast: Ast, user_ctx: &C) -> Result<OutputAst, String> {
+        let runner = Runner::with_schema_no_language(&self.schema, &self.config.phases);
+        runner.run_from_ast_with_ctx(ast, user_ctx)
+    }
+
     /// Build a desugarer for `language` from `config`. Parses the output
     /// schema YAML once and stores it for reuse across files.
     pub fn new(
@@ -1793,7 +1802,7 @@ impl<C: Default + Clone + Send + Sync + 'static> ConcreteDesugarer<C> {
     }
 }
 
-impl<C: Default + Clone + Send + Sync + 'static> Desugarer for ConcreteDesugarer<C> {
+impl<C: Default + Clone + 'static> Desugarer for ConcreteDesugarer<C> {
     fn output_node_types_yaml(&self) -> Option<&'static str> {
         self.config.output_node_types_yaml
     }

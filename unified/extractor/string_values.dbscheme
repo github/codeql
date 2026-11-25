@@ -1,0 +1,4 @@
+unified_string_literal_interpreted(
+  unique int node: @unified_token_string_literal ref,
+  string value: string ref
+);

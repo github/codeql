@@ -20,6 +20,17 @@ use crate::node_types::{self, NodeTypeMap};
 /// in via [`crate::extractor::tree_sitter_parser`]; custom (non-tree-sitter)
 /// parsers supply their own closure.
 pub type Parser = Box<dyn Fn(&[u8]) -> Result<ParsedTree, String> + Send + Sync>;
+pub type CustomExtractor = Box<
+    dyn Fn(
+            &NodeTypeMap,
+            &mut diagnostics::LogWriter,
+            &mut trap::Writer,
+            &std::path::Path,
+            &[u8],
+        ) -> Result<(), String>
+        + Send
+        + Sync,
+>;
 
 pub struct LanguageSpec {
     pub prefix: &'static str,
@@ -35,6 +46,7 @@ pub struct LanguageSpec {
     /// `Box<dyn yeast::Desugarer>` so the shared extractor is agnostic to the
     /// user-defined context type the desugarer uses internally.
     pub desugarer: Box<dyn yeast::Desugarer>,
+    pub custom_extractor: Option<CustomExtractor>,
     pub file_globs: Vec<String>,
 }
 
@@ -64,6 +76,9 @@ impl LanguageExtractor for LanguageSpec {
         path: &std::path::Path,
         source: &[u8],
     ) -> Result<(), String> {
+        if let Some(extract) = &self.custom_extractor {
+            return extract(schema, diagnostics_writer, trap_writer, path, source);
+        }
         crate::extractor::extract_parsed(
             self.parser.as_ref(),
             self.prefix,

@@ -1,5 +1,7 @@
 use codeql_extractor::extractor::desugaring;
-use yeast::{ConcreteDesugarer, DesugaringConfig, Rule};
+use std::cell::RefCell;
+use std::rc::Rc;
+use yeast::{ConcreteDesugarer, DesugaringConfig, Rule, TreeId};
 
 yeast::tree_schema! {
     swift_tree,
@@ -7,6 +9,8 @@ yeast::tree_schema! {
 }
 
 use swift_tree::tree;
+
+const STRING_VALUE_TABLE: &str = "unified_string_literal_interpreted";
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -58,6 +62,8 @@ struct SwiftContext {
     /// name has no argument label. It is cleared when translating accessor
     /// bodies.
     subscript: Option<SubscriptContext>,
+    /// Interpreted values keyed by the output `string_literal` node.
+    interpreted_strings: Rc<RefCell<Vec<(yeast::OutputId, String)>>>,
 }
 
 /// The parts of a `subscriptDecl` shared by its getter and setter. These are
@@ -86,8 +92,27 @@ impl SwiftContext {
     /// interpolations additionally restore the context after evaluation,
     /// preventing mutations from leaking into sibling fields.
     fn reset(&mut self) {
+        let interpreted_strings = Rc::clone(&self.interpreted_strings);
         *self = SwiftContext::default();
+        self.interpreted_strings = interpreted_strings;
     }
+}
+
+fn make_string_literal(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    source: yeast::Id,
+) -> yeast::OutputId {
+    let raw = ctx.source_text(source);
+    let interpreted = raw
+        .strip_prefix('"')
+        .and_then(|value| value.strip_suffix('"'))
+        .unwrap_or(&raw)
+        .to_string();
+    let literal = tree!((string_literal #{source}));
+    ctx.interpreted_strings
+        .borrow_mut()
+        .push((literal, interpreted));
+    literal
 }
 
 fn implicit_parameterless_initializer(
@@ -296,20 +321,26 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((nilLiteralExpr) @@node => expr {
             tree!((builtin_expr #{node}))
         }),
-        rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
+        rule!((simpleStringLiteralExpr) @@node => expr {
+            make_string_literal(&mut ctx, node)
+        }),
         // String literal with a single constant segment (for some reason not typed as simpleStringLiteralExpr)
         rule!(
             (stringLiteralExpr segments: (stringSegment) segments: _* @@rest) @@node
             where rest.is_empty()
             =>
-            (string_literal #{node})
+            expr {
+                make_string_literal(&mut ctx, node)
+            }
         ),
         rule!(
             (stringLiteralExpr segments: _* @segments)
             =>
             (string_interpolation_expr element: {segments})
         ),
-        rule!((stringSegment content: @@content) => (string_literal #{content})),
+        rule!((stringSegment content: @@content) => expr {
+            make_string_literal(&mut ctx, content)
+        }),
         rule!(
             (expressionSegment expressions: _* @expressions)
             =>
@@ -1881,18 +1912,64 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
     }
 }
 
-pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
-    let config = DesugaringConfig::<SwiftContext>::new()
+fn desugaring_config(desugared_ast_schema: &'static str) -> DesugaringConfig<SwiftContext> {
+    DesugaringConfig::<SwiftContext>::new()
         .with_ignored_location_fields(["trailingComma"])
         .add_phase("translate", translation_rules())
-        .with_output_node_types_yaml(desugared_ast_schema);
-    let desugarer =
-        ConcreteDesugarer::without_language(config).expect("failed to build Swift desugarer");
+        .with_output_node_types_yaml(desugared_ast_schema)
+}
+
+pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::LanguageSpec {
+    let extraction_desugarer =
+        ConcreteDesugarer::without_language(desugaring_config(desugared_ast_schema))
+            .expect("failed to build Swift desugarer");
+    let schema_desugarer =
+        ConcreteDesugarer::without_language(desugaring_config(desugared_ast_schema))
+            .expect("failed to build Swift schema desugarer");
+    let extraction_schema = codeql_extractor::node_types::read_node_types_str(
+        "unified",
+        &yeast::node_types_yaml::convert(desugared_ast_schema)
+            .expect("failed to convert Unified output schema"),
+    )
+    .expect("failed to build Unified extraction schema");
     desugaring::LanguageSpec {
         prefix: "swift",
         parser: Box::new(super::swift_parse::parse),
         node_types: "",
         file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
-        desugarer: Box::new(desugarer),
+        desugarer: Box::new(schema_desugarer),
+        custom_extractor: Some(Box::new(
+            move |_schema, diagnostics_writer, trap_writer, path, source| {
+                let parsed = super::swift_parse::parse(source)?;
+                let codeql_extractor::extractor::ParsedTree { ast: input, extras } = parsed;
+                let context = SwiftContext::default();
+                let ast = extraction_desugarer.run_from_ast_with_ctx(input, &context)?;
+                let labels = codeql_extractor::extractor::extract_output_ast(
+                    "unified",
+                    &extraction_schema,
+                    diagnostics_writer,
+                    trap_writer,
+                    None,
+                    path,
+                    source,
+                    &ast,
+                    &extras,
+                )?;
+                let interpreted_strings = context.interpreted_strings.borrow();
+                for (node, value) in interpreted_strings.iter() {
+                    let label = labels.get(node).ok_or_else(|| {
+                        format!(
+                            "interpreted string references unreachable output node {}",
+                            node.index()
+                        )
+                    })?;
+                    trap_writer.add_tuple(
+                        STRING_VALUE_TABLE,
+                        vec![(*label).into(), value.clone().into()],
+                    );
+                }
+                Ok(())
+            },
+        )),
     }
 }
