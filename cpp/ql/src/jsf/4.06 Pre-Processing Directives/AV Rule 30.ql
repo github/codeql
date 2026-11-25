@@ -14,14 +14,14 @@ import cpp
 class ConstantDefMacro extends Macro {
   ConstantDefMacro() {
     // Exclude functions
-    not this.getHead().matches("%(%") and
+    not this.getHead().contains("(") and
     exists(string body |
       body = this.getBody() and
       // Empty defines are allowed (rule 31 restricts their use though)
       body != "" and
       // No special characters in the body
-      not body.matches("%(%") and
-      not body.matches("%{%")
+      not body.contains("(") and
+      not body.contains("{")
     )
   }
 }

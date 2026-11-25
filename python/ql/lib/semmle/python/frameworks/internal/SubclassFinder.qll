@@ -139,7 +139,7 @@ module NotExposed {
   predicate isTestCode(AstNode ast) {
     ast.getScope*() instanceof TestScope
     or
-    ast.getLocation().getFile().getRelativePath().matches("tests/%")
+    ast.getLocation().getFile().getRelativePath().startsWith("tests/")
   }
 
   predicate hasAllStatement(Module mod) {

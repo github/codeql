@@ -32,7 +32,7 @@ class ThreadStartParallelSink extends ParallelSink {
   ThreadStartParallelSink() {
     exists(DelegateCreation dc, Expr e | e = this.asExpr() |
       dc.getArgument() = e and
-      dc.getType().getName().matches("%Start")
+      dc.getType().getName().endsWith("Start")
     )
   }
 }

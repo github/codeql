@@ -111,11 +111,11 @@ module JCAModel {
 
   bindingset[name]
   Crypto::TKeyDerivationType kdf_name_to_kdf_type(string name, string withSubstring) {
-    name.matches("PBKDF2With%") and
+    name.startsWith("PBKDF2With") and
     result instanceof Crypto::PBKDF2 and
     withSubstring = name.regexpCapture("PBKDF2With(.*)", 1)
     or
-    name.matches("PBEWith%") and
+    name.startsWith("PBEWith") and
     result instanceof Crypto::PBES and
     withSubstring = name.regexpCapture("PBEWith(.*)", 1)
     // TODO: add additional
@@ -139,7 +139,7 @@ module JCAModel {
       digestLength = name.replaceAll("-", "").splitAt("SHA3", 1).toInt()
       or
       (
-        name.toUpperCase().matches("BLAKE2B%") and
+        name.toUpperCase().startsWith("BLAKE2B") and
         result instanceof Crypto::BLAKE2B
         or
         name.toUpperCase() = "BLAKE2S" and result instanceof Crypto::BLAKE2S
@@ -194,11 +194,11 @@ module JCAModel {
   bindingset[name]
   private predicate cipher_name_to_type_known(KeyOpAlg::TAlgorithm type, string name) {
     exists(string upper | upper = name.toUpperCase() |
-      upper.matches("AES%") and
+      upper.startsWith("AES") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
       or
       // NOTE: there is DES and DESede
-      upper.matches("DES%") and
+      upper.startsWith("DES") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
       upper = "TRIPLEDES" and
@@ -245,7 +245,7 @@ module JCAModel {
     name.toUpperCase() in ["ECDH", "X25519", "X448", "XDH"]
     or
     type = Crypto::OtherKeyAgreementType() and
-    name.toUpperCase().matches("ML-KEM%")
+    name.toUpperCase().startsWith("ML-KEM")
   }
 
   /**
@@ -254,13 +254,13 @@ module JCAModel {
    */
   bindingset[name]
   predicate signature_name_to_type_known(Crypto::KeyOpAlg::TAlgorithm type, string name) {
-    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches("RSA%") and
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).startsWith("RSA") and
     type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
     or
-    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches("ECDSA%") and
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).startsWith("ECDSA") and
     type = KeyOpAlg::TSignature(KeyOpAlg::ECDSA())
     or
-    name.toUpperCase().splitAt("with".toUpperCase(), 1).matches("DSA%") and
+    name.toUpperCase().splitAt("with".toUpperCase(), 1).startsWith("DSA") and
     type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
     or
     name.toUpperCase() = "RSASSA-PSS" and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
@@ -268,7 +268,7 @@ module JCAModel {
     name.toUpperCase().matches(["EDDSA", "ED25519", "ED448"]) and
     type = KeyOpAlg::TSignature(KeyOpAlg::EDDSA())
     or
-    name.toUpperCase().matches("ML-DSA%") and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
+    name.toUpperCase().startsWith("ML-DSA") and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
     or
     name.toUpperCase() = "HSS/LMS" and type = KeyOpAlg::TSignature(KeyOpAlg::HSS_LMS())
     or
@@ -362,7 +362,7 @@ module JCAModel {
       or
       type instanceof KeyOpAlg::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
       or
-      type instanceof KeyOpAlg::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
+      type instanceof KeyOpAlg::OAEP and name.startsWith("OAEP") // TODO: handle OAEPWith%
     }
 
     override KeyOpAlg::PaddingSchemeType getPaddingType() {
@@ -1591,10 +1591,10 @@ module JCAModel {
     override string getRawAlgorithmName() { result = super.getValue() }
 
     override Crypto::KeyOpAlg::AlgorithmType getAlgorithmType() {
-      if super.getValue().toUpperCase().matches("HMAC%")
+      if super.getValue().toUpperCase().startsWith("HMAC")
       then result = KeyOpAlg::TMac(KeyOpAlg::HMAC())
       else
-        if super.getValue().toUpperCase().matches("%CMAC%")
+        if super.getValue().toUpperCase().contains("CMAC")
         then result = KeyOpAlg::TMac(KeyOpAlg::CMAC())
         else result = KeyOpAlg::TMac(KeyOpAlg::OtherMacAlgorithmType())
     }
@@ -1650,7 +1650,7 @@ module JCAModel {
     int digestLength;
 
     KnownMacHashAlgorithm() {
-      super.getValue().toUpperCase().matches("HMAC%") and
+      super.getValue().toUpperCase().startsWith("HMAC") and
       hashType =
         hash_name_to_type_known(super.getValue().toUpperCase().splitAt("HMAC", 1), digestLength)
     }

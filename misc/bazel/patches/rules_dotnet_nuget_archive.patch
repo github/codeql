@@ -1,0 +1,13 @@
+--- a/dotnet/private/rules/nuget/nuget_archive.bzl
++++ b/dotnet/private/rules/nuget/nuget_archive.bzl
+@@ -219,6 +219,9 @@ def _process_group_with_tfm(groups, group_name, file):
+         groups["unsupported_tfms"][folder] = True
+         return
+-
++
++    if len(parts) > 3:
++        return
++
+     # Registered before the file is looked at, so that a `_._` placeholder still
+     # claims the framework: it says the package brings nothing for it, not that
+     # it does not support it.

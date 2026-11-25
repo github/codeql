@@ -14,7 +14,7 @@ import codeql.ruby.AST
 select sum(RubyFile f |
     f.fromSource() and
     exists(f.getRelativePath()) and
-    not f.getAbsolutePath().matches("%/vendor/%")
+    not f.getAbsolutePath().contains("/vendor/")
   |
     f.getNumberOfLinesOfCode()
   )

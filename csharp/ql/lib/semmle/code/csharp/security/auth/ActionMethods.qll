@@ -53,7 +53,7 @@ private class MvcActionMethod extends ActionMethod {
 private class WebFormActionMethod extends ActionMethod {
   WebFormActionMethod() {
     this.getDeclaringType().getBaseClass+() instanceof SystemWebUIPageClass and
-    this.getAParameter().getType().getName().matches("%EventArgs")
+    this.getAParameter().getType().getName().endsWith("EventArgs")
   }
 
   override Callable getAnAuthorizingCallable() {

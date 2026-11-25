@@ -16,10 +16,10 @@ import codeql.actions.security.ControlChecks
 
 from ControlCheck i
 where
-  i.(If).getCondition().matches("%${{%") and
+  i.(If).getCondition().contains("${{") and
   (
-    not i.(If).getCondition().matches("${{%") or
-    not i.(If).getCondition().matches("%}}")
+    not i.(If).getCondition().startsWith("${{") or
+    not i.(If).getCondition().endsWith("}}")
   )
   or
   count(i.(If).getCondition().splitAt("${{")) > 2

@@ -46,7 +46,7 @@ class SharedPreferencesEditor extends Interface {
 class PutSharedPreferenceMethod extends Method {
   PutSharedPreferenceMethod() {
     this.getDeclaringType() instanceof SharedPreferencesEditor and
-    this.getName().matches("put%")
+    this.getName().startsWith("put")
   }
 }
 

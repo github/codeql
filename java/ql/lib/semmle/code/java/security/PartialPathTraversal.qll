@@ -32,7 +32,7 @@ private class SystemPropFileSeparatorExpr extends FileSeparatorExpr {
 
 private class StringLiteralFileSeparatorExpr extends FileSeparatorExpr, StringLiteral {
   StringLiteralFileSeparatorExpr() {
-    this.getValue().matches("%/") or this.getValue().matches("%\\")
+    this.getValue().endsWith("/") or this.getValue().matches("%\\")
   }
 }
 

@@ -12,7 +12,7 @@ predicate relevant_node(ControlFlowNode n) {
   exists(Comment c, string filepath, int bl |
     n.getNode().getScope().getLocation().hasLocationInfo(filepath, bl, _, _, _) and
     c.getLocation().hasLocationInfo(filepath, bl, _, _, _) and
-    c.getText().matches("%check") and
+    c.getText().endsWith("check") and
     not n.(NameNode).isStore()
   )
 }

@@ -35,11 +35,6 @@ module ReflectedXss {
   }
 
   /**
-   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
-   */
-  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
-
-  /**
    * A third-party controllable input, considered as a flow source for reflected XSS.
    */
   private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }

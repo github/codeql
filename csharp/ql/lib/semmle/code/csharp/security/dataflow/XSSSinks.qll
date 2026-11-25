@@ -101,7 +101,7 @@ private class SystemWebSetterNonHtmlSink extends Sink {
       name = "GroupingTest" or
       name = "GroupName" or
       name = "Style" or
-      name.matches("%URL")
+      name.endsWith("URL")
     )
   }
 }

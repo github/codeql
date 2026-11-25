@@ -18,9 +18,9 @@ private Argument setInputTypeForId(string id) {
 private predicate inputTypeFieldNotCached(Field f) {
   f.getDeclaringType().hasQualifiedName("android.text", "InputType") and
   (
-    not f.getName().matches("%TEXT%")
+    not f.getName().contains("TEXT")
     or
-    f.getName().matches("%PASSWORD%")
+    f.getName().contains("PASSWORD")
     or
     f.hasName("TYPE_TEXT_FLAG_NO_SUGGESTIONS")
   )
@@ -56,7 +56,7 @@ private string getInputSensitiveInfoRegex() {
 /** Holds if input using the given input type (as written in XML) is not stored in the keyboard cache. */
 bindingset[ty]
 private predicate inputTypeNotCached(string ty) {
-  not ty.matches("%text%")
+  not ty.contains("text")
   or
   ty.regexpMatch("(?i).*(nosuggestions|password).*")
 }

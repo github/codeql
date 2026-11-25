@@ -26,6 +26,6 @@ predicate commentAt(string text, string filepath, int line) {
     c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
     c.getCommentText().trim() = text and
     c.fromSource() and
-    not text.matches("$%")
+    not text.startsWith("$")
   )
 }

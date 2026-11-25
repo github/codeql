@@ -40,6 +40,58 @@ module LocalSsaOutput = Make<Location, Cfg, LocalSsaInput>;
 
 private import LocalSsaOutput
 
+private module SsaInput implements SsaInputSig {
+  private import codeql.unified.internal.ExprPositions
+
+  class Expr = U::Expr;
+
+  class Parameter = U::Parameter;
+
+  class VariableWrite instanceof BuilderNode {
+    private AstNode writeAccess;
+
+    VariableWrite() { this.isLocalVariableWrite(writeAccess, _) }
+
+    Expr asExpr() { hasIncomingValue(writeAccess, result) }
+
+    Expr getValue() {
+      exists(VariableDeclaration decl |
+        writeAccess = decl.getPattern() and result = decl.getValue()
+      )
+      or
+      exists(AssignExpr assignment |
+        writeAccess = assignment.getTarget() and result = assignment.getValue()
+      )
+      or
+      writeAccess = result.(CompoundAssignExpr).getTarget()
+      // TODO: Add case for prefix unary crement operations
+    }
+
+    predicate isParameterInit(Parameter p) { p.getPattern() = writeAccess }
+
+    string toString() { result = super.toString() }
+
+    Location getLocation() { result = super.getLocation() }
+  }
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, LocalSsaInput::SourceVariable v) {
+    exists(AstNode repr |
+      w.(BuilderNode).isLocalVariableWrite(repr, v) and
+      performsVariableAccess(repr, v, _, bb.getNode(i))
+    )
+  }
+
+  predicate explicitRead(Expr e, LocalSsaInput::SourceVariable v) {
+    e.(LocalVariableAccess).getLocalVariable() = v and hasResultValue(e)
+  }
+}
+
+module SsaPublic {
+  module Ssa = MakeSsa<SsaInput>;
+
+  import Ssa
+}
+
 module LocalSsaDataFlowInput implements DataFlowIntegrationInputSig {
   class GuardValue = Void;
 

@@ -44,7 +44,7 @@ class PropertiesSetPropertyMethod extends Method {
 class PropertiesStoreMethod extends Method {
   PropertiesStoreMethod() {
     this.getDeclaringType() instanceof TypeProperty and
-    (this.getName().matches("store%") or this.getName() = "save")
+    (this.getName().startsWith("store") or this.getName() = "save")
   }
 }
 

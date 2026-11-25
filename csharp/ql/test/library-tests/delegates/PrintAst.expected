@@ -248,7 +248,8 @@ delegates.cs:
 #   79|                 0: [StringLiteralUtf16] ""
 #   81|         16: [LocalVariableDeclStmt] ... ...;
 #   81|           0: [LocalVariableDeclExpr] ContextCallback d
-#   81|             0: [TypeMention] ContextCallback
+#   81|             -1: [TypeMention] ContextCallback
+#   81|             0: [LocalVariableAccess] access to local variable d
 #   86|   10: [Class] E
 #   88|     6: [Field] Field
 #   88|       -1: [TypeMention] Action<int>

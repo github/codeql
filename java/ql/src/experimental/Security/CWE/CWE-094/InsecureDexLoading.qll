@@ -72,7 +72,7 @@ private class ExternalFile extends InsecureDexSource {
     exists(ConstructorCall cc, Argument a |
       cc.getConstructedType() instanceof TypeFile and
       a = cc.getArgument(0) and
-      a.(CompileTimeConstantExpr).getStringValue().matches("%sdcard%")
+      a.(CompileTimeConstantExpr).getStringValue().contains("sdcard")
     |
       this.asExpr() = a
     )

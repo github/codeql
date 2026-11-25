@@ -55,7 +55,8 @@ csharp71.cs:
 #   22|     4: [BlockStmt] {...}
 #   23|       0: [LocalVariableDeclStmt] ... ...;
 #   23|         0: [LocalVariableDeclExpr] Boolean b
-#   23|           0: [TypeMention] bool
+#   23|           -1: [TypeMention] bool
+#   23|           0: [LocalVariableAccess] access to local variable b
 #   24|       1: [ExprStmt] ...;
 #   24|         0: [AssignExpr] ... = ...
 #   24|           0: [LocalVariableAccess] access to local variable b

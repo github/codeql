@@ -237,15 +237,15 @@ private predicate non_code(Comment c) {
   |
     not word1 = a_keyword()
     or
-    word1 = keyword_requiring_colon() and not c.getText().matches("%:%")
+    word1 = keyword_requiring_colon() and not c.getText().contains(":")
   ) and
   /* Except comments of the form: # (maybe code) # some comment */
   not c.getText().regexpMatch("#\\S+\\s.*#.*")
   or
   /* Don't count doctests as code */
-  c.getText().matches("%>>>%")
+  c.getText().contains(">>>")
   or
-  c.getText().matches("%...%")
+  c.getText().contains("...")
 }
 
 private predicate filler(Comment c) { c.getText().regexpMatch("#+[\\s*#-_=+]*") }

@@ -379,7 +379,7 @@ private class CtxCopyOutArgCall extends CtxPassThroughCall {
   DataFlow::Node n2;
 
   CtxCopyOutArgCall() {
-    this.getTarget().getName().toLowerCase().matches("%copy%") and
+    this.getTarget().getName().toLowerCase().contains("copy") and
     n1.asIndirectExpr() = this.getAnArgument() and
     n1.getType() instanceof CtxType and
     n2.asDefiningArgument() = this.getAnArgument() and
@@ -400,7 +400,7 @@ private class CtxCopyReturnCall extends CtxPassThroughCall, CtxPointerExpr {
   DataFlow::Node n1;
 
   CtxCopyReturnCall() {
-    this.getTarget().getName().toLowerCase().matches("%dup%") and
+    this.getTarget().getName().toLowerCase().contains("dup") and
     n1.asIndirectExpr() = this.getAnArgument() and
     n1.getType() instanceof CtxType
   }

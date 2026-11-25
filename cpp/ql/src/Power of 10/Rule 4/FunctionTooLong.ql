@@ -14,7 +14,7 @@ import cpp
 class MacroFunctionCall extends MacroInvocation {
   MacroFunctionCall() {
     not exists(this.getParentInvocation()) and
-    this.getMacro().getHead().matches("%(%")
+    this.getMacro().getHead().contains("(")
   }
 
   FunctionDeclarationEntry getFunction() {

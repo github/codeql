@@ -30,7 +30,7 @@ class FileFunction extends FunctionWithWrappers {
       nme = ["fopen", "_fopen", "_wfopen", "open", "_open", "_wopen"]
       or
       // create file function on windows
-      nme.matches("CreateFile%")
+      nme.startsWith("CreateFile")
     )
     or
     this.hasQualifiedName("std", "fopen")

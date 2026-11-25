@@ -13,15 +13,6 @@ private module Summaries {
   private import semmle.python.frameworks.data.ModelsAsData
 }
 
-deprecated class SummaryComponent = Impl::Private::SummaryComponent;
-
-/** Provides predicates for constructing summary components. */
-deprecated module SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
-deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
 class Provenance = Impl::Public::Provenance;
 
 /** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
@@ -57,5 +48,3 @@ final private class SummarizedCallableFinal = SummarizedCallable::Range;
 final class SummarizedCallable extends SummarizedCallableFinal,
   Impl::Public::RelevantSummarizedCallable
 { }
-
-deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

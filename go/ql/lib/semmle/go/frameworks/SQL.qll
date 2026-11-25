@@ -205,10 +205,3 @@ module Xorm {
     }
   }
 }
-
-/**
- * DEPRECATED
- *
- * Provides classes for working with the [Bun](https://bun.uptrace.dev/) package.
- */
-deprecated module Bun { }

@@ -61,3 +61,17 @@ func testExtension() {
   let obj = C(n: 10)  // $ target=C.init
   let d = obj.doubled()  // $ type=d:Int target=C.doubled
 }
+
+// --- Named Arguments ---
+
+func swap<T1, T2>(a a1: T1, a a2: T2) -> (T2, T1) {
+  return (a2, a1)
+}
+
+let pair = swap(a: 1, a: true)  // $ target=swap type=pair@Tuple2<T0>:Bool type=pair@Tuple2<T1>:Int
+
+func f(a first: (Int) -> Void, a second: (String) -> Void) {}
+
+f { x in  // $ type=x:Int
+} a: { y in  // $ MISSING: type=y:String (second closure is incorrectly matched against the first `a` parameter)
+}  // $  target=f

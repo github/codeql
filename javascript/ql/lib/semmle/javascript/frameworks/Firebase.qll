@@ -94,8 +94,8 @@ module Firebase {
         or
         exists(string name | result = query().getAMethodCall(name) |
           name = "endAt" or
-          name = "limitTo" + any(string s) or
-          name = "orderBy" + any(string s) or
+          name.startsWith("limitTo") or
+          name.startsWith("orderBy") or
           name = "startAt"
         )
         or
@@ -183,7 +183,7 @@ module Firebase {
     class RefBuilderListenCall extends DataFlow::MethodCallNode {
       RefBuilderListenCall() {
         this = ref().getAMethodCall() and
-        this.getMethodName() = "on" + any(string s)
+        this.getMethodName().startsWith("on")
       }
 
       /**

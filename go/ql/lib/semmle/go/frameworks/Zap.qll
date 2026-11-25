@@ -31,7 +31,7 @@ module Zap {
   }
 
   private class ZapFormatter extends StringOps::Formatting::Range instanceof ZapFunction {
-    ZapFormatter() { this.getName().matches("%f") }
+    ZapFormatter() { this.getName().endsWith("f") }
 
     override int getFormatStringIndex() { result = 0 }
   }

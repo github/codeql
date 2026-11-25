@@ -43,6 +43,7 @@ codeql_pkg_files(
     name = "extractor-arch",
     exes = [
         "//python/extractor/tsg-python",
+        "//python/extractor/yeast-python",
     ],
     prefix = "tools/{CODEQL_PLATFORM}",
 )

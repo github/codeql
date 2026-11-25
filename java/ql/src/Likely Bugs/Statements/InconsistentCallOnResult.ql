@@ -19,10 +19,10 @@ import Chaining
 
 predicate exclude(Method m) {
   exists(string name | name = m.getName().toLowerCase() |
-    name.matches("get%") or
-    name.matches("is%") or
-    name.matches("has%") or
-    name.matches("add%")
+    name.startsWith("get") or
+    name.startsWith("is") or
+    name.startsWith("has") or
+    name.startsWith("add")
   )
 }
 

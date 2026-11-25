@@ -57,7 +57,7 @@ private module MongoDB {
   private class Insertion extends DatabaseAccess, API::CallNode {
     Insertion() {
       this = ModelOutput::getATypeNode("mongodb.Collection").getAMember().getACall() and
-      this.getCalleeName().matches("insert%")
+      this.getCalleeName().startsWith("insert")
     }
 
     override DataFlow::Node getAQueryArgument() { none() }
@@ -154,7 +154,7 @@ private module Mongoose {
   class Insertion extends DatabaseAccess, API::CallNode {
     Insertion() {
       this = ModelOutput::getATypeNode("mongoose.Model").getAMember().getACall() and
-      this.getCalleeName().matches("insert%")
+      this.getCalleeName().startsWith("insert")
     }
 
     override DataFlow::Node getAQueryArgument() { none() }

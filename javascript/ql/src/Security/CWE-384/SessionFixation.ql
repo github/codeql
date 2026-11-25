@@ -20,7 +20,7 @@ import javascript
 pragma[inline]
 predicate isLoginSetup(Express::RouteSetup setup) {
   // some path that contains "login" with a write to `req.session`
-  setup.getPath().matches("%login%") and
+  setup.getPath().contains("login") and
   exists(
     setup
         .getARouteHandler()

@@ -28,13 +28,13 @@ class Query extends File {
 
   predicate isPathProblem() {
     exists(QLDoc doc | doc.getLocation().getFile() = this |
-      doc.getContents().matches("%@kind path-problem%")
+      doc.getContents().contains("@kind path-problem")
     )
   }
 
   predicate isProblem() {
     exists(QLDoc doc | doc.getLocation().getFile() = this |
-      doc.getContents().matches("%@kind problem%")
+      doc.getContents().contains("@kind problem")
     )
   }
 

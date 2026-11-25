@@ -8,7 +8,7 @@ module ImplementsComparableTest implements TestSig {
     // file = "interface.go" and
     tag = "implementsComparable" and
     exists(TypeSpec ts |
-      ts.getName().matches("testComparable%") and
+      ts.getName().startsWith("testComparable") and
       ts.getATypeParameterDecl().getTypeConstraint().implementsComparable()
     |
       ts.getLocation() = location and

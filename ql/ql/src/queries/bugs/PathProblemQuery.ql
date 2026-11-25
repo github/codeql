@@ -24,5 +24,5 @@ where
     query.hasEdgesRelation(pred) and
     msg = "A problem query should not have a $@."
   ) and
-  not query.getAbsolutePath().matches("%/test/%")
+  not query.getAbsolutePath().contains("/test/")
 select query, msg, pred, "edges relation"

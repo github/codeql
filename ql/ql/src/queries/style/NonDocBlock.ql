@@ -32,7 +32,7 @@ BlockComment getACommentThatCouldBeQLDoc(File file) {
   exists(Location loc | loc = result.getLocation() |
     file = loc.getFile() and
     loc.getFile().getExtension() = "qll" and
-    not result.getContents().matches("/**%") and
+    not result.getContents().startsWith("/**") and
     not [loc.getStartLine(), loc.getEndLine()] = getLinesWithNonComment(file) and
     (
       // above something that can be commented.

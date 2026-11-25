@@ -43,7 +43,7 @@ private Function getAServerlessHandler() {
     SL::hasServerlessHandler(stem, handler, _, runtime) and
     file.getAbsolutePath() = stem + ".py" and
     // if runtime is specified, it should be python
-    (runtime = "" or runtime.matches("python%"))
+    (runtime = "" or runtime.startsWith("python"))
   |
     mod.getFile() = file and
     result.getScope() = mod and

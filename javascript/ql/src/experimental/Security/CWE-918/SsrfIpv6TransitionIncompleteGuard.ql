@@ -96,10 +96,10 @@ predicate hasTransitionUnwrap(File f) {
   exists(StringLiteral s |
     s.getFile() = f and
     (
-      s.getValue().matches("%64:ff9b%") or
-      s.getValue().matches("%::ffff%") or
-      s.getValue().matches("%2002:%") or
-      s.getValue().matches("%2001:%")
+      s.getValue().contains("64:ff9b") or
+      s.getValue().contains("::ffff") or
+      s.getValue().contains("2002:") or
+      s.getValue().contains("2001:")
     )
   )
   or

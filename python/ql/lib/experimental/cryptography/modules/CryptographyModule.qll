@@ -36,7 +36,7 @@ module Hashes {
         "HashContext", "typing", "utils"
       ] and
     // Don't match things like __file__
-    not hashName.regexpMatch("_.*")
+    not hashName.startsWith("_")
   }
 
   /**
@@ -262,7 +262,7 @@ module Encryption {
 
         bindingset[rawName]
         string normalizedEncryptionName(string rawName) {
-          if rawName.matches("AES%")
+          if rawName.startsWith("AES")
           then result = super.normalizeName("AES")
           else result = super.normalizeName(rawName)
         }
@@ -389,7 +389,7 @@ module Encryption {
               .getMember("modes")
               .getMember(name)
               .getACall() and
-        not name.regexpMatch("_.*")
+        not name.startsWith("_")
       }
 
       // https://cryptography.io/en/latest/hazmat/primitives/symmetric-encryption/#module-cryptography.hazmat.primitives.ciphers.modes
@@ -421,7 +421,7 @@ module Encryption {
               .getMember("algorithms")
               .getMember(name)
               .getACall() and
-        not name.regexpMatch("_.*")
+        not name.startsWith("_")
       }
 
       class CrytographyGenericSymmetricEncryption extends SymmetricEncryptionAlgorithm {
@@ -468,7 +468,7 @@ module Encryption {
               .getMember(name)
               .getACall() and
         name != "PaddingContext" and
-        not name.regexpMatch("_.*")
+        not name.startsWith("_")
       }
 
       class CryptographyGenericSymmetricPadding extends SymmetricPadding {

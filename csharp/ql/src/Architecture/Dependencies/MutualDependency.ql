@@ -33,9 +33,9 @@ where
   not (
     nestedWithin(t1, t2) or
     nestedWithin(t2, t1) or
-    t1.getName().toLowerCase().matches("%visitor%") or
-    t2.getName().toLowerCase().matches("%visitor%") or
-    t1.getAMember().getName().toLowerCase().matches("%visit%") or
-    t2.getAMember().getName().toLowerCase().matches("%visit%")
+    t1.getName().toLowerCase().contains("visitor") or
+    t2.getName().toLowerCase().contains("visitor") or
+    t1.getAMember().getName().toLowerCase().contains("visit") or
+    t2.getAMember().getName().toLowerCase().contains("visit")
   )
 select t1, "This type and type $@ are mutually dependent.", t2, t2.getName()

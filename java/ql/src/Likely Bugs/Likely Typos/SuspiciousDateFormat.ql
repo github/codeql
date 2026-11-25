@@ -16,6 +16,6 @@ from ConstructorCall c, string format
 where
   c.getConstructedType().hasQualifiedName("java.text", "SimpleDateFormat") and
   format = c.getArgument(0).(StringLiteral).getValue() and
-  format.matches("%Y%") and
-  format.matches("%M%")
+  format.contains("Y") and
+  format.contains("M")
 select c, "Date formatter is passed a suspicious pattern \"" + format + "\"."

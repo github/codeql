@@ -99,13 +99,19 @@ top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩\n\n⟨stmt⟩"
       stmt:
-        call_expr source="⟨callee⟩[⟨argument⟩]"
-          callee: identifier "handlers" source="handlers"
+        call_expr source="⟨callee⟩⟨argument⟩]"
+          callee:
+            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+              base: identifier "handlers" source="handlers"
+              member_name_node: identifier "subscript" source="["
           argument:
             argument source="⟨value⟩"
               value: int_literal "0" source="0"
-        call_expr source="⟨callee⟩[⟨argument⟩] ⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
-          callee: identifier "handlers" source="handlers"
+        call_expr source="⟨callee⟩⟨argument⟩] ⟨argument⟩ ⟨argument⟩ ⟨argument⟩"
+          callee:
+            member_access_expr source="⟨base⟩⟨member_name_node⟩"
+              base: identifier "handlers" source="handlers"
+              member_name_node: identifier "subscript" source="["
           argument:
             argument source="⟨value⟩"
               value: int_literal "0" source="0"

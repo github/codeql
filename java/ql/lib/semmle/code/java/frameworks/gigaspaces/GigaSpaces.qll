@@ -39,7 +39,7 @@ predicate isGigaSpacesEventMethod(Method eventMethod) {
 class GigaSpacesSpaceIdGetterMethod extends Method {
   GigaSpacesSpaceIdGetterMethod() {
     this.getAnAnnotation().getType().hasQualifiedName("com.gigaspaces.annotation.pojo", "SpaceId") and
-    this.getName().matches("get%")
+    this.getName().startsWith("get")
   }
 }
 
@@ -50,7 +50,7 @@ class GigaSpacesSpaceIdSetterMethod extends Method {
   GigaSpacesSpaceIdSetterMethod() {
     exists(GigaSpacesSpaceIdGetterMethod getterMethod |
       getterMethod.getDeclaringType() = this.getDeclaringType() and
-      this.getName().matches("set%")
+      this.getName().startsWith("set")
     |
       getterMethod.getName().suffix(3) = this.getName().suffix(3)
     )
@@ -66,6 +66,6 @@ class GigaSpacesSpaceRoutingMethod extends Method {
     this.getAnAnnotation()
         .getType()
         .hasQualifiedName("com.gigaspaces.annotation.pojo", "SpaceRouting") and
-    this.getName().matches("get%")
+    this.getName().startsWith("get")
   }
 }

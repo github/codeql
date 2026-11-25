@@ -60,7 +60,7 @@ std::string read_file(const std::string& filename) {
   std::ifstream f(filename, std::ios::binary);
   EXPECT_TRUE(f) << "Could not open '" << filename << "' (" << std::strerror(errno) << ")";
   if (!f) {
-    return 0;
+    return "";
   }
   std::stringstream contents;
   contents << f.rdbuf();

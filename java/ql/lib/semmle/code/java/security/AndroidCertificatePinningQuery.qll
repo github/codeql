@@ -107,7 +107,7 @@ private class MissingPinningSink extends DataFlow::Node {
 private module UntrustedUrlConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     exists(string lit | lit = node.asExpr().(CompileTimeConstantExpr).getStringValue() |
-      lit.matches("%://%") and // it's a URL
+      lit.contains("://") and // it's a URL
       not lit.regexpMatch("^(classpath|file|jar):.*") and // discard non-network URIs
       not exists(string dom | trustedDomain(dom) and lit.matches("%" + dom + "%"))
     )
