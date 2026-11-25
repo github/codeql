@@ -1,3 +1,8 @@
+instances
 | gen_token_tree.rs:7:13:7:40 | TokenTree |
 | gen_token_tree.rs:7:14:7:39 | TokenTree |
 | gen_token_tree.rs:9:22:9:49 | TokenTree |
+getText
+| gen_token_tree.rs:7:13:7:40 | TokenTree | ("{} {}!", "Hello", "world") |
+| gen_token_tree.rs:7:14:7:39 | TokenTree | ("{} {}!","Hello","world") |
+| gen_token_tree.rs:9:22:9:49 | TokenTree | { ($x:expr) => { $x + 1 }; } |

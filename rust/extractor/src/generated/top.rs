@@ -2786,6 +2786,7 @@ impl From<trap::Label<Token>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct TokenTree {
     pub id: trap::TrapId<TokenTree>,
+    pub text: Option<String>,
 }
 
 impl trap::TrapEntry for TokenTree {
@@ -2795,6 +2796,9 @@ impl trap::TrapEntry for TokenTree {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("token_trees", vec![id.into()]);
+        if let Some(v) = self.text {
+            out.add_tuple("token_tree_texts", vec![id.into(), v.into()]);
+        }
     }
 }
 

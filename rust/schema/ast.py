@@ -682,7 +682,7 @@ class Struct(TypeItem, Item, ):
     where_clause: optional["WhereClause"] | child
 
 class TokenTree(AstNode, ):
-    pass
+    text: optional[string]
 
 class TokenTreeMeta(Meta, ):
     path: optional["Path"] | child

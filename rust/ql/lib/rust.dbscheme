@@ -1039,6 +1039,12 @@ token_trees(
   unique int id: @token_tree
 );
 
+#keyset[id]
+token_tree_texts(
+  int id: @token_tree ref,
+  string text: string ref
+);
+
 try_block_modifiers(
   unique int id: @try_block_modifier
 );

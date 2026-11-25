@@ -37,6 +37,11 @@ impl TextValue for ast::NameRef {
         self.text().to_string().into()
     }
 }
+impl TextValue for ast::TokenTree {
+    fn try_get_text(&self) -> Option<String> {
+        Some(self.syntax().text().to_string())
+    }
+}
 impl TextValue for ast::Abi {
     fn try_get_text(&self) -> Option<String> {
         self.abi_string().map(|x| x.to_string())

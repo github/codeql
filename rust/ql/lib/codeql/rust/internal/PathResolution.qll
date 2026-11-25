@@ -45,6 +45,7 @@ private import rust
 private import codeql.rust.elements.internal.generated.ParentChild
 private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
+private import codeql.rust.elements.internal.ElementImpl::Impl as ElementImpl
 private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
@@ -1404,13 +1405,92 @@ private Meta getPathAttrMeta(Module m) {
   result.getMetaPath().getText() = "path"
 }
 
+/** A literal-path `include!` invocation with an extracted expansion. */
+private class IncludeMacroCall extends MacroCall {
+  IncludeMacroCall() {
+    this.getPath().getText() = "include" and
+    this.hasMacroCallExpansion() and
+    exists(getIncludedPath(this))
+  }
+}
+
+/** Gets a literal include path, excluding string literals that need unescaping. */
+private string getIncludedPath(MacroCall call) {
+  call.getPath().getText() = "include" and
+  exists(string text | text = call.getTokenTree().getText() |
+    result = text.regexpCapture("(?s)[(\\[{]\\s*\"([^\"\\\\]+)\"\\s*,?\\s*[)\\]}]", 1)
+    or
+    exists(string hashes |
+      hashes = text.regexpCapture("(?s)[(\\[{]\\s*r(#{0,255})\".*", 1) and
+      result =
+        text.regexpCapture("(?s)[(\\[{]\\s*r" + hashes + "\"(.*?)\"" + hashes + "\\s*,?\\s*[)\\]}]",
+          1)
+    )
+  )
+}
+
+/** Gets the nearest enclosing include expansion, skipping other kinds of macros. */
+private IncludeMacroCall getEnclosingInclude(AstNode n) {
+  exists(AstNode invocation |
+    invocation = ElementImpl::MacroExpansion::getImmediatelyEnclosingMacroInvocation(n)
+  |
+    result = invocation
+    or
+    not invocation instanceof IncludeMacroCall and
+    result = getEnclosingInclude(invocation)
+  )
+}
+
+/** Gets the source file whose directory supplies relative paths for `n`. */
+private File getModuleSourceFile(AstNode n) {
+  not exists(getEnclosingInclude(n)) and result = n.getFile()
+  or
+  exists(IncludeMacroCall call, Folder folder, string path |
+    call = getEnclosingInclude(n) and
+    includePathImport(folder, call, path) and
+    result = Folder::Append<shouldAppendInclude/2>::append(folder, path)
+  )
+}
+
+/** Gets the directory of the outermost include invocation's source file. */
+private Folder getIncludeBaseFolder(IncludeMacroCall call) {
+  not exists(getEnclosingInclude(call)) and
+  result = call.getFile().getParentContainer()
+  or
+  result = getIncludeBaseFolder(getEnclosingInclude(call))
+}
+
+/** Combines nested include paths without resolving containers recursively. */
+private string getIncludePath(IncludeMacroCall call) {
+  not exists(getEnclosingInclude(call)) and result = getIncludedPath(call)
+  or
+  exists(string outerPath, string directory |
+    outerPath = getIncludePath(getEnclosingInclude(call)) and
+    (
+      directory = outerPath.regexpCapture("(.*)/[^/]*", 1)
+      or
+      not outerPath.contains("/") and directory = "."
+    ) and
+    result = directory + "/" + getIncludedPath(call)
+  )
+}
+
+private predicate includePathImport(Folder folder, IncludeMacroCall call, string path) {
+  folder = getIncludeBaseFolder(call) and
+  path = getIncludePath(call)
+}
+
+private predicate shouldAppendInclude(Folder folder, string path) {
+  includePathImport(folder, _, path)
+}
+
 /**
  * Holds if `m` is a `mod name;` module declaration, where the corresponding
  * module file needs to be looked up in `lookup` or one of its descandants.
  */
 private predicate modImport0(Module m, string name, Folder lookup) {
   exists(File f, Folder parent, string fileName |
-    f = m.getFile() and
+    f = getModuleSourceFile(m) and
     not m.hasItemList() and
     not exists(getPathAttrMeta(m)) and
     name = m.getName().getText() and
@@ -1420,12 +1500,15 @@ private predicate modImport0(Module m, string name, Folder lookup) {
     // sibling import
     lookup = parent and
     (
-      m.getFile() = any(CrateItemNode c).getSourceFile().getFile()
+      exists(getEnclosingInclude(m))
       or
-      m.getFile().getBaseName() = "mod.rs"
+      f = any(CrateItemNode c).getSourceFile().getFile()
+      or
+      f.getBaseName() = "mod.rs"
     )
     or
     // child import
+    not exists(getEnclosingInclude(m)) and
     lookup = parent.getFolder(fileName)
   )
 }
@@ -1435,6 +1518,11 @@ private predicate modImport0(Module m, string name, Folder lookup) {
  * nested module, and `pred -> succ` is a module edge leading to `m`.
  */
 private predicate modImportNested(ModuleItemNode m, ModuleItemNode pred, ModuleItemNode succ) {
+  (
+    not exists(getEnclosingInclude(m))
+    or
+    getEnclosingInclude(pred) = getEnclosingInclude(m)
+  ) and
   pred.getAnItemInScope() = succ and
   (
     modImport0(m, _, _) and

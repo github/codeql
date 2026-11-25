@@ -95,7 +95,7 @@ fn should_field_be_skipped(node_name: &str, field_name: &str) -> bool {
 
 fn get_additional_fields(node_name: &str) -> Vec<FieldInfo> {
     match node_name {
-        "Name" | "NameRef" | "Lifetime" => vec![FieldInfo::string("text")],
+        "Name" | "NameRef" | "Lifetime" | "TokenTree" => vec![FieldInfo::string("text")],
         "Abi" => vec![FieldInfo::string("abi_string")],
         "Literal" => vec![FieldInfo::string("text_value")],
         "PrefixExpr" => vec![FieldInfo::string("operator_name")],

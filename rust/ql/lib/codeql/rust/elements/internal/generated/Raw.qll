@@ -1806,6 +1806,11 @@ module Raw {
    */
   class TokenTree extends @token_tree, AstNode {
     override string toString() { result = "TokenTree" }
+
+    /**
+     * Gets the text of this token tree, if it exists.
+     */
+    string getText() { token_tree_texts(this, result) }
   }
 
   private Element getImmediateChildOfTokenTree(TokenTree e, int index) { none() }
