@@ -78,6 +78,11 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     BasicBlock getBasicBlock();
   }
 
+  /** Holds if `node` indicates that `e` evaluates to the value `s`. */
+  default predicate nodeIsAfterValue(ControlFlowNode node, Expr e, ConditionalSuccessor s) {
+    none()
+  }
+
   class ConstantValue {
     /** Gets a textual representation of this constant value. */
     string toString();
@@ -449,6 +454,24 @@ module Make<
     )
   }
 
+  /**
+   * Holds if the fact that `e` evaluates to the value `v` is represented by a
+   * node in the basic block `bb` and not by a branch edge.
+   *
+   * For example, this holds for short-circuiting boolean expressions like
+   * `a || b` where the control-flow branching happens at `a` and `b`, while
+   * the nodes for the implied value of the entire expression occur later
+   * within the subsequent basic blocks.
+   */
+  private predicate midBlockGuard(Expr e, BasicBlock bb, GuardValue v) {
+    exists(ControlFlowNode node, BooleanSuccessor s |
+      nodeIsAfterValue(node, e, s) and
+      bb.getNode(_) = node and
+      not e.(PreGuard).hasValueBranchEdge(_, bb, v) and
+      v.asBooleanValue() = s.getValue()
+    )
+  }
+
   final private class FinalAstNode = AstNode;
 
   /**
@@ -482,6 +505,11 @@ module Make<
         this.hasValueBranchEdge(guard, succ, v) and
         dominatingEdge(guard, succ) and
         succ.dominates(bb)
+      )
+      or
+      exists(BasicBlock guard |
+        midBlockGuard(this, guard, v) and
+        guard.dominates(bb)
       )
     }
 
@@ -1044,6 +1072,8 @@ module Make<
 
     private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
       guard.hasValueBranchEdge(_, _, v)
+      or
+      midBlockGuard(guard, _, v)
     }
 
     private module BranchImplies = ImpliesTC<hasAValueBranchEdge/2>;
@@ -1053,6 +1083,13 @@ module Make<
     ) {
       exists(Guard g0, GuardValue v0 |
         g0.hasValueBranchEdge(bb1, bb2, v0) and
+        BranchImplies::guardControls(guard, v, g0, v0)
+      )
+    }
+
+    private predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue v) {
+      exists(Guard g0, GuardValue v0 |
+        midBlockGuard(g0, bb, v0) and
         BranchImplies::guardControls(guard, v, g0, v0)
       )
     }
@@ -1079,6 +1116,12 @@ module Make<
         ssaControlsBranchEdge(def, guard, succ, v) and
         dominatingEdge(guard, succ) and
         succ.dominates(bb)
+      )
+      or
+      exists(Guard g0, BasicBlock guardbb, GuardValue v0 |
+        midBlockGuard(g0, guardbb, v0) and
+        BranchImplies::ssaControls(def, v, g0, v0) and
+        guardbb.dominates(bb)
       )
     }
 
@@ -1531,6 +1574,11 @@ module Make<
           this.valueControlsBranchEdge(guard, succ, v) and
           dominatingEdge(guard, succ) and
           succ.dominates(bb)
+        )
+        or
+        exists(BasicBlock guard |
+          guardControlsBlock(this, guard, v) and
+          guard.dominates(bb)
         )
       }
 
