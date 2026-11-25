@@ -1,0 +1,5 @@
+name: Partially covered composite action
+runs:
+  using: composite
+  steps:
+    - uses: partial/action@v1 # $ Alert

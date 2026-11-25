@@ -1,0 +1,5 @@
+name: Composite action in a workflow without a lock entry
+runs:
+  using: composite
+  steps:
+    - uses: covered/action@v1 # $ Alert

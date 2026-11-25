@@ -1,0 +1,6 @@
+name: Uncalled composite action
+runs:
+  using: composite
+  steps:
+    - uses: covered/action@v1 # $ Alert
+    - uses: $/.github/actions/partially-known

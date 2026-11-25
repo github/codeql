@@ -12,5 +12,11 @@ jobs:
     - uses: mismatched/action@v1 # $ Alert
     - uses: malformed/action@v1 # $ Alert
     - uses: missing/action@v1 # $ Alert
+    - uses: $/.github/actions/nested
+    - uses: ./.github/actions/covered
+    - uses: $/.github/actions/shared
+    - uses: $/.github/actions/partially-known
+    - uses: $/.github/actions/cycle-branch
+    - uses: ./
   reusable:
     uses: dtolnay/rust-toolchain/.github/workflows/reusable.yml@v1 # $ Alert

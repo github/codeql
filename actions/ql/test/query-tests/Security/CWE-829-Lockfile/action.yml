@@ -1,0 +1,6 @@
+name: Repository root composite action
+runs:
+  using: composite
+  steps:
+    - uses: covered/action@v1
+    - uses: missing/action@v1 # $ Alert

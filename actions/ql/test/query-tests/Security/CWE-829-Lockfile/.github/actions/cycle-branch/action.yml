@@ -1,0 +1,5 @@
+name: Composite action called from an uncalled cycle
+runs:
+  using: composite
+  steps:
+    - uses: only-rust/action@v1 # $ Alert
