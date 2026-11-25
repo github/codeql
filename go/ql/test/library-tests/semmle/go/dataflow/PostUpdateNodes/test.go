@@ -35,3 +35,23 @@ func f() {
 	f(a)
 	fp(a)
 }
+
+func mutateC(c *C) {
+	c.field = 200
+}
+
+func g(ch chan *C) {
+	a := A{}
+
+	// Read-only pointer dereference chain: no post-update nodes
+	_ = a.bptr.cptr.field
+
+	// Nested method call receiver: post-update nodes propagate along the chain
+	a.bptr.cptr.mp(a)
+
+	// Nested call argument: post-update nodes propagate along the chain
+	mutateC(a.bptr.cptr)
+
+	// Method call on channel receive: post-update nodes on `<-ch` and `ch`
+	(<-ch).mp(a)
+}
