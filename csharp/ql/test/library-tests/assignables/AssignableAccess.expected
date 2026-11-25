@@ -70,9 +70,14 @@
 | Assignables.cs:66:17:66:17 | access to parameter y | Assignables.cs:64:45:64:45 | y | read |
 | Assignables.cs:67:13:67:13 | access to parameter x | Assignables.cs:64:34:64:34 | x | write |
 | Assignables.cs:69:13:69:13 | access to parameter y | Assignables.cs:64:45:64:45 | y | write |
+| Assignables.cs:78:22:78:22 | access to local variable s | Assignables.cs:78:22:78:22 | s | write |
 | Assignables.cs:78:27:78:28 | access to parameter ss | Assignables.cs:76:69:76:70 | ss | read |
 | Assignables.cs:82:21:82:24 | access to local variable temp | Assignables.cs:82:21:82:24 | temp | write |
 | Assignables.cs:82:28:82:28 | access to local variable s | Assignables.cs:78:22:78:22 | s | read |
+| Assignables.cs:84:30:84:30 | access to local variable e | Assignables.cs:84:30:84:30 | e | write |
+| Assignables.cs:92:14:92:14 | access to local variable x | Assignables.cs:92:14:92:14 | x | write |
+| Assignables.cs:92:23:92:23 | access to local variable b | Assignables.cs:92:23:92:23 | b | write |
+| Assignables.cs:92:33:92:33 | access to local variable s | Assignables.cs:92:33:92:33 | s | write |
 | Assignables.cs:93:10:93:10 | access to local variable x | Assignables.cs:92:14:92:14 | x | write |
 | Assignables.cs:93:14:93:14 | access to local variable b | Assignables.cs:92:23:92:23 | b | write |
 | Assignables.cs:93:17:93:17 | access to local variable s | Assignables.cs:92:33:92:33 | s | write |
@@ -95,10 +100,12 @@
 | Assignables.cs:110:10:110:10 | access to local variable p | Assignables.cs:109:14:109:14 | p | read |
 | Assignables.cs:113:44:113:44 | access to parameter i | Assignables.cs:113:25:113:25 | i | write |
 | Assignables.cs:113:51:113:51 | access to parameter s | Assignables.cs:113:39:113:39 | s | write |
+| Assignables.cs:117:13:117:13 | access to local variable i | Assignables.cs:117:13:117:13 | i | write |
 | Assignables.cs:118:16:118:16 | access to local variable s | Assignables.cs:118:16:118:16 | s | write |
 | Assignables.cs:119:29:119:29 | access to local variable i | Assignables.cs:117:13:117:13 | i | write |
 | Assignables.cs:119:36:119:36 | access to local variable s | Assignables.cs:118:16:118:16 | s | read |
 | Assignables.cs:119:36:119:36 | access to local variable s | Assignables.cs:118:16:118:16 | s | write |
+| Assignables.cs:124:13:124:13 | access to local variable i | Assignables.cs:124:13:124:13 | i | write |
 | Assignables.cs:125:13:125:13 | access to local variable s | Assignables.cs:125:13:125:13 | s | write |
 | Assignables.cs:126:9:126:9 | access to local variable s | Assignables.cs:125:13:125:13 | s | write |
 | Assignables.cs:132:13:132:13 | access to local variable x | Assignables.cs:132:13:132:13 | x | write |
@@ -108,7 +115,10 @@
 | Assignables.cs:133:29:133:29 | String s | Assignables.cs:133:29:133:29 | s | write |
 | Assignables.cs:138:19:138:19 | access to local variable x | Assignables.cs:138:19:138:19 | x | write |
 | Discards.cs:7:9:7:9 | access to parameter x | Discards.cs:5:30:5:30 | x | write |
+| Discards.cs:19:14:19:14 | access to local variable x | Discards.cs:19:14:19:14 | x | write |
+| Discards.cs:20:17:20:17 | access to local variable y | Discards.cs:20:17:20:17 | y | write |
 | Discards.cs:20:32:20:32 | Boolean z | Discards.cs:20:32:20:32 | z | write |
+| Discards.cs:25:22:25:22 | access to local variable _ | Discards.cs:25:22:25:22 | _ | write |
 | Discards.cs:25:27:25:30 | access to parameter args | Discards.cs:23:27:23:30 | args | read |
 | Discards.cs:32:17:32:17 | access to parameter o | Discards.cs:30:24:30:24 | o | read |
 | Finally.cs:7:13:7:13 | access to local variable i | Finally.cs:7:13:7:13 | i | write |

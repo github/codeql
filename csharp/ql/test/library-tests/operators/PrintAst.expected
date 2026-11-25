@@ -207,7 +207,8 @@ operators.cs:
 #   64|               0: [IntLiteral] 4
 #   65|         1: [LocalVariableDeclStmt] ... ...;
 #   65|           0: [LocalVariableDeclExpr] IntVector iv2
-#   65|             0: [TypeMention] IntVector
+#   65|             -1: [TypeMention] IntVector
+#   65|             0: [LocalVariableAccess] access to local variable iv2
 #   66|         2: [ExprStmt] ...;
 #   66|           0: [AssignExpr] ... = ...
 #   66|             0: [LocalVariableAccess] access to local variable iv2

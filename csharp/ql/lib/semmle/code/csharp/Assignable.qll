@@ -385,9 +385,14 @@ module AssignableInternal {
       or
       def = TTupleAssignmentDefinition(_, result)
       or
+      def =
+        TTupleAssignmentDefinition(_, any(LocalVariableDeclExpr decl | decl.getAccess() = result))
+      or
       def = TOutRefDefinition(result)
       or
       def = TMutationDefinition(any(MutatorOperation mo | mo.getOperand() = result))
+      or
+      def = TLocalVariableDefinition(any(LocalVariableDeclExpr decl | decl.getAccess() = result))
       or
       def = TAddressOfDefinition(any(AddressOfExpr aoe | aoe.getOperand() = result))
       or
@@ -476,8 +481,7 @@ class AssignableDefinition extends TAssignableDefinition {
 
   /**
    * Gets the access used in the definition of the underlying assignable,
-   * if any. For example, an uninitialized local variable declaration or an
-   * implicit parameter definition has no associated access.
+   * if any. For example, an implicit parameter definition has no associated access.
    */
   final AssignableAccess getTargetAccess() { result = getTargetAccess(this) }
 

@@ -150,7 +150,10 @@ private module LinqFilterOpportunity<linqCandidateSig/2 linqCandidate> {
     // The linq candidate expression accesses the loop variable, and the
     // candidate can be captured in a LINQ lambda.
     exists(Expr candidate | linqCandidate(s, candidate) |
-      fes.getVariable().getAnAccess() = candidate.getAChildExpr*() and
+      exists(AssignableRead read |
+        read = fes.getVariable().getAnAccess() and
+        read = candidate.getAChildExpr*()
+      ) and
       acceptableForLinqCapture(candidate)
     )
   }
@@ -162,8 +165,8 @@ private module LinqMapOpportunity<linqCandidateSig/2 linqCandidate> {
     // The linq candidate (and only the candidate) expression accesses the loop variable and the
     // candidate can be captured in a LINQ lambda.
     exists(Expr candidate | linqCandidate(s, candidate) |
-      forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
-        va = candidate.getAChildExpr*()
+      forex(AssignableRead read | read = fes.getVariable().getAnAccess() |
+        read = candidate.getAChildExpr*()
       ) and
       acceptableForLinqCapture(candidate)
     )

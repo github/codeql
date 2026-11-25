@@ -86,9 +86,11 @@ methods.cs:
 #   36|       4: [BlockStmt] {...}
 #   37|         0: [LocalVariableDeclStmt] ... ...;
 #   37|           0: [LocalVariableDeclExpr] Int32 res
-#   37|             0: [TypeMention] int
+#   37|             -1: [TypeMention] int
+#   37|             0: [LocalVariableAccess] access to local variable res
 #   37|           1: [LocalVariableDeclExpr] Int32 rem
-#   37|             0: [TypeMention] int
+#   37|             -1: [TypeMention] int
+#   37|             0: [LocalVariableAccess] access to local variable rem
 #   38|         1: [ExprStmt] ...;
 #   38|           0: [MethodCall] call to method Divide
 #   38|             0: [IntLiteral] 10
@@ -325,7 +327,8 @@ methods.cs:
 #  127|                 3: [StringLiteralUtf16] "4444"
 #  128|         1: [ForEachStmt] foreach (... ... in ...) ...
 #  128|           0: [LocalVariableDeclExpr] String s
-#  128|             0: [TypeMention] string
+#  128|             -1: [TypeMention] string
+#  128|             0: [LocalVariableAccess] access to local variable s
 #  128|           1: [MethodCall] call to method Slice<String>
 #  128|             -1: [LocalVariableAccess] access to local variable strings
 #  128|             0: [IntLiteral] 1

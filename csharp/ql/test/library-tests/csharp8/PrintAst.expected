@@ -35,7 +35,8 @@ AsyncStreams.cs:
 #   16|     4: [BlockStmt] {...}
 #   17|       0: [ForEachStmt] foreach (... ... in ...) ...
 #   17|         0: [LocalVariableDeclExpr] Int32 item
-#   17|           0: [TypeMention] int
+#   17|           -1: [TypeMention] int
+#   17|           0: [LocalVariableAccess] access to local variable item
 #   17|         1: [MethodCall] call to method Items
 #   18|         2: [ExprStmt] ...;
 #   18|           0: [MethodCall] call to method WriteLine
@@ -1073,7 +1074,9 @@ patterns.cs:
 #  108|         0: [AssignExpr] ... = ...
 #  108|           0: [TupleExpr] (..., ...)
 #  108|             0: [LocalVariableDeclExpr] Int32 x1
+#  108|               0: [LocalVariableAccess] access to local variable x1
 #  108|             1: [LocalVariableDeclExpr] Int32 y1
+#  108|               0: [LocalVariableAccess] access to local variable y1
 #  108|           1: [SwitchExpr] ... switch { ... }
 #  108|             -1: [TupleExpr] (..., ...)
 #  108|               0: [LocalVariableAccess] access to local variable x0
@@ -1223,7 +1226,8 @@ patterns.cs:
 #  142|                   2: [IntLiteral] 6
 #  145|         1: [SpecificCatchClause] catch (...) {...}
 #  145|           0: [LocalVariableDeclExpr] InvalidOperationException ex
-#  145|             0: [TypeMention] InvalidOperationException
+#  145|             -1: [TypeMention] InvalidOperationException
+#  145|             0: [LocalVariableAccess] access to local variable ex
 #  146|           1: [BlockStmt] {...}
 #  147|             0: [ExprStmt] ...;
 #  147|               0: [MethodCall] call to method WriteLine
