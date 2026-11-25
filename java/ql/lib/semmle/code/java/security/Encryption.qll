@@ -221,11 +221,11 @@ predicate insecureAlgorithm(string name, string reason) {
       "3[-_]?DES", "DES[-_]?3"
     ] and
   reason =
-    "It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead."
+    "It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST for encryption and key wrapping. Consider using AES instead."
   or
   name = ["SKIPJACK", "Skipjack"] and
   reason =
-    "It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST. Consider using AES instead."
+    "It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST for encryption. Consider using AES instead."
   or
   name = "RC2" and
   reason = "It is vulnerable to related-key attacks. Consider using AES instead."
