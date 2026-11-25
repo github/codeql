@@ -1214,7 +1214,8 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 let base = ctx.conditional_compilation_base.take();
                 ctx.conditional_compilation_tail = None;
                 if let Some(base) = base
-                    && clauses.last().is_some_and(|clause| input_child(&ctx, *clause, "condition").is_some())
+                    && let Some(clause) = clauses.last()
+                    && input_child(&ctx, *clause, "condition").is_some()
                 {
                     // When the base is set (meaning we're in a postfix
                     // conditional compilation expression) and the last clause
@@ -1224,7 +1225,11 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                     // `base #if .method() #endif`
                     // gets translated as had it been
                     // `#if base.method() #else base #endif`.
-                    ctx.conditional_compilation_tail = Some(tree!((block stmt: {base})));
+                    // ctx.conditional_compilation_tail = Some(tree!((block stmt: {base})));
+                    let else_location =
+                         ctx.source_range(*clause).map(|range| range.empty_at_end());
+                     ctx.conditional_compilation_tail =
+                         Some(tree!((block stmt: {base} location: {else_location})));
                 }
                 for clause in clauses.into_iter().rev() {
                     ctx.conditional_compilation_base = base;

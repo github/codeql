@@ -727,7 +727,7 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "noElse" source="noElse"
           value:
-            if_expr source="⟨else⟩⟨condition⟩⟨then⟩\n    #endif"
+            if_expr source="makeValue()\n    #if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
               modifier: modifier "conditional_compilation" source=""
               condition: identifier "FIRST" source="FIRST"
               then:
@@ -741,7 +741,7 @@ top_level source="⟨body⟩"
                               callee: identifier "makeValue" source="makeValue"
                           member_name_node: identifier "foo" source="foo"
               else:
-                if_expr source="⟨else⟩\n    #if FIRST\n        .foo()\n    #elseif ⟨condition⟩\n        ⟨then⟩"
+                if_expr source="#elseif ⟨condition⟩\n        ⟨then⟩"
                   modifier: modifier "conditional_compilation" source=""
                   condition: identifier "SECOND" source="SECOND"
                   then:
@@ -755,9 +755,9 @@ top_level source="⟨body⟩"
                                   callee: identifier "makeValue" source="makeValue"
                               member_name_node: identifier "bar" source="bar"
                   else:
-                    block source="⟨stmt⟩"
+                    block source=""
                       stmt:
-                        call_expr source="⟨callee⟩()"
+                        call_expr source="⟨callee⟩()" (external)
                           callee: identifier "makeValue" source="makeValue"
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
@@ -826,7 +826,7 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "inChain" source="inChain"
           value:
-            if_expr source="⟨else⟩\n    #if ⟨condition⟩\n        ⟨then⟩\n    #endif"
+            if_expr source="value.foo()\n    #if ⟨condition⟩\n        ⟨then⟩\n    #endif"
               modifier: modifier "conditional_compilation" source=""
               condition: identifier "CHAIN" source="CHAIN"
               then:
@@ -843,9 +843,9 @@ top_level source="⟨body⟩"
                                   member_name_node: identifier "foo" source="foo"
                           member_name_node: identifier "bar" source="bar"
               else:
-                block source="⟨stmt⟩"
+                block source=""
                   stmt:
-                    call_expr source="⟨callee⟩()"
+                    call_expr source="⟨callee⟩()" (external)
                       callee:
                         member_access_expr source="⟨base⟩.⟨member_name_node⟩"
                           base: identifier "value" source="value"
@@ -891,13 +891,13 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "postfixChain" source="postfixChain"
           value:
-            if_expr source="⟨else⟩\n    #if ⟨condition⟩\n        ⟨then⟩\n    #endif"
+            if_expr source="baseExpr\n    #if ⟨condition⟩\n        ⟨then⟩\n    #endif"
               modifier: modifier "conditional_compilation" source=""
               condition: identifier "CONDITION_1" source="CONDITION_1"
               then:
                 block source="⟨stmt⟩"
                   stmt:
-                    if_expr source="⟨else⟩\n        #if ⟨condition⟩\n            ⟨then⟩\n        #endif"
+                    if_expr source="#if CONDITION_2\n            .someMethod()\n        #endif\n        #if ⟨condition⟩\n            ⟨then⟩\n        #endif"
                       modifier: modifier "conditional_compilation" source=""
                       condition: identifier "CONDITION_3" source="CONDITION_3"
                       then:
@@ -919,13 +919,13 @@ top_level source="⟨body⟩"
                                                   base: identifier "baseExpr" source="baseExpr" (external)
                                                   member_name_node: identifier "someMethod" source="someMethod"
                                       else:
-                                        block source="⟨stmt⟩" (external)
-                                          stmt: identifier "baseExpr" source="baseExpr"
+                                        block source=""
+                                          stmt: identifier "baseExpr" source="baseExpr" (external)
                                   member_name_node: identifier "otherMethod" source="otherMethod"
                       else:
-                        block source="⟨stmt⟩"
+                        block source=""
                           stmt:
-                            if_expr source="#if ⟨condition⟩\n            ⟨then⟩\n        #endif"
+                            if_expr source="#if ⟨condition⟩\n            ⟨then⟩\n        #endif" (external)
                               modifier: modifier "conditional_compilation" source=""
                               condition: identifier "CONDITION_2" source="CONDITION_2"
                               then:
@@ -937,8 +937,8 @@ top_level source="⟨body⟩"
                                           base: identifier "baseExpr" source="baseExpr" (external)
                                           member_name_node: identifier "someMethod" source="someMethod"
                               else:
-                                block source="⟨stmt⟩" (external)
-                                  stmt: identifier "baseExpr" source="baseExpr"
+                                block source=""
+                                  stmt: identifier "baseExpr" source="baseExpr" (external)
               else:
-                block source="⟨stmt⟩"
-                  stmt: identifier "baseExpr" source="baseExpr"
+                block source=""
+                  stmt: identifier "baseExpr" source="baseExpr" (external)
