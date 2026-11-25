@@ -60,7 +60,7 @@ func testEnum() {
   let r = Result.success(42)  // $ type=r@Result<T>:Int target=Result.success
   let v = r.getValue()  // $ target=Result.getValue
 
-  let r2: Result<Int> = .success(42)  // $ type=r2@Result<T>:Int $ MISSING: target=Result.success
+  let r2: Result<Int> = .success(42)  // $ type=r2@Result<T>:Int target=Result.success
   let v2 = r2.getValue()  // $ target=Result.getValue
 }
 

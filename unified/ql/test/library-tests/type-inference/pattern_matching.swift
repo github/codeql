@@ -12,7 +12,7 @@ enum PatternMatch<T> {
 
 func testComplexPattern<T>(_ input: PatternMatch<T>) {
   switch input {
-  case .novalue:
+  case .novalue:  // $ field=PatternMatch.novalue
     break
   case .value(let value):
     _ = value  // $ MISSING: type=value:T

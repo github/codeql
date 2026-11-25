@@ -7,7 +7,72 @@ module;
 private import unified
 private import codeql.unified.internal.NameBindingPlugin
 
+/**
+ * Holds if `e` is an element of an access chain, that is, a member access or a call to a
+ * member access.
+ */
+private predicate isAccessChainElement(Expr e) {
+  e instanceof MemberAccessExpr
+  or
+  e.(CallExpr).getCallee() instanceof MemberAccessExpr
+}
+
+/** Holds if `inner` is the element immediately inside `outer` in an access chain. */
+private predicate accessChainStep(Expr inner, Expr outer) {
+  // `inner.member`
+  inner = outer.(MemberAccessExpr).getBase() and
+  isAccessChainElement(inner)
+  or
+  // `inner(...)`, where `inner` is a member access
+  inner = outer.(CallExpr).getCallee().(MemberAccessExpr)
+}
+
+private newtype TAccessChain =
+  MkAccessChain(Expr outermost) {
+    isAccessChainElement(outermost) and
+    not accessChainStep(outermost, _)
+  }
+
 module Public {
+  /**
+   * A chain of member accesses, possibly with calls in between, such as `a.b().c.d()`.
+   *
+   * The elements of the chain are member accesses and calls whose callee is a member access.
+   * For `a.b().c.d()`, these are (from innermost to outermost) `a.b`, `a.b()`, `a.b().c`,
+   * `a.b().c.d` and `a.b().c.d()`, and the innermost base expression is `a`.
+   *
+   * Every member access belongs to exactly one chain.
+   */
+  class AccessChain extends TAccessChain {
+    private Expr outermost;
+
+    AccessChain() { this = MkAccessChain(outermost) }
+
+    /**
+     * Gets the outermost element of this chain, which is a member access or a call to a
+     * member access, such as `a.b().c.d()` in `a.b().c.d()`.
+     */
+    Expr getOutermostAccess() { result = outermost }
+
+    /** Gets an element of this chain, that is, a member access or a call to a member access. */
+    Expr getAnAccess() { accessChainStep*(result, outermost) }
+
+    /** Gets the innermost member access in this chain, such as `a.b` in `a.b().c.d()`. */
+    MemberAccessExpr getInnermostAccess() {
+      result = this.getAnAccess() and
+      not isAccessChainElement(result.getBase())
+    }
+
+    /** Gets the innermost base expression of this chain, such as `a` in `a.b().c.d()`. */
+    Expr getInnermostBase() { result = this.getInnermostAccess().getBase() }
+
+    /** Gets a textual representation of this chain. */
+    string toString() { result = outermost.toString() }
+
+    /** Gets the location of this chain. */
+    Location getLocation() { result = outermost.getLocation() }
+  }
+
   /** An assignment, possibly a compound assignment. */
   abstract private class AssignmentImpl extends BinaryExpr {
     /** Gets the target of this assignment. */

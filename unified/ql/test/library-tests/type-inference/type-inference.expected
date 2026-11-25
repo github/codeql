@@ -559,6 +559,17 @@ inferCertainType
 | key_paths.swift:204:7:204:9 | arr |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:204:13:204:24 | ArrayLiteral |  | {EXTERNAL LOCATION} | Array |
 | key_paths.swift:205:15:205:17 | arr |  | {EXTERNAL LOCATION} | Array |
+| leading_dot.swift:4:36:4:39 | self |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:5:41:5:44 | self |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:8:25:8:25 | l |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:11:9:11:9 | a |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:12:9:12:9 | b |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:13:9:13:9 | c |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:18:10:18:12 | red |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:23:9:23:11 | red |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:24:9:24:14 | custom |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:28:9:28:9 | a |  | {EXTERNAL LOCATION} | Optional |
+| leading_dot.swift:28:9:28:9 | a | Wrapped | leading_dot.swift:1:1:6:1 | LeadingType |
 | metatypes.swift:11:24:11:24 | t |  | metatypes.swift:1:1:5:1 | Meta.Type |
 | metatypes.swift:11:38:11:38 | c |  | metatypes.swift:7:1:9:1 | MetaChild.Type |
 | metatypes.swift:12:13:12:13 | t |  | metatypes.swift:1:1:5:1 | Meta.Type |
@@ -2792,8 +2803,10 @@ inferType
 | generics.swift:40:12:40:24 | ... .getSecond(...) |  | {EXTERNAL LOCATION} | String |
 | generics.swift:50:12:50:15 | self |  | generics.swift:45:1:57:1 | Result |
 | generics.swift:50:12:50:15 | self | T | generics.swift:45:13:45:13 | T |
+| generics.swift:51:10:51:10 | . |  | generics.swift:45:1:57:1 | Result.Type |
 | generics.swift:51:10:51:24 | ... .success(...) |  | generics.swift:45:1:57:1 | Result |
 | generics.swift:51:10:51:24 | ... .success(...) | T | generics.swift:45:13:45:13 | T |
+| generics.swift:53:10:53:10 | . |  | generics.swift:45:1:57:1 | Result.Type |
 | generics.swift:53:10:53:17 | ... .failure |  | generics.swift:45:1:57:1 | Result |
 | generics.swift:53:10:53:17 | ... .failure | T | generics.swift:45:13:45:13 | T |
 | generics.swift:60:7:60:7 | r |  | generics.swift:45:1:57:1 | Result |
@@ -2813,6 +2826,9 @@ inferType
 | generics.swift:61:11:61:22 | ... .getValue(...) | Wrapped | {EXTERNAL LOCATION} | Int |
 | generics.swift:63:7:63:8 | r2 |  | generics.swift:45:1:57:1 | Result |
 | generics.swift:63:7:63:8 | r2 | T | {EXTERNAL LOCATION} | Int |
+| generics.swift:63:25:63:25 | . |  | generics.swift:45:1:57:1 | Result.Type |
+| generics.swift:63:25:63:36 | ... .success(...) |  | generics.swift:45:1:57:1 | Result |
+| generics.swift:63:25:63:36 | ... .success(...) | T | {EXTERNAL LOCATION} | Int |
 | generics.swift:63:34:63:35 | 42 |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:63:34:63:35 | Argument |  | {EXTERNAL LOCATION} | Int |
 | generics.swift:64:7:64:8 | v2 |  | {EXTERNAL LOCATION} | Optional |
@@ -3542,6 +3558,45 @@ inferType
 | key_paths.swift:208:20:208:20 | 1 |  | {EXTERNAL LOCATION} | Int |
 | key_paths.swift:208:23:208:25 | "y" |  | {EXTERNAL LOCATION} | String |
 | key_paths.swift:208:28:208:28 | 2 |  | {EXTERNAL LOCATION} | Int |
+| leading_dot.swift:2:39:2:62 | Block |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:2:48:2:58 | LeadingType |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:2:48:2:60 | LeadingType(...) |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:3:36:3:59 | Block |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:3:45:3:55 | LeadingType |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:3:45:3:57 | LeadingType(...) |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:4:27:4:41 | Block |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:4:36:4:39 | self |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:5:32:5:46 | Block |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:5:41:5:44 | self |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:8:25:8:25 | l |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:11:9:11:9 | a |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:11:26:11:26 | . |  | leading_dot.swift:1:1:6:1 | LeadingType.Type |
+| leading_dot.swift:11:26:11:32 | ... .make(...) |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:12:9:12:9 | b |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:12:26:12:26 | . |  | leading_dot.swift:1:1:6:1 | LeadingType.Type |
+| leading_dot.swift:12:26:12:32 | ... .shared |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:13:9:13:9 | c |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:13:26:13:26 | . |  | leading_dot.swift:1:1:6:1 | LeadingType.Type |
+| leading_dot.swift:13:26:13:32 | ... .make(...) |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:13:26:13:37 | ... .next |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:13:26:13:44 | ... .then(...) |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:14:22:14:22 | . |  | leading_dot.swift:1:1:6:1 | LeadingType.Type |
+| leading_dot.swift:14:22:14:28 | ... .make(...) |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:14:22:14:28 | Argument |  | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:18:10:18:12 | red |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:23:9:23:11 | red |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:23:29:23:29 | . |  | leading_dot.swift:17:1:20:1 | LeadingColor.Type |
+| leading_dot.swift:23:29:23:32 | ... .red |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:24:9:24:14 | custom |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:24:32:24:32 | . |  | leading_dot.swift:17:1:20:1 | LeadingColor.Type |
+| leading_dot.swift:24:32:24:41 | ... .custom(...) |  | leading_dot.swift:17:1:20:1 | LeadingColor |
+| leading_dot.swift:24:40:24:40 | 1 |  | {EXTERNAL LOCATION} | Int |
+| leading_dot.swift:24:40:24:40 | Argument |  | {EXTERNAL LOCATION} | Int |
+| leading_dot.swift:28:9:28:9 | a |  | {EXTERNAL LOCATION} | Optional |
+| leading_dot.swift:28:9:28:9 | a | Wrapped | leading_dot.swift:1:1:6:1 | LeadingType |
+| leading_dot.swift:28:27:28:27 | . |  | {EXTERNAL LOCATION} | Optional.Type |
+| leading_dot.swift:28:27:28:33 | ... .make(...) |  | {EXTERNAL LOCATION} | Optional |
+| leading_dot.swift:28:27:28:33 | ... .make(...) | Wrapped | leading_dot.swift:1:1:6:1 | LeadingType |
 | lub.swift:12:7:12:7 | b |  | lub.swift:5:1:7:1 | B |
 | lub.swift:12:11:12:11 | B |  | lub.swift:5:1:7:1 | B |
 | lub.swift:12:11:12:13 | B(...) |  | lub.swift:5:1:7:1 | B |
@@ -5351,12 +5406,16 @@ inferType
 | pattern_matching.swift:13:30:13:34 | input | T | pattern_matching.swift:13:25:13:25 | T |
 | pattern_matching.swift:14:10:14:14 | input |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
 | pattern_matching.swift:14:10:14:14 | input | T | pattern_matching.swift:13:25:13:25 | T |
+| pattern_matching.swift:15:8:15:8 | . |  | pattern_matching.swift:7:1:11:1 | PatternMatch.Type |
 | pattern_matching.swift:15:8:15:15 | ... .novalue |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
 | pattern_matching.swift:15:8:15:15 | ... .novalue | T | pattern_matching.swift:13:25:13:25 | T |
+| pattern_matching.swift:17:8:17:8 | . |  | pattern_matching.swift:7:1:11:1 | PatternMatch.Type |
 | pattern_matching.swift:17:8:17:24 | ... .value(...) |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
 | pattern_matching.swift:17:8:17:24 | ... .value(...) | T | pattern_matching.swift:13:25:13:25 | T |
+| pattern_matching.swift:19:8:19:8 | . |  | pattern_matching.swift:7:1:11:1 | PatternMatch.Type |
 | pattern_matching.swift:19:8:19:52 | ... .nested(...) |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
 | pattern_matching.swift:19:8:19:52 | ... .nested(...) | T | pattern_matching.swift:13:25:13:25 | T |
+| pattern_matching.swift:23:8:23:8 | . |  | pattern_matching.swift:7:1:11:1 | PatternMatch.Type |
 | pattern_matching.swift:23:8:23:45 | ... .nested(...) |  | pattern_matching.swift:7:1:11:1 | PatternMatch |
 | pattern_matching.swift:23:8:23:45 | ... .nested(...) | T | pattern_matching.swift:13:25:13:25 | T |
 | pattern_matching.swift:29:42:33:1 | Block |  | pattern_matching.swift:7:1:11:1 | PatternMatch |

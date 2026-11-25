@@ -428,6 +428,15 @@ edges
 | implicit-self.swift:85:9:85:14 | [incoming] ... .x | implicit-self.swift:85:9:85:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:85:9:85:14 | [incoming] ... .x | provenance |  |
 | implicit-self.swift:87:14:87:17 | self [x] | implicit-self.swift:87:14:87:19 | ... .x | provenance |  |
+| leading-dot.swift:2:12:2:12 | x | leading-dot.swift:3:14:3:14 | x | provenance |  |
+| leading-dot.swift:6:24:6:24 | x | leading-dot.swift:7:14:7:14 | x | provenance |  |
+| leading-dot.swift:15:17:15:17 | x | leading-dot.swift:16:14:16:14 | x | provenance |  |
+| leading-dot.swift:28:28:28:46 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:32:24:32:41 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:36:18:36:38 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:41:15:41:35 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:45:53:45:72 | source(...) | leading-dot.swift:15:17:15:17 | x | provenance |  |
+| leading-dot.swift:49:28:49:46 | source(...) | leading-dot.swift:2:12:2:12 | x | provenance |  |
 | metatypes.swift:2:28:2:28 | x | metatypes.swift:2:58:2:58 | x | provenance |  |
 | metatypes.swift:4:26:4:26 | x | metatypes.swift:4:56:4:56 | x | provenance |  |
 | metatypes.swift:6:30:6:30 | x | metatypes.swift:7:14:7:14 | x | provenance |  |
@@ -1240,6 +1249,18 @@ nodes
 | implicit-self.swift:86:14:86:14 | x | semmle.label | x |
 | implicit-self.swift:87:14:87:17 | self [x] | semmle.label | self [x] |
 | implicit-self.swift:87:14:87:19 | ... .x | semmle.label | ... .x |
+| leading-dot.swift:2:12:2:12 | x | semmle.label | x |
+| leading-dot.swift:3:14:3:14 | x | semmle.label | x |
+| leading-dot.swift:6:24:6:24 | x | semmle.label | x |
+| leading-dot.swift:7:14:7:14 | x | semmle.label | x |
+| leading-dot.swift:15:17:15:17 | x | semmle.label | x |
+| leading-dot.swift:16:14:16:14 | x | semmle.label | x |
+| leading-dot.swift:28:28:28:46 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:32:24:32:41 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:36:18:36:38 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:41:15:41:35 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:45:53:45:72 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:49:28:49:46 | source(...) | semmle.label | source(...) |
 | metatypes.swift:2:28:2:28 | x | semmle.label | x |
 | metatypes.swift:2:58:2:58 | x | semmle.label | x |
 | metatypes.swift:4:26:4:26 | x | semmle.label | x |
@@ -1771,6 +1792,12 @@ testFailures
 | implicit-self.swift:80:14:80:19 | ... .x | implicit-self.swift:78:24:78:38 | source(...) | implicit-self.swift:80:14:80:19 | ... .x | $@ | implicit-self.swift:78:24:78:38 | source(...) | source(...) |
 | implicit-self.swift:86:14:86:14 | x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:86:14:86:14 | x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
 | implicit-self.swift:87:14:87:19 | ... .x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:87:14:87:19 | ... .x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
+| leading-dot.swift:3:14:3:14 | x | leading-dot.swift:49:28:49:46 | source(...) | leading-dot.swift:3:14:3:14 | x | $@ | leading-dot.swift:49:28:49:46 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:28:28:28:46 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:28:28:28:46 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:32:24:32:41 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:32:24:32:41 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:36:18:36:38 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:36:18:36:38 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:41:15:41:35 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:41:15:41:35 | source(...) | source(...) |
+| leading-dot.swift:16:14:16:14 | x | leading-dot.swift:45:53:45:72 | source(...) | leading-dot.swift:16:14:16:14 | x | $@ | leading-dot.swift:45:53:45:72 | source(...) | source(...) |
 | metatypes.swift:7:14:7:14 | x | metatypes.swift:20:18:20:43 | source(...) | metatypes.swift:7:14:7:14 | x | $@ | metatypes.swift:20:18:20:43 | source(...) | source(...) |
 | metatypes.swift:18:10:18:37 | ... .staticId(...) | metatypes.swift:18:21:18:36 | source(...) | metatypes.swift:18:10:18:37 | ... .staticId(...) | $@ | metatypes.swift:18:21:18:36 | source(...) | source(...) |
 | metatypes.swift:19:10:19:36 | ... .classId(...) | metatypes.swift:19:20:19:35 | source(...) | metatypes.swift:19:10:19:36 | ... .classId(...) | $@ | metatypes.swift:19:20:19:35 | source(...) | source(...) |

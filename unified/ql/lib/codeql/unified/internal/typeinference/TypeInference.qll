@@ -964,8 +964,46 @@ module Input3 implements InputSig3 {
     }
   }
 
+  /**
+   * Provides type inference for leading-dot accesses, such as `.foo()` in `let x: T = .foo()`,
+   * which is short-hand for `T.foo()`.
+   *
+   * The type `T` is the contextual type of the outermost access in the chain of member accesses
+   * starting with the leading-dot access. For example, in `let x: T = .foo().bar`, the type `T`
+   * is the contextual type of `.foo().bar`.
+   */
+  private module LeadingDot {
+    /** Gets an access chain whose innermost base is an inferred type, as in `.foo().bar`. */
+    private AccessChain getALeadingDotChain() {
+      result.getInnermostBase() instanceof InferredTypeExpr
+    }
+
+    Type inferLeadingDotType(AstNode n, TypePath path) {
+      // The type of the chain must be inferred from the context. We use `UnknownType` rather
+      // than `allowContextualInference`, as the contextual type may have to flow in through
+      // enclosing nodes, such as arguments and returns.
+      n = getALeadingDotChain().getOutermostAccess() and
+      path.isEmpty() and
+      result instanceof UnknownType
+      or
+      exists(AccessChain chain | chain = getALeadingDotChain() and n = chain.getInnermostBase() |
+        // `.init(...)` is short-hand for `T.init(...)`, where the receiver of the construction
+        // has the instance type, as for an explicit type qualifier
+        chain.getInnermostAccess().getMemberName() = "init" and
+        result = inferType(chain.getOutermostAccess(), path)
+        or
+        // `.foo` refers to the static member `foo` of `T`, so the base has the meta type `T.Type`
+        not chain.getInnermostAccess().getMemberName() = "init" and
+        result.(MetaType).getInstanceType() = inferType(chain.getOutermostAccess()) and
+        path.isEmpty()
+      )
+    }
+  }
+
   Type inferTypeLanguageSpecific(AstNode n, TypePath path) {
     result = Plugin::inferType(n, path)
+    or
+    result = LeadingDot::inferLeadingDotType(n, path)
     or
     // `self` in a static context refers to the type itself
     result = getStaticReceiverType(n.(LocalVariableAccess).getLocalVariable()) and
