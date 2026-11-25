@@ -9,6 +9,7 @@ extra_env_vars:
   DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
   # The MSBuild server may have been started outside the traced build.
   DOTNET_CLI_USE_MSBUILD_SERVER: "false"
+  MSBUILDDISABLENODEREUSE: "1"
 build_modes:
   - autobuild
   - manual
