@@ -216,7 +216,9 @@ private predicate scope_loads_tuplenode(Scope s, TupleNode origin) {
 predicate isType(ObjectInternal t) {
   t.isClass() = true
   or
-  t.getOrigin().getEnclosingModule().getName().matches("%typing")
+  exists(string name | name = t.getOrigin().getEnclosingModule().getName() |
+    name = "typing" or name = "typing_extensions" or name.matches("typing.%")
+  )
 }
 
 private predicate is_power_2(int n) {
