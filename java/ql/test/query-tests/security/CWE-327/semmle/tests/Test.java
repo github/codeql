@@ -32,6 +32,7 @@ class Test {
 			{
 				// BAD: foo is an unknown algorithm that may not be secure
 				secretKeySpec = new SecretKeySpec(byteKey, "foo"); // $ Alert[java/potentially-weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWITHSHA1ANDRC2_40"); // $ Alert[java/potentially-weak-cryptographic-algorithm]
 			}
 
 			// GOOD: GCM is a strong algorithm

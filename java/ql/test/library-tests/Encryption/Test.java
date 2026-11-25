@@ -43,6 +43,8 @@ class Test {
 	List<String> unknownStrings = Arrays.asList(
 			// not a use of RC2 (camelCase is tricky)
 			"GetPrc2",
+			// uppercase PBE name without delimiter before RC2 (covered by potentially-weak query)
+			"PBEWITHSHA1ANDRC2_40",
 			// not a use of DES
 			"Description",
 			// not a use of DES

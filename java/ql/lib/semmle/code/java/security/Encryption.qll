@@ -216,7 +216,7 @@ predicate insecureAlgorithm(string name, string reason) {
   // 3TDEA (Triple DES) has different names across JCA, JSSE, and Bouncy Castle.
   name =
     [
-      "DES[-_]?ede((RFC3211)?Wrap)?", "(?i)PBEWithSHA1AndDESede", "Triple[-_]?DES", "3[-_]?DES",
+      "DES[-_]?ede((RFC3211)?Wrap)?", "(?i:PBEWithSHA1AndDESede)", "Triple[-_]?DES", "3[-_]?DES",
       "DES[-_]?3"
     ] and
   reason =
