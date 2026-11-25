@@ -661,6 +661,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       exists(getChild(n, _)) and
       not Input1::preOrderExpr(n) and
       (n instanceof Pattern implies n instanceof LeafPattern) and
+      not n instanceof LoopStmt and
       not n instanceof LogicalAndExpr and
       not n instanceof LogicalOrExpr and
       not n instanceof NullCoalescingExpr and
@@ -2729,6 +2730,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           query predicate invalidAbruptCompletionOrigin(AstNode ast, PreControlFlowNode node) {
             Input2::beginAbruptCompletion(ast, node, _, _) and
             not node.isIn(ast) and
+            not node.isAfter(ast) and
             not node.isAdditional(ast, _)
           }
 
@@ -2788,6 +2790,22 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             not exists(Callable c |
               successor.getAstNode() = getBodyEntry(c, _) and
               strictcount(getBodyEntry(c, _)) > 1
+            ) and
+            // allow for abrupt successors that reach a conditional context. Example:
+            //
+            // ```
+            // if (loop {
+            //     break a > 10; // reaches both `After loop [false]` and `After loop [true]`
+            // })
+            // ```
+            not forall(ControlFlowNode successor0, SuccessorType t0 |
+              successor0 = node.getASuccessor(t0)
+            |
+              t0 instanceof AbruptSuccessor and
+              exists(AstNode n |
+                successor0.isAfterValue(n, _) and
+                successor.isAfterValue(n, _)
+              )
             )
           }
 

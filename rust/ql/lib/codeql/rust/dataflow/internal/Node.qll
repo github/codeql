@@ -127,10 +127,6 @@ abstract class AstNodeNode extends Node {
 /**
  * A node in the data flow graph that corresponds to an expression in the
  * AST.
- *
- * Note that because of control flow splitting, one `Expr` may correspond
- * to multiple `ExprNode`s, just like it may correspond to multiple
- * `ControlFlow::Node`s.
  */
 class ExprNode extends AstNodeNode, TExprNode {
   override Expr n;
@@ -479,6 +475,10 @@ predicate isReturnedValue(AstNode n) {
     // a different value from the one `x?` evaluates to
     not (n instanceof TryExpr and t instanceof ReturnSuccessor)
   )
+  or
+  n = any(Callable callable).getBody()
+  or
+  n = any(AsyncBlockExpr block).getStmtList().getTailExpr()
 }
 
 final class ExprReturnNode extends ExprNode, ReturnNode {
