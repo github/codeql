@@ -115,17 +115,6 @@ deprecated class SsaVariable extends SsaDefinition {
     or
     this instanceof SsaPhiDefinition and result = "phi"
   }
-
-  /**
-   * DEPRECATED: Use `getLocation()` instead.
-   *
-   * Holds if this element is at the specified location.
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 }
 
 /**
@@ -279,21 +268,6 @@ class SsaWithFields extends TSsaWithFields {
 
   /** Gets the location of this SSA variable with fields. */
   Location getLocation() { result = this.getBaseDefinition().getLocation() }
-
-  /**
-   * DEPRECATED: Use `getLocation()` instead.
-   *
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
 }
 
 /**

@@ -12,19 +12,9 @@ private import internal.DataFlowUtil
 // import all instances below
 private module Summaries { }
 
-deprecated class SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated module SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
-deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
 /** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
 module SummarizedCallable {
   class Range = Impl::Public::SummarizedCallable;
 }
 
 class SummarizedCallable = Impl::Public::RelevantSummarizedCallable;
-
-deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;
