@@ -130,11 +130,12 @@ DYLIB_RE = re.compile(r"""(?x)
 """)
 
 #ODASA-6786
-VERBOSE_REGEX = r"""
+VERBOSE_REGEX = (r"" # $ Alert[py/regex/duplicate-in-character-class]
+    r"""
         \[                                 # [
         (?P<header>[^]]+)                  # very permissive!
         \]                                 # ]
-        """ # $ Alert[py/regex/duplicate-in-character-class]
+        """)
 
 # Compiled regular expression marking it as verbose
 ODASA_6786 = re.compile(VERBOSE_REGEX, re.VERBOSE)

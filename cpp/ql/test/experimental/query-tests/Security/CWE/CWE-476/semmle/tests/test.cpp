@@ -60,7 +60,7 @@ void funcWork1b() {
 	 
   } 
   catch (...) 
-  {
+  { // $ Alert
     for (size_t i = 0; i < 10; i++)
     {
     	delete[] bufMyData[i]->buffer; // BAD
@@ -68,7 +68,7 @@ void funcWork1b() {
     }
     delete [] bufMyData;
 
-  } // $ Alert
+  }
 }
 
 void funcWork1() {
@@ -88,7 +88,7 @@ void funcWork1() {
 	 
   } 
   catch (...) 
-  {
+  { // $ Alert
     for (size_t i = 0; i < 10; i++)
     {
 	if (bufMyData[i]) 
@@ -97,7 +97,7 @@ void funcWork1() {
     }
     delete [] bufMyData;
 
-  } // $ Alert
+  }
 }
 
 void funcWork2() {
@@ -117,7 +117,7 @@ void funcWork2() {
 	 
   } 
   catch (...) 
-  {
+  { // $ Alert
     for (size_t i = 0; i < 10; i++)
     {
     	delete[] bufMyData[i]->buffer; // BAD
@@ -125,7 +125,7 @@ void funcWork2() {
     }
     delete [] bufMyData;
 
-  } // $ Alert
+  }
 }
 void funcWork3() {
   int a;
@@ -140,7 +140,7 @@ void funcWork3() {
  
   } 
   catch (...) 
-  {
+  { // $ Alert
     for (size_t i = 0; i < 10; i++)
     {
     	delete[] bufMyData[i]->buffer; // BAD
@@ -148,7 +148,7 @@ void funcWork3() {
     }
     delete [] bufMyData;
 
-  } // $ Alert
+  }
 }
 
 
@@ -178,9 +178,9 @@ void funcWork4b() {
 	throwFunction(a);	 
   } 
   catch (...) 
-  {
+  { // $ Alert
     delete valData; // BAD
-  } // $ Alert
+  }
 }
 void funcWork5() {
   int a;
@@ -216,9 +216,9 @@ void funcWork5b() {
 	throw;
   }
   catch (...) 
-  {
+  { // $ Alert
         delete valData; // BAD
-  } // $ Alert
+  }
 }
 void funcWork6() {
   int a;

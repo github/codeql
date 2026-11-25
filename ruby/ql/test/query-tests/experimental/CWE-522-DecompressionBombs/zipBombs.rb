@@ -3,15 +3,15 @@ require 'zip'
 class TestController < ActionController::Base
   zipfile_path = params[:path] # $ Source
 
-  Zip::InputStream.open(zipfile_path) do |input|
+  Zip::InputStream.open(zipfile_path) do |input| # $ Alert
     while (entry = input.get_next_entry)
       puts :file_name, entry.name
       input
     end
-  end # $ Alert
-  Zip::InputStream.open(zipfile_path) do |input|
+  end
+  Zip::InputStream.open(zipfile_path) do |input| # $ Alert
     input.read
-  end # $ Alert
+  end
   input = Zip::InputStream.open(zipfile_path) # $ Alert
 
   Zip::File.open(zipfile_path).read "10GB" # $ Alert

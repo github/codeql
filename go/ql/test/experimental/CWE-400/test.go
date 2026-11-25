@@ -17,11 +17,11 @@ func runRunQuery(db *gorm.DB) {
 
 func main() {
 	var db *gorm.DB
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 10; i++ { // $ Source
 		runQuery(db)
-	} // $ Source
+	}
 
-	for i := 10; i > 0; i-- {
+	for i := 10; i > 0; i-- { // $ Source
 		runRunQuery(db)
-	} // $ Source
+	}
 }

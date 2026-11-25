@@ -9,11 +9,11 @@ public class A {
   private String s1;
   public String getString1() {
     if (s1 == null) {
-      synchronized(this) { // $
+      synchronized(this) { // $ Alert[java/unsafe-double-checked-locking]
         if (s1 == null) {
           s1 = "string"; // BAD, immutable but read twice outside sync
         }
-      } // $ Alert[java/unsafe-double-checked-locking]
+      }
     }
     return s1;
   }
@@ -37,12 +37,12 @@ public class A {
   public B getter1() {
     B x = b1;
     if (x == null) {
-      synchronized(this) { // $
+      synchronized(this) { // $ Alert[java/unsafe-double-checked-locking]
         if ((x = b1) == null) {
           b1 = new B(); // BAD, not volatile
           x = b1;
         }
-      } // $ Alert[java/unsafe-double-checked-locking]
+      }
     }
     return x;
   }
@@ -98,12 +98,12 @@ public class A {
   private FinalHelper<B> b5;
   public B getter5() {
     if (b5 == null) {
-      synchronized(this) { // $
+      synchronized(this) { // $ Alert[java/unsafe-double-checked-locking]
         if (b5 == null) {
           B b = new B();
           b5 = new FinalHelper<B>(b); // BAD, racy read on b5 outside synchronized-block
         }
-      } // $ Alert[java/unsafe-double-checked-locking]
+      }
     }
     return b5.x; // Potential NPE here, as the two b5 reads may be reordered
   }

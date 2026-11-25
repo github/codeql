@@ -11,14 +11,14 @@ class NestedIf
         if (true) if (false) if (true) return; // $ Alert
 
         // BAD: using braces
-        if (true)
+        if (true) // $ Alert
         {
             {
                 if (false)
                 {
                 }
             }
-        } // $ Alert
+        }
 
         // GOOD: contains else part
         if (true)

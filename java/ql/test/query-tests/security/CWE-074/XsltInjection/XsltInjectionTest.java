@@ -61,14 +61,14 @@ public class XsltInjectionTest {
   }
 
   public void testStAXSourceEventStream(Socket socket) throws Exception {
-    StAXSource source = new StAXSource(XMLInputFactory.newInstance().createXMLStreamReader(null,
-        new InputStreamReader(socket.getInputStream()))); // $ Source
+    StAXSource source = new StAXSource(XMLInputFactory.newInstance().createXMLStreamReader(null, // $ Source
+        new InputStreamReader(socket.getInputStream())));
     TransformerFactory.newInstance().newTemplates(source).newTransformer().transform(null, null); // $ Alert
   }
 
   public void testDOMSource(Socket socket) throws Exception {
-    DOMSource source = new DOMSource(
-        DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(socket.getInputStream())); // $ Source
+    DOMSource source = new DOMSource( // $ Source
+        DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(socket.getInputStream()));
     TransformerFactory.newInstance().newTransformer(source).transform(null, null); // $ Alert
   }
 
