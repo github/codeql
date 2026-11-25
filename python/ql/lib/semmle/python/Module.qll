@@ -79,13 +79,13 @@ class Module extends Module_, Scope, AstNode {
 
   /** Gets the package containing this module (or parent package if this is a package) */
   Module getPackage() {
-    this.getName().matches("%.%") and
+    this.getName().contains(".") and
     result.getName() = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
 
   /** Gets the name of the package containing this module */
   string getPackageName() {
-    this.getName().matches("%.%") and
+    this.getName().contains(".") and
     result = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
 
@@ -195,7 +195,7 @@ private string moduleNameFromBase(Container file) {
  * the execution.
  */
 private predicate transitively_imported_from_entry_point(File file) {
-  file.getExtension().matches("%py%") and
+  file.getExtension().contains("py") and
   exists(File importer |
     // Only consider files that are in the source archive
     exists(importer.getRelativePath()) and
@@ -323,7 +323,7 @@ string moduleNameFromFile(Container c) {
 
 private predicate isStubRoot(Folder f) {
   not f.getParent*().isImportRoot() and
-  f.getAbsolutePath().matches("%/data/python/stubs")
+  f.getAbsolutePath().endsWith("/data/python/stubs")
 }
 
 /**

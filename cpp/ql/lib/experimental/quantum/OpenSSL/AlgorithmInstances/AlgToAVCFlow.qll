@@ -40,7 +40,7 @@ module KnownOpenSslAlgorithmToAlgorithmValueConsumerConfig implements DataFlow::
       or
       va = node.asIndirectExpr()
     |
-      v.getName().matches("%argv")
+      v.getName().endsWith("argv")
     )
   }
 

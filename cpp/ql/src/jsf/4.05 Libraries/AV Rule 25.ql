@@ -12,5 +12,5 @@
 import cpp
 
 from Include incl
-where incl.getIncludedFile().getAbsolutePath().matches("%time.h")
+where incl.getIncludedFile().getAbsolutePath().endsWith("time.h")
 select incl, "AV Rule 25: The time handling functions of library <time.h> shall not be used."

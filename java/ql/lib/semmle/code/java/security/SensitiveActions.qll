@@ -117,7 +117,7 @@ class AuthMethod extends SensitiveExecutionMethod {
 /** A method that sends data, and so should not be run conditionally on user input. */
 class SendingMethod extends SensitiveExecutionMethod {
   SendingMethod() {
-    exists(string s | s.matches("%Socket") |
+    exists(string s | s.endsWith("Socket") |
       this.getDeclaringType().hasQualifiedName("java.net", s) and
       this.hasName("send")
     )

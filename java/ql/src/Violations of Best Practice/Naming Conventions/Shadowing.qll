@@ -1,13 +1,13 @@
 import java
 
 predicate getterFor(Method m, Field f) {
-  m.getName().matches("get%") and
+  m.getName().startsWith("get") and
   m.getDeclaringType() = f.getDeclaringType() and
   exists(ReturnStmt ret | ret.getEnclosingCallable() = m and ret.getExpr() = f.getAnAccess())
 }
 
 predicate setterFor(Method m, Field f) {
-  m.getName().matches("set%") and
+  m.getName().startsWith("set") and
   m.getDeclaringType() = f.getDeclaringType() and
   f.getAnAssignedValue() = m.getAParameter().getAnAccess() and
   m.getNumberOfParameters() = 1

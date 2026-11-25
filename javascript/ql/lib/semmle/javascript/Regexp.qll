@@ -1241,23 +1241,23 @@ module RegExp {
 
   /** Holds if `flags` includes the `m` flag. */
   bindingset[flags]
-  predicate isMultiline(string flags) { flags.matches("%m%") }
+  predicate isMultiline(string flags) { flags.contains("m") }
 
   /** Holds if `flags` includes the `g` flag. */
   bindingset[flags]
-  predicate isGlobal(string flags) { flags.matches("%g%") }
+  predicate isGlobal(string flags) { flags.contains("g") }
 
   /** Holds if `flags` includes the `i` flag. */
   bindingset[flags]
-  predicate isIgnoreCase(string flags) { flags.matches("%i%") }
+  predicate isIgnoreCase(string flags) { flags.contains("i") }
 
   /** Holds if `flags` includes the `s` flag. */
   bindingset[flags]
-  predicate isDotAll(string flags) { flags.matches("%s%") }
+  predicate isDotAll(string flags) { flags.contains("s") }
 
   /** Holds if `flags` includes the `v` flag. */
   bindingset[flags]
-  predicate isUnicodeSets(string flags) { flags.matches("%v%") }
+  predicate isUnicodeSets(string flags) { flags.contains("v") }
 
   /** Holds if `flags` includes the `m` flag or is the unknown flag `?`. */
   bindingset[flags]

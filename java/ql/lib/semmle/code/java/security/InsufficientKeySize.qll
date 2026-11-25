@@ -156,7 +156,7 @@ private module Asymmetric {
     private class Sink extends InsufficientKeySizeSink {
       Sink() {
         exists(KeyPairGenInit kpgInit, KeyPairGen kpg |
-          kpg.getAlgoName().matches("EC%") and
+          kpg.getAlgoName().startsWith("EC") and
           DataFlow::localExprFlow(kpg, kpgInit.getQualifier()) and
           this.asExpr() = kpgInit.getKeySizeArg()
         )
@@ -175,10 +175,10 @@ private module Asymmetric {
     /** Returns the key size from an EC algorithm's curve name string */
     bindingset[algorithm]
     private int getKeySize(string algorithm) {
-      algorithm.matches("sec%") and // specification such as "secp256r1"
+      algorithm.startsWith("sec") and // specification such as "secp256r1"
       result = algorithm.regexpCapture("sec[p|t](\\d+)[a-zA-Z].*", 1).toInt()
       or
-      algorithm.matches("X9.62%") and // specification such as "X9.62 prime192v2"
+      algorithm.startsWith("X9.62") and // specification such as "X9.62 prime192v2"
       result = algorithm.regexpCapture("X9\\.62 .*[a-zA-Z](\\d+)[a-zA-Z].*", 1).toInt()
       or
       algorithm.matches(["prime%", "c2tnb%"]) and // specification such as "prime192v2"

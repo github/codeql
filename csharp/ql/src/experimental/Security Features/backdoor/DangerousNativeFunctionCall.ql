@@ -18,20 +18,20 @@ predicate isDangerousMethod(Method m) {
   m.getName() = "OpenThreadToken" or
   m.getName() = "DuplicateToken" or
   m.getName() = "DuplicateTokenEx" or
-  m.getName().matches("LogonUser%") or
-  m.getName().matches("WNetAddConnection%") or
+  m.getName().startsWith("LogonUser") or
+  m.getName().startsWith("WNetAddConnection") or
   m.getName() = "DeviceIoControl" or
-  m.getName().matches("LoadLibrary%") or
+  m.getName().startsWith("LoadLibrary") or
   m.getName() = "GetProcAddress" or
-  m.getName().matches("CreateProcess%") or
-  m.getName().matches("InitiateSystemShutdown%") or
+  m.getName().startsWith("CreateProcess") or
+  m.getName().startsWith("InitiateSystemShutdown") or
   m.getName() = "GetCurrentProcess" or
   m.getName() = "GetCurrentProcessToken" or
   m.getName() = "GetCurrentThreadToken" or
   m.getName() = "GetCurrentThreadEffectiveToken" or
   m.getName() = "OpenThreadToken" or
   m.getName() = "SetTokenInformation" or
-  m.getName().matches("LookupPrivilegeValue%") or
+  m.getName().startsWith("LookupPrivilegeValue") or
   m.getName() = "AdjustTokenPrivileges" or
   m.getName() = "SetProcessPrivilege" or
   m.getName() = "ImpersonateLoggedOnUser" or

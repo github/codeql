@@ -35,17 +35,18 @@ predicate isBuiltinMember(string sig) {
       "string int.toString()", "string string.charAt(int)", "int string.indexOf(string)",
       "int string.indexOf(string, int, int)", "predicate string.isLowercase()",
       "predicate string.isUppercase()", "int string.length()", "predicate string.matches(string)",
-      "string string.prefix(int)", "string string.regexpCapture(string, int)",
-      "string string.regexpFind(string, int, int)", "predicate string.regexpMatch(string)",
-      "string string.regexpReplaceAll(string, string)", "string string.replaceAll(string, string)",
-      "string string.splitAt(string)", "string string.splitAt(string, int)",
-      "string string.substring(int, int)", "string string.suffix(int)", "date string.toDate()",
-      "float string.toFloat()", "int string.toInt()", "string string.toString()",
-      "string string.toLowerCase()", "string string.toUpperCase()", "string string.trim()",
-      "int date.daysTo(date)", "int date.getDay()", "int date.getHours()", "int date.getMinutes()",
-      "int date.getMonth()", "int date.getSeconds()", "int date.getYear()",
-      "string date.toString()", "string date.toISO()", "string int.toUnicode()",
-      "string any.getAQlClass()"
+      "predicate string.startsWith(string)", "predicate string.contains(string)",
+      "predicate string.endsWith(string)", "string string.prefix(int)",
+      "string string.regexpCapture(string, int)", "string string.regexpFind(string, int, int)",
+      "predicate string.regexpMatch(string)", "string string.regexpReplaceAll(string, string)",
+      "string string.replaceAll(string, string)", "string string.splitAt(string)",
+      "string string.splitAt(string, int)", "string string.substring(int, int)",
+      "string string.suffix(int)", "date string.toDate()", "float string.toFloat()",
+      "int string.toInt()", "string string.toString()", "string string.toLowerCase()",
+      "string string.toUpperCase()", "string string.trim()", "int date.daysTo(date)",
+      "int date.getDay()", "int date.getHours()", "int date.getMinutes()", "int date.getMonth()",
+      "int date.getSeconds()", "int date.getYear()", "string date.toString()",
+      "string date.toISO()", "string int.toUnicode()", "string any.getAQlClass()"
       /* getAQlClass is special , see Predicate.qll*/
     ]
 }

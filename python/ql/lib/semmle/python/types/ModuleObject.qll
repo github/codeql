@@ -67,7 +67,7 @@ abstract class ModuleObject extends Object {
 
   /** Gets the package for this module. */
   PackageObject getPackage() {
-    this.getName().matches("%.%") and
+    this.getName().contains(".") and
     result.getName() = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
 

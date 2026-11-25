@@ -91,7 +91,7 @@ predicate isEnumerableType(ValueOrRefType t) {
 predicate isIEnumerableType(ValueOrRefType t) {
   exists(string type |
     t.hasFullyQualifiedName("System.Collections.Generic", type) and
-    type.matches("IEnumerable%")
+    type.startsWith("IEnumerable")
   )
 }
 

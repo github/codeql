@@ -117,7 +117,7 @@ class StartServiceMethod extends Method {
 private class IntentFieldsInheritTaint extends DataFlow::SyntheticFieldContent,
   TaintInheritingContent
 {
-  IntentFieldsInheritTaint() { this.getField().matches("android.content.Intent.%") }
+  IntentFieldsInheritTaint() { this.getField().startsWith("android.content.Intent.") }
 }
 
 /** The method `Intent.getParcelableExtra`. */

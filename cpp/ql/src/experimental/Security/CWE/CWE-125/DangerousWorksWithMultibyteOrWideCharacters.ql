@@ -134,9 +134,9 @@ predicate findUseMultibyteCharacter(Expr exp, string msg) {
       exists(FunctionCall mbFunction |
         (
           mbFunction.getTarget().getName().matches("_mbs%") or
-          mbFunction.getTarget().getName().matches("mbs%") or
+          mbFunction.getTarget().getName().startsWith("mbs") or
           mbFunction.getTarget().getName().matches("_mbc%") or
-          mbFunction.getTarget().getName().matches("mbc%")
+          mbFunction.getTarget().getName().startsWith("mbc")
         ) and
         mbFunction.getAnArgument().(VariableAccess).getTarget().getADeclarationEntry().getType() =
           arrayType

@@ -8,7 +8,7 @@ module BoostorgAsio {
   class SslContextMethod extends Enum {
     SslContextMethod() {
       this.getName().toString() = "method" and
-      this.getQualifiedName().toString().matches("boost::asio::ssl::context%")
+      this.getQualifiedName().toString().startsWith("boost::asio::ssl::context")
     }
 
     /**
@@ -196,7 +196,7 @@ module BoostorgAsio {
      */
     ConstructorCall getAConstructorCall() {
       this.getAConstructor().getACallToThisFunction() = result and
-      not result.getLocation().getFile().toString().matches("%/boost/asio/%") and
+      not result.getLocation().getFile().toString().contains("/boost/asio/") and
       result.fromSource()
     }
   }
@@ -396,7 +396,7 @@ module BoostorgAsio {
     predicate isSource(DataFlow::Node source) {
       exists(Expr e | e = source.asExpr() |
         e.fromSource() and
-        not e.getLocation().getFile().toString().matches("%/boost/asio/%")
+        not e.getLocation().getFile().toString().contains("/boost/asio/")
       )
     }
   }
@@ -410,7 +410,7 @@ module BoostorgAsio {
     predicate isSource(DataFlow::Node source) {
       exists(Expr e | e = source.asExpr() |
         e.fromSource() and
-        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        not e.getLocation().getFile().toString().contains("/boost/asio/") and
         isExprBannedBoostProtocol(e)
       )
     }
@@ -426,7 +426,7 @@ module BoostorgAsio {
     predicate isSource(DataFlow::Node source) {
       exists(Expr e | e = source.asExpr() |
         e.fromSource() and
-        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        not e.getLocation().getFile().toString().contains("/boost/asio/") and
         isExprTls12BoostProtocol(e)
       )
     }
@@ -441,7 +441,7 @@ module BoostorgAsio {
     predicate isSource(DataFlow::Node source) {
       exists(Expr e | e = source.asExpr() |
         e.fromSource() and
-        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        not e.getLocation().getFile().toString().contains("/boost/asio/") and
         isExprTls13BoostProtocol(e)
       )
     }
@@ -456,7 +456,7 @@ module BoostorgAsio {
     predicate isSource(DataFlow::Node source) {
       exists(Expr e | e = source.asExpr() |
         e.fromSource() and
-        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        not e.getLocation().getFile().toString().contains("/boost/asio/") and
         isExprTlsBoostProtocol(e)
       )
     }
@@ -495,7 +495,7 @@ module BoostorgAsio {
     predicate isSource(DataFlow::Node source) {
       exists(Expr e | e = source.asExpr() |
         e.fromSource() and
-        not e.getLocation().getFile().toString().matches("%/boost/asio/%")
+        not e.getLocation().getFile().toString().contains("/boost/asio/")
       )
     }
 
@@ -503,7 +503,7 @@ module BoostorgAsio {
       exists(SslSetOptionsFunction f, FunctionCall call |
         sink.asExpr() = call.getArgument(0) and
         f.getACallToThisFunction() = call and
-        not sink.getLocation().getFile().toString().matches("%/boost/asio/%")
+        not sink.getLocation().getFile().toString().contains("/boost/asio/")
       )
     }
   }

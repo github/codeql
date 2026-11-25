@@ -2212,7 +2212,7 @@ private module Debug {
   Locatable getRelevantLocatable() {
     exists(string filepath, int startline |
       result.getLocation().hasLocationInfo(filepath, startline, _, _, _) and
-      filepath.matches("%/test.c") and
+      filepath.endsWith("/test.c") and
       startline = [621 .. 639]
     )
   }

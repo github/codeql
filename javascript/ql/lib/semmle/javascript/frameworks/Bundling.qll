@@ -186,7 +186,7 @@ predicate isMultiPartBundle(TopLevel tl) {
     c1.getTopLevel() = tl and
     c2.getTopLevel() = tl and
     c1.getText() = "***MULTI-PART" and
-    c2.getText().regexpMatch("LOGICAL-PATH:.*")
+    c2.getText().startsWith("LOGICAL-PATH:")
   )
 }
 
@@ -194,7 +194,7 @@ predicate isMultiPartBundle(TopLevel tl) {
  * A comment that starts with '!'. Minifiers avoid removing such comments.
  */
 class ExclamationPointComment extends Comment {
-  ExclamationPointComment() { this.getLine(0).matches("!%") }
+  ExclamationPointComment() { this.getLine(0).startsWith("!") }
 }
 
 /**

@@ -17,7 +17,7 @@ class HttpStringLiteral extends StringLiteral {
     exists(string s | this.getValue() = s |
       s = "http"
       or
-      s.matches("http://%") and
+      s.startsWith("http://") and
       not s.substring(7, s.length()) instanceof PrivateHostName and
       not TaintTracking::localExprTaint(any(StringLiteral p |
           p.getValue() instanceof PrivateHostName

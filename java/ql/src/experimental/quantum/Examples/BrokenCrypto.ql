@@ -63,7 +63,7 @@ from Crypto::AlgorithmNode alg
 where
   alg.getAlgorithmName().regexpMatch(getInsecureAlgorithmRegex()) and
   // Exclude RSA/ECB/.* ciphers.
-  not alg.getAlgorithmName().regexpMatch("RSA/ECB.*") and
+  not alg.getAlgorithmName().startsWith("RSA/ECB") and
   // Exclude German and French sentences.
   not alg.getAlgorithmName().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
 select alg, "Cryptographic algorithm $@ is weak and should not be used.", alg,

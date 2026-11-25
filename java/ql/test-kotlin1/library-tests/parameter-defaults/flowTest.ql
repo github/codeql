@@ -2,12 +2,12 @@ import java
 import semmle.code.java.dataflow.DataFlow
 
 class ShouldNotBeSunk extends StringLiteral {
-  ShouldNotBeSunk() { this.getValue().matches("%not sunk%") }
+  ShouldNotBeSunk() { this.getValue().contains("not sunk") }
 }
 
 class ShouldBeSunk extends StringLiteral {
   ShouldBeSunk() {
-    this.getValue().matches("%sunk%") and
+    this.getValue().contains("sunk") and
     not this instanceof ShouldNotBeSunk
   }
 }

@@ -19,6 +19,6 @@ where
   pa.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpCookie") and
   (
     a.getRightOperand().getValue().regexpReplaceAll("[^.]", "").length() < 2 or
-    a.getRightOperand().getValue().matches(".%")
+    a.getRightOperand().getValue().startsWith(".")
   )
 select a, "Overly broad domain for cookie."

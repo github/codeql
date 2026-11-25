@@ -312,7 +312,7 @@ private predicate jQueryMarkerComment(Comment c, TopLevel tl, string version) {
           ")(?: - New Wave Javascript)?.*", 1)
     or
     // 1.0.0 and 1.0.1 have the same marker comment; we call them both "1.0"
-    txt.matches("%jQuery - New Wave Javascript%") and version = "1.0"
+    txt.contains("jQuery - New Wave Javascript") and version = "1.0"
   )
 }
 

@@ -650,10 +650,10 @@ class OpenSslSignatureOperationInstance extends Crypto::SignatureOperationInstan
    */
   override Crypto::KeyOperationSubtype getKeyOperationSubtype() {
     // NOTE: if this KeyOperationSubtype does not match initialization call's KeyOperationSubtype then we found a bug
-    if super.getTarget().getName().toLowerCase().matches("%sign%")
+    if super.getTarget().getName().toLowerCase().contains("sign")
     then result instanceof Crypto::TSignMode
     else
-      if super.getTarget().getName().toLowerCase().matches("%verify%")
+      if super.getTarget().getName().toLowerCase().contains("verify")
       then result instanceof Crypto::TVerifyMode
       else result instanceof Crypto::TUnknownKeyOperationMode
   }

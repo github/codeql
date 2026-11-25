@@ -9,7 +9,7 @@ private predicate isInteresting(Type t) {
     t instanceof DelegateType or
     t instanceof RecordType
   ) and
-  t.getFile().getStem().matches("FileScoped%")
+  t.getFile().getStem().startsWith("FileScoped")
 }
 
 query predicate typemodifiers(Type t, string modifier) {

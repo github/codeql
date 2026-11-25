@@ -18,15 +18,15 @@ int parseInteger(Ruby::Integer i) {
     s.charAt(0) != "0" and
     result = s.toInt()
     or
-    s.matches("0b%") and result = parseBinaryInt(s.suffix(2))
+    s.startsWith("0b") and result = parseBinaryInt(s.suffix(2))
     or
-    s.matches("0x%") and result = parseHexInt(s.suffix(2))
+    s.startsWith("0x") and result = parseHexInt(s.suffix(2))
     or
     s.charAt(0) = "0" and
     not s.charAt(1) = ["b", "x", "o"] and
     result = parseOctalInt(s.suffix(1))
     or
-    s.matches("0o%") and
+    s.startsWith("0o") and
     result = parseOctalInt(s.suffix(2))
   )
 }

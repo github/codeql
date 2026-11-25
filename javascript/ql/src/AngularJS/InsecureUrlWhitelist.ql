@@ -65,9 +65,9 @@ class ResourceUrlWhitelistEntry extends Expr {
       ) and
       explanation = "the " + componentName + " '" + component + "' is insecurely specified"
     |
-      componentName = "scheme" and component.matches("%*%")
+      componentName = "scheme" and component.contains("*")
       or
-      componentName = "domain" and component.matches("%**%")
+      componentName = "domain" and component.contains("**")
       or
       componentName = "TLD" and component = "*"
     )

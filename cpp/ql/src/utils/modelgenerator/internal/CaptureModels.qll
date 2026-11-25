@@ -65,8 +65,8 @@ private predicate isUninterestingForModels(Callable api) {
   // Exclude functions in test directories (but not the ones in the CodeQL test directory)
   exists(Cpp::File f |
     f = api.getFile() and
-    f.getAbsolutePath().matches("%test%") and
-    not f.getAbsolutePath().matches("%test/library-tests/dataflow/modelgenerator/dataflow/%")
+    f.getAbsolutePath().contains("test") and
+    not f.getAbsolutePath().contains("test/library-tests/dataflow/modelgenerator/dataflow/")
   )
 }
 

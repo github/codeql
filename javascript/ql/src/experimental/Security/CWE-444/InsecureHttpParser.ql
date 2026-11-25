@@ -27,7 +27,7 @@ where
   exists(DataFlow::SourceNode env |
     env = NodeJSLib::process().getAPropertyRead("env") and
     disable = env.getAPropertyWrite("NODE_OPTIONS") and
-    disable.getRhs().getStringValue().matches("%--insecure-http-parser%")
+    disable.getRhs().getStringValue().contains("--insecure-http-parser")
   )
   or
   (

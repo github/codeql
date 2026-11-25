@@ -54,7 +54,7 @@ module InsecureRandomness {
         or
         fn.(Method).hasQualifiedName(pkg, _, name)
       |
-        pkg.regexpMatch("crypto/.*") and
+        pkg.startsWith("crypto/") and
         not pkg = getAHashPkg() and
         not (pkg = "crypto/rand" and name = "Read") and
         // `crypto/cipher` APIs for reading/writing encrypted streams
@@ -100,7 +100,7 @@ module InsecureRandomness {
       )
       or
       exists(string pkg, string name | this.hasQualifiedName(pkg, name) |
-        pkg = getAHashPkg() and name.matches("Sum%")
+        pkg = getAHashPkg() and name.startsWith("Sum")
       )
     }
 

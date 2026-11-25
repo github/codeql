@@ -68,7 +68,7 @@ class GwtServletClass extends ReflectivelyConstructedClass {
     this instanceof ServletClass and
     // There must be evidence that GWT is being used, otherwise missing `*.gwt.xml` files could cause
     // all `Servlet`s to be live.
-    exists(Package p | p.getName().matches("com.google.gwt%")) and
+    exists(Package p | p.getName().startsWith("com.google.gwt")) and
     (
       isGwtXmlIncluded()
       implies

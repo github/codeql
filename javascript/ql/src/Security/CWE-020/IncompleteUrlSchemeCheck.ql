@@ -96,7 +96,7 @@ DataFlow::Node schemeCheck(DataFlow::Node nd, DangerousScheme scheme) {
   or
   // propagate through trimming, case conversion, and regexp replace
   exists(DataFlow::MethodCallNode stringop |
-    stringop.getMethodName().matches("trim%") or
+    stringop.getMethodName().startsWith("trim") or
     stringop.getMethodName().matches("to%Case") or
     stringop.getMethodName() = ["replace", "replaceAll"]
   |

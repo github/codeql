@@ -40,7 +40,7 @@ class UnlikelyToBeAStringType extends Type {
     exists(Type targ | getABaseType(this) = targ |
       // NOTE: not using CharType isUnsigned, but rather look for any explicitly declared unsigned
       // char types. Assuming these are used for buffers, not strings.
-      targ.(CharType).getName().toLowerCase().matches("unsigned%") or
+      targ.(CharType).getName().toLowerCase().startsWith("unsigned") or
       targ.getName().toLowerCase().matches(["uint8_t", "%byte%"])
     )
   }
@@ -64,7 +64,7 @@ class UnicodeMacroDependentWidthType extends Type {
 }
 
 class UnicodeMacro extends Macro {
-  UnicodeMacro() { this.getName().toLowerCase().matches("%unicode%") }
+  UnicodeMacro() { this.getName().toLowerCase().contains("unicode") }
 }
 
 class UnicodeMacroInvocation extends MacroInvocation {

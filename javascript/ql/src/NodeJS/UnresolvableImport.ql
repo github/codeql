@@ -31,7 +31,7 @@ where
   // downloaded or generated during the build
   mod = path.regexpCapture("([^./][^/]*)(/.*|$)", 1) and
   // exclude WebPack/Require.js loaders
-  not mod.matches("%!%") and
+  not mod.contains("!") and
   // import cannot be resolved statically
   not exists(r.getImportedModule()) and
   // no enclosing NPM package declares a dependency on `mod`

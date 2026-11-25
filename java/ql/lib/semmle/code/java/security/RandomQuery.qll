@@ -70,7 +70,7 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
     (
       m.getName().matches("to%String") or
       m.getName() = "toByteArray" or
-      m.getName().matches("%Value")
+      m.getName().endsWith("Value")
     )
   )
   or
@@ -80,8 +80,8 @@ private predicate predictableCalcStep(Expr e1, Expr e2) {
     m = ma.getMethod() and
     exists(TypeNumber t | hasDescendant(t, m.getDeclaringType())) and
     (
-      m.getName().matches("parse%") or
-      m.getName().matches("valueOf%") or
+      m.getName().startsWith("parse") or
+      m.getName().startsWith("valueOf") or
       m.getName().matches("to%String")
     )
   )

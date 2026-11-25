@@ -24,7 +24,7 @@ class AndroidManifestXmlFile extends XmlFile {
   /**
    * Holds if this Android manifest file is located in a build directory.
    */
-  predicate isInBuildDirectory() { this.getFile().getRelativePath().matches("%build%") }
+  predicate isInBuildDirectory() { this.getFile().getRelativePath().contains("build") }
 
   /**
    * Holds if this file defines at least one activity, service or contest provider,
@@ -319,7 +319,7 @@ class AndroidComponentXmlElement extends XmlElement {
    */
   string getResolvedIdentifier(AndroidIdentifierXmlAttribute identifier) {
     exists(string name | name = identifier.getValue() |
-      if name.matches(".%")
+      if name.startsWith(".")
       then
         result =
           this.getParent()

@@ -59,7 +59,7 @@ private module FlowTestImpl implements InputSig<Location, RustDataFlow> {
       result = getSummaryNodeArgString(n)
     ) and
     // Don't use the result if it contains spaces
-    not result.matches("% %")
+    not result.contains(" ")
   }
 
   bindingset[src, sink]

@@ -115,7 +115,7 @@ class LifetimeOwnerType extends LifetimeIndirectionType {
           ["stack", "queue", "priority_queue", "optional", "variant", "any", "regex"])
     or
     // Explicit annotation on the type
-    this.getAnAttribute().getName().matches("gsl::Owner%")
+    this.getAnAttribute().getName().startsWith("gsl::Owner")
   }
 }
 
@@ -193,7 +193,7 @@ class LifetimeSharedOwnerType extends Type {
     this.(Class).hasQualifiedName("std", "shared_future")
     or
     // Explicit annotation on the type
-    this.getAnAttribute().getName().matches("gsl::SharedOwner%")
+    this.getAnAttribute().getName().startsWith("gsl::SharedOwner")
   }
 }
 
@@ -258,7 +258,7 @@ class LifetimePointerType extends LifetimeIndirectionType {
     )
     or
     // Explicit annotation on the type
-    this.getAnAttribute().getName().matches("gsl::Pointer%")
+    this.getAnAttribute().getName().startsWith("gsl::Pointer")
   }
 }
 

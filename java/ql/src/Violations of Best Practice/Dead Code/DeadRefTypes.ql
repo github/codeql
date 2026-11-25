@@ -32,7 +32,7 @@ predicate dead(RefType dead) {
   // Exclude Struts or JSP classes (marked with Javadoc tags).
   not exists(JavadocTag tag, string x |
     tag = dead.getDoc().getJavadoc().getATag(x) and
-    (x.matches("@struts%") or x.matches("@jsp%"))
+    (x.startsWith("@struts") or x.startsWith("@jsp"))
   ) and
   // Exclude public types.
   not dead.isPublic() and

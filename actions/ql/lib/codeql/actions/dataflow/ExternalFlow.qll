@@ -61,10 +61,10 @@ predicate madSource(DataFlow::Node source, string kind, string fieldName) {
       else uses.getVersion() = version.trim()
     ) and
     (
-      if fieldName.trim().matches("env.%")
+      if fieldName.trim().startsWith("env.")
       then source.asExpr() = uses.getInScopeEnvVarExpr(fieldName.trim().replaceAll("env.", ""))
       else (
-        fieldName.trim().matches("output.%") and
+        fieldName.trim().startsWith("output.") and
         source.asExpr() = uses
       )
     )
@@ -87,10 +87,10 @@ predicate madStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::Conte
     ) and
     // pred provenance
     (
-      input.trim().matches("env.%") and
+      input.trim().startsWith("env.") and
       pred.asExpr() = uses.getInScopeEnvVarExpr(input.trim().replaceAll("env.", ""))
       or
-      input.trim().matches("input.%") and
+      input.trim().startsWith("input.") and
       pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
       or
       input.trim() = "artifact" and
@@ -118,10 +118,10 @@ predicate madSink(DataFlow::Node sink, string kind) {
     ) and
     // pred provenance
     (
-      input.trim().matches("env.%") and
+      input.trim().startsWith("env.") and
       sink.asExpr() = uses.getInScopeEnvVarExpr(input.trim().replaceAll("env.", ""))
       or
-      input.trim().matches("input.%") and
+      input.trim().startsWith("input.") and
       sink.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
       or
       input.trim() = "artifact" and

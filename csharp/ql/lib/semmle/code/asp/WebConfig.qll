@@ -8,14 +8,14 @@ import csharp
  * A `Web.config` file.
  */
 class WebConfigXml extends XmlFile {
-  WebConfigXml() { this.getName().toLowerCase().matches("%web.config") }
+  WebConfigXml() { this.getName().toLowerCase().endsWith("web.config") }
 }
 
 /**
  * A `Web.config` transformation file.
  */
 class WebConfigReleaseTransformXml extends XmlFile {
-  WebConfigReleaseTransformXml() { this.getName().toLowerCase().matches("%web.release.config") }
+  WebConfigReleaseTransformXml() { this.getName().toLowerCase().endsWith("web.release.config") }
 }
 
 /** A `<configuration>` tag in an ASP.NET configuration file. */

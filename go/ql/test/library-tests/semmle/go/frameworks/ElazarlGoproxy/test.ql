@@ -43,7 +43,7 @@ module LoggerTest implements TestSig {
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
-    n = any(DataFlow::CallNode c | c.getCalleeName().matches("tainted%")).getResult()
+    n = any(DataFlow::CallNode c | c.getCalleeName().startsWith("tainted")).getResult()
   }
 
   predicate isSink(DataFlow::Node n) {

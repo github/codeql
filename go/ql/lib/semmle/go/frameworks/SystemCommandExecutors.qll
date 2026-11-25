@@ -75,7 +75,7 @@ private string getASudoCommand() {
  */
 bindingset[command, subcommand]
 private predicate hasSafeSubcommand(string command, string subcommand) {
-  command.matches("%git") and
+  command.endsWith("git") and
   // All git subcommands except for clone, fetch, ls-remote, pull and fetch-pack
   subcommand in [
       "add", "am", "archive", "bisect", "branch", "bundle", "checkout", "cherry-pick", "citool",

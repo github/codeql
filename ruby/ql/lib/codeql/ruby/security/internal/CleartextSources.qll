@@ -117,7 +117,7 @@ module CleartextSources {
     // We explicitly exclude element references, element assignments, and
     // mutation methods.
     not name = ["[]", "[]="] and
-    not name.matches("%!")
+    not name.endsWith("!")
   }
 
   /**
