@@ -1,0 +1,11 @@
+constructor
+| module-import.swift:7:23:7:48 | URL(...) | URL |
+| no-import.swift:5:23:5:48 | URL(...) | URL |
+| no-import.swift:12:9:12:38 | ... .Index(...) | String.Index |
+isSink
+| no-import.swift:12:37:12:37 | 0 | string-length |
+isSource
+| module-import.swift:4:9:4:17 | ... .lines | remote |
+| module-import.swift:8:9:8:25 | ... .lines | remote |
+| no-import.swift:2:9:2:17 | ... .lines | remote |
+| no-import.swift:6:9:6:25 | ... .lines | remote |
