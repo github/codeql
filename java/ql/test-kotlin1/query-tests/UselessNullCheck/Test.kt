@@ -5,7 +5,7 @@ fun fn(x:Any?, y: Any?) {
 
     if (x != null) {
         println("x not null")
-    } else if (y != null) {
+    } else if (y != null) { // $ Alert
         println("y not null")
     }
 }
