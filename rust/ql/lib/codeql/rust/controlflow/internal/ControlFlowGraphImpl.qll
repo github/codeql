@@ -553,11 +553,7 @@ private module Input implements InputSig1, InputSig2 {
 
   predicate preOrderExpr(Ast::Expr e) { e instanceof Rust::LetExpr }
 
-  predicate postOrInOrder(Ast::AstNode n) {
-    n instanceof Rust::MacroCall
-    or
-    n instanceof Rust::TryExpr
-  }
+  predicate postOrInOrder(Ast::AstNode n) { n instanceof Rust::MacroCall }
 
   private predicate letStmtStep(PreControlFlowNode n1, PreControlFlowNode n2) {
     exists(Rust::LetStmt let |
