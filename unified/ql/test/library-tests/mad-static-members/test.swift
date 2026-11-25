@@ -23,7 +23,7 @@ class StaticTestSub: StaticTest {
 
     static func testStaticContextInSubclass() {
         _ = staticProp  // $ baseMetaType=StaticTestSub.Type unqualified=StaticTest.Type.staticProp staticMember=StaticTest.Type.staticProp
-        _ = instanceProp  // $ SPURIOUS: unqualified=StaticTest.instanceProp // not accessible from a static context
+        _ = instanceProp  // $ baseMetaType=StaticTestSub.Type SPURIOUS: unqualified=StaticTest.instanceProp // not accessible from a static context
     }
 }
 
@@ -48,7 +48,7 @@ extension StaticTest {
     static func testStaticContextInExtension() {
         _ = staticProp  // $ baseMetaType=StaticTest.Type unqualified=StaticTest.Type.staticProp staticMember=StaticTest.Type.staticProp
         _ = staticMethod(1)  // $ baseMetaType=StaticTest.Type unqualified=StaticTest.Type.staticMethod staticMember=StaticTest.Type.staticMethod
-        _ = instanceProp  // $ SPURIOUS: unqualified=StaticTest.instanceProp // not accessible from a static context
+        _ = instanceProp  // $ baseMetaType=StaticTest.Type SPURIOUS: unqualified=StaticTest.instanceProp // not accessible from a static context
     }
 }
 

@@ -26,7 +26,8 @@ query predicate instanceMember(string type, string member) {
     namespace.isInstanceMemberNamespace(cls) and
     node = namespace.getMember(member) and
     node.isMemberSelector(_) and
-    type = cls.getName()
+    type = cls.getName() and
+    exists(cls.getFile().getRelativePath())
   )
 }
 

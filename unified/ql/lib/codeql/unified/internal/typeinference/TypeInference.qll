@@ -21,6 +21,7 @@ private import codeql.typeinference.internal.TypeInference
 private import codeql.unified.internal.ParameterEx
 private import codeql.unified.internal.ExprPositions
 private import codeql.unified.internal.NameBinding
+private import codeql.unified.internal.NameBindingPlugin as NameBindingPlugin
 private import utils.test.InlineExpectationsTest
 private import Type
 private import Type as T
@@ -365,6 +366,9 @@ module Input3 implements InputSig3 {
   additional Type inferTypeFromVariable(LocalVariable v, TypePath path) {
     result = inferType(v.getABinding(), path)
     or
+    result = getStaticReceiverType(v) and
+    path.isEmpty()
+    or
     exists(Parameter param |
       implicitParameterDecl(param, v) and
       (
@@ -436,7 +440,8 @@ module Input3 implements InputSig3 {
       result = p.getType()
       or
       exists(Callable c |
-        p.isImplicitReceiverParameter(_) and
+        p.isImplicitReceiverParameter(c.getCallable()) and
+        not isStaticCallable(c.getCallable()) and
         this = c.getParameter(_) and
         result = c.getDeclaringType()
       )
@@ -447,6 +452,28 @@ module Input3 implements InputSig3 {
     override string toString() { result = p.toString() }
 
     override Location getLocation() { result = p.getLocation() }
+  }
+
+  /**
+   * Holds if `c` is a static member of a class, such as a `static` or `class` function in Swift,
+   * whose implicit receiver is the type itself rather than an instance.
+   */
+  private predicate isStaticCallable(Unified::Callable c) {
+    c = any(ClassLikeDeclaration cls).getAMember() and
+    not NameBindingPlugin::isInstanceMember(c)
+  }
+
+  /**
+   * Gets the meta type of the implicit receiver `v` of a static member, as `self` refers to the
+   * enclosing type itself in a static context.
+   */
+  private MetaType getStaticReceiverType(LocalVariable v) {
+    exists(Unified::Callable c, ClassLikeDeclaration cls |
+      v.isImplicitReceiverParameter(c) and
+      isStaticCallable(c) and
+      c = cls.getAMember() and
+      result.getClassLikeElement() = cls.getClassLikeElement()
+    )
   }
 
   predicate implicitParameterDecl(Parameter p, Variable v) {
@@ -940,6 +967,10 @@ module Input3 implements InputSig3 {
   Type inferTypeLanguageSpecific(AstNode n, TypePath path) {
     result = Plugin::inferType(n, path)
     or
+    // `self` in a static context refers to the type itself
+    result = getStaticReceiverType(n.(LocalVariableAccess).getLocalVariable()) and
+    path.isEmpty()
+    or
     n instanceof BooleanLiteral and
     result instanceof BoolType and
     path.isEmpty()
@@ -1015,7 +1046,10 @@ Type inferBaseType(MemberAccess access) {
   or
   result.(MetaType).getInstanceType() = access.(MemberAccessExpr).getBase().(TypeMention).getType()
   or
-  result = inferVariableType(access.(UnqualifiedMemberAccess).getImplicitQualifierVariable())
+  exists(UnqualifiedMemberAccess uma | uma = access |
+    uma.isInstanceAccess() and
+    result = inferVariableType(uma.getImplicitQualifierVariable())
+  )
   or
   exists(UnqualifiedMemberAccess uma | uma = access |
     not uma.isInstanceAccess() and

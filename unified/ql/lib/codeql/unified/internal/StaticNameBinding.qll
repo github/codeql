@@ -258,9 +258,46 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   or
   exists(MaD::MemberSelector member |
     node1.isMemberSelector(member) and
-    name = member.getName() and
+    name = member.getName()
+  |
     node2.isTypeSelector(member.getTypeString())
+    or
+    // If the type is also declared in the database, such as a builtin type, expose the
+    // members from the model in the namespaces of the declaration as well
+    exists(MaD::TypeSelector type, ClassLikeDeclaration cls |
+      isDeclarationOfTypeSelector(cls, type)
+    |
+      member.getTypeString() = type and
+      node2.isInstanceMemberNamespace(cls)
+      or
+      member.getTypeString() = type.getMetaType() and
+      node2.isStaticMemberNamespace(cls)
+    )
   )
+}
+
+/**
+ * Gets the qualified name of `cls` based on its syntactic nesting, provided that `cls` is not an
+ * extension and is only nested in other non-extension declarations.
+ *
+ * Unlike `getQualifiedName()`, this does not depend on name binding.
+ */
+private string getSyntacticQualifiedName(ClassLikeDeclaration cls) {
+  not exists(cls.getExtensionTarget()) and
+  (
+    not cls = any(ClassLikeDeclaration parent).getAMember() and
+    result = cls.getName()
+    or
+    exists(ClassLikeDeclaration parent | cls = parent.getAMember() |
+      result = getSyntacticQualifiedName(parent) + "." + cls.getName()
+    )
+  )
+}
+
+/** Holds if `cls` is a declaration of the type named by `type` in a model. */
+pragma[nomagic]
+private predicate isDeclarationOfTypeSelector(ClassLikeDeclaration cls, MaD::TypeSelector type) {
+  getSyntacticQualifiedName(cls) = type
 }
 
 /**
@@ -623,6 +660,17 @@ NameBindingNode trackTypeSelector(MaD::TypeSelector type) {
   )
 }
 
+/**
+ * Gets a name-binding node that may refer to the given type from a model, possibly through
+ * type aliases.
+ */
+NameBindingNode trackTypeSelectorThroughAliases(MaD::TypeSelector type) {
+  exists(NamespaceNode ns |
+    ns.isTypeSelector(getMetaTypeOrRoot(type)) and
+    result = ns.ref()
+  )
+}
+
 /** Gets a name-binding node that may refer to the given member from a model. */
 NameBindingNode trackMemberSelector(MaD::MemberSelector member) {
   exists(NameBindingNode start |
@@ -827,7 +875,7 @@ private NamespaceNode getMemberLookupNamespace(ClassLikeDeclaration scope, boole
   // An extension of a type that is only known from a model
   exists(MaD::TypeSelector type |
     not exists(getExtendedDeclaration(scope)) and
-    trackTypeSelector(type) = getNodeFromRef(scope.getExtensionTarget())
+    trackTypeSelectorThroughAliases(type) = getNodeFromRef(scope.getExtensionTarget())
   |
     instanceAccess = true and
     result.isTypeSelector(type)

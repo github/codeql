@@ -69,7 +69,9 @@ isSource
 | test.swift:296:9:296:29 | ... .staticProp | static-prop-source |
 | test.swift:304:13:304:24 | instanceProp | instance-prop-source |
 | test.swift:308:13:308:22 | staticProp | static-prop-source |
-| test.swift:314:13:314:24 | instanceProp | instance-prop-source |
-| test.swift:318:13:318:22 | staticProp | static-prop-source |
-| test.swift:323:9:323:32 | ... .staticProp | static-prop-source |
-| test.swift:324:9:324:24 | ... .instanceProp | instance-prop-source |
+| test.swift:309:13:309:27 | ... .staticProp | static-prop-source |
+| test.swift:317:13:317:24 | instanceProp | instance-prop-source |
+| test.swift:321:13:321:22 | staticProp | static-prop-source |
+| test.swift:322:13:322:27 | ... .staticProp | static-prop-source |
+| test.swift:328:9:328:32 | ... .staticProp | static-prop-source |
+| test.swift:329:9:329:24 | ... .instanceProp | instance-prop-source |

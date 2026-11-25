@@ -28,3 +28,18 @@ extension Process {
         arguments.append(string)  // $ isSink=command-injection
     }
 }
+
+typealias ProcessAlias = Process
+
+extension ProcessAlias {
+    func testImplicitSelfSinkViaAlias(string: String) {
+        launchPath = string  // $ isSink=command-injection
+    }
+}
+
+extension String {
+    func testImplicitSelfSourceOnBuiltin() {
+        _ = count  // $ isSource=string-length
+        _ = self.count  // $ isSource=string-length
+    }
+}

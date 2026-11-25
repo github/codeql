@@ -9,6 +9,7 @@ baseMetaType
 | test.swift:11:9:11:30 | ... .unknownProp | StaticTest.Type |
 | test.swift:21:13:21:22 | staticProp | StaticTestSub.Type |
 | test.swift:25:13:25:22 | staticProp | StaticTestSub.Type |
+| test.swift:26:13:26:24 | instanceProp | StaticTestSub.Type |
 | test.swift:31:9:31:34 | ... .staticMethod | StaticTestSub.Type |
 | test.swift:32:9:32:32 | ... .staticProp | StaticTestSub.Type |
 | test.swift:33:9:33:26 | ... .init | StaticTestSub.Type |
@@ -16,6 +17,7 @@ baseMetaType
 | test.swift:45:13:45:22 | staticProp | StaticTest.Type |
 | test.swift:49:13:49:22 | staticProp | StaticTest.Type |
 | test.swift:50:13:50:24 | staticMethod | StaticTest.Type |
+| test.swift:51:13:51:24 | instanceProp | StaticTest.Type |
 | test.swift:60:13:60:23 | staticField | DeclaredType.Type |
 | test.swift:69:9:69:32 | ... .staticField | DeclaredType.Type |
 instanceMember

@@ -15,7 +15,7 @@ private import codeql.unified.internal.mad.LegacyMaD as MaD
 pragma[nomagic]
 private MaD::TypeSelector getExtendedTypeSelector(ClassLikeDeclaration ext) {
   not exists(N::getExtendedDeclaration(ext)) and
-  N::trackTypeSelector(result) = N::getNodeFromRef(ext.getExtensionTarget())
+  N::trackTypeSelectorThroughAliases(result) = N::getNodeFromRef(ext.getExtensionTarget())
 }
 
 cached
