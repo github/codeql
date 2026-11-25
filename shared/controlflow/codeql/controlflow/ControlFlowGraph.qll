@@ -661,6 +661,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       exists(getChild(n, _)) and
       not Input1::preOrderExpr(n) and
       (n instanceof Pattern implies n instanceof LeafPattern) and
+      not n instanceof LoopStmt and
       not n instanceof LogicalAndExpr and
       not n instanceof LogicalOrExpr and
       not n instanceof NullCoalescingExpr and

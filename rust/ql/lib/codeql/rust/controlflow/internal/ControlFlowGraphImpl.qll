@@ -551,11 +551,7 @@ private module Input implements InputSig1, InputSig2 {
     not Ast::getChild(pattern, _) instanceof Ast::Pattern
   }
 
-  predicate preOrderExpr(Ast::Expr e) {
-    e instanceof Rust::LoopingExpr
-    or
-    e instanceof Rust::LetExpr
-  }
+  predicate preOrderExpr(Ast::Expr e) { e instanceof Rust::LetExpr }
 
   predicate postOrInOrder(Ast::AstNode n) {
     n instanceof Rust::MacroCall
