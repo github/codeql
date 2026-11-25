@@ -19,7 +19,7 @@ or <code>String</code> because <code>ArrayList</code>s and <code>String</code>s 
 </example>
 <references>
 
-  <li>MSDN, <a href="http://msdn.microsoft.com/en-us/library/bsc2ak47.aspx">Object.Equals Method</a>.</li>
+  <li>MSDN, <a href="https://msdn.microsoft.com/en-us/library/bsc2ak47.aspx">Object.Equals Method</a>.</li>
 
 </references>
 </qhelp>
