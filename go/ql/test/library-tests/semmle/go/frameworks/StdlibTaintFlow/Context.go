@@ -56,6 +56,23 @@ func TaintStepTest_ContextWithoutCancel(sourceCQL interface{}) interface{} {
 	return context.WithoutCancel(fromContext)
 }
 
+func TaintStepTest_ContextCause(sourceCQL interface{}) interface{} {
+	fromContext := sourceCQL.(context.Context)
+	return context.Cause(fromContext)
+}
+
+func TaintStepTest_ContextWithDeadlineCauseRoundTrip(sourceCQL interface{}) interface{} {
+	fromError := sourceCQL.(error)
+	ctx, _ := context.WithDeadlineCause(nil, time.Time{}, fromError)
+	return context.Cause(ctx)
+}
+
+func TaintStepTest_ContextWithTimeoutCauseRoundTrip(sourceCQL interface{}) interface{} {
+	fromError := sourceCQL.(error)
+	ctx, _ := context.WithTimeoutCause(nil, 0, fromError)
+	return context.Cause(ctx)
+}
+
 func TaintStepTest_ContextWithValue_B0I0O0(sourceCQL interface{}) interface{} {
 	fromContext520 := sourceCQL.(context.Context)
 	intoContext443 := context.WithValue(fromContext520, nil, nil)
@@ -217,5 +234,20 @@ func RunAllTaints_Context() {
 		source := newSource(18)
 		out := TaintStepTest_ContextWithoutCancel(source)
 		sink(18, out)
+	}
+	{
+		source := newSource(19)
+		out := TaintStepTest_ContextCause(source)
+		sink(19, out)
+	}
+	{
+		source := newSource(20)
+		out := TaintStepTest_ContextWithDeadlineCauseRoundTrip(source)
+		sink(20, out)
+	}
+	{
+		source := newSource(21)
+		out := TaintStepTest_ContextWithTimeoutCauseRoundTrip(source)
+		sink(21, out)
 	}
 }

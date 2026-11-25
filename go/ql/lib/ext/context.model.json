@@ -7,6 +7,7 @@
       },
       "data": [
         // AfterFunc should be modeled when callback-based library models are supported.
+        ["context", "", false, "Cause", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
         ["context", "", false, "WithCancel", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
         ["context", "", false, "WithDeadline", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
         ["context", "", false, "WithDeadlineCause", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],

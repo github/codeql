@@ -61,6 +61,20 @@ func TaintStepTest_CryptoTlsSessionStateBytes(sourceCQL interface{}) interface{}
 	return out
 }
 
+func TaintStepTest_CryptoTlsSessionStateBytesExtra(sourceCQL interface{}) interface{} {
+	state := &tls.SessionState{}
+	state.Extra = append(state.Extra, sourceCQL.([]byte))
+	out, _ := state.Bytes()
+	return out
+}
+
+func TaintStepTest_CryptoTlsSessionStateBytesValueExtra(sourceCQL interface{}) interface{} {
+	var state tls.SessionState
+	state.Extra = append(state.Extra, sourceCQL.([]byte))
+	out, _ := state.Bytes()
+	return out
+}
+
 func TaintStepTest_CryptoTlsParseSessionState(sourceCQL interface{}) interface{} {
 	out, _ := tls.ParseSessionState(sourceCQL.([]byte))
 	return out
@@ -86,9 +100,24 @@ func TaintStepTest_CryptoTlsClientSessionStateResumptionStateState(sourceCQL int
 	return state
 }
 
+func TaintStepTest_CryptoTlsResumptionStateExtraRoundTrip(sourceCQL interface{}) interface{} {
+	state := &tls.SessionState{Extra: [][]byte{sourceCQL.([]byte)}}
+	cs, _ := tls.NewResumptionState(nil, state)
+	_, resumed, _ := cs.ResumptionState()
+	return resumed.Extra[0]
+}
+
 func TaintStepTest_CryptoTlsConfigEncryptTicketState(sourceCQL interface{}) interface{} {
 	var config tls.Config
 	out, _ := config.EncryptTicket(tls.ConnectionState{}, sourceCQL.(*tls.SessionState))
+	return out
+}
+
+func TaintStepTest_CryptoTlsConfigEncryptTicketStateExtra(sourceCQL interface{}) interface{} {
+	var config tls.Config
+	state := &tls.SessionState{}
+	state.Extra = append(state.Extra, sourceCQL.([]byte))
+	out, _ := config.EncryptTicket(tls.ConnectionState{}, state)
 	return out
 }
 
@@ -251,5 +280,25 @@ func RunAllTaints_CryptoTls() {
 		source := newSource(23)
 		out := TaintStepTest_CryptoTlsConfigDecryptTicketReceiver(source)
 		sink(23, out)
+	}
+	{
+		source := newSource(24)
+		out := TaintStepTest_CryptoTlsSessionStateBytesExtra(source)
+		sink(24, out)
+	}
+	{
+		source := newSource(25)
+		out := TaintStepTest_CryptoTlsSessionStateBytesValueExtra(source)
+		sink(25, out)
+	}
+	{
+		source := newSource(26)
+		out := TaintStepTest_CryptoTlsResumptionStateExtraRoundTrip(source)
+		sink(26, out)
+	}
+	{
+		source := newSource(27)
+		out := TaintStepTest_CryptoTlsConfigEncryptTicketStateExtra(source)
+		sink(27, out)
 	}
 }
