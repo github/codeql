@@ -1,0 +1,5 @@
+name: Composite dependency of the repository root action
+runs:
+  using: composite
+  steps:
+    - uses: covered/action@v1 # $ Alert

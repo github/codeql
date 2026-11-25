@@ -2,4 +2,4 @@ name: Nested shared composite action
 runs:
   using: composite
   steps:
-    - uses: ./.github/actions/shared
+    - uses: $/.github/actions/./shared/

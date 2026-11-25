@@ -5,14 +5,37 @@
 private import actions
 private import codeql.actions.ast.internal.Yaml
 
+bindingset[path]
+private string normalizeLocalCompositePath(string path) {
+  result = path.regexpReplaceAll("(^|/)\\./", "$1").regexpReplaceAll("/+$", "")
+}
+
+private string compositeActionPath(CompositeAction action) {
+  result =
+    action.getLocation().getFile().getRelativePath().regexpReplaceAll("/action\\.(yml|yaml)$", "")
+}
+
 private predicate callsLocalComposite(UsesStep caller, CompositeAction action) {
   exists(string path |
-    caller.getCallee() = ["$/", "./"] + path and
+    caller.getCallee() = "$/" + path and
     not exists(caller.getVersion()) and
-    if path = ""
-    then action.getLocation().getFile().getRelativePath() = ["action.yml", "action.yaml"]
-    else action.getLocation().getFile().getRelativePath() = path + ["/action.yml", "/action.yaml"]
+    normalizeLocalCompositePath(path) = compositeActionPath(action)
   )
+}
+
+private predicate hasUncoveredDotCaller(CompositeAction action) {
+  exists(UsesStep caller, string path |
+    caller.getCallee().indexOf("./") = 0 and
+    path = caller.getCallee().suffix(2) and
+    (
+      normalizeLocalCompositePath(path) = compositeActionPath(action) or
+      normalizeLocalCompositePath(path).endsWith("/" + compositeActionPath(action))
+    )
+  )
+}
+
+private predicate isRepositoryRootAction(CompositeAction action) {
+  action.getLocation().getFile().getRelativePath() = ["action.yml", "action.yaml"]
 }
 
 private predicate compositeCaller(CompositeAction action, CompositeAction caller) {
@@ -55,7 +78,9 @@ class ActionsLock extends YamlDocument, YamlMapping {
   /**
    * Holds if this lockfile pins the use at `uses` to `ref` with a full commit digest.
    * Repository pins also cover sub-actions such as `actions/cache/save`. For a use in a
-   * local composite action, every known calling workflow must pin the dependency.
+   * local composite action, every known calling workflow must pin the dependency. Only
+   * repository-rooted `$/` callers are covered; workspace-relative callers and external
+   * consumers of the repository root action are not represented by the lockfile.
    */
   predicate pins(UsesStep uses, string ref) {
     this.pinsInWorkflow(uses, ref,
@@ -76,6 +101,10 @@ class ActionsLock extends YamlDocument, YamlMapping {
           callsLocalComposite(caller, root) and
           workflow = caller.getEnclosingWorkflow()
         )
+      ) and
+      not exists(CompositeAction ancestor |
+        compositeCaller*(action, ancestor) and
+        (isRepositoryRootAction(ancestor) or hasUncoveredDotCaller(ancestor))
       ) and
       not exists(CompositeAction ancestor, UsesStep caller |
         compositeCaller*(action, ancestor) and

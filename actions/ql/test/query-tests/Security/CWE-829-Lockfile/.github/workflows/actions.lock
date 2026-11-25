@@ -11,6 +11,8 @@ workflows:
   .github/workflows/other.yml:
     - other-workflow/action@v1
     - covered/action@v1
+  .github/workflows/dot-caller.yml:
+    - covered/action@v1
 dependencies:
   DToLnAy/RuSt-ToOlChAiN@v1:
     ref: v1

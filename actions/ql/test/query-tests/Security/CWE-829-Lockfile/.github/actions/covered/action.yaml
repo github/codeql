@@ -2,6 +2,6 @@ name: Covered composite action
 runs:
   using: composite
   steps:
-    - uses: CoVeReD/AcTiOn/subaction@v1
+    - uses: CoVeReD/AcTiOn/subaction@v1 # $ Alert
     - uses: covered/action@V1 # $ Alert
     - uses: malformed/action@v1 # $ Alert
