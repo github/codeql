@@ -15,6 +15,8 @@ controlsResult
 | guards.go:42:2:43:33 | case clause | tagged false comparison | true |
 | guards.go:42:7:42:17 | ...<... | tagged false comparison | false |
 | guards.go:48:5:48:5 | a | compound true | true |
+| guards.go:48:10:48:17 | (...) | compound true | true |
+| guards.go:48:11:48:16 | ...\|\|... | compound true | true |
 | guards.go:56:5:56:20 | ...==... | upcast | true |
 | guards.go:59:5:59:19 | ...==... | downcast | true |
 | guards.go:62:5:62:22 | ...==... | upcast narrow | true |
@@ -59,12 +61,17 @@ valueControlsResult
 | guards.go:12:7:12:11 | value | negative | Upper bound -1 |
 | guards.go:12:7:12:11 | value | positive | Lower bound 0 |
 | guards.go:12:7:12:11 | value | zero | Lower bound 0 |
+| guards.go:12:7:12:15 | ...<... | negative | match |
 | guards.go:12:7:12:15 | ...<... | negative | true |
 | guards.go:12:7:12:15 | ...<... | positive | false |
+| guards.go:12:7:12:15 | ...<... | positive | non-match |
 | guards.go:12:7:12:15 | ...<... | zero | false |
+| guards.go:12:7:12:15 | ...<... | zero | non-match |
 | guards.go:14:7:14:11 | value | positive | not 0 |
 | guards.go:14:7:14:11 | value | zero | 0 |
 | guards.go:14:7:14:16 | ...==... | positive | false |
+| guards.go:14:7:14:16 | ...==... | positive | non-match |
+| guards.go:14:7:14:16 | ...==... | zero | match |
 | guards.go:14:7:14:16 | ...==... | zero | true |
 | guards.go:22:9:22:13 | value | tagged one or two | not 0 |
 | guards.go:22:9:22:13 | value | tagged other | not 0 |
@@ -74,15 +81,25 @@ valueControlsResult
 | guards.go:23:2:24:21 | case clause | tagged one or two | false |
 | guards.go:23:2:24:21 | case clause | tagged other | false |
 | guards.go:23:2:24:21 | case clause | tagged zero | true |
+| guards.go:23:7:23:7 | 0 | tagged one or two | non-match |
+| guards.go:23:7:23:7 | 0 | tagged other | non-match |
+| guards.go:23:7:23:7 | 0 | tagged zero | match |
 | guards.go:25:2:26:27 | case clause | tagged other | false |
+| guards.go:25:7:25:7 | 1 | tagged other | non-match |
+| guards.go:25:10:25:10 | 2 | tagged other | non-match |
 | guards.go:34:2:35:30 | case clause | tagged false boolean | true |
 | guards.go:34:7:34:11 | value | tagged false boolean | false |
+| guards.go:34:7:34:11 | value | tagged false boolean | match |
 | guards.go:38:2:39:29 | case clause | tagged true boolean | true |
+| guards.go:38:7:38:11 | value | tagged true boolean | match |
 | guards.go:38:7:38:11 | value | tagged true boolean | true |
 | guards.go:42:2:43:33 | case clause | tagged false comparison | true |
 | guards.go:42:7:42:12 | number | tagged false comparison | Lower bound 10 |
 | guards.go:42:7:42:17 | ...<... | tagged false comparison | false |
+| guards.go:42:7:42:17 | ...<... | tagged false comparison | match |
 | guards.go:48:5:48:5 | a | compound true | true |
+| guards.go:48:10:48:17 | (...) | compound true | true |
+| guards.go:48:11:48:16 | ...\|\|... | compound true | true |
 | guards.go:56:5:56:15 | type conversion | upcast | 0 |
 | guards.go:56:5:56:20 | ...==... | upcast | true |
 | guards.go:56:11:56:14 | wide | upcast | 0 |
@@ -107,8 +124,14 @@ valueControlsResult
 | guards.go:96:5:96:11 | pointer | non-nil pointer | not null |
 | guards.go:96:5:96:18 | ...==... | nil pointer | true |
 | guards.go:96:5:96:18 | ...==... | non-nil pointer | false |
-| guards.go:102:5:102:11 | pointer | typed nil pointer | null |
 | guards.go:102:5:102:26 | ...==... | typed nil pointer | true |
+| guards.go:102:16:102:26 | function call | composite literal | no exception |
+| guards.go:102:16:102:26 | function call | errors new | no exception |
+| guards.go:102:16:102:26 | function call | fmt errorf | no exception |
+| guards.go:102:16:102:26 | function call | make result | no exception |
+| guards.go:102:16:102:26 | function call | new result | no exception |
+| guards.go:102:16:102:26 | function call | source non-nil return | no exception |
+| guards.go:102:16:102:26 | function call | typed nil pointer | no exception |
 | guards.go:106:5:106:9 | value | new result | not null |
 | guards.go:106:5:106:21 | ...==... | new result | true |
 | guards.go:110:5:110:9 | value | make result | not null |
@@ -136,12 +159,18 @@ valueControlsResult
 | guards.go:136:9:136:13 | value | non-default case | 0 |
 | guards.go:137:2:138:26 | case clause | default case | false |
 | guards.go:137:2:138:26 | case clause | non-default case | true |
+| guards.go:137:7:137:7 | 0 | default case | non-match |
+| guards.go:137:7:137:7 | 0 | non-default case | match |
 | guards.go:145:9:145:13 | value | case after default | 0 |
 | guards.go:145:9:145:13 | value | default before case | not 0 |
 | guards.go:148:2:149:28 | case clause | case after default | true |
 | guards.go:148:2:149:28 | case clause | default before case | false |
+| guards.go:148:7:148:7 | 0 | case after default | match |
+| guards.go:148:7:148:7 | 0 | default before case | non-match |
+| guards.go:162:7:162:11 | value | expressionless case | match |
 | guards.go:162:7:162:11 | value | expressionless case | true |
 | guards.go:162:7:162:11 | value | expressionless default | false |
+| guards.go:162:7:162:11 | value | expressionless default | non-match |
 | guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | no exception |
 | guards.go:183:5:183:21 | call to isNotNil | non-variadic wrapper | true |
 | guards.go:183:14:183:20 | pointer | non-variadic wrapper | not null |
@@ -164,7 +193,6 @@ valueControlsResult
 | guards.go:248:5:248:24 | call to isNotNil | receiver method wrapper | true |
 | guards.go:254:5:254:44 | call to isNotNil | receiver method expression wrapper | no exception |
 | guards.go:254:5:254:44 | call to isNotNil | receiver method expression wrapper | true |
-| guards.go:254:35:254:43 | validator | receiver method expression wrapper | not null |
 | guards.go:264:5:264:24 | call to isNotNil | promoted receiver method wrapper | no exception |
 | guards.go:264:5:264:24 | call to isNotNil | promoted receiver method wrapper | true |
 | guards.go:270:5:270:24 | call to isNotNil | implicit address receiver method wrapper | no exception |
@@ -197,8 +225,8 @@ ensuresEqResult
 | guards.go:62:5:62:22 | ...==... | type conversion = 0 | true |
 | guards.go:96:5:96:18 | ...==... | nil = pointer | true |
 | guards.go:96:5:96:18 | ...==... | pointer = nil | true |
-| guards.go:102:5:102:26 | ...==... | pointer = type conversion | true |
-| guards.go:102:5:102:26 | ...==... | type conversion = pointer | true |
+| guards.go:102:5:102:26 | ...==... | function call = pointer | true |
+| guards.go:102:5:102:26 | ...==... | pointer = function call | true |
 | guards.go:106:5:106:21 | ...==... | call to new = value | true |
 | guards.go:106:5:106:21 | ...==... | value = call to new | true |
 | guards.go:110:5:110:27 | ...==... | call to make = value | true |
