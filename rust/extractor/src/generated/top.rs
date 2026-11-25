@@ -11900,6 +11900,10 @@ impl MacroCall {
         out.add_tuple("macro_call_macro_call_expansions", vec![id.into(), value.into()]);
     }
 
+    pub fn emit_is_builtin_include(id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("macro_call_is_builtin_include", vec![id.into()]);
+    }
+
 }
 
 impl trap::TrapClass for MacroCall {

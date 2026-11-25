@@ -1959,6 +1959,11 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getMacroCallExpansion()` exists.
        */
       predicate hasMacroCallExpansion() { exists(this.getMacroCallExpansion()) }
+
+      /**
+       * Holds if this macro call has an extracted expansion of the built-in `include!` macro.
+       */
+      predicate isBuiltinInclude() { node.isBuiltinInclude() }
     }
 
     final private class ParentMacroExpr extends ParentAstNode, MacroExpr {

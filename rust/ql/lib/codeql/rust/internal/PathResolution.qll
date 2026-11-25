@@ -1405,18 +1405,16 @@ private Meta getPathAttrMeta(Module m) {
   result.getMetaPath().getText() = "path"
 }
 
-/** A literal-path `include!` invocation with an extracted expansion. */
+/** A built-in `include!` invocation with a literal path. */
 private class IncludeMacroCall extends MacroCall {
   IncludeMacroCall() {
-    this.getPath().getText() = "include" and
-    this.hasMacroCallExpansion() and
+    this.isBuiltinInclude() and
     exists(getIncludedPath(this))
   }
 }
 
 /** Gets a literal include path, excluding string literals that need unescaping. */
 private string getIncludedPath(MacroCall call) {
-  call.getPath().getText() = "include" and
   exists(string text | text = call.getTokenTree().getText() |
     result = text.regexpCapture("(?s)[(\\[{]\\s*\"([^\"\\\\]+)\"\\s*,?\\s*[)\\]}]", 1)
     or
@@ -1429,14 +1427,14 @@ private string getIncludedPath(MacroCall call) {
   )
 }
 
-/** Gets the nearest enclosing include expansion, skipping other kinds of macros. */
+/** Gets the nearest enclosing include, stopping at an include with an unsupported path. */
 private IncludeMacroCall getEnclosingInclude(AstNode n) {
   exists(AstNode invocation |
     invocation = ElementImpl::MacroExpansion::getImmediatelyEnclosingMacroInvocation(n)
   |
     result = invocation
     or
-    not invocation instanceof IncludeMacroCall and
+    not invocation.(MacroCall).isBuiltinInclude() and
     result = getEnclosingInclude(invocation)
   )
 }
@@ -1460,24 +1458,116 @@ private Folder getIncludeBaseFolder(IncludeMacroCall call) {
   result = getIncludeBaseFolder(getEnclosingInclude(call))
 }
 
+/** Provides path operations for literal `include!` invocations. */
+module IncludePaths {
+  bindingset[folder]
+  private predicate isWindowsFolder(string folder) {
+    folder.regexpMatch("[A-Z]:/.*") or folder.regexpMatch("//[^/]+/.*")
+  }
+
+  bindingset[folder, path]
+  private predicate isAbsolute(string folder, string path) {
+    path.startsWith("/")
+    or
+    isWindowsFolder(folder) and path.regexpMatch("[a-zA-Z]:/.*")
+  }
+
+  bindingset[folder]
+  private string getRoot(string folder) {
+    result = folder.regexpCapture("([A-Z]:/).*", 1)
+    or
+    result = folder.regexpCapture("(//[^/]+/[^/]+)(?:/.*)?", 1)
+    or
+    folder.regexpMatch("//[^/]+/") and result = folder
+    or
+    not isWindowsFolder(folder) and result = "/"
+  }
+
+  bindingset[folder, outer]
+  private string getWindowsVolume(string folder, string outer) {
+    result = outer.regexpCapture("([a-zA-Z]:)/.*", 1).toUpperCase()
+    or
+    result = outer.regexpCapture("(//[^/]+/[^/]+)(?:/.*)?", 1)
+    or
+    not outer.regexpMatch("[a-zA-Z]:/.*") and
+    not outer.startsWith("//") and
+    result = getRoot(folder).regexpReplaceAll("/$", "")
+  }
+
+  /** Normalizes separators as `Folder::Append` does. */
+  bindingset[path]
+  string normalize(string path) { result = path.replaceAll("\\", "/") }
+
+  /** Resolves `inner` relative to the directory containing `outer`. */
+  bindingset[folder, outer, inner]
+  string combine(string folder, string outer, string inner) {
+    exists(string path | path = normalize(inner) |
+      if isAbsolute(folder, path)
+      then
+        if isWindowsFolder(folder) and path.startsWith("/") and not path.startsWith("//")
+        then result = getWindowsVolume(folder, normalize(outer)) + path
+        else result = path
+      else
+        exists(string outerPath, string directory |
+          outerPath = normalize(outer) and
+          (
+            directory = outerPath.regexpCapture("(.*)/[^/]*", 1)
+            or
+            not outerPath.contains("/") and directory = "."
+          ) and
+          result = directory + "/" + path
+        )
+    )
+  }
+
+  /** Gets the base folder and relative path to pass to `Folder::Append`. */
+  bindingset[sourceFolder, path]
+  predicate getAppendBaseAndPath(
+    string sourceFolder, string path, string folder, string relativePath
+  ) {
+    exists(string normalized | normalized = normalize(path) |
+      not isAbsolute(sourceFolder, normalized) and
+      folder = sourceFolder and
+      relativePath = normalized
+      or
+      normalized.startsWith("/") and
+      (not isWindowsFolder(sourceFolder) or not normalized.startsWith("//")) and
+      folder = getRoot(sourceFolder) and
+      relativePath = normalized
+      or
+      isWindowsFolder(sourceFolder) and
+      normalized.regexpMatch("[a-zA-Z]:/.*") and
+      folder = normalized.regexpCapture("([a-zA-Z]:/).*", 1).toUpperCase() and
+      relativePath = normalized.regexpCapture("[a-zA-Z]:/(.*)", 1)
+      or
+      isWindowsFolder(sourceFolder) and
+      normalized.regexpMatch("//[^/]+/.*") and
+      folder = normalized.regexpCapture("(//[^/]+/).*", 1) and
+      relativePath = normalized.regexpCapture("//[^/]+/(.*)", 1)
+    )
+  }
+}
+
 /** Combines nested include paths without resolving containers recursively. */
 private string getIncludePath(IncludeMacroCall call) {
-  not exists(getEnclosingInclude(call)) and result = getIncludedPath(call)
+  not exists(getEnclosingInclude(call)) and result = IncludePaths::normalize(getIncludedPath(call))
   or
-  exists(string outerPath, string directory |
-    outerPath = getIncludePath(getEnclosingInclude(call)) and
-    (
-      directory = outerPath.regexpCapture("(.*)/[^/]*", 1)
-      or
-      not outerPath.contains("/") and directory = "."
-    ) and
-    result = directory + "/" + getIncludedPath(call)
-  )
+  result =
+    IncludePaths::combine(getIncludeBaseFolder(call).getAbsolutePath(),
+      getIncludePath(getEnclosingInclude(call)), getIncludedPath(call))
 }
 
 private predicate includePathImport(Folder folder, IncludeMacroCall call, string path) {
-  folder = getIncludeBaseFolder(call) and
-  path = getIncludePath(call)
+  exists(string base |
+    IncludePaths::getAppendBaseAndPath(getIncludeBaseFolder(call).getAbsolutePath(),
+      getIncludePath(call), base, path) and
+    (
+      folder.getAbsolutePath() = base
+      or
+      base.regexpMatch("//[^/]+/") and
+      folder.getAbsolutePath().toLowerCase() = base.toLowerCase()
+    )
+  )
 }
 
 private predicate shouldAppendInclude(Folder folder, string path) {
@@ -1551,7 +1641,7 @@ private predicate modImportNestedLookup(Module m, ModuleItemNode ancestor, Folde
 
 private predicate pathAttrImport(Folder f, Module m, string relativePath) {
   exists(KeyValueMeta meta |
-    f = m.getFile().getParentContainer() and
+    f = getModuleSourceFile(m).getParentContainer() and
     meta = getPathAttrMeta(m) and
     relativePath = meta.getExpr().(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
   )

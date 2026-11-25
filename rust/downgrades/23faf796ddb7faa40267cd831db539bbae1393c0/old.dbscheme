@@ -3619,6 +3619,11 @@ macro_call_macro_call_expansions(
   int macro_call_expansion: @ast_node ref
 );
 
+#keyset[id]
+macro_call_is_builtin_include(
+  int id: @macro_call ref
+);
+
 statics(
   unique int id: @static
 );

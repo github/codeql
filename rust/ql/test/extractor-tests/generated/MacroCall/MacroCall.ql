@@ -2,7 +2,12 @@
 import codeql.rust.elements
 import TestUtils
 
-query predicate instances(MacroCall x) { toBeTested(x) and not x.isUnknown() }
+query predicate instances(MacroCall x, string isBuiltinInclude__label, string isBuiltinInclude) {
+  toBeTested(x) and
+  not x.isUnknown() and
+  isBuiltinInclude__label = "isBuiltinInclude:" and
+  if x.isBuiltinInclude() then isBuiltinInclude = "yes" else isBuiltinInclude = "no"
+}
 
 query predicate getAttributeMacroExpansion(MacroCall x, MacroItems getAttributeMacroExpansion) {
   toBeTested(x) and

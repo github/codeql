@@ -1,0 +1,44 @@
+builtinIncludeArgument
+| ("includes/computed_outer.rs") |
+| ("includes/core_wrapper.rs") |
+| ("includes/escaped_outer.rs") |
+| ("includes/literal_outer.rs") |
+| ("includes/nested_literal_outer.rs") |
+| ("includes/nested_shadow_computed_outer.rs") |
+| ("includes/nested_shadow_outer.rs") |
+| ("includes/std_wrapper.rs") |
+| ("includes/wrapped_outer.rs") |
+| ("nested/escaped\\x5finner.rs") |
+| ("nested/nested_literal_inner.rs") |
+| (concat!("nested/","computed_inner.rs")) |
+| [r#"includes/literal_outer.rs"#] |
+functionTarget
+| alias_fn | shadow_alias/alias_child.rs |
+| computed_fn | computed/computed_child.rs |
+| core_fn | includes/core_child.rs |
+| escaped_fn | escaped/escaped_child.rs |
+| existing_fn | shadow_existing/existing_child.rs |
+| imported_fn | shadow_imported/imported_child.rs |
+| literal_fn | includes/literal_child.rs |
+| nested_literal_fn | includes/nested/nested_literal_child.rs |
+| nested_shadow_computed_fn | includes/nested_shadow_computed_child.rs |
+| nested_shadow_fn | includes/nested_shadow_child.rs |
+| qualified_fn | shadow_qualified/qualified_child.rs |
+| shadow_fn | shadow/shadow_child.rs |
+| std_fn | includes/std_child.rs |
+| wrapped_fn | includes/wrapped_child.rs |
+moduleImport
+| alias_child | main.rs | shadow_alias/alias_child.rs |
+| computed_child | main.rs | computed/computed_child.rs |
+| core_child | main.rs | includes/core_child.rs |
+| escaped_child | main.rs | escaped/escaped_child.rs |
+| existing_child | main.rs | shadow_existing/existing_child.rs |
+| imported_child | main.rs | shadow_imported/imported_child.rs |
+| literal_child | main.rs | includes/literal_child.rs |
+| nested_literal_child | main.rs | includes/nested/nested_literal_child.rs |
+| nested_shadow_child | main.rs | includes/nested_shadow_child.rs |
+| nested_shadow_computed_child | main.rs | includes/nested_shadow_computed_child.rs |
+| qualified_child | main.rs | shadow_qualified/qualified_child.rs |
+| shadow_child | main.rs | shadow/shadow_child.rs |
+| std_child | main.rs | includes/std_child.rs |
+| wrapped_child | main.rs | includes/wrapped_child.rs |
