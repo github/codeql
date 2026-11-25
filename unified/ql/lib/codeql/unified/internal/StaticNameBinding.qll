@@ -240,6 +240,7 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   or
   // Legacy Swift models omit module names. Expose their root namespace through
   // module qualifiers as well as directly in the top-level scope.
+  // TODO: MaD models should include module names to avoid this special case.
   node1.isTypeSelector("") and
   name = ["Swift", "Foundation"] and
   (
