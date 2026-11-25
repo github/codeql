@@ -763,7 +763,7 @@ top_level source="⟨body⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "emptyBranch" source="emptyBranch"
           value:
-            if_expr source="⟨else⟩⟨condition⟩⟨then⟩\n    #endif"
+            if_expr source="value\n    #if ⟨condition⟩\n        ⟨then⟩\n    ⟨else⟩\n    #endif"
               modifier: modifier "conditional_compilation" source=""
               condition: identifier "FIRST" source="FIRST"
               then:
@@ -775,8 +775,8 @@ top_level source="⟨body⟩"
                           base: identifier "value" source="value" (external)
                           member_name_node: identifier "foo" source="foo"
               else:
-                block source="⟨stmt⟩\n    #if FIRST\n        .foo()\n    #else"
-                  stmt: identifier "value" source="value"
+                block source="#else"
+                  stmt: identifier "value" source="value" (external)
         variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
           modifier: modifier "let" source="let"
           pattern: identifier "nested" source="nested"

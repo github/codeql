@@ -305,18 +305,17 @@ fn conditional_compilation_body(
         // compilation clause and in that case the body should be a block.
         return tree!((block stmt: {items}));
     };
-    let statements = if let Some(&suffix) = items.first() {
+    if let Some(&suffix) = items.first() {
         let leading = find_leading_expr(ctx, suffix);
         ctx.conditional_compilation_leading_bases
             .push((leading, base));
         let statements = ctx.translate(items);
         ctx.conditional_compilation_leading_bases.pop();
-        statements
+        tree!((block stmt: {statements}))
     } else {
         // On empty branches, just translate the base as the body.
-        ctx.translate(base)
-    };
-    tree!((block stmt: {statements}))
+        tree!((block stmt: {base} location: {ctx.source_range}))
+    }
 }
 
 #[allow(clippy::too_many_lines)]
