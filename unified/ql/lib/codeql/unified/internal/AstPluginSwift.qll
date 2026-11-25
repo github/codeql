@@ -58,6 +58,13 @@ private class AstPluginSwift extends AstPlugin {
     result in ["var", "let"]
   }
 
+  override predicate implicitFunctionExprParamAccess(Identifier ident, int n) {
+    // In Swift implicit function expression parameters are called "shorthand
+    // argument names" and are denoted by `$` followed by a number:
+    // https://docs.swift.org/latest/documentation/the-swift-programming-language/closures/#Shorthand-Argument-Names
+    n = ident.getValue().regexpCapture("\\$([0-9]+)", 1).toInt()
+  }
+
   bindingset[cd]
   override predicate defaultConstructorParameter(
     ConstructorDeclaration cd, int i, string name, boolean hasDefault

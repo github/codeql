@@ -391,6 +391,8 @@ module AssignableInternal {
       or
       def = TAddressOfDefinition(any(AddressOfExpr aoe | aoe.getOperand() = result))
       or
+      def = TPatternDefinition(any(LocalVariablePatternDecl decl | decl.getAccess() = result))
+      or
       def = TAssignOperationDefinition(any(AssignOperation ao | ao.getLeftOperand() = result))
     }
 
@@ -474,8 +476,8 @@ class AssignableDefinition extends TAssignableDefinition {
 
   /**
    * Gets the access used in the definition of the underlying assignable,
-   * if any. Local variable declarations and implicit parameter definitions
-   * are the only definitions without associated accesses.
+   * if any. For example, an uninitialized local variable declaration or an
+   * implicit parameter definition has no associated access.
    */
   final AssignableAccess getTargetAccess() { result = getTargetAccess(this) }
 

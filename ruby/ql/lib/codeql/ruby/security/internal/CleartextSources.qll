@@ -167,11 +167,6 @@ module CleartextSources {
   }
 
   /**
-   * DEPRECATED: Use NonCleartextSensitiveFlow instead.
-   */
-  deprecated class NonCleartextPasswordFlow = NonCleartextSensitiveFlow;
-
-  /**
    * A data flow node that does not contain clear-text sensitive data.
    */
   abstract private class NonCleartextSensitive extends DataFlow::Node { }

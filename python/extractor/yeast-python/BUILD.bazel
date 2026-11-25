@@ -1,0 +1,34 @@
+load("@rules_rust//cargo:defs.bzl", "cargo_build_script")
+load("//misc/bazel:rust.bzl", "codeql_rust_binary")
+load("//misc/bazel/3rdparty/rust_workspace_deps:defs.bzl", "aliases", "all_crate_deps")
+
+cargo_build_script(
+    name = "yeast-python-build",
+    srcs = ["build.rs"],
+    data = ["//python/extractor/tsg-python/tsp:parser-sources"],
+    deps = all_crate_deps(
+        build = True,
+    ),
+)
+
+codeql_rust_binary(
+    name = "yeast-python",
+    srcs = [
+        "src/main.rs",
+        "src/parser.rs",
+    ],
+    aliases = aliases(),
+    compile_data = ["//python/extractor/tsg-python/tsp:src/node-types.json"],
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    visibility = ["//visibility:public"],
+    deps = all_crate_deps(
+        normal = True,
+    ) + [
+        ":yeast-python-build",
+        "//shared/yeast",
+    ],
+)
+
+exports_files(["Cargo.toml"])

@@ -14,7 +14,6 @@
  * - Overloading (both arity based and type based)
  * - Indexing expressions
  * - Operations
- * - Closure short-hand parameters `$0`, `$1`, etc (extractor change?)
  */
 
 private import codeql.util.Unit
@@ -131,6 +130,8 @@ module Input3 implements InputSig3 {
     (exists(resolveAccessorAccess(_)) implies any())
     or
     (exists(resolveCallTarget(_)) implies any())
+    or
+    (exists(resolveSetterCallTarget(_)) implies any())
   }
 
   predicate inferTypeForDefaults = M3::inferType/2;
@@ -341,7 +342,12 @@ module Input3 implements InputSig3 {
     or
     exists(Parameter param |
       implicitParameterDecl(param, v) and
-      result = param.getType().getTypeAt(path)
+      (
+        result = param.getType().getTypeAt(path)
+        or
+        param.getParameterEx().isImplicitFunctionExprParameter(_, _) and
+        result = inferType(v.getAnAccess(), path)
+      )
     )
   }
 
@@ -423,6 +429,11 @@ module Input3 implements InputSig3 {
       p.getParameterEx().isImplicitReceiverParameter(c) and
       v.(LocalVariable).isImplicitReceiverParameter(c)
     )
+    or
+    exists(FunctionExpr fe, int i |
+      p.getParameterEx().isImplicitFunctionExprParameter(fe, i) and
+      v.(LocalVariable).isImplicitFunctionExprParameter(fe, i)
+    )
   }
 
   class Callable extends DeclarationImpl, TCallableDeclaration {
@@ -488,6 +499,8 @@ module Input3 implements InputSig3 {
           i = 0
           or
           param.asParameter() = c.getParameter(i - 1)
+          or
+          param.isImplicitFunctionExprParameter(c, i - 1)
           or
           param.isDefaultConstructorParameter(c, i, _)
         )
@@ -607,12 +620,23 @@ module Input3 implements InputSig3 {
         result = this.getTargetViaStaticNameBinding()
       ) and
       // handled as a field access
-      not result.asCallable() instanceof AccessorDeclaration
+      not result.asCallable() instanceof AccessorDeclaration and
+      // only invoked from a setter position; see `resolveSetterCallTarget`
+      not result.asCallable() instanceof SetterMethodDeclaration
     }
 
     Callable getTarget(InvocationResolutionContext c) {
       result = this.getTarget() and
       exists(c)
+    }
+
+    /**
+     * Gets the setter method invoked when this call appears as an assignment target, or is
+     * otherwise updated in place.
+     */
+    Callable getSetterTarget() {
+      result = [lookupInstanceMember(this.getCallee()), this.getTargetViaStaticNameBinding()] and
+      result.asCallable() instanceof SetterMethodDeclaration
     }
 
     Callable getATargetForTypeQualifierMatching() { result = this.getTargetViaStaticNameBinding() }
@@ -680,7 +704,7 @@ module Input3 implements InputSig3 {
   }
 
   class ClosureParameterPseudoType extends T::ClosureParameterPseudoType {
-    Parameter getParameter() { result.getParameterEx().asParameter() = this.getParam() }
+    Parameter getParameter() { result.getParameterEx() = this.getParam() }
   }
 
   pragma[nomagic]
@@ -689,7 +713,7 @@ module Input3 implements InputSig3 {
   pragma[nomagic]
   TypePath getClosureParameterTypePath(Parameter p) {
     exists(FunctionExpr fe, Type t, int i |
-      p.getParameterEx().asParameter() = fe.getParameter(i) and
+      p.getParameterEx().isFunctionExprParameter(fe, i) and
       t = getFunctionExprType(fe) and
       result = getFunctionExprParameterTypePath(t, fe.getNumberOfParameters(), i)
     )
@@ -1009,6 +1033,19 @@ cached
 Callable resolveCallTarget(CallExpr ce) {
   CachedStage::ref() and
   result = ce.(Input3::Invocation).getTarget().asCallable()
+}
+
+/**
+ * Gets the setter invoked when the given call expression appears as an assignment target,
+ * or is otherwise updated in place.
+ *
+ * For a call `x.foo(...)` this is the setter method named `foo` of the receiver type,
+ * such as the setter of a subscript for a Swift subscript call `x[i]`.
+ */
+cached
+SetterMethodDeclaration resolveSetterCallTarget(CallExpr ce) {
+  CachedStage::ref() and
+  result = ce.(Input3::Invocation).getSetterTarget().asCallable()
 }
 
 private predicate typeTestAstNodeRepr(AstNode n, string repr) {

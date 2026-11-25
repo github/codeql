@@ -1,3 +1,7 @@
+## 1.6.16
+
+No user-facing changes.
+
 ## 1.6.15
 
 ### Minor Analysis Improvements

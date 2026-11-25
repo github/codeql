@@ -696,8 +696,6 @@ private module Cached {
     TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownElementContent() or
     TFieldContent(string name) { fieldName(name) } or
-    deprecated TSplatContent(int i, Boolean shifted) { i in [0 .. 10] } or
-    deprecated THashSplatContent(ConstantValue::ConstantSymbolValue cv) or
     TCapturedVariableContent(VariableCapture::CapturedVariable v) or
     // Only used by type-tracking
     TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }

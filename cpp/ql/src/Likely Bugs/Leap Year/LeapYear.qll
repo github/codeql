@@ -134,13 +134,6 @@ abstract class LeapYearFieldAccess extends YearFieldAccess {
   }
 
   /**
-   * DEPRECATED: Use `additionalAdditionOrSubtractionCheckForLeapYear` instead.
-   */
-  deprecated predicate additionalAdditionOrSubstractionCheckForLeapYear(int valueToCheck) {
-    this.additionalAdditionOrSubtractionCheckForLeapYear(valueToCheck)
-  }
-
-  /**
    * Holds if this object is used on a modulus 4 operation, which would likely indicate the start of a leap year check.
    */
   predicate isUsedInMod4Operation() {

@@ -38,7 +38,7 @@ this rule.
   <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>, AV Rule 189. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  E. W. Dijkstra Archive: <a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html">A Case against the GO TO Statement (EWD-215)</a>.
+  E. W. Dijkstra Archive: <a href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD02xx/EWD215.html">A Case against the GO TO Statement (EWD-215)</a>.
 </li>
 <li>
   MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/goto-statement-cpp">goto Statement (C++)</a>.

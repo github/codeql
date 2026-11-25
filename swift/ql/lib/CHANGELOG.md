@@ -1,3 +1,7 @@
+## 6.8.9
+
+No user-facing changes.
+
 ## 6.8.8
 
 ### Minor Analysis Improvements
