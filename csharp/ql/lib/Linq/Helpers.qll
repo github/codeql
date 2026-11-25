@@ -20,6 +20,12 @@ private int numStmts(ForEachStmt fes) {
   else result = 1
 }
 
+private predicate supportsLinqEarlyReturn(ForEachStmt fes) {
+  not fes.isAsync() and
+  not fes.getVariable().isCaptured() and
+  fes.getElementType() = fes.getVariable().getType()
+}
+
 private predicate returnsLoopVariable(ForEachStmt fes, Stmt s) {
   exists(ReturnStmt ret |
     ret = s.stripSingletonBlocks() and
@@ -29,10 +35,16 @@ private predicate returnsLoopVariable(ForEachStmt fes, Stmt s) {
 
 private predicate hasNullDefault(Type t) { t.isRefType() or t instanceof NullableType }
 
-private predicate returnsDefaultValueAfterForeach(ForEachStmt fes) {
-  exists(BlockStmt enclosingBlock, int i, Type elementType, ReturnStmt ret |
+private ReturnStmt returnAfterForeach(ForEachStmt fes) {
+  exists(BlockStmt enclosingBlock, int i |
     enclosingBlock.getStmt(i) = fes and
-    enclosingBlock.getStmt(i + 1) = ret and
+    enclosingBlock.getStmt(i + 1) = result
+  )
+}
+
+private predicate returnsDefaultValueAfterForeach(ForEachStmt fes) {
+  exists(Type elementType, ReturnStmt ret |
+    ret = returnAfterForeach(fes) and
     elementType = fes.getVariable().getType()
   |
     ret.getExpr().stripImplicit() instanceof NullLiteral and
@@ -123,6 +135,10 @@ private predicate acceptableForLinqCapture(Expr e) {
     pa = e.getAChildExpr*()
   |
     p.isOutOrRef() or p.isIn() or p.isReadonlyRef()
+  ) and
+  not exists(LocalScopeVariable v |
+    v.getAnAccess() = e.getAChildExpr*() and
+    (v.isRef() or v.getType().isRefLikeType())
   )
 }
 
@@ -132,7 +148,7 @@ private module LinqFilterOpportunity<linqCandidateSig/2 linqCandidate> {
   predicate missed(ForEachStmtGenericEnumerable fes, Stmt s) {
     s = firstStmt(fes) and
     // The linq candidate expression accesses the loop variable, and the
-    // candidate doesn't access an in, out, or ref parameter.
+    // candidate can be captured in a LINQ lambda.
     exists(Expr candidate | linqCandidate(s, candidate) |
       fes.getVariable().getAnAccess() = candidate.getAChildExpr*() and
       acceptableForLinqCapture(candidate)
@@ -144,7 +160,7 @@ private module LinqMapOpportunity<linqCandidateSig/2 linqCandidate> {
   predicate missed(ForEachStmt fes, Stmt s) {
     s = firstStmt(fes) and
     // The linq candidate (and only the candidate) expression accesses the loop variable and the
-    // candidate doesn't access an in, out, or ref parameter.
+    // candidate can be captured in a LINQ lambda.
     exists(Expr candidate | linqCandidate(s, candidate) |
       forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
         va = candidate.getAChildExpr*()
@@ -168,16 +184,36 @@ private predicate linqAllCandidate(Stmt s, Expr e) {
     )
 }
 
+private predicate linqAllReturnCandidate(Stmt s, Expr e) {
+  s =
+    any(IfStmt is |
+      e = is.getCondition() and
+      not exists(is.getElse()) and
+      not e.getAChildExpr*() instanceof AwaitExpr and
+      exists(ReturnStmt ret |
+        ret = is.getThen().stripSingletonBlocks() and
+        ret.getExpr().stripImplicit().(BoolLiteral).getBoolValue() = false
+      )
+    )
+}
+
 /**
  * Holds if `foreach` statement `fes` could be converted to a `.All()` call.
  * That is, the `ForEachStmt` contains a single `if` with a condition that
- * accesses the loop variable and with a body that assigns `false` to a variable
- * and `break`s out of the `foreach`.
+ * accesses the loop variable and with a body that either assigns `false` to a
+ * variable and `break`s out of the `foreach`, or returns `false` when the loop
+ * is immediately followed by `return true`.
  */
 predicate missedAllOpportunity(ForEachStmtGenericEnumerable fes) {
   // The loop contains an if statement with no else case, and nothing else.
-  LinqFilterOpportunity<linqAllCandidate/2>::missed(fes, _) and
-  numStmts(fes) = 1
+  numStmts(fes) = 1 and
+  (
+    LinqFilterOpportunity<linqAllCandidate/2>::missed(fes, _)
+    or
+    LinqFilterOpportunity<linqAllReturnCandidate/2>::missed(fes, _) and
+    supportsLinqEarlyReturn(fes) and
+    returnAfterForeach(fes).getExpr().stripImplicit().(BoolLiteral).getBoolValue() = true
+  )
 }
 
 private predicate linqCastCandidate(Stmt s, Expr e) {
@@ -292,10 +328,8 @@ predicate missedFirstOrDefaultOpportunity(ForEachStmtGenericEnumerable fes, IfSt
   // The loop only checks whether the current element is the first match.
   LinqFilterOpportunity<linqFirstOrDefaultCandidate/2>::missed(fes, is) and
   numStmts(fes) = 1 and
-  not fes.isAsync() and
-  not fes.getVariable().isCaptured() and
+  supportsLinqEarlyReturn(fes) and
   returnsLoopVariable(fes, is.getThen()) and
-  fes.getElementType() = fes.getVariable().getType() and
   returnsDefaultValueAfterForeach(fes)
 }
 
