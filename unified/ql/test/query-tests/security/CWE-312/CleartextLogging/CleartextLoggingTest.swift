@@ -226,9 +226,11 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
 }
 
 class MyClass {
+    init() {}
+
 	var harmless = "abc"
 	var password = "123"
-	var passwords[3]
+	var passwords: [3 of String] = ["abc", "123", "def"]
 	var optionalPassword: String? = "123"
 	var credentials = ["password": "123"]
 
@@ -262,9 +264,9 @@ func test3(x: String) {
     let o: MyClass? = MyClass()
     NSLog(o!.password) // $ Alert[unified/swift/cleartext-logging]
     NSLog(o!.getPassword()) // $ Alert[unified/swift/cleartext-logging]
-    NSLog(o?.password!) // $ Alert[unified/swift/cleartext-logging]
+    NSLog((o?.password)!) // $ Alert[unified/swift/cleartext-logging]
 
-    let a: MyClass[3] = [MyClass(), MyClass(), MyClass()]
+    let a: [MyClass] = [MyClass(), MyClass(), MyClass()]
     NSLog(a[0].password) // $ Alert[unified/swift/cleartext-logging]
     NSLog(a[0].getPassword()) // $ Alert[unified/swift/cleartext-logging]
 }
@@ -288,7 +290,7 @@ func test3(mo : MyOuter) {
 	NSLog(mo.password.value) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.passwords[0].value) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.optionalPassword!.value) // $ Alert[unified/swift/cleartext-logging]
-	NSLog(mo.optionalPassword?.value!) // $ Alert[unified/swift/cleartext-logging]
+	NSLog((mo.optionalPassword?.value)!) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.value) // safe
 
 	NSLog(mo.password.getValue()) // $ Alert[unified/swift/cleartext-logging]
