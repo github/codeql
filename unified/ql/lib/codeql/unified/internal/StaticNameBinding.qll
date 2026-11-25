@@ -237,6 +237,16 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
     node1.isTypeSelector(type.append(name)) and
     node2.isTypeSelector(type)
   )
+  or
+  // Legacy Swift models omit module names. Expose their root namespace through
+  // module qualifiers as well as directly in the top-level scope.
+  node1.isTypeSelector("") and
+  name = ["Swift", "Foundation"] and
+  (
+    node2.isModuleRoot()
+    or
+    node2.isLocalNamespace(any(TopLevel top).getBody())
+  )
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
