@@ -216,8 +216,9 @@ predicate insecureAlgorithm(string name, string reason) {
   // 3TDEA (Triple DES) has different names across JCA, JSSE, and Bouncy Castle.
   name =
     [
-      "DES[-_]?ede((RFC3211)?Wrap)?", "(?i:PBEWithSHA1AndDESede)", "Triple[-_]?DES", "3[-_]?DES",
-      "DES[-_]?3"
+      "DES[-_]?ede(3|(RFC321[17])?Wrap)?",
+      "(?i:PBEWith(MD5|SHA1?)And([23]-?Key)?(TripleDES|DESede)(-CBC)?)", "Triple[-_]?DES",
+      "3[-_]?DES", "DES[-_]?3"
     ] and
   reason =
     "It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST. Consider using AES instead."
