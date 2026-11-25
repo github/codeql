@@ -1,6 +1,6 @@
 use std::fmt::Write;
 
-use crate::{schema::Schema, Ast, Node, NodeContent, TreeId, CHILD_FIELD};
+use crate::{Ast, CHILD_FIELD, Node, NodeContent, TreeId, schema::Schema};
 
 #[derive(Clone, Copy)]
 struct TypeCheckContext<'a> {
@@ -529,6 +529,9 @@ fn source_skeleton<Id: TreeId>(ast: &Ast<Id>, node: &Node<Id>, source: &str) -> 
             if !child.is_named() {
                 continue;
             }
+            if ast.is_non_structural_kind(child.kind_name()) {
+                continue;
+            }
             let Some(child) = node_source_range(child) else {
                 continue;
             };
@@ -646,6 +649,59 @@ mod tests {
         );
 
         assert!(dump.starts_with("parent source=\"αbefore(⟨value⟩)afterω\"\n"));
+    }
+
+    #[test]
+    fn source_skeleton_ignores_non_structural_children() {
+        let source = "\"hello\"";
+        let source_range = range(0, source.len());
+        let mut schema = crate::schema::Schema::new();
+        let literal_kind = schema.register_kind("string_literal");
+        let value_kind = schema.register_kind("string_value");
+        schema.set_non_structural_kind("string_value");
+        let raw_field = schema.register_field("raw");
+        let interpreted_field = schema.register_field("interpreted");
+        let mut ast = OutputAst::with_schema(schema);
+        let raw = ast.create_node_with_range(
+            value_kind,
+            NodeContent::DynamicString(source.to_string()),
+            BTreeMap::new(),
+            true,
+            Some(source_range),
+        );
+        let interpreted = ast.create_node_with_range(
+            value_kind,
+            NodeContent::DynamicString("hello".to_string()),
+            BTreeMap::new(),
+            true,
+            Some(source_range),
+        );
+        let literal = ast.create_node_with_range(
+            literal_kind,
+            NodeContent::DynamicString(String::new()),
+            BTreeMap::from([
+                (raw_field, vec![raw]),
+                (interpreted_field, vec![interpreted]),
+            ]),
+            true,
+            Some(source_range),
+        );
+        ast.set_root(literal);
+
+        let dump = dump_ast_with_options(
+            &ast,
+            literal,
+            source,
+            &DumpOptions {
+                show_locations: false,
+                show_content: true,
+                show_abridged_source: true,
+            },
+        );
+
+        assert!(dump.starts_with("string_literal source=\"\\\"hello\\\"\"\n"));
+        assert!(dump.contains("  raw: string_value \"\\\"hello\\\"\""));
+        assert!(dump.contains("  interpreted: string_value \"hello\""));
     }
 
     #[test]

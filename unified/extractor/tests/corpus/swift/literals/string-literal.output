@@ -1,4 +1,10 @@
 "hello"
+"line\nquote \" unicode \u{41}"
+#"raw \n interpreted \#n"#
+"""
+    first
+      second
+    """
 
 ---
 
@@ -13,10 +19,54 @@ sourceFile
           segments:
             stringSegment
               content: stringSegment "hello"
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "line\\n"
+            stringSegment
+              content: stringSegment "quote \\\" unicode \\u{41}"
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingPounds: rawStringPoundDelimiter "#"
+          openingPounds: rawStringPoundDelimiter "#"
+          closingQuote: "
+          openingQuote: "
+          segments:
+            stringSegment
+              content: stringSegment "raw \\n interpreted \\#n"
+            stringSegment
+              content: stringSegment
+    codeBlockItem
+      item:
+        stringLiteralExpr
+          closingQuote: """
+          openingQuote: """
+          segments:
+            stringSegment
+              content: stringSegment "first\n"
+            stringSegment
+              content: stringSegment "  second"
 
 ---
 
 top_level source="⟨body⟩"
   body:
-    block source="⟨stmt⟩"
-      stmt: string_literal "\"hello\"" source="\"hello\""
+    block source="⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩\n⟨stmt⟩"
+      stmt:
+        string_literal source="\"hello\""
+          raw: string_value "\"hello\"" source="\"hello\""
+          interpreted: string_value "hello" source="\"hello\""
+        string_literal source="\"line\\nquote \\\" unicode \\u{41}\""
+          raw: string_value "\"line\\nquote \\\" unicode \\u{41}\"" source="\"line\\nquote \\\" unicode \\u{41}\""
+          interpreted: string_value "line\nquote \" unicode A" source="\"line\\nquote \\\" unicode \\u{41}\""
+        string_literal source="#\"raw \\n interpreted \\#n\"#"
+          raw: string_value "#\"raw \\n interpreted \\#n\"#" source="#\"raw \\n interpreted \\#n\"#"
+          interpreted: string_value "raw \\n interpreted \n" source="#\"raw \\n interpreted \\#n\"#"
+        string_literal source="\"\"\"\n    first\n      second\n    \"\"\""
+          raw: string_value "\"\"\"\n    first\n      second\n    \"\"\"" source="\"\"\"\n    first\n      second\n    \"\"\""
+          interpreted: string_value "first\n  second" source="\"\"\"\n    first\n      second\n    \"\"\""

@@ -17,6 +17,9 @@
 ///     right: _expression
 ///   identifier:
 ///
+/// non_structural:
+///   - identifier
+///
 /// unnamed:
 ///   - "+"
 ///   - "end"
@@ -39,6 +42,8 @@ struct YamlNodeTypes {
     named: BTreeMap<String, Option<BTreeMap<String, TypeRefOrList>>>,
     #[serde(default)]
     unnamed: Vec<String>,
+    #[serde(default)]
+    non_structural: BTreeSet<String>,
 }
 
 #[derive(Deserialize)]
@@ -162,52 +167,72 @@ fn resolve_type_ref(
     json!({"type": kind, "named": named})
 }
 
-/// Convert YAML string to node-types JSON string.
-pub fn convert(yaml_input: &str) -> Result<String, String> {
-    fn add_fields_to_json_entry(
-        entry: &mut serde_json::Value,
-        fields: Option<&BTreeMap<String, TypeRefOrList>>,
-        named_types: &BTreeSet<String>,
-        unnamed_types: &BTreeSet<String>,
-    ) {
-        let mut json_fields = serde_json::Map::new();
-        let mut json_children = None;
-
-        for (raw_field_name, type_refs) in fields.into_iter().flatten() {
-            let spec = parse_field_name(raw_field_name);
-            let types: Vec<_> = type_refs
-                .clone()
-                .into_vec()
-                .iter()
-                .map(|t| resolve_type_ref(t, named_types, unnamed_types))
-                .collect();
-            let field_info = json!({
-                "multiple": spec.multiple,
-                "required": spec.required,
-                "types": types,
-            });
-
-            if let Some(name) = spec.name {
-                json_fields.insert(name, field_info);
-            } else {
-                json_children = Some(field_info);
+fn validate_non_structural(yaml: &YamlNodeTypes) -> Result<(), String> {
+    for kind in &yaml.non_structural {
+        match yaml.named.get(kind) {
+            Some(fields) if fields.as_ref().is_none_or(BTreeMap::is_empty) => {}
+            Some(_) => {
+                return Err(format!(
+                    "Non-structural node type '{kind}' must be a named leaf"
+                ));
+            }
+            None => {
+                return Err(format!(
+                    "Non-structural node type '{kind}' must be declared under 'named'"
+                ));
             }
         }
+    }
+    Ok(())
+}
 
-        entry
-            .as_object_mut()
-            .unwrap()
-            .insert("fields".to_string(), json_fields.into());
-        if let Some(children) = json_children {
-            entry
-                .as_object_mut()
-                .unwrap()
-                .insert("children".to_string(), children);
+fn add_fields_to_json_entry(
+    entry: &mut serde_json::Value,
+    fields: Option<&BTreeMap<String, TypeRefOrList>>,
+    named_types: &BTreeSet<String>,
+    unnamed_types: &BTreeSet<String>,
+) {
+    let mut json_fields = serde_json::Map::new();
+    let mut json_children = None;
+
+    for (raw_field_name, type_refs) in fields.into_iter().flatten() {
+        let spec = parse_field_name(raw_field_name);
+        let types: Vec<_> = type_refs
+            .clone()
+            .into_vec()
+            .iter()
+            .map(|t| resolve_type_ref(t, named_types, unnamed_types))
+            .collect();
+        let field_info = json!({
+            "multiple": spec.multiple,
+            "required": spec.required,
+            "types": types,
+        });
+
+        if let Some(name) = spec.name {
+            json_fields.insert(name, field_info);
+        } else {
+            json_children = Some(field_info);
         }
     }
 
+    entry
+        .as_object_mut()
+        .unwrap()
+        .insert("fields".to_string(), json_fields.into());
+    if let Some(children) = json_children {
+        entry
+            .as_object_mut()
+            .unwrap()
+            .insert("children".to_string(), children);
+    }
+}
+
+/// Convert YAML string to node-types JSON string.
+pub fn convert(yaml_input: &str) -> Result<String, String> {
     let yaml: YamlNodeTypes =
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
+    validate_non_structural(&yaml)?;
 
     // Build the sets of known named and unnamed types for resolution.
     let mut named_types = BTreeSet::new();
@@ -239,22 +264,31 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
 
     // 2. Named nodes
     for (name, fields_opt) in &yaml.named {
+        let non_structural = yaml.non_structural.contains(name);
         let fields_map = match fields_opt {
             None => {
                 // Leaf token: no fields, no children, no subtypes
-                output.push(json!({
+                let mut entry = json!({
                     "type": name,
                     "named": true,
                     "fields": {},
-                }));
+                });
+                if non_structural {
+                    entry["non_structural"] = true.into();
+                }
+                output.push(entry);
                 continue;
             }
             Some(m) if m.is_empty() => {
-                output.push(json!({
+                let mut entry = json!({
                     "type": name,
                     "named": true,
                     "fields": {},
-                }));
+                });
+                if non_structural {
+                    entry["non_structural"] = true.into();
+                }
+                output.push(entry);
                 continue;
             }
             Some(m) => m,
@@ -293,6 +327,7 @@ pub fn extend_schema_from_yaml(
 ) -> Result<(), String> {
     let yaml: YamlNodeTypes =
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
+    validate_non_structural(&yaml)?;
     apply_yaml_to_schema(&yaml, schema);
     // The typed `YamlNodeTypes` stores each node's fields in a `BTreeMap`
     // (alphabetical), losing the authored order. Re-parse as an ordered value to
@@ -371,6 +406,9 @@ fn apply_yaml_to_schema(yaml: &YamlNodeTypes, schema: &mut crate::schema::Schema
     // Register unnamed tokens as node kinds
     for name in &yaml.unnamed {
         schema.register_unnamed_kind(name);
+    }
+    for name in &yaml.non_structural {
+        schema.set_non_structural_kind(name);
     }
 
     let mut named_types = BTreeSet::new();
@@ -474,6 +512,7 @@ pub fn schema_from_yaml(yaml_input: &str) -> Result<crate::schema::Schema, Strin
 pub fn leaf_kinds_from_yaml(yaml_input: &str) -> Result<BTreeSet<String>, String> {
     let yaml: YamlNodeTypes =
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
+    validate_non_structural(&yaml)?;
     Ok(yaml
         .named
         .into_iter()
@@ -501,6 +540,8 @@ struct JsonNodeInfo {
     children: Option<JsonFieldInfo>,
     #[serde(default)]
     subtypes: Vec<JsonNodeType>,
+    #[serde(default)]
+    non_structural: bool,
 }
 
 #[derive(Deserialize)]
@@ -523,6 +564,36 @@ struct JsonSupertype {
     children: Option<JsonFieldInfo>,
 }
 
+fn write_named_nodes(
+    out: &mut String,
+    named: &BTreeMap<String, Option<BTreeMap<String, JsonFieldInfo>>>,
+    all_named: &BTreeSet<String>,
+    all_unnamed: &BTreeSet<String>,
+) {
+    if named.is_empty() {
+        return;
+    }
+    writeln!(out, "named:").unwrap();
+    for (name, fields_opt) in named {
+        writeln!(out, "  {name}:").unwrap();
+        if let Some(fields) = fields_opt {
+            write_json_fields(out, fields, None, "    ", all_named, all_unnamed);
+        }
+    }
+    writeln!(out).unwrap();
+}
+
+fn write_non_structural(out: &mut String, non_structural: &BTreeSet<String>) {
+    if non_structural.is_empty() {
+        return;
+    }
+    writeln!(out, "non_structural:").unwrap();
+    for name in non_structural {
+        writeln!(out, "  - {}", quote_yaml(name)).unwrap();
+    }
+    writeln!(out).unwrap();
+}
+
 /// Convert a tree-sitter node-types.json string to the YAML format.
 pub fn convert_from_json(json_input: &str) -> Result<String, String> {
     let nodes: Vec<JsonNodeInfo> =
@@ -542,11 +613,22 @@ pub fn convert_from_json(json_input: &str) -> Result<String, String> {
     let mut supertypes: BTreeMap<String, JsonSupertype> = BTreeMap::new();
     let mut named: BTreeMap<String, Option<BTreeMap<String, JsonFieldInfo>>> = BTreeMap::new();
     let mut unnamed: Vec<String> = Vec::new();
+    let mut non_structural: BTreeSet<String> = BTreeSet::new();
 
     for node in nodes {
         if !node.named {
             unnamed.push(node.kind);
             continue;
+        }
+
+        if node.non_structural {
+            if !node.subtypes.is_empty() || !node.fields.is_empty() || node.children.is_some() {
+                return Err(format!(
+                    "Non-structural node type '{}' must be a named leaf",
+                    node.kind
+                ));
+            }
+            non_structural.insert(node.kind.clone());
         }
 
         if !node.subtypes.is_empty() {
@@ -614,22 +696,8 @@ pub fn convert_from_json(json_input: &str) -> Result<String, String> {
         writeln!(out).unwrap();
     }
 
-    // Named
-    if !named.is_empty() {
-        writeln!(out, "named:").unwrap();
-        for (name, fields_opt) in &named {
-            match fields_opt {
-                None => {
-                    writeln!(out, "  {name}:").unwrap();
-                }
-                Some(fields) => {
-                    writeln!(out, "  {name}:").unwrap();
-                    write_json_fields(&mut out, fields, None, "    ", &all_named, &all_unnamed);
-                }
-            }
-        }
-        writeln!(out).unwrap();
-    }
+    write_named_nodes(&mut out, &named, &all_named, &all_unnamed);
+    write_non_structural(&mut out, &non_structural);
 
     // Unnamed
     if !unnamed.is_empty() {
@@ -843,6 +911,64 @@ named:
         assert!(leaf_kinds.contains("identifier"));
         assert!(leaf_kinds.contains("empty_fields"));
         assert!(!leaf_kinds.contains("call"));
+    }
+
+    #[test]
+    fn test_non_structural_leaf_conversion() {
+        let yaml = r"
+named:
+  string_literal:
+    raw: string_value
+  string_value:
+
+non_structural:
+  - string_value
+";
+
+        let json = convert(yaml).unwrap();
+        let result: Vec<serde_json::Value> = serde_json::from_str(&json).unwrap();
+        let value = result
+            .iter()
+            .find(|node| node["type"] == "string_value")
+            .unwrap();
+        assert_eq!(value["non_structural"], true);
+
+        let yaml_output = convert_from_json(&json).unwrap();
+        assert!(yaml_output.contains("non_structural:\n  - string_value"));
+        let json_output = convert(&yaml_output).unwrap();
+        assert_eq!(
+            serde_json::from_str::<serde_json::Value>(&json).unwrap(),
+            serde_json::from_str::<serde_json::Value>(&json_output).unwrap()
+        );
+    }
+
+    #[test]
+    fn test_non_structural_type_must_be_a_named_leaf() {
+        let structured = r"
+named:
+  string_value:
+    child: identifier
+  identifier:
+
+non_structural:
+  - string_value
+";
+        assert_eq!(
+            convert(structured).unwrap_err(),
+            "Non-structural node type 'string_value' must be a named leaf"
+        );
+
+        let unknown = r"
+named:
+  identifier:
+
+non_structural:
+  - string_value
+";
+        assert_eq!(
+            convert(unknown).unwrap_err(),
+            "Non-structural node type 'string_value' must be declared under 'named'"
+        );
     }
 
     #[test]

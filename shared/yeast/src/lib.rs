@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 extern crate self as yeast;
 
 use serde::Serialize;
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 pub mod build;
 pub mod captures;
@@ -871,6 +871,10 @@ impl<Id: TreeId> Ast<Id> {
         self.schema.register_field(name)
     }
 
+    pub fn is_non_structural_kind(&self, kind: &str) -> bool {
+        self.schema.is_non_structural_kind(kind)
+    }
+
     /// Register every kind and field name from `schema` into this AST's schema
     /// (idempotent). Used before desugaring an externally-built AST so that
     /// rules can build output nodes whose kind/field names come from the
@@ -1005,20 +1009,12 @@ impl<Id: TreeId> Ast<Id> {
 
     pub fn id_for_node_kind(&self, kind: &str) -> Option<KindId> {
         let id = self.schema.id_for_node_kind(kind).unwrap_or(0);
-        if id == 0 {
-            None
-        } else {
-            Some(id)
-        }
+        if id == 0 { None } else { Some(id) }
     }
 
     pub fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
         let id = self.schema.id_for_unnamed_node_kind(kind).unwrap_or(0);
-        if id == 0 {
-            None
-        } else {
-            Some(id)
-        }
+        if id == 0 { None } else { Some(id) }
     }
 }
 

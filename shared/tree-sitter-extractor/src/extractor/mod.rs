@@ -707,7 +707,7 @@ impl<'a> Visitor<'a> {
             .unwrap_or_else(|| panic!("missing extractor schema entry for {type_name:?}"));
         let mut valid = true;
         let parent_info = match self.stack.last_mut() {
-            Some(p) if !node.is_extra() => {
+            Some(p) if !node.is_extra() && !table.non_structural => {
                 p.1 += 1;
                 Some((p.0, p.1 - 1))
             }
@@ -1067,5 +1067,84 @@ fn traverse_yeast(tree: &yeast::OutputAst, visitor: &mut Visitor) {
                 break;
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn non_structural_field_is_emitted_without_parent_relation() {
+        let yaml = r"
+    named:
+      string_literal:
+        raw: string_value
+      string_value:
+
+    non_structural:
+      - string_value
+    ";
+        let json = yeast::node_types_yaml::convert(yaml).unwrap();
+        let node_types = node_types::read_node_types_str("test", &json).unwrap();
+        let schema = yeast::node_types_yaml::schema_from_yaml(yaml).unwrap();
+        let mut ast: yeast::OutputAst = yeast::Ast::with_schema(schema);
+
+        let value_kind = ast.id_for_node_kind("string_value").unwrap();
+        let value = ast.create_node(
+            value_kind,
+            yeast::NodeContent::DynamicString("raw".to_owned()),
+            std::collections::BTreeMap::new(),
+            true,
+        );
+        let raw_field = ast.field_id_for_name("raw").unwrap();
+        let literal_kind = ast.id_for_node_kind("string_literal").unwrap();
+        let literal = ast.create_node(
+            literal_kind,
+            yeast::NodeContent::DynamicString(String::new()),
+            std::collections::BTreeMap::from([(raw_field, vec![value])]),
+            true,
+        );
+        ast.set_root(literal);
+
+        let mut diagnostics = diagnostics::DiagnosticLoggers::new("test").logger();
+        let mut trap = trap::Writer::new();
+        let file_label = trap.fresh_id();
+        let mut visitor = Visitor::new(
+            b"",
+            &mut diagnostics,
+            &mut trap,
+            "test.swift",
+            file_label,
+            "test",
+            &node_types,
+        );
+        traverse_yeast(&ast, &mut visitor);
+
+        let path =
+            std::env::temp_dir().join(format!("codeql-non-structural-{}.trap", std::process::id()));
+        trap.write_to_file(&path, trap::Compression::None).unwrap();
+        let output = std::fs::read_to_string(&path).unwrap();
+        std::fs::remove_file(path).unwrap();
+
+        let definition = output
+            .lines()
+            .find_map(|line| {
+                line.strip_prefix("test_string_literal_def(")
+                    .and_then(|line| line.strip_suffix(')'))
+            })
+            .expect("missing string literal definition");
+        let [_literal_label, value_label] = definition
+            .split(',')
+            .collect::<Vec<_>>()
+            .try_into()
+            .unwrap();
+
+        assert!(output.contains(&format!("test_tokeninfo({value_label},")));
+        assert!(
+            !output
+                .lines()
+                .any(|line| line.starts_with(&format!("test_ast_node_parent({value_label},")))
+        );
     }
 }

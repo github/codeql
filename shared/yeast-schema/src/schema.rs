@@ -44,6 +44,7 @@ pub struct Schema {
     field_types: BTreeMap<(String, FieldId), Vec<NodeType>>,
     field_cardinalities: BTreeMap<(String, FieldId), FieldCardinality>,
     supertypes: BTreeMap<String, Vec<NodeType>>,
+    non_structural_kinds: BTreeSet<String>,
     /// Per-node-kind declared field order (named fields only), as written in
     /// the source node-types YAML. Field ids are not a stable ordering key
     /// across front-ends, so this preserves the authored order for
@@ -70,6 +71,7 @@ impl Schema {
             field_types: BTreeMap::new(),
             field_cardinalities: BTreeMap::new(),
             supertypes: BTreeMap::new(),
+            non_structural_kinds: BTreeSet::new(),
             field_order: BTreeMap::new(),
         }
     }
@@ -340,6 +342,14 @@ impl Schema {
     /// Is `kind` a known supertype (an abstract grouping)?
     pub fn is_supertype(&self, kind: &str) -> bool {
         self.supertypes.contains_key(kind)
+    }
+
+    pub fn set_non_structural_kind(&mut self, kind: &str) {
+        self.non_structural_kinds.insert(kind.to_string());
+    }
+
+    pub fn is_non_structural_kind(&self, kind: &str) -> bool {
+        self.non_structural_kinds.contains(kind)
     }
 
     fn allows_node(

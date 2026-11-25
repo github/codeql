@@ -1087,7 +1087,9 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                         );
                     }
                     main_class.predicates.extend(get_preds);
-                    if let Some(get_child_expr) = get_child_expr {
+                    if field.structural
+                        && let Some(get_child_expr) = get_child_expr
+                    {
                         get_child_exprs.push(get_child_expr);
                     }
                 }
@@ -1112,6 +1114,39 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
     classes
 }
 
+fn create_is_non_structural_predicate(nodes: &node_types::NodeTypeMap) -> ql::Predicate<'_> {
+    ql::Predicate {
+        qldoc: Some(String::from(
+            "Holds if `node` is a value node that is not part of the structural AST.",
+        )),
+        name: "isNonStructural",
+        overridden: false,
+        is_private: false,
+        is_final: false,
+        return_type: None,
+        formal_parameters: vec![ql::FormalParameter {
+            name: "node",
+            param_type: ql::Type::Facade("AstNode"),
+        }],
+        body: ql::Expression::Or(
+            nodes
+                .values()
+                .filter(|node| node.non_structural)
+                .map(|node| {
+                    ql::Expression::Equals(
+                        Box::new(ql::Expression::Var("node")),
+                        Box::new(ql::Expression::Cast(
+                            Box::new(ql::Expression::Var("node")),
+                            &node.ql_class_name,
+                        )),
+                    )
+                })
+                .collect(),
+        ),
+        overlay: None,
+    }
+}
+
 /// Creates a `PrintAst` module with a `getChild` predicate for labelled AST edges.
 ///
 /// The predicate maps each AST node to its children together with the name of the
@@ -1126,10 +1161,12 @@ pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<
                 // `ReservedWordInt` fields have string-valued getters, so they
                 // are not children and are excluded (just as they are from
                 // `getAFieldOrChild`).
-                if matches!(
-                    field.type_info,
-                    node_types::FieldTypeInfo::ReservedWordInt(_)
-                ) {
+                if !field.structural
+                    || matches!(
+                        field.type_info,
+                        node_types::FieldTypeInfo::ReservedWordInt(_)
+                    )
+                {
                     continue;
                 }
                 let has_index = matches!(
@@ -1204,7 +1241,10 @@ pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<
             "Provides predicates for mapping AST nodes to their named children.",
         )),
         name: "PrintAst",
-        body: vec![ql::TopLevel::Predicate(get_child)],
+        body: vec![
+            ql::TopLevel::Predicate(get_child),
+            ql::TopLevel::Predicate(create_is_non_structural_predicate(nodes)),
+        ],
         overlay: None,
     })
 }
@@ -1302,5 +1342,35 @@ named:
             generated
                 .contains("final override F::Block getBody() { test_function_body(this, result) }")
         );
+    }
+
+    #[test]
+    fn excludes_non_structural_fields_from_generic_children() {
+        let yaml = r"
+named:
+  string_literal:
+    raw: string_value
+    interpreted: string_value
+  string_value:
+
+non_structural:
+  - string_value
+";
+        let json = yeast::node_types_yaml::convert(yaml).unwrap();
+        let nodes = node_types::read_node_types_str("test", &json).unwrap();
+        let generated = convert_nodes(&nodes)
+            .into_iter()
+            .map(|element| element.to_string())
+            .collect::<Vec<_>>()
+            .join("\n");
+        let print_ast = create_print_ast_module(&nodes).to_string();
+
+        assert!(generated.contains("final F::StringValue getRaw()"));
+        assert!(generated.contains("final F::StringValue getInterpreted()"));
+        assert!(generated.contains("final override F::AstNode getAFieldOrChild() { none() }"));
+        assert!(!print_ast.contains("getRaw"));
+        assert!(!print_ast.contains("getInterpreted"));
+        assert!(print_ast.contains("isNonStructural(F::AstNode node)"));
+        assert!(print_ast.contains("node = node.(StringValue)"));
     }
 }

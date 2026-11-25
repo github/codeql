@@ -58,6 +58,22 @@ struct SwiftContext {
     /// name has no argument label. It is cleared when translating accessor
     /// bodies.
     subscript: Option<SubscriptContext>,
+    /// String-literal context inherited by constant interpolation segments.
+    string_segment: Option<SwiftStringSegmentContext>,
+}
+
+#[derive(Clone)]
+struct SwiftStringSegmentContext {
+    pounds: usize,
+    multiline_indent: Option<String>,
+    first: bool,
+    last: bool,
+}
+
+struct SwiftStringLiteral<'a> {
+    content: &'a str,
+    pounds: usize,
+    multiline_indent: Option<String>,
 }
 
 /// The parts of a `subscriptDecl` shared by its getter and setter. These are
@@ -88,6 +104,204 @@ impl SwiftContext {
     fn reset(&mut self) {
         *self = SwiftContext::default();
     }
+}
+
+fn parse_swift_string_literal(source: &str) -> Option<SwiftStringLiteral<'_>> {
+    let pounds = source.bytes().take_while(|byte| *byte == b'#').count();
+    let after_pounds = &source[pounds..];
+    let quote_len = if after_pounds.starts_with("\"\"\"") {
+        3
+    } else if after_pounds.starts_with('"') {
+        1
+    } else {
+        return None;
+    };
+    let suffix_len = quote_len + pounds;
+    if source.len() < pounds + quote_len + suffix_len {
+        return None;
+    }
+    let closing_quote = if quote_len == 3 { "\"\"\"" } else { "\"" };
+    let closing_pounds = "#".repeat(pounds);
+    if !source.ends_with(&format!("{closing_quote}{closing_pounds}")) {
+        return None;
+    }
+
+    let content = &source[pounds + quote_len..source.len() - suffix_len];
+    let multiline_indent = (quote_len == 3).then(|| {
+        content
+            .rsplit_once(['\n', '\r'])
+            .map_or("", |(_, indent)| indent)
+            .to_string()
+    });
+    Some(SwiftStringLiteral {
+        content,
+        pounds,
+        multiline_indent,
+    })
+}
+
+fn remove_initial_line_break(value: &mut String) {
+    if value.starts_with("\r\n") {
+        value.drain(..2);
+    } else if value.starts_with(['\n', '\r']) {
+        value.drain(..1);
+    }
+}
+
+fn remove_final_line_break(value: &mut String) {
+    if value.ends_with("\r\n") {
+        value.truncate(value.len() - 2);
+    } else if value.ends_with(['\n', '\r']) {
+        value.truncate(value.len() - 1);
+    }
+}
+
+fn strip_multiline_indentation(value: &str, indent: &str, starts_at_line_start: bool) -> String {
+    if indent.is_empty() {
+        return value.to_string();
+    }
+
+    let mut result = String::with_capacity(value.len());
+    let mut offset = 0;
+    let mut at_line_start = starts_at_line_start;
+    while offset < value.len() {
+        if at_line_start && value[offset..].starts_with(indent) {
+            offset += indent.len();
+            if offset == value.len() {
+                break;
+            }
+        }
+
+        let ch = value[offset..].chars().next().unwrap();
+        result.push(ch);
+        offset += ch.len_utf8();
+        at_line_start = matches!(ch, '\n' | '\r');
+        if ch == '\r' && value[offset..].starts_with('\n') {
+            result.push('\n');
+            offset += 1;
+        }
+    }
+    result
+}
+
+fn normalize_swift_string_segment(
+    raw: &str,
+    multiline_indent: Option<&str>,
+    first: bool,
+    last: bool,
+) -> String {
+    let mut value = raw.to_string();
+    if multiline_indent.is_some() && first {
+        remove_initial_line_break(&mut value);
+    }
+    if let Some(indent) = multiline_indent {
+        value = strip_multiline_indentation(&value, indent, first);
+        if last {
+            remove_final_line_break(&mut value);
+        }
+    }
+    value
+}
+
+fn decode_swift_string_segment(raw: &str, pounds: usize) -> String {
+    let mut result = String::with_capacity(raw.len());
+    let mut offset = 0;
+    let escape_prefix = format!("\\{}", "#".repeat(pounds));
+
+    while offset < raw.len() {
+        let remaining = &raw[offset..];
+        if !remaining.starts_with(&escape_prefix) {
+            let ch = remaining.chars().next().unwrap();
+            result.push(ch);
+            offset += ch.len_utf8();
+            continue;
+        }
+
+        let escaped = &remaining[escape_prefix.len()..];
+        let Some(ch) = escaped.chars().next() else {
+            result.push_str(&escape_prefix);
+            break;
+        };
+        let escaped_len = ch.len_utf8();
+        match ch {
+            '0' => result.push('\0'),
+            '\\' => result.push('\\'),
+            't' => result.push('\t'),
+            'n' => result.push('\n'),
+            'r' => result.push('\r'),
+            '"' => result.push('"'),
+            '\'' => result.push('\''),
+            '\n' | '\r' => {
+                let mut consumed = escaped_len;
+                if ch == '\r' && escaped[consumed..].starts_with('\n') {
+                    consumed += 1;
+                }
+                while let Some(next) = escaped[consumed..].chars().next() {
+                    if !matches!(next, ' ' | '\t') {
+                        break;
+                    }
+                    consumed += next.len_utf8();
+                }
+                offset += escape_prefix.len() + consumed;
+                continue;
+            }
+            'u' if escaped[escaped_len..].starts_with('{') => {
+                let digits_start = escaped_len + 1;
+                if let Some(close) = escaped[digits_start..].find('}') {
+                    let digits = escaped[digits_start..digits_start + close].replace('_', "");
+                    if let Ok(value) = u32::from_str_radix(&digits, 16)
+                        && let Some(scalar) = char::from_u32(value)
+                    {
+                        result.push(scalar);
+                        offset += escape_prefix.len() + digits_start + close + 1;
+                        continue;
+                    }
+                }
+                result.push_str(&escape_prefix);
+                result.push(ch);
+                offset += escape_prefix.len() + escaped_len;
+                continue;
+            }
+            _ => {
+                result.push_str(&escape_prefix);
+                result.push(ch);
+            }
+        }
+        offset += escape_prefix.len() + escaped_len;
+    }
+    result
+}
+
+fn interpret_swift_string_literal(source: &str) -> String {
+    let Some(literal) = parse_swift_string_literal(source) else {
+        tracing::warn!(
+            target: "unified_extractor",
+            "Unable to interpret malformed Swift string literal"
+        );
+        return source.to_string();
+    };
+    let normalized = normalize_swift_string_segment(
+        literal.content,
+        literal.multiline_indent.as_deref(),
+        true,
+        true,
+    );
+    decode_swift_string_segment(&normalized, literal.pounds)
+}
+
+fn make_string_literal(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    source: yeast::Id,
+    raw: &str,
+    interpreted: &str,
+) -> yeast::OutputId {
+    let source_range = ctx.source_range(source);
+    let raw = ctx.literal_with_source_range("string_value", raw, source_range);
+    let interpreted = ctx.literal_with_source_range("string_value", interpreted, source_range);
+    tree!((string_literal
+        raw: {raw}
+        interpreted: {interpreted}
+        location: {source}))
 }
 
 fn implicit_parameterless_initializer(
@@ -296,20 +510,71 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((nilLiteralExpr) @@node => expr {
             tree!((builtin_expr #{node}))
         }),
-        rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
-        // String literal with a single constant segment (for some reason not typed as simpleStringLiteralExpr)
+        rule!((simpleStringLiteralExpr) @@node => expr {
+            let raw = ctx.source_text(node);
+            let interpreted = interpret_swift_string_literal(&raw);
+            make_string_literal(&mut ctx, node, &raw, &interpreted)
+        }),
+        // A constant string may have several segments because swift-syntax
+        // splits escape sequences into separate `stringSegment` nodes.
         rule!(
-            (stringLiteralExpr segments: (stringSegment) segments: _* @@rest) @@node
-            where rest.is_empty()
+            (stringLiteralExpr segments: (expressionSegment)? @@interpolation) @@node
+            where interpolation.is_none()
             =>
-            (string_literal #{node})
+            expr {
+                let raw = ctx.source_text(node);
+                let interpreted = interpret_swift_string_literal(&raw);
+                make_string_literal(&mut ctx, node, &raw, &interpreted)
+            }
         ),
         rule!(
-            (stringLiteralExpr segments: _* @segments)
+            (stringLiteralExpr segments: _* @@segments) @@node
             =>
-            (string_interpolation_expr element: {segments})
+            expr {
+                let raw = ctx.source_text(node);
+                let literal = parse_swift_string_literal(&raw);
+                if literal.is_none() {
+                    tracing::warn!(
+                        target: "unified_extractor",
+                        "Unable to interpret malformed interpolated Swift string literal"
+                    );
+                }
+                let pounds = literal.as_ref().map_or(0, |literal| literal.pounds);
+                let multiline_indent = literal
+                    .as_ref()
+                    .and_then(|literal| literal.multiline_indent.clone());
+                let segment_count = segments.len();
+                let elements = segments
+                    .into_iter()
+                    .enumerate()
+                    .flat_map(|(index, segment)| {
+                        ctx.string_segment = Some(SwiftStringSegmentContext {
+                            pounds,
+                            multiline_indent: multiline_indent.clone(),
+                            first: index == 0,
+                            last: index + 1 == segment_count,
+                        });
+                        ctx.translate(segment)
+                    })
+                    .collect::<Vec<_>>();
+                tree!((string_interpolation_expr element: {elements}))
+            }
         ),
-        rule!((stringSegment content: @@content) => (string_literal #{content})),
+        rule!((stringSegment content: @@content) => expr {
+            let raw = ctx.source_text(content);
+            let string_context = ctx
+                .string_segment
+                .as_ref()
+                .expect("stringSegment must be translated from its enclosing string literal");
+            let normalized = normalize_swift_string_segment(
+                &raw,
+                string_context.multiline_indent.as_deref(),
+                string_context.first,
+                string_context.last,
+            );
+            let interpreted = decode_swift_string_segment(&normalized, string_context.pounds);
+            make_string_literal(&mut ctx, content, &raw, &interpreted)
+        }),
         rule!(
             (expressionSegment expressions: _* @expressions)
             =>
@@ -1894,5 +2159,39 @@ pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::Language
         node_types: "",
         file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
         desugarer: Box::new(desugarer),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn interprets_swift_string_escapes() {
+        assert_eq!(
+            interpret_swift_string_literal(r#""hello\n\u{41}\"""#),
+            "hello\nA\""
+        );
+    }
+
+    #[test]
+    fn interprets_swift_raw_string_escapes() {
+        assert_eq!(
+            interpret_swift_string_literal("#\"hello \\n \\#n\"#"),
+            "hello \\n \n"
+        );
+    }
+
+    #[test]
+    fn interprets_swift_multiline_strings() {
+        assert_eq!(
+            interpret_swift_string_literal("\"\"\"\n    hello\n      world\n    \"\"\""),
+            "hello\n  world"
+        );
+    }
+
+    #[test]
+    fn preserves_malformed_swift_string_literal() {
+        assert_eq!(interpret_swift_string_literal("\"unterminated"), "\"unterminated");
     }
 }

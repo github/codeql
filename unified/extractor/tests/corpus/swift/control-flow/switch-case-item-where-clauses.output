@@ -176,7 +176,10 @@ top_level source="⟨body⟩"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"positive\"" source="\"positive\""
+                          value:
+                            string_literal source="\"positive\""
+                              raw: string_value "\"positive\"" source="\"positive\""
+                              interpreted: string_value "positive" source="\"positive\""
             switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 or_pattern source="⟨pattern⟩, ⟨pattern⟩"
@@ -199,7 +202,10 @@ top_level source="⟨body⟩"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"non-positive\"" source="\"non-positive\""
+                          value:
+                            string_literal source="\"non-positive\""
+                              raw: string_value "\"non-positive\"" source="\"non-positive\""
+                              interpreted: string_value "non-positive" source="\"non-positive\""
             switch_case source="default:\n  ⟨body⟩"
               body:
                 block source="⟨stmt⟩"
@@ -208,4 +214,7 @@ top_level source="⟨body⟩"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"other\"" source="\"other\""
+                          value:
+                            string_literal source="\"other\""
+                              raw: string_value "\"other\"" source="\"other\""
+                              interpreted: string_value "other" source="\"other\""

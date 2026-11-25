@@ -139,6 +139,11 @@ named:
 
   # A string literal
   string_literal:
+    raw: string_value
+    interpreted: string_value
+
+  # A non-structural string value attached to an AST node.
+  string_value:
 
   # A regex literal
   regex_literal:
@@ -576,3 +581,6 @@ named:
 
   # A modifier such as 'static', 'public', or 'async'. For now this is just a leaf node with a string value.
   modifier:
+
+non_structural:
+  - string_value

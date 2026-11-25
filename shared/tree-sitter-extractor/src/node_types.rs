@@ -13,6 +13,7 @@ pub struct Entry {
     pub dbscheme_name: String,
     pub ql_class_name: String,
     pub kind: EntryKind,
+    pub non_structural: bool,
 }
 
 #[derive(Debug)]
@@ -68,6 +69,7 @@ pub struct Field {
     /// any member (for example `getAnArgument` for `getArgument(i)`).
     pub any_getter_name: Option<String>,
     pub storage: Storage,
+    pub structural: bool,
 }
 
 fn name_for_field_or_child(name: Option<&String>) -> String {
@@ -123,6 +125,24 @@ fn convert_types(node_types: &[NodeType]) -> Set<TypeName> {
 pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
     let mut entries = NodeTypeMap::new();
     let mut token_kinds = Set::new();
+    let non_structural_types: Set<TypeName> = nodes
+        .iter()
+        .filter(|node| node.non_structural)
+        .map(|node| {
+            assert!(
+                node.named
+                    && node.subtypes.is_empty()
+                    && node.fields.is_empty()
+                    && node.children.is_none(),
+                "non-structural node type '{}' must be a named leaf",
+                node.kind
+            );
+            TypeName {
+                kind: node.kind.clone(),
+                named: true,
+            }
+        })
+        .collect();
 
     // First, find all the token kinds
     for node in nodes {
@@ -157,6 +177,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     field_info,
                     &mut fields,
                     &token_kinds,
+                    &non_structural_types,
                 );
             }
             if let Some(children) = &node.children {
@@ -167,6 +188,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     children,
                     &mut fields,
                     &token_kinds,
+                    &non_structural_types,
                 );
             }
             entries.insert(
@@ -178,6 +200,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                         members: convert_types(subtypes),
                         fields,
                     },
+                    non_structural: node.non_structural,
                 },
             );
         } else if node.fields.is_empty() && node.children.is_none() {
@@ -203,6 +226,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     field_info,
                     &mut fields,
                     &token_kinds,
+                    &non_structural_types,
                 );
             }
             if let Some(children) = &node.children {
@@ -214,6 +238,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     children,
                     &mut fields,
                     &token_kinds,
+                    &non_structural_types,
                 );
             }
             entries.insert(
@@ -225,6 +250,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                         name: table_name,
                         fields,
                     },
+                    non_structural: node.non_structural,
                 },
             );
         }
@@ -238,12 +264,14 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                 dbscheme_name: escape_name(&format!("{prefix}_token_{unprefixed_name}")),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
                 kind: EntryKind::Token { kind_id: counter },
+                non_structural: non_structural_types.contains(&type_name),
             }
         } else {
             Entry {
                 dbscheme_name: format!("{prefix}_reserved_word"),
                 ql_class_name: "ReservedWord".to_owned(),
                 kind: EntryKind::Token { kind_id: 0 },
+                non_structural: false,
             }
         };
         entries.insert(type_name, entry);
@@ -258,6 +286,7 @@ fn add_field(
     field_info: &FieldInfo,
     fields: &mut Vec<Field>,
     token_kinds: &Set<TypeName>,
+    non_structural_types: &Set<TypeName>,
 ) {
     let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
     let column_name = escape_name(&name_for_field_or_child(field_name.as_ref()));
@@ -281,6 +310,17 @@ fn add_field(
         }
     };
     let converted_types = convert_types(&field_info.types);
+    let non_structural_count = converted_types
+        .iter()
+        .filter(|node_type| non_structural_types.contains(node_type))
+        .count();
+    assert!(
+        non_structural_count == 0 || non_structural_count == converted_types.len(),
+        "field '{}::{}' mixes structural and non-structural node types",
+        parent_type_name.kind,
+        name_for_field_or_child(field_name.as_ref())
+    );
+    let structural = non_structural_count == 0;
     let type_info = if storage.is_column()
         && field_info
             .types
@@ -334,6 +374,7 @@ fn add_field(
         getter_name,
         any_getter_name,
         storage,
+        structural,
     });
 }
 #[derive(Deserialize)]
@@ -347,6 +388,8 @@ pub struct NodeInfo {
     pub children: Option<FieldInfo>,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]
     pub subtypes: Vec<NodeType>,
+    #[serde(default)]
+    pub non_structural: bool,
 }
 
 #[derive(Deserialize)]
@@ -535,4 +578,58 @@ named:
             ..
         }
     ));
+}
+
+#[test]
+fn non_structural_fields_are_marked() {
+    let yaml = r"
+named:
+  string_literal:
+    raw: string_value
+    interpreted: string_value
+  string_value:
+
+non_structural:
+  - string_value
+";
+    let json = yeast::node_types_yaml::convert(yaml).unwrap();
+    let nodes = read_node_types_str("test", &json).unwrap();
+    let value = nodes
+        .get(&TypeName {
+            kind: "string_value".to_owned(),
+            named: true,
+        })
+        .unwrap();
+    assert!(value.non_structural);
+
+    let literal = nodes
+        .get(&TypeName {
+            kind: "string_literal".to_owned(),
+            named: true,
+        })
+        .unwrap();
+    let EntryKind::Table { fields, .. } = &literal.kind else {
+        panic!("string_literal should be a table");
+    };
+    assert_eq!(fields.len(), 2);
+    assert!(fields.iter().all(|field| !field.structural));
+}
+
+#[test]
+#[should_panic(
+    expected = "field 'container::value' mixes structural and non-structural node types"
+)]
+fn fields_cannot_mix_structural_and_non_structural_types() {
+    let yaml = r"
+named:
+  container:
+    value: [identifier, string_value]
+  identifier:
+  string_value:
+
+non_structural:
+  - string_value
+";
+    let json = yeast::node_types_yaml::convert(yaml).unwrap();
+    read_node_types_str("test", &json).unwrap();
 }

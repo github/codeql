@@ -1273,10 +1273,25 @@ module Unified {
     }
   }
 
-  /** A class representing `string_literal` tokens. */
-  class StringLiteral extends @unified_token_string_literal, F::Expr, F::Token {
+  /** A class representing `string_literal` nodes. */
+  class StringLiteral extends @unified_string_literal, F::Expr {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "StringLiteral" }
+
+    /** Gets the node corresponding to the field `interpreted`. */
+    final F::StringValue getInterpreted() { unified_string_literal_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `raw`. */
+    final F::StringValue getRaw() { unified_string_literal_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override F::AstNode getAFieldOrChild() { none() }
+  }
+
+  /** A class representing `string_value` tokens. */
+  class StringValue extends @unified_token_string_value, F::AstNode, F::Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "StringValue" }
   }
 
   /** A class representing `super_expr` tokens. */
@@ -1935,6 +1950,9 @@ module Unified {
       or
       result = node.(WhileStmt).getModifier(i) and name = "getModifier"
     }
+
+    /** Holds if `node` is a value node that is not part of the structural AST. */
+    predicate isNonStructural(F::AstNode node) { node = node.(StringValue) }
   }
 }
 
@@ -2077,6 +2095,8 @@ module UnifiedFinal {
   final class StringInterpolationExpr = F::StringInterpolationExpr;
 
   final class StringLiteral = F::StringLiteral;
+
+  final class StringValue = F::StringValue;
 
   final class SuperExpr = F::SuperExpr;
 

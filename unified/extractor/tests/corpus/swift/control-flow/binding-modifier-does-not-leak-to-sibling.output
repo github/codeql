@@ -104,7 +104,10 @@ top_level source="⟨body⟩"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"matched\"" source="\"matched\""
+                          value:
+                            string_literal source="\"matched\""
+                              raw: string_value "\"matched\"" source="\"matched\""
+                              interpreted: string_value "matched" source="\"matched\""
             switch_case source="default:\n  ⟨body⟩"
               body:
                 block source="⟨stmt⟩"

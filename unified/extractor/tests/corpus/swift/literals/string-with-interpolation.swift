@@ -10,6 +10,10 @@
 // Plain string before and after interpolation
 "prefix \(value) suffix"
 
+// Escapes in constant segments
+"line\n\(value)\u{41}"
+#"raw \n \#(value) \#u{41}"#
+
 // Calls to custom DefaultStringInterpolation.appendInterpolation impls
 "foo \(x, y)"
 "foo \(x, y, z)"

@@ -183,7 +183,10 @@ top_level source="⟨body⟩"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"retry\"" source="\"retry\""
+                          value:
+                            string_literal source="\"retry\""
+                              raw: string_value "\"retry\"" source="\"retry\""
+                              interpreted: string_value "retry" source="\"retry\""
             catch_clause source="catch ⟨body⟩"
               body:
                 block source="{\n  ⟨stmt⟩\n}"
@@ -192,4 +195,7 @@ top_level source="⟨body⟩"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"fallback\"" source="\"fallback\""
+                          value:
+                            string_literal source="\"fallback\""
+                              raw: string_value "\"fallback\"" source="\"fallback\""
+                              interpreted: string_value "fallback" source="\"fallback\""

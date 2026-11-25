@@ -37,4 +37,7 @@ top_level source="⟨body⟩"
           argument:
             argument source="⟨name_node⟩: ⟨value⟩"
               name_node: identifier "person" source="person"
-              value: string_literal "\"Bob\"" source="\"Bob\""
+              value:
+                string_literal source="\"Bob\""
+                  raw: string_value "\"Bob\"" source="\"Bob\""
+                  interpreted: string_value "Bob" source="\"Bob\""
