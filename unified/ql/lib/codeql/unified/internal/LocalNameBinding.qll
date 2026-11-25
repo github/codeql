@@ -62,9 +62,11 @@ private module LocalNameBindingInput implements LocalNameBindingInputSig<Locatio
             child = stmt.(GuardIfStmt).getElse() and
             i2 = -1 // place before condition so its variables are not seen
             or
-            not stmt instanceof GuardIfStmt and
+            // Include the statements themselves. Guard statements must also be included, as
+            // `getChild` would otherwise add them with their original index, which may
+            // clash with the indices assigned here.
             child = stmt and
-            i2 = 0
+            i2 = -2
           )
         |
           child order by i1, i2
