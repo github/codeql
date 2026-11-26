@@ -132,6 +132,7 @@ public class Parser {
   protected boolean inFunction;
   protected boolean inGenerator;
   protected boolean inClass;
+  protected boolean inStaticBlock;
   protected boolean inAsync;
   protected boolean inTemplateElement;
   protected int pos;
@@ -260,7 +261,8 @@ public class Parser {
     this.potentialArrowAt = -1;
 
     // Flags to track whether we are in a function, a generator, an async function, a class.
-    this.inFunction = this.inGenerator = this.inAsync = this.inClass = false;
+    this.inFunction =
+        this.inGenerator = this.inAsync = this.inClass = this.inStaticBlock = false;
     // Positions to delayed-check that yield/await does not exist in default parameters.
     this.yieldPos = this.awaitPos = 0;
     // Labels in scope.
@@ -1483,7 +1485,8 @@ public class Parser {
     int startPos = this.start;
     Position startLoc = this.startLoc;
     Expression expr;
-    if ((this.inAsync || options.esnext() && !this.inFunction) && this.isContextual("await")) {
+    if ((this.inAsync || options.esnext() && !this.inFunction && !this.inStaticBlock)
+        && this.isContextual("await")) {
       expr = this.parseAwait();
       sawUnary = true;
     } else if (this.type.isPrefix) {
@@ -1629,7 +1632,8 @@ public class Parser {
     Expression node;
     boolean canBeArrow = this.potentialArrowAt == this.start;
     if (this.type == TokenType._super) {
-      if (!this.inFunction) this.raise(this.start, "'super' outside of function or class");
+      if (!this.inFunction && !this.inStaticBlock)
+        this.raise(this.start, "'super' outside of function or class");
       node = new Super(new SourceLocation(this.startLoc));
       this.next();
       return this.finishNode(node);
@@ -1847,7 +1851,8 @@ public class Parser {
       Identifier property = this.parseIdent(true);
       if (!property.getName().equals("target"))
         this.raiseRecoverable(property, "The only valid meta property for new is new.target");
-      if (!this.inFunction) this.raiseRecoverable(meta, "new.target can only be used in functions");
+      if (!this.inFunction && !this.inStaticBlock)
+        this.raiseRecoverable(meta, "new.target can only be used in functions");
       MetaProperty node = new MetaProperty(new SourceLocation(startLoc), meta, property);
       return this.finishNode(node);
     }
@@ -2766,7 +2771,8 @@ public class Parser {
           : this.parseExport(startLoc, exports);
 
     } else {
-      if (this.isAwaitUsing() && (this.inAsync || options.esnext() && !this.inFunction)) {
+      if (this.isAwaitUsing()
+          && (this.inAsync || options.esnext() && !this.inFunction && !this.inStaticBlock)) {
         this.next();
         return this.parseVarStatement(startLoc, "using");
       }
@@ -3273,7 +3279,27 @@ public class Parser {
     this.parsePropertyName(pi);
     boolean isStatic = isMaybeStatic && this.type != TokenType.parenL;
     if (isStatic && this.type == TokenType.braceL) {
+      boolean oldInFunc = this.inFunction;
+      boolean oldInGen = this.inGenerator;
+      boolean oldInAsync = this.inAsync;
+      boolean oldInStaticBlock = this.inStaticBlock;
+      Stack<LabelInfo> oldLabels = this.labels;
+      int oldYieldPos = this.yieldPos, oldAwaitPos = this.awaitPos;
+      this.inFunction = false;
+      this.inGenerator = false;
+      this.inAsync = false;
+      this.inStaticBlock = true;
+      this.labels = new Stack<LabelInfo>();
+      this.yieldPos = 0;
+      this.awaitPos = 0;
       BlockStatement block = parseBlock(false);
+      this.inFunction = oldInFunc;
+      this.inGenerator = oldInGen;
+      this.inAsync = oldInAsync;
+      this.inStaticBlock = oldInStaticBlock;
+      this.labels = oldLabels;
+      this.yieldPos = oldYieldPos;
+      this.awaitPos = oldAwaitPos;
       return new StaticInitializer(block.getLoc(), block);
     }
     if (isStatic) {
