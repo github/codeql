@@ -1,0 +1,45 @@
+name: Bazel Clippy
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bazel-clippy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  clippy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      BAZEL_CLIPPY_CACHE_FLAGS: >-
+        --disk_cache=/home/runner/.cache/bazel-clippy/actions
+        --repository_cache=/home/runner/.cache/bazel-clippy/repositories
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Test target selection
+        run: python3 -m unittest discover -s misc/bazel -p 'test_clippy.py'
+      - name: Restore Bazel cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/bazel-clippy
+          key: bazel-clippy-${{ runner.os }}-${{ hashFiles('MODULE.bazel', 'Cargo.lock', '.bazelversion') }}-${{ github.sha }}
+          restore-keys: |
+            bazel-clippy-${{ runner.os }}-${{ hashFiles('MODULE.bazel', 'Cargo.lock', '.bazelversion') }}-
+      - name: Select affected targets
+        id: select
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python3 misc/bazel/clippy.py --base "$BASE_SHA"
+      - name: Clippy (Rust extractor)
+        if: steps.select.outputs.selected == 'true'
+        run: python3 misc/bazel/clippy.py --lint extractor
+      - name: Clippy (other affected targets)
+        if: ${{ !cancelled() && steps.select.outputs.selected == 'true' }}
+        run: python3 misc/bazel/clippy.py --lint other

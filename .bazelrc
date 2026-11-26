@@ -38,8 +38,13 @@ common --registry=https://bcr.bazel.build
 
 common --@rules_dotnet//dotnet/settings:strict_deps=false
 
-# we only configure a nightly toolchain
+# Release builds keep using nightly; Clippy uses the development stable release.
 common --@rules_rust//rust/toolchain/channel=nightly
+build:clippy --@rules_rust//rust/toolchain/channel=stable
+build:clippy --compilation_mode=fastbuild
+build:clippy --aspects=@rules_rust//rust:defs.bzl%rust_clippy_aspect
+build:clippy --output_groups=clippy_checks
+build:clippy --@rules_rust//rust/settings:clippy.toml=//:clippy.toml
 
 # Reduce this eventually to empty, once we've fixed all our usages of java, and https://github.com/bazel-contrib/rules_go/issues/4193 is fixed
 common --incompatible_autoload_externally="+@rules_cc,+@rules_java,+@rules_shell"
