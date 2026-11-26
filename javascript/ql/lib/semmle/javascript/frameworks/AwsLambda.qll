@@ -3,33 +3,14 @@
  */
 
 import javascript
-private import semmle.javascript.security.TaintedObject
 
 module AwsLambda {
   /**
-   * A parameter whose type is an AWS Lambda event type.
+   * Gets a function assigned to the variable of the typed declaration `typed`, either in its
+   * initializer or in a later assignment.
    */
-  bindingset[eventType, handlerType]
-  private DataFlow::ParameterNode eventParameterOfType(string eventType, string handlerType) {
-    result = ModelOutput::getATypeNode(eventType).asSource()
-    or
-    exists(VariableDeclarator decl |
-      DataFlow::valueNode(decl.getBindingPattern()) =
-        ModelOutput::getATypeNode(handlerType).asSource() and
-      result = decl.getInit().flow().getAFunctionValue().getParameter(0)
-    )
-  }
-
-  /**
-   * The first parameter of an exported function, whose type is an AWS Lambda event type.
-   */
-  bindingset[eventType, handlerType]
-  private DataFlow::ParameterNode exportedEventParameterOfType(string eventType, string handlerType) {
-    exists(Module mod, DataFlow::FunctionNode fn |
-      fn = mod.getAnExportedValue(_).getAFunctionValue() and
-      result = fn.getParameter(0) and
-      result = eventParameterOfType(eventType, handlerType)
-    )
+  private DataFlow::FunctionNode functionAssignedToVariable(DataFlow::Node typed) {
+    result = typed.asExpr().(VarDecl).getVariable().getAnAssignedExpr().flow().getAFunctionValue()
   }
 
   /**
@@ -37,8 +18,16 @@ module AwsLambda {
    */
   class EventFunctionHandler extends DataFlow::FunctionNode {
     EventFunctionHandler() {
-      this.getParameter(0) =
-        exportedEventParameterOfType("aws-lambda.Event", "aws-lambda.EventFunctionHandler")
+      exists(Module mod | this = mod.getAnExportedValue(_).getAFunctionValue()) and
+      (
+        this.getParameter(0) = ModelOutput::getATypeNode("aws-lambda.Event").asSource()
+        or
+        exists(DataFlow::Node handlerType |
+          handlerType = ModelOutput::getATypeNode("aws-lambda.EventFunctionHandler").asSource()
+        |
+          this = functionAssignedToVariable(handlerType) or this.flowsTo(handlerType)
+        )
+      )
     }
   }
 
@@ -49,29 +38,5 @@ module AwsLambda {
     EventParameterSource() { this = any(EventFunctionHandler h).getParameter(0) }
 
     override string getSourceType() { result = "AWS Lambda event" }
-  }
-
-  /**
-   * The `detail` property of an AWS EventBridge event, which contains the raw, user-controlled
-   * event payload as a deeply nested object.
-   */
-  private class EventBridgeEventSource extends TaintedObject::Source {
-    EventBridgeEventSource() {
-      this =
-        exportedEventParameterOfType("aws-lambda.EventBridgeEvent", "aws-lambda.EventBridgeHandler")
-            .getAPropertyRead("detail")
-    }
-  }
-
-  /**
-   * The `arguments` property of an AWS AppSync resolver event, which contains the raw,
-   * user-controlled GraphQL arguments as a deeply nested object.
-   */
-  private class AppSyncResolverEventSource extends TaintedObject::Source {
-    AppSyncResolverEventSource() {
-      this =
-        exportedEventParameterOfType("aws-lambda.AppSyncResolverEvent",
-          "aws-lambda.AppSyncResolverHandler").getAPropertyRead("arguments")
-    }
   }
 }

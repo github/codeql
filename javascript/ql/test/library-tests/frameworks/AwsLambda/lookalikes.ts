@@ -34,3 +34,7 @@ export const typedHandler: APIGatewayProxyHandler = async (event) => {
 export async function importedEvent(event: ImportedEvent) {} // not a source
 
 export const importedHandler: ImportedHandler = async (event) => {}; // not a source
+
+// Handler expressions with a lookalike type, using `satisfies` and `as`.
+export const lookalikeSatisfied = (async (event) => ({ statusCode: 200, body: "" })) satisfies APIGatewayProxyHandler; // not a source
+export const lookalikeCast = (async (event) => ({ statusCode: 200, body: "" })) as APIGatewayProxyHandler; // not a source

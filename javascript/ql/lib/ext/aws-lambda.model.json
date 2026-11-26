@@ -27,8 +27,7 @@
         ["aws-lambda.Event", "aws-lambda", "Member[CustomAuthorizerEvent].Instance"],
         // AppSync events.
         ["aws-lambda.Event", "aws-lambda", "Member[AppSyncAuthorizerEvent].Instance"],
-        ["aws-lambda.AppSyncResolverEvent", "aws-lambda", "Member[AppSyncResolverEvent].Instance"],
-        ["aws-lambda.Event", "aws-lambda.AppSyncResolverEvent", ""],
+        ["aws-lambda.Event", "aws-lambda", "Member[AppSyncResolverEvent].Instance"],
         // Other HTTP-based events.
         ["aws-lambda.Event", "aws-lambda", "Member[ALBEvent].Instance"],
         ["aws-lambda.Event", "aws-lambda", "Member[CloudFrontRequestEvent].Instance"],
@@ -37,8 +36,7 @@
         ["aws-lambda.Event", "aws-lambda", "Member[LambdaFunctionURLEventWithIAMAuthorizer].Instance"],
         // Non-HTTP events with a payload from an external producer.
         ["aws-lambda.Event", "aws-lambda", "Member[DynamoDBStreamEvent].Instance"],
-        ["aws-lambda.EventBridgeEvent", "aws-lambda", "Member[EventBridgeEvent].Instance"],
-        ["aws-lambda.Event", "aws-lambda.EventBridgeEvent", ""],
+        ["aws-lambda.Event", "aws-lambda", "Member[EventBridgeEvent].Instance"],
         ["aws-lambda.Event", "aws-lambda", "Member[FirehoseTransformationEvent].Instance"],
         ["aws-lambda.Event", "aws-lambda", "Member[KinesisStreamEvent].Instance"],
         ["aws-lambda.Event", "aws-lambda", "Member[KinesisStreamTumblingWindowEvent].Instance"],
@@ -71,8 +69,7 @@
         // AppSync handlers.
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[AppSyncAuthorizerHandler].Instance"],
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[AppSyncBatchResolverHandler].Instance"],
-        ["aws-lambda.AppSyncResolverHandler", "aws-lambda", "Member[AppSyncResolverHandler].Instance"],
-        ["aws-lambda.EventFunctionHandler", "aws-lambda.AppSyncResolverHandler", ""],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[AppSyncResolverHandler].Instance"],
         // Other HTTP-based handlers.
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[ALBHandler].Instance"],
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[CloudFrontRequestHandler].Instance"],
@@ -81,8 +78,7 @@
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[LambdaFunctionURLHandlerWithIAMAuthorizer].Instance"],
         // Non-HTTP handlers.
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[DynamoDBStreamHandler].Instance"],
-        ["aws-lambda.EventBridgeHandler", "aws-lambda", "Member[EventBridgeHandler].Instance"],
-        ["aws-lambda.EventFunctionHandler", "aws-lambda.EventBridgeHandler", ""],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[EventBridgeHandler].Instance"],
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[FirehoseTransformationHandler].Instance"],
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[KinesisStreamHandler].Instance"],
         ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[KinesisStreamTumblingWindowHandler].Instance"],

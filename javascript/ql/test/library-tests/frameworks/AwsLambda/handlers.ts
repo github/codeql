@@ -36,3 +36,12 @@ function typedPrivateCaller(e: SQSEvent) {
 }
 
 export function exportedGenericFunction(e: any) {} // not a source
+
+// A handler assigned to a typed variable after its declaration.
+let lateAssignedHandler: SQSHandler;
+lateAssignedHandler = async (event) => {}; // source
+export { lateAssignedHandler };
+
+// A handler expression with a `satisfies` or `as` handler type.
+export const satisfiedHandler = (async (event) => {}) satisfies APIGatewayProxyHandler; // source
+export const castHandler = (async (event) => {}) as APIGatewayProxyHandler; // source
