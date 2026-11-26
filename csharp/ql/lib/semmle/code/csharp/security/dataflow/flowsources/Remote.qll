@@ -138,13 +138,11 @@ private predicate isOwnFieldAccess(MemberAccess ma) {
 private predicate setterAssignsValueToField(Setter s, Member f) {
   (f instanceof Field or f.(Property).isAutoImplemented()) and
   s.isPublic() and
-  exists(AssignExpr ae, ParameterAccess v |
-    ae.getEnclosingCallable() = s and
-    ae.getLeftOperand().(AssignableWrite).getTarget().getUnboundDeclaration() =
-      f.getUnboundDeclaration() and
-    isOwnFieldAccess(ae.getLeftOperand()) and
-    v = getAValuePreservingSource(ae.getRightOperand()) and
-    v.getTarget().hasName("value")
+  exists(AssignableDefinition def |
+    def.getEnclosingCallable() = s and
+    def.getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
+    isOwnFieldAccess(def.getTargetAccess()) and
+    accessToValue() = getAValuePreservingSource(def.getSource())
   )
 }
 
