@@ -45,7 +45,6 @@ function RegisterExtractorPack(id)
         -- and `-p:EmitCompilerGeneratedFiles=true` to the command line,
         -- otherwise we do nothing.
         local match = false
-        local disableNodeReuse = false
         local testMatch = false
         local dotnetRunNeedsSeparator = false;
         local dotnetRunInjectionIndex = nil;
@@ -78,7 +77,6 @@ function RegisterExtractorPack(id)
                 if inSubCommandPosition then
                     if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' then
                         match = true
-                        disableNodeReuse = true
                         break
                     end
                     if arg == 'run' then
@@ -118,10 +116,6 @@ function RegisterExtractorPack(id)
         end
         if match then
             local injections = { '-p:UseSharedCompilation=false', '-p:EmitCompilerGeneratedFiles=true' }
-            if disableNodeReuse then
-                -- Append so an explicit node-reuse setting cannot override the environment default.
-                table.insert(injections, '-nodeReuse:false')
-            end
             if dotnetRunNeedsSeparator then
                 table.insert(injections, '--')
             end
@@ -165,25 +159,20 @@ function RegisterExtractorPack(id)
     end
 
     function MsBuildMatcher(compilerName, compilerPath, compilerArguments, _languageId)
-        local isMsBuild = MatchCompilerName('^' .. Exify('msbuild') .. '$', compilerName, compilerPath,
-            compilerArguments)
-        if isMsBuild or
+        if MatchCompilerName('^' .. Exify('msbuild') .. '$', compilerName, compilerPath,
+            compilerArguments) or
             MatchCompilerName('^' .. Exify('xbuild') .. '$', compilerName, compilerPath,
                 compilerArguments) then
-            local injections = {
-                '/p:UseSharedCompilation=false',
-                '/p:MvcBuildViews=true',
-                '/p:EmitCompilerGeneratedFiles=true',
-            }
-            if isMsBuild then
-                table.insert(injections, '/nodeReuse:false')
-            end
             return {
                 order = ORDER_REPLACE,
                 invocation = BuildExtractorInvocation(id, compilerPath,
                     compilerPath,
                     compilerArguments,
-                    nil, injections)
+                    nil, {
+                    '/p:UseSharedCompilation=false',
+                    '/p:MvcBuildViews=true',
+                    '/p:EmitCompilerGeneratedFiles=true',
+                })
 
             }
         end

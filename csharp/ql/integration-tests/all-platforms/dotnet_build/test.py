@@ -9,18 +9,9 @@ def check_build_out(msg, s):
 
 @pytest.mark.parametrize("command", ["build", "msbuild -restore", "publish", "pack"])
 def test1(codeql, csharp, command):
-    s = codeql.database.create(
-        command=f"dotnet {command} -t:Build,CheckMSBuildServer -v:diag -nodeReuse:true",
-        _capture="stdout",
+    codeql.database.create(
+        command=f"dotnet {command} -t:Build,CheckMSBuildServer",
     )
-    assert any(
-        "[build-stdout]" in line
-        and "Command line arguments =" in line
-        and "-nodeReuse:true" in line
-        and "-nodeReuse:false" in line
-        and line.rfind("-nodeReuse:false") > line.rfind("-nodeReuse:true")
-        for line in s.splitlines()
-    ), "The C# tracer did not override the explicit MSBuild node-reuse switch."
 
 
 # This test checks that we don't inject any flags when running the application using `dotnet`
