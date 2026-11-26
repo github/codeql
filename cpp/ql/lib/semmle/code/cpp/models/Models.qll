@@ -58,5 +58,4 @@ private import implementations.CAtlTemporaryFile
 private import implementations.CRegKey
 private import implementations.WinHttp
 private import implementations.Http
-
 private import implementations.BdlbStringRef
