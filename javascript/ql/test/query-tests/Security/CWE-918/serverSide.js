@@ -134,7 +134,7 @@ var server2 = http.createServer(function (req, res) {
     axios.get(myEncodedUrl);
 })
 
-var server2 = http.createServer(function (req, res) {
+var server3 = http.createServer(function (req, res) {
     const { URL } = require('url');
     const input = req.query.url; // $ Source[js/request-forgery]
     const target = new URL(input);
@@ -147,41 +147,53 @@ var server2 = http.createServer(function (req, res) {
     axios.get(escapedUrl); // $ Alert[js/request-forgery]
 });
 
-var server3 = http.createServer(function (req, res) {
-    const base = req.query.base; // $ Source[js/request-forgery]
-    const target = new URL('/path', base);
-    axios.get(target.href); // $ Alert[js/request-forgery]
-});
-
+// Tests for tainted 'base' argument using global URL.
 var server4 = http.createServer(function (req, res) {
-    const { URL } = require('url');
-    const base = req.query.base; // $ Source[js/request-forgery]
-    const target = new URL('/path', base);
-    axios.get(target.href); // $ Alert[js/request-forgery]
+    const input = req.query.input; // $ Source[js/request-forgery]
+
+    const target1 = new URL('/path', input);
+    axios.get(target1.toString()); // $ Alert[js/request-forgery]
+
+    // An absolute url will ignore the base argument.
+    const fixed = 'https://fixed.example/path';
+    const target2 = new URL(fixed, input);
+    axios.get(target2.toString()); // Safe
+
+    // All URL objects are absolute and will ignore the base argument.
+    const absolute = new URL('https://fixed.example/path');
+    const target3 = new URL(absolute, input);
+    axios.get(target3.toString()); // Safe
+
+    // All sources of first argument should be evaluated when determining if it is absolute.
+    const conditional = flag ? 'https://fixed.example' : '/path';
+    const target4 = new URL(conditional, input);
+    axios.get(target4.toString()); // $ Alert[js/request-forgery]
+
+    // Tainted input in 'url' argument with absolute url in 'base' argument.
+    const target5 = new URL(input, 'https://fixed.example');
+    axios.get(target5.toString()); // $ Alert[js/request-forgery]
+
+    // Same-scheme input without '://' is resolved against thte base.
+    const target6 = new URL('https:/path', input);
+    axios.get(target6.toString()); // $ Alert[js/request-forgery]
+
+    const target7 = new URL('HTTPS:path', input);
+    axios.get(target7.toString()); // $ Alert[js/request-forgery]
 });
 
+// Tests for tainted 'base' argument using 'url' library.
 var server5 = http.createServer(function (req, res) {
-    const target = new URL('https://fixed.example/path', req.query.base);
-    axios.get(target.href);
-});
-
-var server6 = http.createServer(function (req, res) {
-    const abs = new URL('https://fixed.example/path');
-    const target = new URL(abs, req.query.base);
-    axios.get(target.href);
-});
-
-var server7 = http.createServer(function (req, res) {
     const { URL } = require('url');
-    const abs = new URL('https://fixed.example/path');
-    const target = new URL(abs, req.query.base);
-    axios.get(target.href);
-});
 
-var server8 = http.createServer(function (req, res) {
-    const abs = new URL(req.query.url); // $ Source[js/request-forgery]
-    const target = new URL(abs, 'https://fixed.example');
-    axios.get(target.href); // $ Alert[js/request-forgery]
+    const input = req.query.input; // $ Source[js/request-forgery]
+
+    const target1 = new URL('/path', input);
+    axios.get(target1.toString()); // $ Alert[js/request-forgery]
+
+    // All URL objects are absolute and will ignore the base argument.
+    const absolute = new URL('https://fixed.example/path');
+    const target = new URL(absolute, input);
+    axios.get(target.toString()); // Safe
 });
 
 const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]
