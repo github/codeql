@@ -121,4 +121,28 @@ public class RobustnessTests {
       Assert.assertTrue(expected.getMessage().startsWith("Unsyntactic break"));
     }
   }
+
+  @Test
+  public void forOfRegexpTest() {
+    String src =
+        """
+        for (let x of/a/.exec(s)) {}
+        for (let x of /a/.exec(s)) {}
+        for (var x of/a/gi.exec(s)) {}
+        for (x of/a/.exec(s)) {}
+        for (of of/a/.exec(s)) {}
+        for (let x = of / 2; x < 10; x++) {}
+        for (of / 2; ; ) { break; }
+        """;
+    new Parser(new Options(), src, 0).parse();
+
+    String asyncSrc =
+        """
+        async function f(u, a, b) {
+          for await(var s of/multipart\\/mixed/i.test(u)?a:b){}
+        }
+        for await(var s of/multipart\\/mixed/i.test(u)?a:b){}
+        """;
+    new ESNextParser(new Options().esnext(true), asyncSrc, 0).parse();
+  }
 }

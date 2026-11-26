@@ -3116,6 +3116,7 @@ public class Parser {
   protected Statement parseForIn(Position startLoc, Node left) {
     SourceLocation loc = new SourceLocation(startLoc);
     boolean isForIn = this.type == TokenType._in;
+    this.exprAllowed = true;
     this.next();
     Expression right = this.parseExpression(false);
     this.expect(TokenType.parenR);
