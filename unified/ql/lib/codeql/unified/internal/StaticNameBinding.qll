@@ -963,21 +963,12 @@ module Public {
    */
   class UnqualifiedMemberAccess extends Identifier, MemberAccessImpl {
     private boolean instanceAccess;
-    private MemberTargetNode target;
     private ClassLikeDeclaration accessingClass;
 
-    UnqualifiedMemberAccess() {
-      unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
-    }
-
-    /**
-     * Gets the name-binding node of the member being accessed, which is either a member
-     * declaration, or a type or member from a model.
-     */
-    MemberTargetNode getTargetNode() { result = target }
+    UnqualifiedMemberAccess() { unqualifiedMemberAccess(this, instanceAccess, _, accessingClass) }
 
     /** Gets the name binding of the member being accessed, if it is declared in the database. */
-    NameBinding getTarget() { target.isIdentifier(result) }
+    NameBinding getTarget() { getUnqualifiedMemberAccessTarget(this).isIdentifier(result) }
 
     /** Gets the enclosing class whose (possibly inherited) member is being accessed. */
     ClassLikeDeclaration getAccessingClass() { result = accessingClass }
@@ -994,6 +985,14 @@ module Public {
     /** Gets the simple name of this identifier, that is, the name of the member being accessed. */
     override string getMemberName() { result = this.getValue() }
   }
+}
+
+/**
+ * Gets the name-binding node of the member accessed by the unqualified member access `access`,
+ * which is either a member declaration, or a type or member from a model.
+ */
+MemberTargetNode getUnqualifiedMemberAccessTarget(UnqualifiedMemberAccess access) {
+  unqualifiedMemberAccess(access, _, result, _)
 }
 
 /** Gets the declaration being accessed by identifier `i`, as determined by static name binding. */

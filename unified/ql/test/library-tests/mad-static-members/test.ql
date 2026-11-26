@@ -33,7 +33,7 @@ query predicate instanceMember(string type, string member) {
 
 query predicate unqualified(UnqualifiedMemberAccess access, string member) {
   exists(MaD::MemberSelector selector |
-    access.getTargetNode().isMemberSelector(selector) and
+    N::getUnqualifiedMemberAccessTarget(access).isMemberSelector(selector) and
     member = selector.getTypeString() + "." + selector.getName()
   )
 }

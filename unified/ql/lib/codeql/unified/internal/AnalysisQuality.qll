@@ -53,7 +53,7 @@ module StaticNameResolutionStats implements EntityStatsSig {
     NameBindingNode getTarget() {
       result.asIdentifier() = getStaticBindingTargetFromIdentifier(this)
       or
-      result = this.(UnqualifiedMemberAccess).getTargetNode()
+      result = getUnqualifiedMemberAccessTarget(this)
       or
       result.isModuleScopeNode(_) and
       result.(NamespaceNode).ref().isIdentifier(this)
