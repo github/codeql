@@ -164,6 +164,11 @@ cargo test
 
 The first build compiles `swift-syntax` and can take several minutes.
 
+For Rust-only checks, use `SWIFT_SYNTAX_RS_CHECK_ONLY=1 cargo clippy` (or `cargo
+check`) to skip building the native Swift shim. Do not set this variable for
+`cargo build`, `cargo test` or `cargo run` as they need the native library at
+link time.
+
 ## Regenerating the extractor node types
 
 After updating the pinned swift-syntax version, regenerate the unified
