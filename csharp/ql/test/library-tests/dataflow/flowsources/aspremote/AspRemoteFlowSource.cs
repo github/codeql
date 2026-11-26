@@ -85,8 +85,8 @@ namespace Testing
 
     public class AttributedModel
     {
-        [System.Runtime.Serialization.DataMember] private string dataMember; // Considered tainted. Populated by data contract deserialization.
-        [Newtonsoft.Json.JsonProperty("n")] private string jsonProp; // Considered tainted. Populated by JSON deserialization.
+        private string AutoBacking { get; set; }
+        public string ViaAutoProp { set { AutoBacking = value; } } // `AutoBacking` is considered tainted. Setter assigns a private auto-implemented property.
         private string unmarked; // Not considered tainted. No attribute, and not assigned from a setter.
         private string guarded;
         public string Guarded { get { return guarded; } set { if (value == null) throw new ArgumentNullException(); guarded = value; } } // `guarded` is considered tainted. Guarded setter.
@@ -193,13 +193,5 @@ namespace Testing
     public class DerivedPageModel : MyPageModel
     {
         public void OnPost(string derivedParam) { }
-    }
-}
-
-namespace Newtonsoft.Json
-{
-    public class JsonPropertyAttribute : System.Attribute
-    {
-        public JsonPropertyAttribute(string name) { }
     }
 }

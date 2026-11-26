@@ -11,7 +11,6 @@ private import semmle.code.csharp.frameworks.system.web.Mvc
 private import semmle.code.csharp.frameworks.system.web.Services
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
-private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 private import semmle.code.csharp.frameworks.Razor
@@ -127,17 +126,22 @@ private Expr getAValuePreservingSource(Expr e) {
   result = getAValuePreservingSource(e.(NullCoalescingOperation).getLeftOperand())
 }
 
-/** Holds if `fa` accesses a field on the current instance. */
-private predicate isOwnFieldAccess(FieldAccess fa) {
-  fa.getQualifier() instanceof ThisAccess or fa.getQualifier() instanceof BaseAccess
+/** Holds if `ma` accesses a member on the current instance. */
+private predicate isOwnFieldAccess(MemberAccess ma) {
+  ma.getQualifier() instanceof ThisAccess or ma.getQualifier() instanceof BaseAccess
 }
 
-/** Holds if the public setter `s` assigns `value` to the own field `f`. */
-private predicate setterAssignsValueToField(Setter s, Field f) {
+/**
+ * Holds if the public setter `s` assigns `value` to the own field, or
+ * auto-implemented property, `f`.
+ */
+private predicate setterAssignsValueToField(Setter s, Member f) {
+  (f instanceof Field or f.(Property).isAutoImplemented()) and
   s.isPublic() and
   exists(AssignExpr ae, ParameterAccess v |
     ae.getEnclosingCallable() = s and
-    ae.getLeftOperand().(FieldWrite).getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
+    ae.getLeftOperand().(AssignableWrite).getTarget().getUnboundDeclaration() =
+      f.getUnboundDeclaration() and
     isOwnFieldAccess(ae.getLeftOperand()) and
     v = getAValuePreservingSource(ae.getRightOperand()) and
     v.getTarget().hasName("value")
@@ -165,14 +169,9 @@ private predicate isPrivateBoundMember(Member m) {
   m.isPrivate() and
   not m.isStatic() and
   (
-    // populated by data contract / Json.NET deserialization
-    m.(Attributable).getAnAttribute() instanceof DataMemberAttribute
-    or
-    m.(Attributable).getAnAttribute() instanceof JsonNET::JsonPropertyAttribute
-    or
+    // `[DataMember]` / `[JsonProperty]` members are already tainted by `JsonNET.qll`
     exists(Property p |
-      m.(Field).getDeclaringType().getUnboundDeclaration() =
-        p.getDeclaringType().getUnboundDeclaration() and
+      m.getDeclaringType().getUnboundDeclaration() = p.getDeclaringType().getUnboundDeclaration() and
       setterAssignsValueToField(p.getUnboundDeclaration().getSetter(), m)
     )
     or

@@ -10,8 +10,7 @@ remoteFlowSourceMembers
 | AspRemoteFlowSource.cs:69:24:69:24 | o |
 | AspRemoteFlowSource.cs:71:30:71:33 | lazy |
 | AspRemoteFlowSource.cs:73:24:73:25 | ow |
-| AspRemoteFlowSource.cs:88:66:88:75 | dataMember |
-| AspRemoteFlowSource.cs:89:60:89:67 | jsonProp |
+| AspRemoteFlowSource.cs:88:24:88:34 | AutoBacking |
 | AspRemoteFlowSource.cs:91:24:91:30 | guarded |
 | AspRemoteFlowSource.cs:131:23:131:29 | Tainted |
 remoteFlowSources
