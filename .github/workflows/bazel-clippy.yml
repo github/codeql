@@ -3,7 +3,9 @@ name: Bazel Clippy
 on:
   pull_request:
   push:
-    branches: [main]
+    branches:
+      - main
+      - rc/*
   workflow_dispatch:
     inputs:
       base:
@@ -36,7 +38,8 @@ jobs:
         id: select
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || inputs.base }}
-        run: python3 misc/bazel/clippy.py --base "$BASE_SHA"
+          FALLBACK_BASE: origin/${{ github.event.repository.default_branch }}
+        run: python3 misc/bazel/clippy.py --base "$BASE_SHA" --fallback-base "$FALLBACK_BASE"
       - name: Restore Bazel cache
         if: steps.select.outputs.selected == 'true'
         id: cache

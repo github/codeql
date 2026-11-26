@@ -1,6 +1,6 @@
 # Bazel Clippy
 
-The `Bazel Clippy` PR workflow lints affected members of the root Cargo workspace
+The `Bazel Clippy` workflow runs on PRs and on pushes to `main` and `rc/*`. It lints affected members of the root Cargo workspace
 that have Bazel Rust targets. It uses stable Rust 1.100.0, independently of the
 default nightly release toolchain. Workspace lint levels and priorities come
 from `Cargo.toml`; Clippy also reads the root `clippy.toml`. Warnings are errors.
@@ -16,11 +16,14 @@ python3 misc/bazel/clippy.py --lint other
 The workflow can also be dispatched manually with an explicit base revision.
 PR runs always use the PR's actual base, regardless of manual-run inputs.
 
-Selection uses the PR's merge-base diff, not just its most recent commit, and
+Selection uses the PR's merge-base diff, not just its most recent commit (for
+pushes, the diff from the previous head, covering every pushed commit), and
 Bazel's dependency graph, including native and generated inputs. Changes within
 a package invalidate that package and its reverse dependencies. Root toolchain,
 dependency and lint configuration, and shared Bazel infrastructure changes
-invalidate all covered targets. The underlying Rust binaries are selected, not
+invalidate all covered targets. A push creating a branch is compared with the
+default branch; if the previous head is unavailable (e.g. after a force-push),
+all covered targets are linted. The underlying Rust binaries are selected, not
 their universal-binary wrappers. All declared Rust/test targets are passed to
 the aspect explicitly, since the Clippy aspect does not traverse dependencies.
 Only targets declared by Bazel are linted: Cargo-only targets, configurations

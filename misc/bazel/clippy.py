@@ -30,6 +30,27 @@ def source_path(label):
     return label[2:].replace(":", "/", 1).lstrip("/")
 
 
+NULL_SHA = "0" * 40
+
+
+def is_commit(revision):
+    return subprocess.run(
+        ["git", "cat-file", "-e", f"{revision}^{{commit}}"], stderr=subprocess.DEVNULL,
+    ).returncode == 0
+
+
+def resolve_base(base, fallback, exists=is_commit):
+    """Return the revision to compare with, or None to lint all covered targets.
+
+    A push creating a branch has a null `before` and is compared with `fallback`
+    (the default branch). A `before` that is no longer available, e.g. after a
+    force-push, cannot be compared, so everything is linted.
+    """
+    if (not base or base == NULL_SHA) and fallback:
+        base = fallback
+    return base if base and base != NULL_SHA and exists(base) else None
+
+
 def select_targets(graph, members, changed):
     """Use Bazel's input graph, including native/generated inputs and aliases."""
     rules = {node.attrib["name"]: node for node in graph.findall("rule")}
@@ -102,6 +123,7 @@ def lint_flags(manifest):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", help="Compare the merge base of this revision with HEAD")
+    parser.add_argument("--fallback-base", help="Revision to use when --base is missing or null")
     parser.add_argument("--targets-file", type=Path, default=Path("clippy-targets.json"))
     parser.add_argument("--lint", choices=("extractor", "other"), help="Lint previously selected targets")
     args = parser.parse_args()
@@ -124,9 +146,14 @@ def main():
         )
         return
 
-    if not args.base:
+    if not args.base and not args.fallback_base:
         parser.error("--base is required when selecting targets")
-    changed = run("git", "diff", "--name-only", "--no-renames", "-z", f"{args.base}...HEAD").split("\0")
+    base = resolve_base(args.base, args.fallback_base)
+    if base is None:
+        print(f"Cannot resolve base {args.base!r}; linting all covered targets.")
+        changed = ["Cargo.toml"]
+    else:
+        changed = run("git", "diff", "--name-only", "--no-renames", "-z", f"{base}...HEAD").split("\0")
     members = {
         member for member in manifest["workspace"]["members"]
         if (Path(member) / "BUILD.bazel").is_file()

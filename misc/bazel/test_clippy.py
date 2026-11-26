@@ -1,7 +1,7 @@
 import unittest
 import xml.etree.ElementTree as ET
 
-from clippy import lint_flags, select_targets
+from clippy import NULL_SHA, lint_flags, resolve_base, select_targets
 
 
 def graph():
@@ -66,6 +66,14 @@ class SelectionTest(unittest.TestCase):
         for path in ("Cargo.lock", "Cargo.toml", "clippy.toml", "MODULE.bazel", ".bazelrc", "misc/bazel/rust.bzl"):
             with self.subTest(path=path):
                 self.assertEqual(len(self.select(path)), 4)
+
+    def test_push_base(self):
+        exists = lambda revision: revision in {"before", "origin/main"}
+        self.assertEqual(resolve_base("before", "origin/main", exists), "before")
+        self.assertEqual(resolve_base(NULL_SHA, "origin/main", exists), "origin/main")
+        self.assertEqual(resolve_base("", "origin/main", exists), "origin/main")
+        self.assertIsNone(resolve_base("force-pushed", "origin/main", exists))
+        self.assertIsNone(resolve_base(NULL_SHA, None, exists))
 
     def test_lint_priorities(self):
         flags = lint_flags({"workspace": {"lints": {
