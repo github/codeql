@@ -969,13 +969,13 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // trailing closures.
         rule!(
             (functionCallExpr
-                calledExpression: @@rawCallee
+                calledExpression: @@raw_callee
                 arguments: _* @args
                 trailingClosure: _? @trailing
                 additionalTrailingClosures: _* @additional)
             =>
             (call_expr
-                callee: {ctx.in_pattern = false; rawCallee}
+                callee: {ctx.in_pattern = false; raw_callee}
                 argument: {args}
                 argument: {trailing.map(|trailing| tree!((argument value: {trailing})))}
                 argument: {additional})
@@ -1085,10 +1085,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 pattern: (identifier #{name})
                 value: {
                     // Expand [x] into [x = x]
-                    match val {
-                        Some(val) => val,
-                        None => tree!((identifier #{name})),
-                    }
+                    val.unwrap_or_else(|| tree!((identifier #{name})))
                 })
         ),
         // A closure parameter clause (`(x: Int, y)`) unwraps to its parameters.
@@ -1766,14 +1763,14 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             (extensionDecl
                 extensionKeyword: @@kind
                 modifiers: _* @mods
-                extendedType: @extendedType
+                extendedType: @extended_type
                 inheritanceClause: (inheritanceClause inheritedTypes: (inheritedType type: @bases)*)?
                 memberBlock: (memberBlock members: _* @members))
             =>
             (class_like_declaration
                 modifier: (modifier #{kind})
                 modifier: {mods}
-                extension_target: {extendedType}
+                extension_target: {extended_type}
                 base_type: {bases.into_iter().map(|ty| tree!((base_type type: {ty})))}
                 member: {members})
         ),
@@ -1784,7 +1781,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         // nest under `signature` (as for `functionDecl`).
         rule!(
             (initializerDecl
-                initKeyword: @@initK
+                initKeyword: @@init_k
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params))
@@ -1792,20 +1789,20 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
             =>
             (constructor_declaration
                 modifier: {mods}
-                name_node: (identifier #{initK})
+                name_node: (identifier #{init_k})
                 parameter: {params}
                 body: {body})
         ),
         rule!(
             (initializerDecl
-                initKeyword: @@initK
+                initKeyword: @@init_k
                 modifiers: _* @mods
                 signature: (functionSignature
                     parameterClause: (functionParameterClause parameters: _* @params)))
             =>
             (constructor_declaration
                 modifier: {mods}
-                name_node: (identifier #{initK})
+                name_node: (identifier #{init_k})
                 parameter: {params}
                 body: (block))
         ),
