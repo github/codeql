@@ -45,8 +45,10 @@
 | serverSide.js:178:5:178:33 | axios.g ... ring()) | serverSide.js:152:19:152:33 | req.query.input | serverSide.js:178:15:178:32 | target6.toString() | The $@ of this request depends on a $@. | serverSide.js:178:15:178:32 | target6.toString() | URL | serverSide.js:152:19:152:33 | req.query.input | user-provided value |
 | serverSide.js:181:5:181:33 | axios.g ... ring()) | serverSide.js:152:19:152:33 | req.query.input | serverSide.js:181:15:181:32 | target7.toString() | The $@ of this request depends on a $@. | serverSide.js:181:15:181:32 | target7.toString() | URL | serverSide.js:152:19:152:33 | req.query.input | user-provided value |
 | serverSide.js:186:5:186:33 | axios.g ... ring()) | serverSide.js:152:19:152:33 | req.query.input | serverSide.js:186:15:186:32 | target8.toString() | The $@ of this request depends on a $@. | serverSide.js:186:15:186:32 | target8.toString() | URL | serverSide.js:152:19:152:33 | req.query.input | user-provided value |
-| serverSide.js:200:5:200:33 | axios.g ... ring()) | serverSide.js:197:19:197:33 | req.query.input | serverSide.js:200:15:200:32 | target1.toString() | The $@ of this request depends on a $@. | serverSide.js:200:15:200:32 | target1.toString() | URL | serverSide.js:197:19:197:33 | req.query.input | user-provided value |
-| serverSide.js:209:1:209:15 | request(custom) | serverSide.js:208:16:208:51 | require ... ource() | serverSide.js:209:9:209:14 | custom | The $@ of this request depends on a $@. | serverSide.js:209:9:209:14 | custom | URL | serverSide.js:208:16:208:51 | require ... ource() | user-provided value |
+| serverSide.js:195:9:195:36 | axios.g ... ring()) | serverSide.js:152:19:152:33 | req.query.input | serverSide.js:195:19:195:35 | target.toString() | The $@ of this request depends on a $@. | serverSide.js:195:19:195:35 | target.toString() | URL | serverSide.js:152:19:152:33 | req.query.input | user-provided value |
+| serverSide.js:205:9:205:36 | axios.g ... ring()) | serverSide.js:152:19:152:33 | req.query.input | serverSide.js:205:19:205:35 | target.toString() | The $@ of this request depends on a $@. | serverSide.js:205:19:205:35 | target.toString() | URL | serverSide.js:152:19:152:33 | req.query.input | user-provided value |
+| serverSide.js:224:5:224:33 | axios.g ... ring()) | serverSide.js:221:19:221:33 | req.query.input | serverSide.js:224:15:224:32 | target1.toString() | The $@ of this request depends on a $@. | serverSide.js:224:15:224:32 | target1.toString() | URL | serverSide.js:221:19:221:33 | req.query.input | user-provided value |
+| serverSide.js:233:1:233:15 | request(custom) | serverSide.js:232:16:232:51 | require ... ource() | serverSide.js:233:9:233:14 | custom | The $@ of this request depends on a $@. | serverSide.js:233:9:233:14 | custom | URL | serverSide.js:232:16:232:51 | require ... ource() | user-provided value |
 | vercel.ts:5:26:5:35 | fetch(url) | vercel.ts:4:15:4:23 | req.query | vercel.ts:5:32:5:34 | url | The $@ of this request depends on a $@. | vercel.ts:5:32:5:34 | url | URL | vercel.ts:4:15:4:23 | req.query | user-provided value |
 | vercel.ts:5:26:5:35 | fetch(url) | vercel.ts:4:15:4:27 | req.query.url | vercel.ts:5:32:5:34 | url | The $@ of this request depends on a $@. | vercel.ts:5:32:5:34 | url | URL | vercel.ts:4:15:4:27 | req.query.url | user-provided value |
 edges
@@ -155,44 +157,73 @@ edges
 | serverSide.js:146:24:146:36 | escape(input) | serverSide.js:146:11:146:20 | escapedUrl | provenance |  |
 | serverSide.js:146:31:146:35 | input | serverSide.js:146:24:146:36 | escape(input) | provenance |  |
 | serverSide.js:152:11:152:15 | input | serverSide.js:154:38:154:42 | input | provenance |  |
+| serverSide.js:152:11:152:15 | input | serverSide.js:159:36:159:40 | input | provenance |  |
+| serverSide.js:152:11:152:15 | input | serverSide.js:164:39:164:43 | input | provenance |  |
 | serverSide.js:152:11:152:15 | input | serverSide.js:169:42:169:46 | input | provenance |  |
 | serverSide.js:152:11:152:15 | input | serverSide.js:173:29:173:33 | input | provenance |  |
 | serverSide.js:152:11:152:15 | input | serverSide.js:177:44:177:48 | input | provenance |  |
 | serverSide.js:152:11:152:15 | input | serverSide.js:180:43:180:47 | input | provenance |  |
 | serverSide.js:152:11:152:15 | input | serverSide.js:185:36:185:40 | input | provenance |  |
+| serverSide.js:152:11:152:15 | input | serverSide.js:189:64:189:68 | input | provenance |  |
 | serverSide.js:152:19:152:33 | req.query.input | serverSide.js:152:11:152:15 | input | provenance |  |
 | serverSide.js:154:11:154:17 | target1 | serverSide.js:155:15:155:21 | target1 | provenance |  |
 | serverSide.js:154:21:154:43 | new URL ...  input) | serverSide.js:154:11:154:17 | target1 | provenance |  |
 | serverSide.js:154:38:154:42 | input | serverSide.js:154:21:154:43 | new URL ...  input) | provenance | Config |
+| serverSide.js:154:38:154:42 | input | serverSide.js:159:36:159:40 | input | provenance |  |
 | serverSide.js:155:15:155:21 | target1 | serverSide.js:155:15:155:32 | target1.toString() | provenance |  |
+| serverSide.js:159:36:159:40 | input | serverSide.js:164:39:164:43 | input | provenance |  |
+| serverSide.js:164:39:164:43 | input | serverSide.js:169:42:169:46 | input | provenance |  |
 | serverSide.js:169:11:169:17 | target4 | serverSide.js:170:15:170:21 | target4 | provenance |  |
 | serverSide.js:169:21:169:47 | new URL ...  input) | serverSide.js:169:11:169:17 | target4 | provenance |  |
 | serverSide.js:169:42:169:46 | input | serverSide.js:169:21:169:47 | new URL ...  input) | provenance | Config |
+| serverSide.js:169:42:169:46 | input | serverSide.js:173:29:173:33 | input | provenance |  |
 | serverSide.js:170:15:170:21 | target4 | serverSide.js:170:15:170:32 | target4.toString() | provenance |  |
 | serverSide.js:173:11:173:17 | target5 | serverSide.js:174:15:174:21 | target5 | provenance |  |
 | serverSide.js:173:21:173:59 | new URL ... ample') | serverSide.js:173:11:173:17 | target5 | provenance |  |
 | serverSide.js:173:29:173:33 | input | serverSide.js:173:21:173:59 | new URL ... ample') | provenance | Config |
+| serverSide.js:173:29:173:33 | input | serverSide.js:177:44:177:48 | input | provenance |  |
 | serverSide.js:174:15:174:21 | target5 | serverSide.js:174:15:174:32 | target5.toString() | provenance |  |
 | serverSide.js:177:11:177:17 | target6 | serverSide.js:178:15:178:21 | target6 | provenance |  |
 | serverSide.js:177:21:177:49 | new URL ...  input) | serverSide.js:177:11:177:17 | target6 | provenance |  |
 | serverSide.js:177:44:177:48 | input | serverSide.js:177:21:177:49 | new URL ...  input) | provenance | Config |
+| serverSide.js:177:44:177:48 | input | serverSide.js:180:43:180:47 | input | provenance |  |
 | serverSide.js:178:15:178:21 | target6 | serverSide.js:178:15:178:32 | target6.toString() | provenance |  |
 | serverSide.js:180:11:180:17 | target7 | serverSide.js:181:15:181:21 | target7 | provenance |  |
 | serverSide.js:180:21:180:48 | new URL ...  input) | serverSide.js:180:11:180:17 | target7 | provenance |  |
 | serverSide.js:180:43:180:47 | input | serverSide.js:180:21:180:48 | new URL ...  input) | provenance | Config |
+| serverSide.js:180:43:180:47 | input | serverSide.js:185:36:185:40 | input | provenance |  |
 | serverSide.js:181:15:181:21 | target7 | serverSide.js:181:15:181:32 | target7.toString() | provenance |  |
 | serverSide.js:185:11:185:17 | target8 | serverSide.js:186:15:186:21 | target8 | provenance |  |
 | serverSide.js:185:21:185:41 | new URL ...  input) | serverSide.js:185:11:185:17 | target8 | provenance |  |
 | serverSide.js:185:36:185:40 | input | serverSide.js:185:21:185:41 | new URL ...  input) | provenance | Config |
+| serverSide.js:185:36:185:40 | input | serverSide.js:189:64:189:68 | input | provenance |  |
 | serverSide.js:186:15:186:21 | target8 | serverSide.js:186:15:186:32 | target8.toString() | provenance |  |
-| serverSide.js:197:11:197:15 | input | serverSide.js:199:38:199:42 | input | provenance |  |
-| serverSide.js:197:19:197:33 | req.query.input | serverSide.js:197:11:197:15 | input | provenance |  |
-| serverSide.js:199:11:199:17 | target1 | serverSide.js:200:15:200:21 | target1 | provenance |  |
-| serverSide.js:199:21:199:43 | new URL ...  input) | serverSide.js:199:11:199:17 | target1 | provenance |  |
-| serverSide.js:199:38:199:42 | input | serverSide.js:199:21:199:43 | new URL ...  input) | provenance | Config |
-| serverSide.js:200:15:200:21 | target1 | serverSide.js:200:15:200:32 | target1.toString() | provenance |  |
-| serverSide.js:208:7:208:12 | custom | serverSide.js:209:9:209:14 | custom | provenance |  |
-| serverSide.js:208:16:208:51 | require ... ource() | serverSide.js:208:7:208:12 | custom | provenance |  |
+| serverSide.js:189:64:189:68 | input | serverSide.js:193:11:193:21 | withDefault [input] | provenance |  |
+| serverSide.js:189:64:189:68 | input | serverSide.js:194:37:194:41 | input | provenance |  |
+| serverSide.js:189:64:189:68 | input | serverSide.js:197:5:197:15 | withDefault [input] | provenance |  |
+| serverSide.js:189:64:189:68 | input | serverSide.js:200:11:200:26 | withDefaultChain [input] | provenance |  |
+| serverSide.js:189:64:189:68 | input | serverSide.js:204:40:204:44 | input | provenance |  |
+| serverSide.js:189:64:189:68 | input | serverSide.js:207:5:207:20 | withDefaultChain [input] | provenance |  |
+| serverSide.js:193:11:193:21 | withDefault [input] | serverSide.js:197:5:197:15 | withDefault [input] | provenance |  |
+| serverSide.js:194:15:194:20 | target | serverSide.js:195:19:195:24 | target | provenance |  |
+| serverSide.js:194:24:194:42 | new URL(url, input) | serverSide.js:194:15:194:20 | target | provenance |  |
+| serverSide.js:194:37:194:41 | input | serverSide.js:194:24:194:42 | new URL(url, input) | provenance | Config |
+| serverSide.js:195:19:195:24 | target | serverSide.js:195:19:195:35 | target.toString() | provenance |  |
+| serverSide.js:197:5:197:15 | withDefault [input] | serverSide.js:194:37:194:41 | input | provenance |  |
+| serverSide.js:200:11:200:26 | withDefaultChain [input] | serverSide.js:207:5:207:20 | withDefaultChain [input] | provenance |  |
+| serverSide.js:204:15:204:20 | target | serverSide.js:205:19:205:24 | target | provenance |  |
+| serverSide.js:204:24:204:45 | new URL ...  input) | serverSide.js:204:15:204:20 | target | provenance |  |
+| serverSide.js:204:40:204:44 | input | serverSide.js:204:24:204:45 | new URL ...  input) | provenance | Config |
+| serverSide.js:205:19:205:24 | target | serverSide.js:205:19:205:35 | target.toString() | provenance |  |
+| serverSide.js:207:5:207:20 | withDefaultChain [input] | serverSide.js:204:40:204:44 | input | provenance |  |
+| serverSide.js:221:11:221:15 | input | serverSide.js:223:38:223:42 | input | provenance |  |
+| serverSide.js:221:19:221:33 | req.query.input | serverSide.js:221:11:221:15 | input | provenance |  |
+| serverSide.js:223:11:223:17 | target1 | serverSide.js:224:15:224:21 | target1 | provenance |  |
+| serverSide.js:223:21:223:43 | new URL ...  input) | serverSide.js:223:11:223:17 | target1 | provenance |  |
+| serverSide.js:223:38:223:42 | input | serverSide.js:223:21:223:43 | new URL ...  input) | provenance | Config |
+| serverSide.js:224:15:224:21 | target1 | serverSide.js:224:15:224:32 | target1.toString() | provenance |  |
+| serverSide.js:232:7:232:12 | custom | serverSide.js:233:9:233:14 | custom | provenance |  |
+| serverSide.js:232:16:232:51 | require ... ource() | serverSide.js:232:7:232:12 | custom | provenance |  |
 | vercel.ts:4:9:4:11 | url | vercel.ts:5:32:5:34 | url | provenance |  |
 | vercel.ts:4:15:4:23 | req.query | vercel.ts:4:9:4:11 | url | provenance |  |
 | vercel.ts:4:15:4:27 | req.query.url | vercel.ts:4:9:4:11 | url | provenance |  |
@@ -330,6 +361,8 @@ nodes
 | serverSide.js:154:38:154:42 | input | semmle.label | input |
 | serverSide.js:155:15:155:21 | target1 | semmle.label | target1 |
 | serverSide.js:155:15:155:32 | target1.toString() | semmle.label | target1.toString() |
+| serverSide.js:159:36:159:40 | input | semmle.label | input |
+| serverSide.js:164:39:164:43 | input | semmle.label | input |
 | serverSide.js:169:11:169:17 | target4 | semmle.label | target4 |
 | serverSide.js:169:21:169:47 | new URL ...  input) | semmle.label | new URL ...  input) |
 | serverSide.js:169:42:169:46 | input | semmle.label | input |
@@ -355,16 +388,31 @@ nodes
 | serverSide.js:185:36:185:40 | input | semmle.label | input |
 | serverSide.js:186:15:186:21 | target8 | semmle.label | target8 |
 | serverSide.js:186:15:186:32 | target8.toString() | semmle.label | target8.toString() |
-| serverSide.js:197:11:197:15 | input | semmle.label | input |
-| serverSide.js:197:19:197:33 | req.query.input | semmle.label | req.query.input |
-| serverSide.js:199:11:199:17 | target1 | semmle.label | target1 |
-| serverSide.js:199:21:199:43 | new URL ...  input) | semmle.label | new URL ...  input) |
-| serverSide.js:199:38:199:42 | input | semmle.label | input |
-| serverSide.js:200:15:200:21 | target1 | semmle.label | target1 |
-| serverSide.js:200:15:200:32 | target1.toString() | semmle.label | target1.toString() |
-| serverSide.js:208:7:208:12 | custom | semmle.label | custom |
-| serverSide.js:208:16:208:51 | require ... ource() | semmle.label | require ... ource() |
-| serverSide.js:209:9:209:14 | custom | semmle.label | custom |
+| serverSide.js:189:64:189:68 | input | semmle.label | input |
+| serverSide.js:193:11:193:21 | withDefault [input] | semmle.label | withDefault [input] |
+| serverSide.js:194:15:194:20 | target | semmle.label | target |
+| serverSide.js:194:24:194:42 | new URL(url, input) | semmle.label | new URL(url, input) |
+| serverSide.js:194:37:194:41 | input | semmle.label | input |
+| serverSide.js:195:19:195:24 | target | semmle.label | target |
+| serverSide.js:195:19:195:35 | target.toString() | semmle.label | target.toString() |
+| serverSide.js:197:5:197:15 | withDefault [input] | semmle.label | withDefault [input] |
+| serverSide.js:200:11:200:26 | withDefaultChain [input] | semmle.label | withDefaultChain [input] |
+| serverSide.js:204:15:204:20 | target | semmle.label | target |
+| serverSide.js:204:24:204:45 | new URL ...  input) | semmle.label | new URL ...  input) |
+| serverSide.js:204:40:204:44 | input | semmle.label | input |
+| serverSide.js:205:19:205:24 | target | semmle.label | target |
+| serverSide.js:205:19:205:35 | target.toString() | semmle.label | target.toString() |
+| serverSide.js:207:5:207:20 | withDefaultChain [input] | semmle.label | withDefaultChain [input] |
+| serverSide.js:221:11:221:15 | input | semmle.label | input |
+| serverSide.js:221:19:221:33 | req.query.input | semmle.label | req.query.input |
+| serverSide.js:223:11:223:17 | target1 | semmle.label | target1 |
+| serverSide.js:223:21:223:43 | new URL ...  input) | semmle.label | new URL ...  input) |
+| serverSide.js:223:38:223:42 | input | semmle.label | input |
+| serverSide.js:224:15:224:21 | target1 | semmle.label | target1 |
+| serverSide.js:224:15:224:32 | target1.toString() | semmle.label | target1.toString() |
+| serverSide.js:232:7:232:12 | custom | semmle.label | custom |
+| serverSide.js:232:16:232:51 | require ... ource() | semmle.label | require ... ource() |
+| serverSide.js:233:9:233:14 | custom | semmle.label | custom |
 | vercel.ts:4:9:4:11 | url | semmle.label | url |
 | vercel.ts:4:15:4:23 | req.query | semmle.label | req.query |
 | vercel.ts:4:15:4:27 | req.query.url | semmle.label | req.query.url |

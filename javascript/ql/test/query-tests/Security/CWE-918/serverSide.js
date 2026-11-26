@@ -188,6 +188,30 @@ var server4 = http.createServer(function (req, res) {
     // A constant concatenation of an absolute url will ignore the base argument.
     const target9 = new URL('https://fixed.example' + '/path', input);
     axios.get(target9.toString()); // Safe
+
+    // A default value is not the only possible value of a parameter.
+    const withDefault = (url = 'https://fixed.example') => {
+        const target = new URL(url, input);
+        axios.get(target.toString()); // $ Alert[js/request-forgery]
+    };
+    withDefault('/path');
+
+    // The same applies when the parameter is reached through a chain of assignments.
+    const withDefaultChain = (url = 'https://fixed.example') => {
+        const alias1 = url;
+        const alias2 = alias1;
+        const alias3 = alias2;
+        const target = new URL(alias3, input);
+        axios.get(target.toString()); // $ Alert[js/request-forgery]
+    };
+    withDefaultChain('/path');
+
+    // An absolute url reached through a chain of assignments will ignore the base argument.
+    const chain1 = 'https://fixed.example/path';
+    const chain2 = chain1;
+    const chain3 = chain2;
+    const target10 = new URL(chain3, input);
+    axios.get(target10.toString()); // Safe
 });
 
 // Tests for tainted 'base' argument using 'url' library.
