@@ -28,7 +28,7 @@ bazel_dep(name = "nlohmann_json", version = "3.12.0.bcr.2", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.2.0.bcr.1-codeql.1")
 bazel_dep(name = "rules_kotlin", version = "2.4.21-codeql.1")
 bazel_dep(name = "gazelle", version = "0.54.0")
-bazel_dep(name = "rules_dotnet")
+bazel_dep(name = "rules_dotnet", version = "0.23.0")
 bazel_dep(name = "googletest", version = "1.18.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.75.0")
 bazel_dep(name = "rules_swift", version = "4.2.2-codeql.1")
@@ -37,15 +37,12 @@ bazel_dep(name = "zstd", version = "1.5.7.bcr.3")
 
 bazel_dep(name = "buildifier_prebuilt", version = "10.2.0", dev_dependency = True)
 
-# Consider using a released version of rules_dotnet, when possible.
-git_override(
+single_version_override(
     module_name = "rules_dotnet",
-    commit = "8db43484722080564c2abd04bc09f43f61bf6c65",
     patch_strip = 1,
     # Keep the patch in a separate package so it can load when the enclosing build
     # marks misc/bazel as deleted.
     patches = ["//misc/bazel/patches:rules_dotnet_nuget_archive.patch"],
-    remote = "https://github.com/bazel-contrib/rules_dotnet.git",
 )
 
 # Pin the compiler to support the Kotlin 1.8 and 1.9 language versions required by older extractors.
