@@ -83,9 +83,18 @@ namespace Testing
         public List<T> ItemsPlain => items; // Considered tainted. Get-only collection.
     }
 
+    public class AttributedModel
+    {
+        [System.Runtime.Serialization.DataMember] private string dataMember; // Considered tainted. Populated by data contract deserialization.
+        [Newtonsoft.Json.JsonProperty("n")] private string jsonProp; // Considered tainted. Populated by JSON deserialization.
+        private string unmarked; // Not considered tainted. No attribute, and not assigned from a setter.
+        private string guarded;
+        public string Guarded { get { return guarded; } set { if (value == null) throw new ArgumentNullException(); guarded = value; } } // `guarded` is considered tainted. Guarded setter.
+    }
+
     public class TestController : Controller
     {
-        public object MyAction(PlainDataModel plain, DerivedModel derived, FlowProps fp, InheritedField inh)
+        public object MyAction(PlainDataModel plain, DerivedModel derived, FlowProps fp, InheritedField inh, AttributedModel attributed)
         {
             throw null;
         }
@@ -184,5 +193,13 @@ namespace Testing
     public class DerivedPageModel : MyPageModel
     {
         public void OnPost(string derivedParam) { }
+    }
+}
+
+namespace Newtonsoft.Json
+{
+    public class JsonPropertyAttribute : System.Attribute
+    {
+        public JsonPropertyAttribute(string name) { }
     }
 }

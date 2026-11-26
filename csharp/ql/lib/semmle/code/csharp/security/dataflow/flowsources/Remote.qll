@@ -11,6 +11,7 @@ private import semmle.code.csharp.frameworks.system.web.Mvc
 private import semmle.code.csharp.frameworks.system.web.Services
 private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
+private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
 private import semmle.code.csharp.frameworks.Razor
@@ -131,72 +132,88 @@ private predicate isOwnFieldAccess(FieldAccess fa) {
   fa.getQualifier() instanceof ThisAccess or fa.getQualifier() instanceof BaseAccess
 }
 
-/**
- * Holds if `p` is auto-implemented, or its getter returns an expression reading a field
- * and its setter (if any) assigns an expression using `value` to that field.
- * Properties that compute a value do not qualify.
- * Accessor bodies are only extracted for the unbound declaration, so shape checks use it.
- */
-private predicate isPlainDataProperty(Property p) {
-  exists(Property u | u = p.getUnboundDeclaration() |
-    u.isAutoImplemented()
-    or
-    u.isAutoImplementedReadOnly()
-    or
-    exists(Field f |
-      u.getDeclaringType().getABaseType*().getUnboundDeclaration() =
-        f.getDeclaringType().getUnboundDeclaration()
-    |
-      exists(FieldRead fr, Expr ret |
-        fr.getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
-        isOwnFieldAccess(fr) and
-        fr = getAValuePreservingSource(ret) and
-        (
-          ret = any(ReturnStmt r | r.getEnclosingCallable() = u.getGetter()).getExpr()
-          or
-          ret = u.getGetter().getExpressionBody()
-        )
-      ) and
-      // The getter must not unconditionally overwrite the field before returning it.
-      not exists(AssignExpr ow |
-        ow.getLeftOperand().(FieldWrite).getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
-        isOwnFieldAccess(ow.getLeftOperand()) and
-        ow.getParent().(ExprStmt).getParent() = u.getGetter().getBody()
-      ) and
+/** Holds if the public setter `s` assigns `value` to the own field `f`. */
+private predicate setterAssignsValueToField(Setter s, Field f) {
+  s.isPublic() and
+  exists(AssignExpr ae, ParameterAccess v |
+    ae.getEnclosingCallable() = s and
+    ae.getLeftOperand().(FieldWrite).getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
+    isOwnFieldAccess(ae.getLeftOperand()) and
+    v = getAValuePreservingSource(ae.getRightOperand()) and
+    v.getTarget().hasName("value")
+  )
+}
+
+/** Holds if `getter` returns the own field `f`, directly (get-only property). */
+private predicate getterReturnsField(Getter getter, Field f) {
+  exists(FieldRead fr |
+    fr.getTarget().getUnboundDeclaration() = f.getUnboundDeclaration() and
+    isOwnFieldAccess(fr) and
+    exists(Expr ret |
+      fr = getAValuePreservingSource(ret) and
       (
-        not exists(u.getSetter())
+        ret = getter.getExpressionBody()
         or
-        exists(AssignExpr ae, ParameterAccess v |
-          ae.getLeftOperand().(FieldWrite).getTarget().getUnboundDeclaration() =
-            f.getUnboundDeclaration() and
-          isOwnFieldAccess(ae.getLeftOperand()) and
-          ae.getEnclosingCallable() = u.getSetter() and
-          v.getTarget().hasName("value") and
-          v = getAValuePreservingSource(ae.getRightOperand())
-        )
+        ret = any(ReturnStmt r | r.getEnclosingCallable() = getter).getExpr()
       )
     )
   )
 }
 
+/** A private field or property that data binders populate. */
+private predicate isPrivateBoundMember(Member m) {
+  m.isPrivate() and
+  not m.isStatic() and
+  (
+    // populated by data contract / Json.NET deserialization
+    m.(Attributable).getAnAttribute() instanceof DataMemberAttribute
+    or
+    m.(Attributable).getAnAttribute() instanceof JsonNET::JsonPropertyAttribute
+    or
+    exists(Property p |
+      m.(Field).getDeclaringType().getUnboundDeclaration() =
+        p.getDeclaringType().getUnboundDeclaration() and
+      setterAssignsValueToField(p.getUnboundDeclaration().getSetter(), m)
+    )
+    or
+    // a public get-only collection property exposes this field; binders `Add` to it
+    exists(Property p |
+      p.isPublic() and
+      not exists(p.getSetter()) and
+      p.getType() instanceof CollectionType and
+      not p.getType() instanceof ArrayType and
+      getterReturnsField(p.getUnboundDeclaration().getGetter(), m)
+    )
+  )
+}
+
 /**
- * A public, non-static field, or a public plain-data property that is either settable or
- * of collection type. Binders such as `XmlSerializer` populate a get-only collection in place.
+ * A public, non-static auto-implemented property or field, or a private member
+ * that data binders populate (see `isPrivateBoundMember`), candidate for taint-tracking.
  */
 class CandidateMemberToTaint extends Member {
   CandidateMemberToTaint() {
-    this.isPublic() and
     not this.isStatic() and
     not this.(Field).isConst() and
     (
-      this =
-        any(Property p |
-          isPlainDataProperty(p) and
-          p.getGetter().isPublic() and
-          (p.getSetter().isPublic() or (p.getType() instanceof CollectionType and not p.getType() instanceof ArrayType))
-        )
+      this.isPublic() and
+      (
+        this =
+          any(Property p |
+            p.getGetter().isPublic() and
+            (
+              p.isAutoImplemented() and p.getSetter().isPublic()
+              or
+              p.getUnboundDeclaration().isAutoImplementedReadOnly() and
+              p.getType() instanceof CollectionType and
+              not p.getType() instanceof ArrayType
+            )
+          )
+        or
+        this = any(Field f | f.isPublic())
+      )
       or
-      this = any(Field f | f.isPublic())
+      isPrivateBoundMember(this)
     )
   }
 }

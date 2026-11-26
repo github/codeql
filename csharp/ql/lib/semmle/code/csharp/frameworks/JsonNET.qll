@@ -126,6 +126,16 @@ module JsonNET {
     predicate isOptIn() { this.getArgument(_).(FieldAccess).getTarget().hasName("OptIn") }
   }
 
+  /** The class `Newtonsoft.Json.JsonPropertyAttribute`. */
+  class JsonPropertyAttributeClass extends JsonClass {
+    JsonPropertyAttributeClass() { this.hasName("JsonPropertyAttribute") }
+  }
+
+  /** An attribute of type `Newtonsoft.Json.JsonPropertyAttribute`. */
+  class JsonPropertyAttribute extends Attribute {
+    JsonPropertyAttribute() { this.getType() instanceof JsonPropertyAttributeClass }
+  }
+
   /** The namespace `Newtonsoft.Json.Linq`. */
   class LinqNamespace extends Namespace {
     LinqNamespace() {
