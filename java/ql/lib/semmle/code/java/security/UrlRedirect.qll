@@ -95,10 +95,9 @@ private Expr getAViewNameValue(Expr value) {
   (
     not localViewDefinition(value, _)
     or
-    exists(SsaDefinition def, SsaDefinition ultimate |
+    exists(SsaDefinition def |
       localViewDefinition(value, def) and
-      ultimate = def.getAnUltimateDefinition() and
-      not exists(ultimate.(SsaExplicitWrite).getValue())
+      not exists(def.getAnUltimateDefinition().(SsaExplicitWrite).getValue())
     )
   )
   or
