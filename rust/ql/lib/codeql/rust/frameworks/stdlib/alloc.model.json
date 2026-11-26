@@ -62,6 +62,9 @@
         ["<alloc::string::String>::as_str", "Argument[self].Reference", "ReturnValue.Reference", "taint", "manual"],
         ["<alloc::string::String>::as_bytes", "Argument[self].Reference", "ReturnValue.Reference.Element", "taint", "manual"],
         ["<alloc::string::ToString>::to_string", "Argument[self].Reference", "ReturnValue", "taint", "manual"],
+        ["<alloc::string::String as core::convert::From>::from", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["<alloc::string::String as core::convert::From>::from", "Argument[0].Field[alloc::borrow::Cow::Owned(0)]", "ReturnValue", "value", "manual"],
+        ["<alloc::string::String as core::convert::From>::from", "Argument[0].Field[alloc::borrow::Cow::Borrowed(0)].Reference", "ReturnValue", "taint", "manual"],
         // Overwrite generated model
         ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[self]", "ReturnValue", "taint", "manual"],
         ["<alloc::string::String as core::ops::arith::Add>::add", "Argument[0].Reference", "ReturnValue", "taint", "manual"],
