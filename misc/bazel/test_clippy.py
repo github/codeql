@@ -33,6 +33,7 @@ class SelectionTest(unittest.TestCase):
 
     def test_unrelated_change(self):
         self.assertEqual(self.select("javascript/ql/lib/example.qll"), [])
+        self.assertEqual(self.select("misc/bazel/clippy.md"), [])
 
     def test_shared_dependency(self):
         self.assertEqual(self.select("shared/yeast/src/lib.rs"), [

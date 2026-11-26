@@ -26,8 +26,11 @@ the aspect explicitly, since the Clippy aspect does not traverse dependencies.
 Only targets declared by Bazel are linted: Cargo-only targets, configurations
 and crates (currently the three crates under `ql/`) are not included.
 
-CI restores a download/action disk cache, keyed by Bazel/dependency configuration
-with revision-specific entries. A successful job saves the updated cache.
+After selection, CI restores a download/action disk cache only if targets need
+linting. It is keyed by Bazel/dependency configuration with revision-specific
+entries. A successful job saves the updated cache; changed-target runs on
+`main` warm a default-branch cache that later PRs can restore. Before those runs
+exist, caches are scoped to each PR and the first run of another PR is cold.
 Stable compilation cannot reuse nightly compiler artifacts. The separate Rust
 extractor step makes its cost visible, but on a cold runner it also pays the
 initial stable toolchain and shared-dependency compilation cost. Native Swift

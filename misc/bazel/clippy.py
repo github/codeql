@@ -39,7 +39,11 @@ def select_targets(graph, members, changed):
         and package(label) in members
         and node.attrib["class"] in RUST_RULES
     }
-    if any(path in ROOT_INPUTS or path.startswith("misc/bazel/") for path in changed):
+    if any(
+        path in ROOT_INPUTS
+        or (path.startswith("misc/bazel/") and not path.endswith(".md"))
+        for path in changed
+    ):
         return sorted(candidates)
 
     reverse = defaultdict(set)

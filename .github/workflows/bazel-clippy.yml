@@ -2,6 +2,8 @@ name: Bazel Clippy
 
 on:
   pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       base:
@@ -30,7 +32,13 @@ jobs:
           fetch-depth: 0
       - name: Test target selection
         run: python3 -m unittest discover -s misc/bazel -p 'test_clippy.py'
+      - name: Select affected targets
+        id: select
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || inputs.base }}
+        run: python3 misc/bazel/clippy.py --base "$BASE_SHA"
       - name: Restore Bazel cache
+        if: steps.select.outputs.selected == 'true'
         id: cache
         uses: actions/cache@v4
         with:
@@ -38,11 +46,6 @@ jobs:
           key: bazel-clippy-${{ runner.os }}-${{ hashFiles('MODULE.bazel', 'Cargo.lock', '.bazelversion') }}-${{ github.sha }}
           restore-keys: |
             bazel-clippy-${{ runner.os }}-${{ hashFiles('MODULE.bazel', 'Cargo.lock', '.bazelversion') }}-
-      - name: Select affected targets
-        id: select
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base }}
-        run: python3 misc/bazel/clippy.py --base "$BASE_SHA"
       - name: Clippy (Rust extractor)
         if: steps.select.outputs.selected == 'true'
         run: python3 misc/bazel/clippy.py --lint extractor
