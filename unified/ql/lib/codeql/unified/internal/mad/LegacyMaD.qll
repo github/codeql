@@ -42,6 +42,61 @@ private predicate parsedRawMethodName(string rawName, string name, string argLab
   )
 }
 
+bindingset[type]
+private predicate legacyTypeModule(string type, string moduleName) {
+  type = ["DataResponse", "DownloadResponse"] and moduleName = "Alamofire"
+  or
+  type = "ArchiveByteStream" and moduleName = "AppleArchive"
+  or
+  type =
+    [
+      "AES", "Blowfish", "Digest", "Insecure.MD5", "Insecure.SHA1", "MD5", "SHA1", "SHA2", "SHA3",
+      "SHA256", "SHA384", "SHA512"
+    ] and
+  moduleName = "CryptoSwift"
+  or
+  type = ["Insecure.MD5", "Insecure.SHA1", "SHA256", "SHA384", "SHA512"] and
+  moduleName = "CryptoKit"
+  or
+  type = ["Insecure.MD5", "Insecure.SHA1", "SHA256", "SHA384", "SHA512"] and
+  moduleName = "Crypto"
+  or
+  type = ["JSContext", "JSValue"] and moduleName = "JavaScriptCore"
+  or
+  type = "NWConnection" and moduleName = "Network"
+  or
+  type = "NIOFileHandle" and moduleName = "NIOPosix"
+  or
+  type = "Logger" and moduleName = "OSLog"
+  or
+  type = ["Blob", "Expression", "ExpressionType"] and moduleName = "SQLite"
+  or
+  type = "FilePath" and moduleName = "System"
+  or
+  type =
+    [
+      "UIApplicationDelegate", "UISceneDelegate", "UITextField", "UITextFieldDelegate",
+      "UITextInput", "UITextViewDelegate", "UIWebView"
+    ] and
+  moduleName = "UIKit"
+  or
+  type =
+    ["WKScriptMessageHandler", "WKUserContentController", "WKUserScript", "WKWebView", "WebView"] and
+  moduleName = "WebKit"
+  or
+  type = "Zip" and moduleName = "Zip"
+  or
+  type = ["URLSession", "URLSessionConfiguration"] and moduleName = "FoundationNetworking"
+}
+
+bindingset[rawType]
+private string getModelTypeName(string rawType) {
+  result = rawType
+  or
+  result =
+    any(string moduleName | legacyTypeModule(rawType, moduleName) | moduleName + "." + rawType)
+}
+
 private string getSimpleNameFromExpr(Expr e) {
   result = e.(Identifier).getValue()
   or
@@ -183,21 +238,27 @@ private predicate propertyAccessSelector(MemberAccess access, T::Type baseType, 
 
 private newtype TSelector =
   MkCallSelector(string type, boolean subtypes, string name, string argLabels, string argTypes) {
-    exists(string rawName |
-      legacySourceModel(_, type, subtypes, rawName, argTypes, _, _, _, _)
-      or
-      legacySinkModel(_, type, subtypes, rawName, argTypes, _, _, _, _)
-      or
-      legacySummaryModel(_, type, subtypes, rawName, argTypes, _, _, _, _, _)
+    exists(string rawType, string rawName |
+      (
+        legacySourceModel(_, rawType, subtypes, rawName, argTypes, _, _, _, _)
+        or
+        legacySinkModel(_, rawType, subtypes, rawName, argTypes, _, _, _, _)
+        or
+        legacySummaryModel(_, rawType, subtypes, rawName, argTypes, _, _, _, _, _)
+      ) and
+      type = getModelTypeName(rawType)
     |
       parsedRawMethodName(rawName, name, argLabels)
     )
   } or
   MkPropertySelector(string type, boolean subtypes, string name) {
-    (
-      legacySourceModel(_, type, subtypes, name, _, _, _, _, _)
-      or
-      legacySinkModel(_, type, subtypes, name, _, _, _, _, _)
+    exists(string rawType |
+      (
+        legacySourceModel(_, rawType, subtypes, name, _, _, _, _, _)
+        or
+        legacySinkModel(_, rawType, subtypes, name, _, _, _, _, _)
+      ) and
+      type = getModelTypeName(rawType)
     ) and
     isRawPropertyName(name)
   }
@@ -555,8 +616,9 @@ private DataFlow::Node getSinkFromPropertyAccess(MemberAccess access, AccessPath
 private predicate normalizedSourceModel(
   Selector selector, AccessPath output, string kind, string provenance
 ) {
-  exists(string type, boolean subtypes, string rawName, string argTypes |
-    legacySourceModel(_, type, subtypes, rawName, argTypes, _, output, kind, provenance)
+  exists(string rawType, string type, boolean subtypes, string rawName, string argTypes |
+    legacySourceModel(_, rawType, subtypes, rawName, argTypes, _, output, kind, provenance) and
+    type = getModelTypeName(rawType)
   |
     exists(string name, string argLabels |
       parsedRawMethodName(rawName, name, argLabels) and
@@ -570,8 +632,9 @@ private predicate normalizedSourceModel(
 private predicate normalizedSinkModel(
   Selector selector, AccessPath output, string kind, string provenance
 ) {
-  exists(string type, boolean subtypes, string rawName, string argTypes |
-    legacySinkModel(_, type, subtypes, rawName, argTypes, _, output, kind, provenance)
+  exists(string rawType, string type, boolean subtypes, string rawName, string argTypes |
+    legacySinkModel(_, rawType, subtypes, rawName, argTypes, _, output, kind, provenance) and
+    type = getModelTypeName(rawType)
   |
     exists(string name, string argLabels |
       parsedRawMethodName(rawName, name, argLabels) and
@@ -586,9 +649,11 @@ predicate normalizedSummaryModel(
   Selector selector, string input, string output, string kind, string provenance
 ) {
   exists(
-    string type, boolean subtypes, string rawName, string name, string argLabels, string argTypes
+    string rawType, string type, boolean subtypes, string rawName, string name, string argLabels,
+    string argTypes
   |
-    legacySummaryModel(_, type, subtypes, rawName, argTypes, _, input, output, kind, provenance) and
+    legacySummaryModel(_, rawType, subtypes, rawName, argTypes, _, input, output, kind, provenance) and
+    type = getModelTypeName(rawType) and
     parsedRawMethodName(rawName, name, argLabels) and
     selector = MkCallSelector(type, subtypes, name, argLabels, argTypes)
   )

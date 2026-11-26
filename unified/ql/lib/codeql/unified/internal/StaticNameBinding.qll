@@ -235,24 +235,37 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   or
   exists(MaD::TypeSelector type |
     node1.isTypeSelector(type.append(name)) and
-    node2.isTypeSelector(type)
+    node2.isTypeSelector(type) and
+    not (
+      type = "" and
+      name =
+        [
+          "Swift", "Foundation", "FoundationNetworking", "Alamofire", "AppleArchive", "Crypto",
+          "CryptoKit", "CryptoSwift", "JavaScriptCore", "Network", "NIOPosix", "OSLog", "SQLite",
+          "System", "UIKit", "WebKit", "Zip"
+        ]
+    )
   )
   or
-  // Legacy Swift models omit module names. Expose their root namespace through
-  // known module qualifiers as well as directly in the top-level scope.
+  // Legacy Swift models omit module names. Add module qualifiers to model types
+  // without connecting them to the shared root used by global function models.
   // TODO: MaD models should include module names to avoid this special case.
   node1.isTypeSelector("") and
-  name =
-    [
-      "Swift", "Foundation", "FoundationNetworking", "Alamofire", "AppleArchive", "Crypto",
-      "CryptoKit", "CryptoSwift", "JavaScriptCore", "Network", "NIOPosix", "OSLog", "SQLite",
-      "System", "UIKit", "WebKit", "Zip", "os"
-    ] and
+  name = ["Swift", "Foundation"] and
   (
     node2.isModuleRoot()
     or
     node2.isLocalNamespace(any(TopLevel top).getBody())
   )
+  or
+  node1.isTypeSelector(name) and
+  name =
+    [
+      "Swift", "Foundation", "FoundationNetworking", "Alamofire", "AppleArchive", "Crypto",
+      "CryptoKit", "CryptoSwift", "JavaScriptCore", "Network", "NIOPosix", "OSLog", "SQLite",
+      "System", "UIKit", "WebKit", "Zip"
+    ] and
+  node2.isModuleRoot()
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {

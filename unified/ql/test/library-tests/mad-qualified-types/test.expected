@@ -29,10 +29,8 @@ isSource
 | no-import.swift:3:9:3:26 | ... .lines | remote |
 | no-import.swift:6:9:6:25 | ... .lines | remote |
 | no-import.swift:8:9:8:23 | ... .lines | remote |
-| other-modules.swift:10:9:10:22 | ... .value | remote |
-| other-modules.swift:11:9:11:31 | ... .value | remote |
-| other-modules.swift:13:9:13:22 | ... .text | local |
-| other-modules.swift:14:9:14:31 | ... .text | local |
+| other-modules.swift:8:9:8:31 | ... .value | remote |
+| other-modules.swift:10:9:10:31 | ... .text | local |
 | scoped-import.swift:4:9:4:17 | ... .lines | remote |
 | scoped-import.swift:5:9:5:26 | ... .lines | remote |
 | scoped-import.swift:8:9:8:25 | ... .lines | remote |
