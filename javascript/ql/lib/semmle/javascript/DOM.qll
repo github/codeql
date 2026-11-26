@@ -375,7 +375,7 @@ module DOM {
         exists(DataFlow::SourceNode domNode, DataFlow::FunctionNode eventHandler |
           // NOTE: we do not use `getABoundFunctionValue()`, since bound functions tend to have
           // a different receiver anyway
-          eventHandler = domNode.getAPropertySource(any(string n | n.matches("on%")))
+          eventHandler = domNode.getAPropertySource(any(string n | n.startsWith("on")))
           or
           eventHandler =
             domNode.getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
@@ -402,7 +402,7 @@ module DOM {
     private class DefaultRange extends Range {
       DefaultRange() {
         // e.g. <form onSubmit={e => e.target}/>
-        exists(JsxAttribute attr | attr.getName().matches("on%") |
+        exists(JsxAttribute attr | attr.getName().startsWith("on") |
           this = attr.getValue().flow().getABoundFunctionValue(0).getParameter(0)
         )
         or
@@ -411,7 +411,7 @@ module DOM {
         or
         // node.onSubmit = (e => e.target);
         exists(DataFlow::PropWrite write | write = domValueRef().getAPropertyWrite() |
-          write.getPropertyName().matches("on%") and
+          write.getPropertyName().startsWith("on") and
           this = write.getRhs().getAFunctionValue().getParameter(0)
         )
       }

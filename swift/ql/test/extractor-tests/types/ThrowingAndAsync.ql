@@ -3,7 +3,7 @@ import codeql.swift.elements
 from Function f, AnyFunctionType t, string s
 where
   f.getInterfaceType() = t and
-  f.getLocation().getFile().getName().matches("%swift/ql/test%") and
+  f.getLocation().getFile().getName().contains("swift/ql/test") and
   (
     t.isAsync() and s = "async"
     or

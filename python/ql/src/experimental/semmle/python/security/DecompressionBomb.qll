@@ -155,7 +155,7 @@ module TarFile {
           .asExpr()
           .(StringLiteral)
           .getText()
-          .matches("r:%")
+          .startsWith("r:")
     )
   }
 
@@ -273,7 +273,7 @@ module Gzip {
               .asExpr()
               .(StringLiteral)
               .getText()
-              .matches("%r%")
+              .contains("r")
         )
       )
     }
@@ -315,7 +315,7 @@ module Bz2 {
               .asExpr()
               .(StringLiteral)
               .getText()
-              .matches("%r%")
+              .contains("r")
         )
       )
     }
@@ -357,7 +357,7 @@ module Lzma {
               .asExpr()
               .(StringLiteral)
               .getText()
-              .matches("%r%")
+              .contains("r")
         )
       )
     }
@@ -397,7 +397,7 @@ module Zstd {
               .asExpr()
               .(StringLiteral)
               .getText()
-              .matches("%r%")
+              .contains("r")
         )
       )
     }

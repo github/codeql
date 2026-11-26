@@ -10,13 +10,6 @@ module Impl {
    */
   class NamedPattern extends Generated::NamedPattern {
     /**
-     * Holds if this named pattern has a corresponding `VarDecl`, which is currently always true.
-     *
-     * DEPRECATED: unless there was a compilation error, this will always hold.
-     */
-    deprecated predicate hasVarDecl() { exists(this.getVarDecl()) }
-
-    /**
      * Gets the name of the variable bound by this pattern.
      */
     string getName() { result = this.getVarDecl().getName() }

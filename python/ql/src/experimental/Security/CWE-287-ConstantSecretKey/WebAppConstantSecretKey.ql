@@ -44,7 +44,7 @@ private module WebAppConstantSecretKeyConfig implements DataFlow::StateConfigSig
         .matches(["%test%", "%demo%", "%example%", "%sample%"]) and
     // but that also meant all data-flow nodes in query tests were excluded... so we had
     // to add this:
-    not node.getLocation().getFile().getRelativePath().matches("%query-tests/Security/CWE-287%")
+    not node.getLocation().getFile().getRelativePath().contains("query-tests/Security/CWE-287")
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {

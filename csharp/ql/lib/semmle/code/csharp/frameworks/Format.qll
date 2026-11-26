@@ -266,16 +266,6 @@ class FormatCall extends FormatStringParseCallImpl {
   predicate hasInsertions() { exists(this.getArgument(this.getFirstArgument())) }
 
   /**
-   * DEPRECATED: use `hasCollectionExpr` instead.
-   *
-   * Holds if the arguments are supplied in an array, not individually.
-   */
-  deprecated predicate hasArrayExpr() {
-    this.getNumberOfArguments() = this.getFirstArgument() + 1 and
-    this.getArgument(this.getFirstArgument()).getType() instanceof ArrayType
-  }
-
-  /**
    * Holds if the arguments are supplied in a collection, not individually.
    */
   predicate hasCollectionExpr() {

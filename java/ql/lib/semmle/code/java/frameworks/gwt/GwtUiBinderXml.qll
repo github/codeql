@@ -8,7 +8,7 @@ import java
 
 /** A GWT UiBinder XML template file with a `.ui.xml` suffix. */
 class GwtUiTemplateXmlFile extends XmlFile {
-  GwtUiTemplateXmlFile() { this.getBaseName().matches("%.ui.xml") }
+  GwtUiTemplateXmlFile() { this.getBaseName().endsWith(".ui.xml") }
 
   /** Gets the top-level UiBinder element. */
   GwtUiBinderTemplateElement getUiBinderElement() { result = this.getAChild() }

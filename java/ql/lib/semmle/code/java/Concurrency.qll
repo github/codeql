@@ -15,7 +15,7 @@ class LockType extends RefType {
   LockType() {
     this.getAMethod().hasName("lock") and
     this.getAMethod().hasName("unlock") and
-    not this.getName().matches("%Pool")
+    not this.getName().endsWith("Pool")
   }
 
   /** Gets a method that is locking this lock type. */

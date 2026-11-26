@@ -117,7 +117,7 @@ module CleartextSources {
     // We explicitly exclude element references, element assignments, and
     // mutation methods.
     not name = ["[]", "[]="] and
-    not name.matches("%!")
+    not name.endsWith("!")
   }
 
   /**
@@ -165,11 +165,6 @@ module CleartextSources {
       any(NonCleartextSensitive other).(DataFlow::LocalSourceNode).flowsTo(this)
     }
   }
-
-  /**
-   * DEPRECATED: Use NonCleartextSensitiveFlow instead.
-   */
-  deprecated class NonCleartextPasswordFlow = NonCleartextSensitiveFlow;
 
   /**
    * A data flow node that does not contain clear-text sensitive data.

@@ -12,8 +12,8 @@ module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
     exists(CompileTimeConstantExpr specExpr, string spec |
       specExpr.getStringValue().toUpperCase() = spec and
       specExpr = src.asExpr() and
-      spec.matches("RSA/%") and
-      not spec.matches("%OAEP%")
+      spec.startsWith("RSA/") and
+      not spec.contains("OAEP")
     )
   }
 

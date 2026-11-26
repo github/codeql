@@ -16,3 +16,15 @@ func t2() -> Int {
             let b = 2  // $ Alert[unified/unused-variable]
         })
 }
+
+class C {
+    func x() -> Int? { return nil }
+
+    func t3() -> Bool {
+        guard let x = x() else { return false }
+        let succeeded = true
+        guard succeeded else { return false }
+        print(x)
+        return true
+    }
+}

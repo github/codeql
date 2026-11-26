@@ -1,0 +1,324 @@
+Module: [1, 0] - [20, 0]
+  body: [
+    Assign: [1, 0] - [1, 13]
+      targets: [
+        Name: [1, 6] - [1, 12]
+          variable: Variable('NoBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [1, 0] - [1, 13]
+          name: 'NoBase'
+          type_parameters: []
+          bases: []
+          keywords: []
+          inner_scope:
+            Class: [1, 0] - [1, 13]
+              name: 'NoBase'
+              body: [
+                Pass: [1, 14] - [1, 18]
+              ]
+    Assign: [3, 0] - [3, 18]
+      targets: [
+        Name: [3, 6] - [3, 15]
+          variable: Variable('EmptyBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [3, 0] - [3, 18]
+          name: 'EmptyBase'
+          type_parameters: []
+          bases: []
+          keywords: []
+          inner_scope:
+            Class: [3, 0] - [3, 18]
+              name: 'EmptyBase'
+              body: [
+                Pass: [3, 19] - [3, 23]
+              ]
+    Assign: [5, 0] - [5, 25]
+      targets: [
+        Name: [5, 6] - [5, 19]
+          variable: Variable('PrimitiveBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [5, 0] - [5, 25]
+          name: 'PrimitiveBase'
+          type_parameters: []
+          bases: [
+            Name: [5, 20] - [5, 23]
+              variable: Variable('int', None)
+              ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [5, 0] - [5, 25]
+              name: 'PrimitiveBase'
+              body: [
+                Pass: [5, 26] - [5, 30]
+              ]
+    Assign: [7, 0] - [7, 30]
+      targets: [
+        Name: [7, 6] - [7, 15]
+          variable: Variable('ManyBases', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [7, 0] - [7, 30]
+          name: 'ManyBases'
+          type_parameters: []
+          bases: [
+            Name: [7, 16] - [7, 20]
+              variable: Variable('list', None)
+              ctx: Load
+            Name: [7, 22] - [7, 28]
+              variable: Variable('object', None)
+              ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [7, 0] - [7, 30]
+              name: 'ManyBases'
+              body: [
+                Pass: [7, 31] - [7, 35]
+              ]
+    Assign: [9, 0] - [9, 31]
+      targets: [
+        Name: [9, 6] - [9, 19]
+          variable: Variable('SubscriptBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [9, 0] - [9, 31]
+          name: 'SubscriptBase'
+          type_parameters: []
+          bases: [
+            Subscript: [9, 20] - [9, 29]
+              value:
+                Name: [9, 20] - [9, 24]
+                  variable: Variable('list', None)
+                  ctx: Load
+              index:
+                Name: [9, 25] - [9, 28]
+                  variable: Variable('int', None)
+                  ctx: Load
+              ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [9, 0] - [9, 31]
+              name: 'SubscriptBase'
+              body: [
+                Pass: [9, 32] - [9, 36]
+              ]
+    Assign: [11, 0] - [11, 30]
+      targets: [
+        Name: [11, 6] - [11, 16]
+          variable: Variable('WalrusBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [11, 0] - [11, 30]
+          name: 'WalrusBase'
+          type_parameters: []
+          bases: [
+            AssignExpr: [11, 17] - [11, 28]
+              target:
+                Name: [11, 17] - [11, 20]
+                  variable: Variable('foo', None)
+                  ctx: Store
+              value:
+                Name: [11, 22] - [11, 28]
+                  variable: Variable('object', None)
+                  ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [11, 0] - [11, 30]
+              name: 'WalrusBase'
+              body: [
+                Pass: [11, 31] - [11, 35]
+              ]
+    Assign: [13, 0] - [13, 28]
+      targets: [
+        Name: [13, 6] - [13, 14]
+          variable: Variable('AttrBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [13, 0] - [13, 28]
+          name: 'AttrBase'
+          type_parameters: []
+          bases: [
+            Attribute: [13, 15] - [13, 26]
+              value:
+                Name: [13, 15] - [13, 21]
+                  variable: Variable('typing', None)
+                  ctx: Load
+              attr: 'List'
+              ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [13, 0] - [13, 28]
+              name: 'AttrBase'
+              body: [
+                Pass: [13, 29] - [13, 33]
+              ]
+    Assign: [15, 0] - [15, 34]
+      targets: [
+        Name: [15, 6] - [15, 15]
+          variable: Variable('TypedBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [15, 0] - [15, 34]
+          name: 'TypedBase'
+          type_parameters: [
+            TypeVar: [15, 16] - [15, 17]
+              name:
+                Name: [15, 16] - [15, 17]
+                  variable: Variable('K', None)
+                  ctx: Store
+              bound: None
+              default: None
+            TypeVar: [15, 19] - [15, 20]
+              name:
+                Name: [15, 19] - [15, 20]
+                  variable: Variable('V', None)
+                  ctx: Store
+              bound: None
+              default: None
+          ]
+          bases: [
+            Subscript: [15, 22] - [15, 32]
+              value:
+                Name: [15, 22] - [15, 26]
+                  variable: Variable('dict', None)
+                  ctx: Load
+              index:
+                Tuple: [15, 27] - [15, 31]
+                  elts: [
+                    Name: [15, 27] - [15, 28]
+                      variable: Variable('K', None)
+                      ctx: Load
+                    Name: [15, 30] - [15, 31]
+                      variable: Variable('V', None)
+                      ctx: Load
+                  ]
+                  ctx: Load
+              ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [15, 0] - [15, 34]
+              name: 'TypedBase'
+              body: [
+                Pass: [15, 35] - [15, 39]
+              ]
+    Assign: [17, 0] - [17, 36]
+      targets: [
+        Name: [17, 6] - [17, 18]
+          variable: Variable('EllipsisBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [17, 0] - [17, 36]
+          name: 'EllipsisBase'
+          type_parameters: []
+          bases: [
+            Subscript: [17, 19] - [17, 34]
+              value:
+                Name: [17, 19] - [17, 24]
+                  variable: Variable('tuple', None)
+                  ctx: Load
+              index:
+                Tuple: [17, 25] - [17, 33]
+                  elts: [
+                    Name: [17, 25] - [17, 28]
+                      variable: Variable('int', None)
+                      ctx: Load
+                    Ellipsis: [17, 30] - [17, 33]
+                  ]
+                  ctx: Load
+              ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [17, 0] - [17, 36]
+              name: 'EllipsisBase'
+              body: [
+                Pass: [17, 37] - [17, 41]
+              ]
+    Assign: [19, 0] - [19, 53]
+      targets: [
+        Name: [19, 6] - [19, 16]
+          variable: Variable('NestedBase', None)
+          ctx: Store
+      ]
+      value:
+        ClassExpr: [19, 0] - [19, 53]
+          name: 'NestedBase'
+          type_parameters: [
+            TypeVar: [19, 17] - [19, 18]
+              name:
+                Name: [19, 17] - [19, 18]
+                  variable: Variable('K', None)
+                  ctx: Store
+              bound: None
+              default: None
+            TypeVar: [19, 20] - [19, 21]
+              name:
+                Name: [19, 20] - [19, 21]
+                  variable: Variable('V', None)
+                  ctx: Store
+              bound: None
+              default: None
+          ]
+          bases: [
+            Subscript: [19, 23] - [19, 51]
+              value:
+                Name: [19, 23] - [19, 27]
+                  variable: Variable('dict', None)
+                  ctx: Load
+              index:
+                Tuple: [19, 28] - [19, 50]
+                  elts: [
+                    Subscript: [19, 28] - [19, 41]
+                      value:
+                        Name: [19, 28] - [19, 33]
+                          variable: Variable('tuple', None)
+                          ctx: Load
+                      index:
+                        Tuple: [19, 34] - [19, 40]
+                          elts: [
+                            Name: [19, 34] - [19, 35]
+                              variable: Variable('K', None)
+                              ctx: Load
+                            Ellipsis: [19, 37] - [19, 40]
+                          ]
+                          ctx: Load
+                      ctx: Load
+                    Subscript: [19, 43] - [19, 50]
+                      value:
+                        Name: [19, 43] - [19, 47]
+                          variable: Variable('list', None)
+                          ctx: Load
+                      index:
+                        Name: [19, 48] - [19, 49]
+                          variable: Variable('V', None)
+                          ctx: Load
+                      ctx: Load
+                  ]
+                  ctx: Load
+              ctx: Load
+          ]
+          keywords: []
+          inner_scope:
+            Class: [19, 0] - [19, 53]
+              name: 'NestedBase'
+              body: [
+                Pass: [19, 54] - [19, 58]
+              ]
+  ]

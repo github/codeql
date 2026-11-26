@@ -404,8 +404,8 @@ class PersistencePropertyMethod extends CallableEntryPoint {
         this.hasAnnotation(getAPersistencePackageName(), "Access")
       ) and
       (
-        this.getName().matches("get%") or
-        this.getName().matches("set%")
+        this.getName().startsWith("get") or
+        this.getName().startsWith("set")
       )
     )
   }
@@ -435,9 +435,9 @@ class ArbitraryXmlEntryPoint extends ReflectivelyConstructedClass {
     this.fromSource() and
     exists(XmlAttribute attribute |
       attribute.getName() = "className" or
-      attribute.getName().matches("%ClassName") or
+      attribute.getName().endsWith("ClassName") or
       attribute.getName() = "class" or
-      attribute.getName().matches("%Class")
+      attribute.getName().endsWith("Class")
     |
       attribute.getValue() = this.getQualifiedName()
     )

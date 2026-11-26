@@ -24,7 +24,7 @@ class EqualsCall extends MethodCall {
    */
   predicate whitelisted() {
     // Allow tests and assertions to verify that `equals` methods return `false`.
-    this.getParent*().(MethodCall).getMethod().getName().matches("assert%") or
+    this.getParent*().(MethodCall).getMethod().getName().startsWith("assert") or
     this.getEnclosingStmt() instanceof AssertStmt
   }
 

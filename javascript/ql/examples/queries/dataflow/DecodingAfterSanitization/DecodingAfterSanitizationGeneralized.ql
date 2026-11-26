@@ -19,7 +19,7 @@ class DecodingCall extends DataFlow::CallNode {
   DataFlow::Node input;
 
   DecodingCall() {
-    this.getCalleeName().matches("decodeURI%") and
+    this.getCalleeName().startsWith("decodeURI") and
     input = this.getArgument(0) and
     kind = "URI decoding"
     or

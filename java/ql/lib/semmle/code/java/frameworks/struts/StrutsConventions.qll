@@ -56,7 +56,7 @@ private predicate isStrutsConventionPluginUsed(RefType refType) {
   strutsConventionAnnotationUsedInFolder(getSourceFolder(refType.getCompilationUnit()))
   or
   // The struts configuration file for this file sets a convention property
-  getRootXmlFile(refType).getAConstant().getName().matches("struts.convention%")
+  getRootXmlFile(refType).getAConstant().getName().startsWith("struts.convention")
   or
   // We've found the POM for this RefType, and it includes a dependency on the convention plugin
   exists(Pom pom |

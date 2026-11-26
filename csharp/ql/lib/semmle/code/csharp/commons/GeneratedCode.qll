@@ -8,22 +8,22 @@ abstract class GeneratedCodeFile extends SourceFile { }
 
 /** An auto-generated Designer file. */
 class DesignerFile extends GeneratedCodeFile {
-  DesignerFile() { this.getBaseName().toLowerCase().matches("%.designer.cs") }
+  DesignerFile() { this.getBaseName().toLowerCase().endsWith(".designer.cs") }
 }
 
 /** An auto-generated SpecFlow feature file. */
 class FeatureFile extends GeneratedCodeFile {
-  FeatureFile() { this.getBaseName().toLowerCase().matches("%.feature.cs") }
+  FeatureFile() { this.getBaseName().toLowerCase().endsWith(".feature.cs") }
 }
 
 /** An auto-generated XAML code file. */
 class XamlFile extends GeneratedCodeFile {
-  XamlFile() { this.getBaseName().matches("%.g.cs") }
+  XamlFile() { this.getBaseName().endsWith(".g.cs") }
 }
 
 /** An auto-generated XSD code file. */
 class AutogenXsdFile extends GeneratedCodeFile {
-  AutogenXsdFile() { this.getBaseName().matches("%.autogen.cs") }
+  AutogenXsdFile() { this.getBaseName().endsWith(".autogen.cs") }
 }
 
 /** An auto-generated CodeDOM file. */

@@ -42,7 +42,7 @@ module HardcodedSymmetricEncryptionKey {
   private class SymmetricAlgorithmSink extends Sink {
     private string kind;
 
-    SymmetricAlgorithmSink() { sinkNode(this, kind) and kind.matches("encryption%") }
+    SymmetricAlgorithmSink() { sinkNode(this, kind) and kind.startsWith("encryption") }
 
     override string getDescription() {
       kind = "encryption-encryptor" and result = "Encryptor(rgbKey, IV)"

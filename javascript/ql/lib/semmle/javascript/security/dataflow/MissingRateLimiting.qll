@@ -173,7 +173,7 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
       string rateLimiterClassName, API::Node rateLimiterClass, API::Node rateLimiterConsume,
       DataFlow::ParameterNode request
     |
-      rateLimiterClassName.matches("RateLimiter%") and
+      rateLimiterClassName.startsWith("RateLimiter") and
       rateLimiterClass = API::moduleImport("rate-limiter-flexible").getMember(rateLimiterClassName) and
       rateLimiterConsume = rateLimiterClass.getInstance().getMember("consume") and
       request = getRouteHandlerParameter(this, "request") and

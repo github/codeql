@@ -7,7 +7,9 @@
       },
       "data": [
         // namespace, type, subtypes, name, signature, ext, output, kind, provenance
-        ["", "ShorthandTest", true, "sourceParams(_:)", "", "", "Parameter[self,0]", "shorthand-source", "manual"]
+        ["", "ShorthandTest", true, "sourceParams(_:)", "", "", "Parameter[self,0]", "shorthand-source", "manual"],
+        ["", "SubscriptTest", true, "subscript(_:#newValue:)", "", "", "Parameter[#newValue:]", "subscript-setter-source", "manual"],
+        ["", "OptionalTest", true, "source(_:y?:)", "", "", "Parameter[0]", "optional-source", "manual"]
       ]
     },
     {
@@ -17,7 +19,14 @@
       },
       "data": [
         // namespace, type, subtypes, name, signature, ext, input, kind, provenance
-        ["", "ShorthandTest", true, "sinkArgs(_:)", "", "", "Argument[self,0]", "shorthand-sink", "manual"]
+        ["", "ShorthandTest", true, "sinkArgs(_:)", "", "", "Argument[self,0]", "shorthand-sink", "manual"],
+        ["", "SubscriptTest", true, "subscript(_:)", "", "", "Argument[0]", "subscript-getter-sink", "manual"],
+        ["", "SubscriptTest", true, "subscript(_:#newValue:)", "", "", "Argument[#newValue:]", "subscript-setter-sink", "manual"],
+        ["", "OptionalTest", true, "named(a:b?:)", "", "", "Argument[a:]", "optional-named-sink", "manual"],
+        ["", "OptionalTest", true, "named(x:b:)", "", "", "Argument[x:]", "required-named-sink", "manual"],
+        ["", "OptionalTest", true, "positional(_:_?:)", "", "", "Argument[0]", "optional-positional-sink", "manual"],
+        ["", "OptionalTest", true, "mixed(_:x?:)", "", "", "Argument[0]", "optional-mixed-sink", "manual"],
+        ["", "OptionalInit", true, "init(value:flag?:)", "", "", "Argument[value:]", "optional-init-sink", "manual"]
       ]
     }
   ]

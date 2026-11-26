@@ -27,7 +27,7 @@ class SetSessionAttributeMethod extends Method {
 /** A request attribute getter method of `JFinalController`. */
 class GetRequestAttributeMethod extends Method {
   GetRequestAttributeMethod() {
-    this.getName().matches("getAttr%") and
+    this.getName().startsWith("getAttr") and
     this.getDeclaringType().getASupertype*() instanceof JFinalController
   }
 }

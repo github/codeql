@@ -16,10 +16,10 @@ import codeql.actions.ast.internal.Ast
 
 from Expression expr
 where
-  getAToJsonReferenceExpression(expr.getExpression(), _).matches("secrets%")
+  getAToJsonReferenceExpression(expr.getExpression(), _).startsWith("secrets")
   or
-  expr.getExpression().matches("secrets[%") and
+  expr.getExpression().startsWith("secrets[") and
   not expr.getExpression().matches("secrets[\"%") and
-  not expr.getExpression().matches("secrets['%")
+  not expr.getExpression().startsWith("secrets['")
 select expr, "All organization and repository secrets are passed to the workflow runner in $@",
   expr, expr.getExpression()

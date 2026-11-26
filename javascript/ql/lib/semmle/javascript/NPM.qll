@@ -190,7 +190,7 @@ class PackageJson extends JsonObject {
   /** Gets an operating system supported by this package. */
   string getWhitelistedOS() {
     result = this.getOSs().getElementStringValue(_) and
-    not result.matches("!%")
+    not result.startsWith("!")
   }
 
   /** Gets an operating system not supported by this package. */
@@ -206,7 +206,7 @@ class PackageJson extends JsonObject {
   /** Gets a platform supported by this package. */
   string getWhitelistedCpu() {
     result = this.getCPUs().getElementStringValue(_) and
-    not result.matches("!%")
+    not result.startsWith("!")
   }
 
   /** Gets a platform not supported by this package. */

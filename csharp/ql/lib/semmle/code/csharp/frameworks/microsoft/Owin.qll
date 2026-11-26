@@ -129,7 +129,7 @@ class MicrosoftOwinIOwinRequestClass extends Class {
 class MicrosoftOwinString extends Class {
   MicrosoftOwinString() {
     this.getNamespace() instanceof MicrosoftOwinNamespace and
-    this.getName().matches("%String")
+    this.getName().endsWith("String")
   }
 
   /** Gets the `Value` property. */

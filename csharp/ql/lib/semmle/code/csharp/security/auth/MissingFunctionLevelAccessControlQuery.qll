@@ -20,9 +20,9 @@ class AuthExpr extends Expr {
         .getTarget()
         .hasFullyQualifiedName("System.Security.Principal", "IIdentity", ["IsAuthenticated", "Name"])
     or
-    this.(MethodCall).getTarget().getName().toLowerCase().matches("%auth%")
+    this.(MethodCall).getTarget().getName().toLowerCase().contains("auth")
     or
-    this.(PropertyAccess).getTarget().getName().toLowerCase().matches("%auth%")
+    this.(PropertyAccess).getTarget().getName().toLowerCase().contains("auth")
   }
 }
 
@@ -81,7 +81,7 @@ predicate hasAuthViaXml(ActionMethod m) {
 
 /** Holds if the given action has an attribute that indications authorization. */
 predicate hasAuthViaAttribute(ActionMethod m) {
-  exists(Attribute attr | attr.getType().getABaseType*().getName().toLowerCase().matches("%auth%") |
+  exists(Attribute attr | attr.getType().getABaseType*().getName().toLowerCase().contains("auth") |
     attr = m.getOverridee*().getAnAttribute() or
     attr = getAnUnboundBaseType*(m.getDeclaringType()).getAnAttribute()
   )

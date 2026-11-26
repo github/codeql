@@ -14,7 +14,7 @@ predicate classify(File f, string category) {
   category = "test"
   or
   // vendored code
-  f.getRelativePath().regexpMatch(".*/vendor/.*") and
+  f.getRelativePath().contains("/vendor/") and
   category = "library"
   or
   // generated code

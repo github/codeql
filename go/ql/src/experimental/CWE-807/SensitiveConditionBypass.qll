@@ -36,9 +36,9 @@ private class ConstComparisonExpr extends ComparisonExpr {
     // if its an empty string
     constString.length() = 0 or
     // // if it is uri path
-    constString.matches("/%") or
-    constString.matches("%/") or
-    constString.matches("%/%")
+    constString.startsWith("/") or
+    constString.endsWith("/") or
+    constString.contains("/")
   }
 }
 

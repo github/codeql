@@ -7,6 +7,8 @@ private import codeql.dataflow.internal.AccessPathSyntax
 private import codeql.unified.internal.typeinference.TypeInference as T
 private import codeql.unified.internal.typeinference.Type as Types
 private import codeql.unified.internal.StaticNameBinding as N
+private import codeql.unified.internal.dataflow.DataFlowCall
+private import codeql.unified.internal.dataflow.DataFlowNode
 
 extensible predicate legacySourceModel(
   string namespace, string type, boolean subtypes, string name, string signature, string ext,
@@ -54,34 +56,74 @@ private string getQualifiedNameFromExpr(Expr e) {
   )
 }
 
+/** Holds if the argument at `index` of `call` has the given `label`, or `_` if positional. */
+private predicate callArgLabel(CallExpr call, int index, string label) {
+  exists(Argument arg |
+    arg = call.getAnArgument() and
+    index = arg.getParentIndex()
+  |
+    arg.isPositional() and
+    label = "_"
+    or
+    label = arg.getName()
+  )
+}
+
 private string getArgLabelsFromCall(CallExpr call) {
   result =
-    concat(Argument arg, string name |
-      arg = call.getAnArgument() and
-      (
-        arg.isPositional() and
-        name = "_"
-        or
-        name = arg.getName()
-      )
+    concat(int index, string label | callArgLabel(call, index, label) | label + ":" order by index)
+}
+
+/**
+ * Gets the labels used to join `call` with selectors that have the method name `name`.
+ *
+ * This consists of the named argument labels, ignoring positional arguments and labels that are
+ * optional for some selector with the same method name. Since this discards some information,
+ * the full argument labels are checked after the join.
+ */
+bindingset[name]
+pragma[inline_late]
+private string getJoinLabelsFromCall(CallExpr call, string name) {
+  result =
+    concat(int index, string label |
+      callArgLabel(call, index, label) and
+      label != "_" and
+      not optionalArgLabel(name, label)
     |
-      name + ":" order by arg.getParentIndex()
+      label + ":" order by index
     )
 }
 
+/**
+ * Holds if `call` is a method call with the given `name` and `argLabels`.
+ *
+ * A call to a setter method, such as `x[i]` in `x[i] = y`, passes the new value as an extra
+ * argument named `#newValue`, so models refer to it as e.g. `subscript(_:#newValue:)`.
+ */
 pragma[nomagic]
-private predicate methodCallSelector(CallExpr call, string name, string argLabels) {
-  name = getSimpleNameFromExpr(call.getCallee()) and
-  argLabels = getArgLabelsFromCall(call)
+private predicate methodCallSelector(
+  DataFlowCall call, string name, string joinLabels, string argLabels
+) {
+  exists(CallExpr e, string suffix |
+    e = call.getCallExpr() and
+    name = getSimpleNameFromExpr(e.getCallee()) and
+    name = any(Selector s).getName() and
+    (if e = call.asSetterCall() then suffix = "#newValue:" else suffix = "") and
+    joinLabels = getJoinLabelsFromCall(e, name) + suffix and
+    argLabels = getArgLabelsFromCall(e) + suffix
+  )
 }
 
 pragma[nomagic]
-private predicate constructorCallSelector(CallExpr call, TypeSelector type, string argLabels) {
+private predicate constructorCallSelector(
+  CallExpr call, TypeSelector type, string joinLabels, string argLabels
+) {
   (
     if call.getCallee().(MemberAccessExpr).getMemberName() = "init"
     then type.getAStaticRef() = call.getCallee().(MemberAccessExpr).getBase()
     else type.getAStaticRef() = call.getCallee()
   ) and
+  joinLabels = getJoinLabelsFromCall(call, "init") and
   argLabels = getArgLabelsFromCall(call)
 }
 
@@ -124,7 +166,7 @@ private predicate callableSelector(
 /** Holds if `name` from a model refers to a property, such as `count` in `String.count`. */
 private predicate isRawPropertyName(string name) {
   modelContainsMethodName(name) and
-  not name.matches("%(%")
+  not name.contains("(")
 }
 
 /**
@@ -161,6 +203,53 @@ private newtype TSelector =
   }
 
 /**
+ * Holds if the `n`th label in `selector` is `label`, with any `?` suffix removed, and
+ * `optional` indicates whether the label had a `?` suffix.
+ *
+ * For example, `init(contentsOf:encoding?:)` has the labels `contentsOf` and `encoding`,
+ * where the latter is optional.
+ */
+private predicate selectorLabel(Selector selector, int n, string label, boolean optional) {
+  exists(string rawLabel |
+    rawLabel = selector.getArgLabels().splitAt(":", n) and
+    rawLabel != ""
+  |
+    if rawLabel.endsWith("?")
+    then label = rawLabel.prefix(rawLabel.length() - 1) and optional = true
+    else (
+      label = rawLabel and optional = false
+    )
+  )
+}
+
+/** Holds if `label` is an optional named parameter of some selector with the method name `name`. */
+private predicate optionalArgLabel(string name, string label) {
+  exists(Selector selector |
+    name = selector.getName() and
+    selectorLabel(selector, _, label, true) and
+    label != "_"
+  )
+}
+
+/**
+ * Gets the named labels of `selector` that are not optional for any selector with the same
+ * method name. This is used to join with `getJoinLabelsFromCall`.
+ */
+private string getNamedJoinLabels(Selector selector) {
+  exists(string name |
+    name = selector.getName() and
+    result =
+      concat(int n, string label |
+        selectorLabel(selector, n, label, _) and
+        label != "_" and
+        not optionalArgLabel(name, label)
+      |
+        label + ":" order by n
+      )
+  )
+}
+
+/**
  * A tuple from a model that identifies call sites, callables, or property accesses.
  */
 class Selector extends TSelector {
@@ -195,33 +284,77 @@ class Selector extends TSelector {
     result = this.getTypeString() + this.ppSubtypes() + "." + this.getPropertyName()
   }
 
-  /** Holds if `name,argLabels` should be used to join with `methodCallSelector`. */
-  pragma[nomagic]
-  private predicate matchesMethodCallSelector(string name, string argLabels) {
-    this = MkCallSelector(_, _, name, argLabels, _) and
-    name != "init"
+  /** Holds if this selector has an optional argument, marked with a `?` suffix. */
+  predicate hasOptionalArgument() { selectorLabel(this, _, _, true) }
+
+  /**
+   * Gets a regular expression matching the argument labels of call sites matched by this
+   * selector, if it has optional arguments.
+   */
+  string getArgLabelsRegexp() {
+    this.hasOptionalArgument() and
+    result =
+      concat(int n, string label, boolean optional, string part |
+        selectorLabel(this, n, label, optional) and
+        if optional = true then part = "(" + label + ":)?" else part = label + ":"
+      |
+        part order by n
+      )
   }
 
-  /** Holds if `name,argLabels` should be used to join with `constructorCallSelector`. */
-  pragma[nomagic]
-  private predicate matchesConstructorCallSelector(string name, string argLabels) {
-    this = MkCallSelector(name, _, "init", argLabels, _)
+  /** Holds if `argLabels` from a call site is matched by this selector. */
+  bindingset[this, argLabels]
+  pragma[inline_late]
+  private predicate matchesArgLabels(string argLabels) {
+    argLabels.regexpMatch(this.getArgLabelsRegexp())
+    or
+    not this.hasOptionalArgument() and
+    argLabels = this.getArgLabels()
   }
 
-  predicate matchesCall(CallExpr call) {
-    exists(string name, string argLabels |
-      this.matchesMethodCallSelector(name, argLabels) and
-      methodCallSelector(call, name, argLabels)
+  /** Holds if `name,joinLabels` should be used to join with `methodCallSelector`. */
+  pragma[nomagic]
+  private predicate matchesMethodCallSelector(string name, string joinLabels) {
+    this = MkCallSelector(_, _, name, _, _) and
+    name != "init" and
+    joinLabels = getNamedJoinLabels(this)
+  }
+
+  /** Holds if `type,joinLabels` should be used to join with `constructorCallSelector`. */
+  pragma[nomagic]
+  private predicate matchesConstructorCallSelector(string type, string joinLabels) {
+    this = MkCallSelector(type, _, "init", _, _) and
+    joinLabels = getNamedJoinLabels(this)
+  }
+
+  predicate matchesCall(DataFlowCall call) {
+    exists(string nameOrType, string joinLabels, string argLabels |
+      this.matchesMethodCallSelector(nameOrType, joinLabels) and
+      methodCallSelector(call, nameOrType, joinLabels, argLabels)
       or
-      this.matchesConstructorCallSelector(name, argLabels) and
-      constructorCallSelector(call, name, argLabels)
+      this.matchesConstructorCallSelector(nameOrType, joinLabels) and
+      constructorCallSelector(call.asExplicitCall(), nameOrType, joinLabels, argLabels)
+    |
+      this.matchesArgLabels(argLabels)
     )
+  }
+
+  /**
+   * Gets the argument labels of this selector with any `?` suffixes removed.
+   *
+   * Callables must declare all parameters, including optional ones, so these are matched exactly
+   * against callables.
+   */
+  string getDeclaredArgLabels() {
+    this = MkCallSelector(_, _, _, _, _) and
+    result = concat(int n, string label | selectorLabel(this, n, label, _) | label + ":" order by n)
   }
 
   predicate matchesCallable(Callable callable) {
     exists(string type, string name, string argLabels |
       callableSelector(callable, type, name, argLabels) and
-      this = MkCallSelector(type, true, name, argLabels, _)
+      this = MkCallSelector(type, true, name, _, _) and
+      argLabels = this.getDeclaredArgLabels()
     )
   }
 
@@ -236,9 +369,9 @@ class Selector extends TSelector {
     )
   }
 
-  int getPositionalArity() { result = count(int n | this.getArgLabels().splitAt(":", n) = "_") }
+  int getPositionalArity() { result = count(int n | selectorLabel(this, n, "_", _)) }
 
-  string getANamedArgument() { result = this.getArgLabels().splitAt(":") and result != "_" }
+  string getANamedArgument() { selectorLabel(this, _, result, _) and result != "_" }
 }
 
 /** Gets the `n`th `.`-separated component in the given `type` string. */
@@ -313,7 +446,7 @@ class TypeSelector extends string {
    *
    * Used as a seed for type inference for when the constructor itself is not in the database.
    */
-  CallExpr getAConstructorCall() { constructorCallSelector(result, this, _) }
+  CallExpr getAConstructorCall() { constructorCallSelector(result, this, _, _) }
 }
 
 private predicate isAccessPath(string path) {
@@ -334,10 +467,10 @@ private import AccessPathOutput
  * Gets the input to `call` specified by `token`. Only singleton access paths are supported.
  */
 bindingset[call, token]
-private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
+private DataFlow::Node getSinkFromCall(DataFlowCall call, AccessPathToken token) {
   token.getName() = "Argument" and
   exists(Argument arg |
-    arg = call.getAnArgument() and
+    arg = call.getCallExpr().getAnArgument() and
     result.asExpr() = arg.getValue()
   |
     arg.getPositionalIndex() = parseIntUnbounded(token.getAnArgument())
@@ -345,18 +478,23 @@ private DataFlow::Node getSinkFromCall(CallExpr call, AccessPathToken token) {
     arg.getName() + ":" = token.getAnArgument()
   )
   or
+  // The new value passed to a setter method, as the named argument `#newValue`
+  token.getName() = "Argument" and
+  token.getAnArgument() = "#newValue:" and
+  result.(BuilderNode).isSetterValueArgument(call)
+  or
   token.getName() = "Argument" and
   token.getAnArgument() = "self" and
-  result.isReceiverArgument(call)
+  result.(BuilderNode).isReceiverArgumentEx(call)
 }
 
 /**
  * Gets the output from `call` specified by `token`. Only singleton access paths are supported.
  */
 bindingset[call, token]
-private DataFlow::Node getSourceFromCall(CallExpr call, AccessPathToken token) {
+private DataFlow::Node getSourceFromCall(DataFlowCall call, AccessPathToken token) {
   token = "ReturnValue" and
-  result.asExpr() = call
+  result.asExpr() = call.asExplicitCall()
   or
   result = getSinkFromCall(call, token).getPostUpdateNode()
 }
@@ -463,7 +601,7 @@ DataFlow::Node getASource(string kind, string provenance) {
   exists(Selector selector, AccessPath output |
     normalizedSourceModel(selector, output, kind, provenance)
   |
-    exists(CallExpr call |
+    exists(DataFlowCall call |
       selector.matchesCall(call) and
       result = getSourceFromCall(call, output)
     )
@@ -487,7 +625,7 @@ DataFlow::Node getASink(string kind, string provenance) {
   exists(Selector selector, AccessPath input |
     normalizedSinkModel(selector, input, kind, provenance)
   |
-    exists(CallExpr call |
+    exists(DataFlowCall call |
       selector.matchesCall(call) and
       result = getSinkFromCall(call, input)
     )

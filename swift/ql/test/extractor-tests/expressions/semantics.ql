@@ -2,7 +2,7 @@ import swift
 
 from Expr e, string semantics
 where
-  e.getLocation().getFile().getName().matches("%swift/ql/test%") and
+  e.getLocation().getFile().getName().contains("swift/ql/test") and
   (
     exists(DeclRefExpr ref | ref = e |
       ref.hasDirectToImplementationSemantics() and semantics = "DirectToImplementation"

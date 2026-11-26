@@ -16,15 +16,15 @@ private predicate knownOpenSslConstantToSignatureFamilyType(
   exists(string name |
     name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
-      name.matches("RSA%") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
+      name.startsWith("RSA") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
       or
-      name.matches("DSA%") and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
+      name.startsWith("DSA") and type = KeyOpAlg::TSignature(KeyOpAlg::DSA())
       or
-      name.matches("ECDSA%") and type = KeyOpAlg::TSignature(KeyOpAlg::ECDSA())
+      name.startsWith("ECDSA") and type = KeyOpAlg::TSignature(KeyOpAlg::ECDSA())
       or
-      name.matches("ED25519%") and type = KeyOpAlg::TSignature(KeyOpAlg::EDDSA())
+      name.startsWith("ED25519") and type = KeyOpAlg::TSignature(KeyOpAlg::EDDSA())
       or
-      name.matches("ED448%") and type = KeyOpAlg::TSignature(KeyOpAlg::EDDSA())
+      name.startsWith("ED448") and type = KeyOpAlg::TSignature(KeyOpAlg::EDDSA())
     )
   )
 }

@@ -46,13 +46,6 @@ private module UrlRedirectConfig implements DataFlow::ConfigSig {
  */
 module UrlRedirect = TaintTracking::Global<UrlRedirectConfig>;
 
-/**
- * DEPRECATED: Use `ThreatModelSource` instead.
- *
- * A source of remote user input.
- */
-deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
-
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
@@ -200,7 +193,7 @@ class HostComparisonSanitizer extends Sanitizer {
 class ConcatenationSanitizer extends Sanitizer {
   ConcatenationSanitizer() {
     this.getType() instanceof StringType and
-    this.getExpr().(AddExpr).getLeftOperand().getValue().matches("%?%")
+    this.getExpr().(AddExpr).getLeftOperand().getValue().contains("?")
   }
 }
 
@@ -212,7 +205,7 @@ class ConcatenationSanitizer extends Sanitizer {
  */
 private class InterpolationSanitizer extends Sanitizer {
   InterpolationSanitizer() {
-    this.getExpr().(InterpolatedStringExpr).getText(0).getValue().matches("%?%")
+    this.getExpr().(InterpolatedStringExpr).getText(0).getValue().contains("?")
   }
 }
 
@@ -229,7 +222,7 @@ private class StringFormatSanitizer extends Sanitizer {
     |
       format = e.(StringLiteral).getValue() and
       exists(format.regexpFind("\\{[0-9]+\\}", 0, index)) and
-      format.substring(0, index).matches("%?%")
+      format.substring(0, index).contains("?")
     )
   }
 }

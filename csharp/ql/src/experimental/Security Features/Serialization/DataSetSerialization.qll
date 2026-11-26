@@ -80,7 +80,7 @@ class UnsafeXmlReadMethod extends Method {
   UnsafeXmlReadMethod() {
     this.hasFullyQualifiedName("System.Data", ["DataTable", "DataSet"], ["ReadXml", "ReadXmlSchema"])
     or
-    this.getName().matches("ReadXml%") and
+    this.getName().startsWith("ReadXml") and
     exists(Class c | c.getAMethod() = this |
       c.getABaseType*() instanceof DataSetOrTableRelatedClass
     )

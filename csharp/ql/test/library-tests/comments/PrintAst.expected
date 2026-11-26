@@ -136,34 +136,44 @@ comments1.cs:
 #    1|       0: [LocalVariableDeclStmt] ... ...;
 #    1|         0: [LocalVariableDeclExpr] Int32 i
 trivia.cs:
-#   19|           0: [TypeMention] int
+#   19|           -1: [TypeMention] int
 comments1.cs:
+#    1|           0: [LocalVariableAccess] access to local variable i
 #    2|       1: [LocalVariableDeclStmt] ... ...;
 #    2|         0: [LocalVariableDeclExpr] Int32 j
 trivia.cs:
-#   20|           0: [TypeMention] int
+#   20|           -1: [TypeMention] int
+comments1.cs:
+#    2|           0: [LocalVariableAccess] access to local variable j
+trivia.cs:
 #   22|       2: [LocalVariableDeclStmt] ... ...;
 #   22|         0: [LocalVariableDeclExpr] Char c
-#   22|           0: [TypeMention] char
+#   22|           -1: [TypeMention] char
+#   22|           0: [LocalVariableAccess] access to local variable c
 #   24|       3: [LocalVariableDeclStmt] ... ...;
 #   24|         0: [LocalVariableDeclExpr] Single f
-#   24|           0: [TypeMention] float
+#   24|           -1: [TypeMention] float
+#   24|           0: [LocalVariableAccess] access to local variable f
 #   26|       4: [LocalVariableDeclStmt] ... ...;
 #   26|         0: [LocalVariableDeclExpr] String s
-#   26|           0: [TypeMention] string
+#   26|           -1: [TypeMention] string
+#   26|           0: [LocalVariableAccess] access to local variable s
 #   28|       5: [LocalVariableDeclStmt] ... ...;
 #   28|         0: [LocalVariableDeclExpr] Double d
-#   28|           0: [TypeMention] double
+#   28|           -1: [TypeMention] double
+#   28|           0: [LocalVariableAccess] access to local variable d
 #   32| [Class] Tr2
 #   34|   6: [Method] M1
 #   34|     -1: [TypeMention] Void
 #   35|     4: [BlockStmt] {...}
 #   37|       0: [LocalVariableDeclStmt] ... ...;
 #   37|         0: [LocalVariableDeclExpr] Int32 i
-#   37|           0: [TypeMention] int
+#   37|           -1: [TypeMention] int
+#   37|           0: [LocalVariableAccess] access to local variable i
 #   39|       1: [LocalVariableDeclStmt] ... ...;
 #   39|         0: [LocalVariableDeclExpr] Int32 j
-#   39|           0: [TypeMention] int
+#   39|           -1: [TypeMention] int
+#   39|           0: [LocalVariableAccess] access to local variable j
 #   45| [Class] Tr3
 #   47|   6: [Method] M1
 #   47|     -1: [TypeMention] Void

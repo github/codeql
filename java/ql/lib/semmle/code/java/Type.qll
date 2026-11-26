@@ -774,7 +774,7 @@ class IntersectionType extends RefType, @classorinterface {
   IntersectionType() {
     exists(string shortname |
       classes_or_interfaces(this, shortname, _, _) and
-      shortname.matches("% & ...")
+      shortname.endsWith(" & ...")
     )
   }
 

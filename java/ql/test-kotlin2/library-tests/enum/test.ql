@@ -1,7 +1,7 @@
 import java
 
 from Method m
-where m.getDeclaringType().getName().matches("Enum%")
+where m.getDeclaringType().getName().startsWith("Enum")
 select m.getName()
 
 query predicate enumConstants(EnumConstant ec) { ec.fromSource() }

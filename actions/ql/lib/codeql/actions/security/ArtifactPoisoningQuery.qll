@@ -149,9 +149,9 @@ class ActionsGitHubScriptDownloadStep extends UntrustedArtifactDownloadStep, Use
     this.getCallee() = "actions/github-script" and
     exists(string script |
       this.getArgument("script") = script and
-      script.matches("%listWorkflowRunArtifacts(%") and
-      script.matches("%downloadArtifact(%") and
-      script.matches("%writeFileSync(%") and
+      script.contains("listWorkflowRunArtifacts(") and
+      script.contains("downloadArtifact(") and
+      script.contains("writeFileSync(") and
       // Filter out artifacts that were created by pull-request.
       not script.matches("%exclude_pull_requests: true%")
     )
@@ -265,7 +265,7 @@ class ArtifactPoisoningSink extends DataFlow::Node {
     exists(PoisonableStep poisonable |
       download.getAFollowingStep() = poisonable and
       // excluding artifacts downloaded to the temporary directory
-      not download.getPath().regexpMatch("^/tmp.*") and
+      not download.getPath().startsWith("/tmp") and
       not download.getPath().regexpMatch("^\\$\\{\\{\\s*runner\\.temp\\s*}}.*") and
       not download.getPath().regexpMatch("^\\$RUNNER_TEMP.*")
     |

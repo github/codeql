@@ -64,7 +64,7 @@ private class GenericUnreferencedParameterSource extends Crypto::GenericUnrefere
       // // If all calls to a function occur in a test file, ignore those calls
       // // and consider the parameter to the function a potential source as well.
       // forall(Call testCall | testCall.getCallee() = p.getCallable() |
-      //   testCall.getFile().getBaseName().toUpperCase().matches("%TEST%")
+      //   testCall.getFile().getBaseName().toUpperCase().contains("TEST")
       // )
     )
   }

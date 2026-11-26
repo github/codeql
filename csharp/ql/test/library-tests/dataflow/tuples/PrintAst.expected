@@ -30,9 +30,12 @@ Tuples.cs:
 #   11|         0: [AssignExpr] ... = ...
 #   11|           0: [TupleExpr] (..., ...)
 #   11|             0: [LocalVariableDeclExpr] Object a
+#   11|               0: [LocalVariableAccess] access to local variable a
 #   11|             1: [TupleExpr] (..., ...)
 #   11|               0: [LocalVariableDeclExpr] Int32 b
+#   11|                 0: [LocalVariableAccess] access to local variable b
 #   11|               1: [LocalVariableDeclExpr] Object c
+#   11|                 0: [LocalVariableAccess] access to local variable c
 #   11|           1: [LocalVariableAccess] access to local variable x
 #   12|       4: [ExprStmt] ...;
 #   12|         0: [MethodCall] call to method Sink
@@ -66,7 +69,9 @@ Tuples.cs:
 #   21|         0: [AssignExpr] ... = ...
 #   21|           0: [TupleExpr] (..., ...)
 #   21|             0: [LocalVariableDeclExpr] Object p
+#   21|               0: [LocalVariableAccess] access to local variable p
 #   21|             1: [LocalVariableDeclExpr] (Int32,Object) q
+#   21|               0: [LocalVariableAccess] access to local variable q
 #   21|           1: [LocalVariableAccess] access to local variable x
 #   22|       12: [ExprStmt] ...;
 #   22|         0: [MethodCall] call to method Sink
@@ -235,12 +240,13 @@ Tuples.cs:
 #   60|         0: [LocalVariableAccess] access to local variable x
 #   62|         0: [CaseStmt] case ...:
 #   62|           0: [VariablePatternExpr] (String,(Int32,String),Int32) t
-#   62|             0: [TypeMention] (string, (int, string), int)
+#   62|             -1: [TypeMention] (string, (int, string), int)
 #   62|               1: [TypeMention] string
 #   62|               2: [TypeMention] (int, string)
 #   62|                 1: [TypeMention] int
 #   62|                 2: [TypeMention] string
 #   62|               3: [TypeMention] int
+#   62|             0: [LocalVariableAccess] access to local variable t
 #   62|           1: [GTExpr] ... > ...
 #   62|             0: [FieldAccess] access to field Item3
 #   62|               -1: [LocalVariableAccess] access to local variable t
@@ -264,9 +270,12 @@ Tuples.cs:
 #   67|         5: [CaseStmt] case ...:
 #   67|           0: [TuplePatternExpr] (..., ...)
 #   67|             0: [VariablePatternExpr] String a
+#   67|               0: [LocalVariableAccess] access to local variable a
 #   67|             1: [TuplePatternExpr] (..., ...)
 #   67|               0: [VariablePatternExpr] Int32 b
+#   67|                 0: [LocalVariableAccess] access to local variable b
 #   67|               1: [VariablePatternExpr] String c
+#   67|                 0: [LocalVariableAccess] access to local variable c
 #   67|             2: [DiscardPatternExpr] _
 #   68|         6: [ExprStmt] ...;
 #   68|           0: [MethodCall] call to method Sink
@@ -302,9 +311,12 @@ Tuples.cs:
 #   78|           0: [RecursivePatternExpr] { ... }
 #   78|             2: [PositionalPatternExpr] ( ... )
 #   78|               0: [VariablePatternExpr] String a
+#   78|                 0: [LocalVariableAccess] access to local variable a
 #   78|               1: [TuplePatternExpr] (..., ...)
 #   78|                 0: [VariablePatternExpr] Int32 b
+#   78|                   0: [LocalVariableAccess] access to local variable b
 #   78|                 1: [VariablePatternExpr] String c
+#   78|                   0: [LocalVariableAccess] access to local variable c
 #   78|               2: [DiscardPatternExpr] _
 #   78|           1: [EQExpr] ... == ...
 #   78|             0: [LocalVariableAccess] access to local variable a
@@ -337,9 +349,12 @@ Tuples.cs:
 #   87|           0: [LocalVariableAccess] access to local variable x
 #   87|           1: [TuplePatternExpr] (..., ...)
 #   87|             0: [VariablePatternExpr] String p
+#   87|               0: [LocalVariableAccess] access to local variable p
 #   87|             1: [TuplePatternExpr] (..., ...)
 #   87|               0: [VariablePatternExpr] Int32 q
+#   87|                 0: [LocalVariableAccess] access to local variable q
 #   87|               1: [VariablePatternExpr] String r
+#   87|                 0: [LocalVariableAccess] access to local variable r
 #   87|             2: [DiscardPatternExpr] _
 #   88|         1: [BlockStmt] {...}
 #   89|           0: [ExprStmt] ...;
@@ -405,7 +420,9 @@ Tuples.cs:
 #  103|         0: [AssignExpr] ... = ...
 #  103|           0: [TupleExpr] (..., ...)
 #  103|             0: [LocalVariableDeclExpr] String a
+#  103|               0: [LocalVariableAccess] access to local variable a
 #  103|             1: [LocalVariableDeclExpr] Int32 b
+#  103|               0: [LocalVariableAccess] access to local variable b
 #  103|           1: [LocalVariableAccess] access to local variable r
 #  104|       4: [ExprStmt] ...;
 #  104|         0: [MethodCall] call to method Sink
@@ -419,7 +436,9 @@ Tuples.cs:
 #  109|         0: [CaseStmt] case ...:
 #  109|           0: [TuplePatternExpr] (..., ...)
 #  109|             0: [VariablePatternExpr] String x
+#  109|               0: [LocalVariableAccess] access to local variable x
 #  109|             1: [VariablePatternExpr] Int32 y
+#  109|               0: [LocalVariableAccess] access to local variable y
 #  110|         1: [ExprStmt] ...;
 #  110|           0: [MethodCall] call to method Sink
 #  110|             0: [LocalVariableAccess] access to local variable x
@@ -447,6 +466,7 @@ Tuples.cs:
 #  121|         0: [AssignExpr] ... = ...
 #  121|           0: [TupleExpr] (..., ...)
 #  121|             0: [LocalVariableDeclExpr] Object x1
+#  121|               0: [LocalVariableAccess] access to local variable x1
 #  121|             1: [LocalVariableAccess] access to local variable y1
 #  121|           1: [TupleExpr] (..., ...)
 #  121|             0: [LocalVariableAccess] access to local variable o
@@ -465,6 +485,7 @@ Tuples.cs:
 #  125|           0: [TupleExpr] (..., ...)
 #  125|             0: [LocalVariableAccess] access to local variable x2
 #  125|             1: [LocalVariableDeclExpr] Int32 y2
+#  125|               0: [LocalVariableAccess] access to local variable y2
 #  125|           1: [TupleExpr] (..., ...)
 #  125|             0: [LocalVariableAccess] access to local variable o
 #  125|             1: [IntLiteral] 1
@@ -481,6 +502,7 @@ Tuples.cs:
 #  129|           0: [TupleExpr] (..., ...)
 #  129|             0: [LocalVariableAccess] access to local variable x3
 #  129|             1: [LocalVariableDeclExpr] Object y3
+#  129|               0: [LocalVariableAccess] access to local variable y3
 #  129|           1: [TupleExpr] (..., ...)
 #  129|             0: [IntLiteral] 1
 #  129|             1: [LocalVariableAccess] access to local variable o
@@ -497,6 +519,7 @@ Tuples.cs:
 #  133|         0: [AssignExpr] ... = ...
 #  133|           0: [TupleExpr] (..., ...)
 #  133|             0: [LocalVariableDeclExpr] Int32 x4
+#  133|               0: [LocalVariableAccess] access to local variable x4
 #  133|             1: [LocalVariableAccess] access to local variable y4
 #  133|           1: [TupleExpr] (..., ...)
 #  133|             0: [IntLiteral] 1
@@ -537,10 +560,13 @@ Tuples.cs:
 #  144|           0: [RecursivePatternExpr] { ... }
 #  144|             2: [PositionalPatternExpr] ( ... )
 #  144|               0: [VariablePatternExpr] String a1
+#  144|                 0: [LocalVariableAccess] access to local variable a1
 #  144|               1: [RecursivePatternExpr] { ... }
 #  144|                 2: [PositionalPatternExpr] ( ... )
 #  144|                   0: [VariablePatternExpr] Int32 b1
+#  144|                     0: [LocalVariableAccess] access to local variable b1
 #  144|                   1: [VariablePatternExpr] String c1
+#  144|                     0: [LocalVariableAccess] access to local variable c1
 #  144|               2: [DiscardPatternExpr] _
 #  145|         1: [ExprStmt] ...;
 #  145|           0: [MethodCall] call to method Sink
@@ -583,9 +609,12 @@ Tuples.cs:
 #  154|           1: [RecursivePatternExpr] { ... }
 #  154|             2: [PositionalPatternExpr] ( ... )
 #  154|               0: [VariablePatternExpr] String a2
+#  154|                 0: [LocalVariableAccess] access to local variable a2
 #  154|               1: [TuplePatternExpr] (..., ...)
 #  154|                 0: [VariablePatternExpr] Int32 b2
+#  154|                   0: [LocalVariableAccess] access to local variable b2
 #  154|                 1: [VariablePatternExpr] String c2
+#  154|                   0: [LocalVariableAccess] access to local variable c2
 #  154|               2: [DiscardPatternExpr] _
 #  155|         1: [BlockStmt] {...}
 #  156|           0: [ExprStmt] ...;
@@ -628,10 +657,13 @@ Tuples.cs:
 #  164|           1: [RecursivePatternExpr] { ... }
 #  164|             2: [PositionalPatternExpr] ( ... )
 #  164|               0: [VariablePatternExpr] String a3
+#  164|                 0: [LocalVariableAccess] access to local variable a3
 #  164|               1: [RecursivePatternExpr] { ... }
 #  164|                 0: [VariablePatternExpr] (Int32,String) t
+#  164|                   0: [LocalVariableAccess] access to local variable t
 #  164|                 2: [PositionalPatternExpr] ( ... )
 #  164|                   0: [VariablePatternExpr] Int32 b3
+#  164|                     0: [LocalVariableAccess] access to local variable b3
 #  164|                   1: [DiscardPatternExpr] _
 #  164|               2: [DiscardPatternExpr] _
 #  165|         1: [BlockStmt] {...}

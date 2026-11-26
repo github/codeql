@@ -44,21 +44,6 @@ private class ShellOrSudoExecution extends SystemCommandExecution::Range, DataFl
 }
 
 /**
- * DEPRECATED
- *
- * Provides classes for working with the
- * [golang.org/x/crypto/ssh](https://pkg.go.dev/golang.org/x/crypto/ssh) package.
- */
-deprecated module CryptoSsh {
-  /**
-   * DEPRECATED: Use `package("golang.org/x/crypto", "ssh")` instead.
-   *
-   * Gets the package path `golang.org/x/crypto/ssh`.
-   */
-  deprecated string packagePath() { result = package("golang.org/x/crypto", "ssh") }
-}
-
-/**
  * A data-flow node whose string value might refer to a command that interprets (some of)
  * its arguments as commands.
  *
@@ -90,7 +75,7 @@ private string getASudoCommand() {
  */
 bindingset[command, subcommand]
 private predicate hasSafeSubcommand(string command, string subcommand) {
-  command.matches("%git") and
+  command.endsWith("git") and
   // All git subcommands except for clone, fetch, ls-remote, pull and fetch-pack
   subcommand in [
       "add", "am", "archive", "bisect", "branch", "bundle", "checkout", "cherry-pick", "citool",

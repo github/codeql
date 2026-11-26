@@ -105,7 +105,7 @@ class CheckClass extends ClassObject {
   }
 
   private predicate probablyAbstract() {
-    this.getName().matches("Abstract%")
+    this.getName().startsWith("Abstract")
     or
     this.isAbstract()
   }

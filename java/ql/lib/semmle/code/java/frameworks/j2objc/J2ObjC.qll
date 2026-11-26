@@ -12,9 +12,9 @@ import java
 class OcniComment extends Javadoc {
   OcniComment() {
     // The comment must start with `-[` ...
-    this.getChild(0).getText().matches("-[%") and
+    this.getChild(0).getText().startsWith("-[") and
     // ... and it must end with `]-`.
-    this.getChild(this.getNumChild() - 1).getText().matches("%]-")
+    this.getChild(this.getNumChild() - 1).getText().endsWith("]-")
   }
 }
 

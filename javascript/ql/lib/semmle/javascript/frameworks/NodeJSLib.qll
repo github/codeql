@@ -618,7 +618,7 @@ module NodeJSLib {
     NodeJSFileSystemAccessRead() { methodName = ["read", "readSync", "readFile", "readFileSync"] }
 
     override DataFlow::Node getADataNode() {
-      if methodName.matches("%Sync")
+      if methodName.endsWith("Sync")
       then result = this
       else (
         exists(int i, string paramName | fsDataParam(methodName, i, paramName) |
@@ -802,7 +802,7 @@ module NodeJSLib {
       not result.getALocalSource() instanceof DataFlow::FunctionNode
     }
 
-    override predicate isSync() { methodName.matches("%Sync") }
+    override predicate isSync() { methodName.endsWith("Sync") }
 
     /** Holds if `node` is known to be an options object rather than an argument array or callback. */
     pragma[inline]
@@ -827,9 +827,9 @@ module NodeJSLib {
       not result = this.getParameter(0).asSink() and
       // fork/spawn and all sync methos always has options as the last argument
       if
-        methodName.matches("fork%") or
-        methodName.matches("spawn%") or
-        methodName.matches("%Sync")
+        methodName.startsWith("fork") or
+        methodName.startsWith("spawn") or
+        methodName.endsWith("Sync")
       then result = this.getLastArgument()
       else (
         result = this.getParameter(this.getNumArgument() - 2).asSink() and

@@ -26,10 +26,10 @@ where
     t1 instanceof BoundedType or
     t2 instanceof AnonymousClass or
     t2 instanceof BoundedType or
-    t1.getName().toLowerCase().matches("%visitor%") or
-    t2.getName().toLowerCase().matches("%visitor%") or
-    t1.getAMethod().getName().toLowerCase().matches("%visit%") or
-    t2.getAMethod().getName().toLowerCase().matches("%visit%") or
+    t1.getName().toLowerCase().contains("visitor") or
+    t2.getName().toLowerCase().contains("visitor") or
+    t1.getAMethod().getName().toLowerCase().contains("visit") or
+    t2.getAMethod().getName().toLowerCase().contains("visit") or
     t1.getPackage() = t2.getPackage() or
     t1.getFile().isKotlinSourceFile() or
     t2.getFile().isKotlinSourceFile()

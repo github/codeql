@@ -20,9 +20,9 @@ predicate preprocessorOpenCondition(PreprocessorDirective d) {
 }
 
 predicate headerGuard(PreprocessorIfndef notdef) {
-  notdef.getHead().regexpMatch(".*_H_.*")
+  notdef.getHead().contains("_H_")
   or
-  notdef.getHead().regexpMatch(".*_H")
+  notdef.getHead().endsWith("_H")
 }
 
 from File f

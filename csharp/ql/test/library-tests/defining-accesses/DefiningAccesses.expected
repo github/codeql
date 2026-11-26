@@ -1,0 +1,25 @@
+| DefiningAccesses.cs:14:22:14:33 | Char* chars = ... | DefiningAccesses.cs:14:22:14:26 | chars | write | definition |
+| DefiningAccesses.cs:20:13:20:25 | Int32 uninitialized | DefiningAccesses.cs:20:13:20:25 | uninitialized | write | definition |
+| DefiningAccesses.cs:23:13:23:18 | Int32 multiA | DefiningAccesses.cs:23:13:23:18 | multiA | write | definition |
+| DefiningAccesses.cs:23:21:23:26 | Int32 multiB | DefiningAccesses.cs:23:21:23:26 | multiB | write | definition |
+| DefiningAccesses.cs:24:19:24:31 | Int32 constant = ... | DefiningAccesses.cs:24:19:24:26 | constant | write | definition |
+| DefiningAccesses.cs:25:18:25:26 | Int32 index = ... | DefiningAccesses.cs:25:18:25:22 | index | write | definition |
+| DefiningAccesses.cs:27:13:27:35 | Int32 initialized = ... | DefiningAccesses.cs:27:13:27:23 | initialized | write | definition |
+| DefiningAccesses.cs:29:21:29:26 | Int32 output | DefiningAccesses.cs:29:21:29:26 | output | write | definition |
+| DefiningAccesses.cs:32:14:32:18 | Int32 first | DefiningAccesses.cs:32:14:32:18 | first | write | definition |
+| DefiningAccesses.cs:32:26:32:31 | Int32 second | DefiningAccesses.cs:32:26:32:31 | second | write | definition |
+| DefiningAccesses.cs:32:38:32:42 | Int32 third | DefiningAccesses.cs:32:38:32:42 | third | write | definition |
+| DefiningAccesses.cs:36:14:36:19 | Int32 fourth | DefiningAccesses.cs:36:14:36:19 | fourth | write | definition |
+| DefiningAccesses.cs:36:22:36:26 | Int32 fifth | DefiningAccesses.cs:36:22:36:26 | fifth | write | definition |
+| DefiningAccesses.cs:39:14:39:18 | Int32 sixth | DefiningAccesses.cs:39:14:39:18 | sixth | write | definition |
+| DefiningAccesses.cs:39:21:39:27 | Int32 seventh | DefiningAccesses.cs:39:21:39:27 | seventh | write | definition |
+| DefiningAccesses.cs:42:22:42:25 | Int32 item | DefiningAccesses.cs:42:22:42:25 | item | write | definition |
+| DefiningAccesses.cs:44:22:44:28 | Int32 element | DefiningAccesses.cs:44:22:44:28 | element | write | definition |
+| DefiningAccesses.cs:46:23:46:26 | Int32 left | DefiningAccesses.cs:46:23:46:26 | left | write | definition |
+| DefiningAccesses.cs:46:29:46:33 | Int32 right | DefiningAccesses.cs:46:29:46:33 | right | write | definition |
+| DefiningAccesses.cs:52:26:52:34 | Exception exception | DefiningAccesses.cs:52:26:52:34 | exception | write | definition |
+| DefiningAccesses.cs:53:22:53:32 | Int32 pattern | DefiningAccesses.cs:53:26:53:32 | pattern | write | definition |
+| DefiningAccesses.cs:55:19:55:55 | MemoryStream stream = ... | DefiningAccesses.cs:55:19:55:24 | stream | write | definition |
+| DefiningAccesses.cs:57:13:57:73 | IEnumerable<Int32> query = ... | DefiningAccesses.cs:57:13:57:17 | query | write | definition |
+| DefiningAccesses.cs:57:21:57:40 | Int32 value = ... | DefiningAccesses.cs:57:26:57:30 | value | write | definition |
+| DefiningAccesses.cs:57:42:57:61 | Int32 next = ... | DefiningAccesses.cs:57:46:57:49 | next | write | definition |

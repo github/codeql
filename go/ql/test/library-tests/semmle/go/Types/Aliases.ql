@@ -14,7 +14,7 @@ query predicate entities(string fp, Entity e, int c, Type ty) {
 
 from FuncDecl decl, SignatureType sig
 where
-  decl.getFile().getAbsolutePath().matches("%aliases.go%") and
+  decl.getFile().getAbsolutePath().contains("aliases.go") and
   decl.getName() = ["F", "G", "H"] and
   sig = decl.getType()
 select decl.getName(), sig.pp()

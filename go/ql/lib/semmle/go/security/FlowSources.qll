@@ -7,22 +7,12 @@ private import semmle.go.dataflow.ExternalFlow as ExternalFlow
 private import codeql.threatmodels.ThreatModels
 
 /**
- * DEPRECATED: Use `RemoteFlowSource` instead.
- */
-deprecated class UntrustedFlowSource = RemoteFlowSource;
-
-/**
  * A source of data that is controlled by an untrusted user.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RemoteFlowSource::Range` instead.
  */
 class RemoteFlowSource extends DataFlow::Node instanceof RemoteFlowSource::Range { }
-
-/**
- * DEPRECATED: Use `RemoteFlowSource` instead.
- */
-deprecated module UntrustedFlowSource = RemoteFlowSource;
 
 /** Provides a class for modeling new sources of untrusted data. */
 module RemoteFlowSource {
@@ -53,14 +43,6 @@ abstract class SourceNode extends DataFlow::Node {
    */
   abstract string getThreatModel();
 }
-
-/**
- * DEPRECATED: Use `ActiveThreatModelSource` instead.
- *
- * A class of data flow sources that respects the
- * current threat model configuration.
- */
-deprecated class ThreatModelFlowSource = ActiveThreatModelSource;
 
 /**
  * A data flow source that is enabled in the current threat model configuration.

@@ -732,7 +732,9 @@ module ClientRequest {
 
     /** Gets an event listener registered on this XHR object. */
     DataFlow::FunctionNode getAnEventListener() {
-      result = this.getAPropertyWrite("on" + any(string s)).getRhs().getAFunctionValue()
+      exists(string propertyName | propertyName.startsWith("on") |
+        result = this.getAPropertyWrite(propertyName).getRhs().getAFunctionValue()
+      )
       or
       result = this.getAMethodCall("addEventListener").getArgument(1).getAFunctionValue()
     }
@@ -924,7 +926,7 @@ module ClientRequest {
             .getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
-            .matches("curl %")
+            .startsWith("curl ")
       )
     }
 

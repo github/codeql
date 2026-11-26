@@ -17,16 +17,16 @@ predicate isInsecureMailPropertyConfig(Variable properties) {
     ma.getMethod() instanceof SetPropertyMethod and
     ma.getQualifier() = properties.getAnAccess()
   |
-    getStringValue(ma.getArgument(0)).matches("%.auth%") and //mail.smtp.auth
+    getStringValue(ma.getArgument(0)).contains(".auth") and //mail.smtp.auth
     getStringValue(ma.getArgument(1)) = "true"
     or
-    getStringValue(ma.getArgument(0)).matches("%.socketFactory%") //mail.smtp.socketFactory or mail.smtp.socketFactory.class
+    getStringValue(ma.getArgument(0)).contains(".socketFactory") //mail.smtp.socketFactory or mail.smtp.socketFactory.class
   ) and
   not exists(MethodCall ma |
     ma.getMethod() instanceof SetPropertyMethod and
     ma.getQualifier() = properties.getAnAccess()
   |
-    getStringValue(ma.getArgument(0)).matches("%.ssl.checkserveridentity%") and //mail.smtp.ssl.checkserveridentity
+    getStringValue(ma.getArgument(0)).contains(".ssl.checkserveridentity") and //mail.smtp.ssl.checkserveridentity
     getStringValue(ma.getArgument(1)) = "true"
   )
 }

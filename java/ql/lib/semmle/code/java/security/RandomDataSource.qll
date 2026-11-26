@@ -60,7 +60,7 @@ class StdlibRandomSource extends RandomDataSource {
 
   StdlibRandomSource() {
     m = this.getMethod() and
-    m.getName().matches("next%") and
+    m.getName().startsWith("next") and
     m.getDeclaringType().getAnAncestor().hasQualifiedName("java.util", "Random")
   }
 
@@ -131,7 +131,7 @@ class ApacheCommonsRandomSource extends RandomDataSource {
 
   ApacheCommonsRandomSource() {
     m = this.getMethod() and
-    m.getName().matches("next%") and
+    m.getName().startsWith("next") and
     m.getDeclaringType().hasQualifiedName("org.apache.commons.lang3", "RandomUtils")
   }
 
@@ -165,7 +165,7 @@ class ApacheCommonsRandomSource extends RandomDataSource {
 class ApacheCommonsRandomStringSource extends RandomDataSource {
   ApacheCommonsRandomStringSource() {
     exists(Method m | m = this.getMethod() |
-      m.getName().matches("random%") and
+      m.getName().startsWith("random") and
       m.getDeclaringType()
           .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
             "RandomStringUtils")

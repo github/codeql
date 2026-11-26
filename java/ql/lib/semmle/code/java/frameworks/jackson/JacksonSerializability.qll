@@ -35,7 +35,7 @@ private class JacksonWriteValueMethod extends Method, TaintPreservingCallable {
       this.getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectWriter") or
       this.getDeclaringType().hasQualifiedName("com.fasterxml.jackson.databind", "ObjectMapper")
     ) and
-    this.getName().matches("writeValue%") and
+    this.getName().startsWith("writeValue") and
     this.getParameter(this.getNumberOfParameters() - 1).getType() instanceof TypeObject
   }
 

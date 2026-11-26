@@ -30,7 +30,7 @@ predicate deletesException(Expr expr, Parameter exception) {
     exists(FunctionCall fc | fc = expr |
       // Calling a delete function on the exception will free it (MFC's CException has a Delete function).
       fc.getQualifier() = exception.getAnAccess() and
-      fc.getTarget().getName().toLowerCase().matches("%delete%")
+      fc.getTarget().getName().toLowerCase().contains("delete")
       or
       // Passing the exception to a function might free it.
       fc.getAnArgument() = exception.getAnAccess()

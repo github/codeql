@@ -27,7 +27,7 @@ predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
 
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
   cu.getPackage().getName().matches(javaxOrJakarta() + ".swing%") or
-  cu.getPackage().getName().matches("java.awt%")
+  cu.getPackage().getName().startsWith("java.awt")
 }
 
 private predicate relevant(Callable api) {
@@ -307,7 +307,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   bindingset[kind]
   predicate isRelevantSinkKind(string kind) {
     not kind = "log-injection" and
-    not kind.matches("regex-use%") and
+    not kind.startsWith("regex-use") and
     not kind = "file-content-store"
   }
 

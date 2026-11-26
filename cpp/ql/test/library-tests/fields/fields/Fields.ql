@@ -22,7 +22,7 @@ string accessType(Field f) {
 string fieldType(Field f) {
   result = f.getType().getAQlClass() and
   (
-    result.matches("%Type") or
+    result.endsWith("Type") or
     result = "Enum"
   )
 }

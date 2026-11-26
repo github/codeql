@@ -27,11 +27,11 @@ ImportExpr alternative_import(ImportExpr ie) {
 
 string os_specific_import(ImportExpr ie) {
   exists(string name | name = ie.getImportedModuleName() |
-    name.matches("org.python.%") and result = "java"
+    name.startsWith("org.python.") and result = "java"
     or
-    name.matches("java.%") and result = "java"
+    name.startsWith("java.") and result = "java"
     or
-    name.matches("Carbon.%") and result = "darwin"
+    name.startsWith("Carbon.") and result = "darwin"
     or
     result = "win32" and
     (
@@ -39,7 +39,7 @@ string os_specific_import(ImportExpr ie) {
       name = "_win32api" or
       name = "_winreg" or
       name = "nt" or
-      name.matches("win32%") or
+      name.startsWith("win32") or
       name = "ntpath"
     )
     or
@@ -47,7 +47,7 @@ string os_specific_import(ImportExpr ie) {
     (name = "posix" or name = "posixpath")
     or
     result = "unsupported" and
-    (name = "__pypy__" or name = "ce" or name.matches("riscos%"))
+    (name = "__pypy__" or name = "ce" or name.startsWith("riscos"))
   )
 }
 
@@ -64,7 +64,7 @@ final class FinalControlFlowNode = ControlFlowNode;
 class VersionTest extends FinalControlFlowNode {
   VersionTest() {
     exists(string name |
-      name.matches("%version%") and
+      name.contains("version") and
       this.(CompareNode)
           .getAChild+()
           .(ControlFlowNodeWithPointsTo)

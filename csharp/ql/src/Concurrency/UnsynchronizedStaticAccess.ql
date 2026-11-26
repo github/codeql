@@ -20,7 +20,7 @@ import ThreadCreation
 predicate correctlySynchronized(CollectionMember c, Expr access) {
   access = c.getAReadOrWrite() and
   (
-    c.getType().(ValueOrRefType).getABaseType*().getName().matches("Concurrent%") or
+    c.getType().(ValueOrRefType).getABaseType*().getName().startsWith("Concurrent") or
     access.getEnclosingStmt().getParent*() instanceof LockStmt or
     any(LockingCall call).getControlFlowNode().getASuccessor+() = access.getControlFlowNode()
   )

@@ -12,12 +12,12 @@ class ClassOrInterfaceLocation extends ClassOrInterface {
 }
 
 query predicate rawTypeSupertypes(RawType rt, RefType superType) {
-  rt.getFile().getURL().matches("%extlib%") and
+  rt.getFile().getURL().contains("extlib") and
   rt.getASupertype() = superType
 }
 
 query predicate rawTypeMethod(RefType rt, string name, string sig, string paramType, string retType) {
-  exists(Method m | m.getDeclaringType() = rt and rt.getName().matches("RawTypesInSignature%") |
+  exists(Method m | m.getDeclaringType() = rt and rt.getName().startsWith("RawTypesInSignature") |
     name = m.getName() and
     sig = m.getSignature() and
     (

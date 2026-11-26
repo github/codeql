@@ -100,7 +100,7 @@ module Protobuf {
   /** A `Get` method of a protobuf `Message` type. */
   class GetMethod extends TaintTracking::FunctionModel, Method {
     GetMethod() {
-      exists(string name | name.matches("Get%") | this = any(MessageType msg).getMethod(name))
+      exists(string name | name.startsWith("Get") | this = any(MessageType msg).getMethod(name))
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
