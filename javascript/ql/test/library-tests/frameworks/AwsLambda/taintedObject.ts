@@ -52,3 +52,16 @@ interface LookalikeEvent {
 export async function lookalikeEvent(event: LookalikeEvent) {
   const detail = event.detail;
 }
+
+// Non-exported helpers are not handlers, so their parameters are not sources.
+async function privateEventBridgeHelper(event: EventBridgeEvent<"OrderCreated", { orderId: string }>) {
+  const detail = event.detail;
+}
+
+async function privateAppSyncHelper(event: AppSyncResolverEvent<{ orderId: string }>) {
+  const args = event.arguments;
+}
+
+const privateEventBridgeHandler: EventBridgeHandler<"OrderCreated", { orderId: string }, void> = async (event) => {
+  const detail = event.detail;
+};

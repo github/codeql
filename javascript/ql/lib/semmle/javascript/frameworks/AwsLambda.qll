@@ -21,13 +21,24 @@ module AwsLambda {
   }
 
   /**
+   * The first parameter of an exported function, whose type is an AWS Lambda event type.
+   */
+  bindingset[eventType, handlerType]
+  private DataFlow::ParameterNode exportedEventParameterOfType(string eventType, string handlerType) {
+    exists(Module mod, DataFlow::FunctionNode fn |
+      fn = mod.getAnExportedValue(_).getAFunctionValue() and
+      result = fn.getParameter(0) and
+      result = eventParameterOfType(eventType, handlerType)
+    )
+  }
+
+  /**
    * A typed AWS Lambda handler function.
    */
   class EventFunctionHandler extends DataFlow::FunctionNode {
     EventFunctionHandler() {
-      exists(Module mod | this = mod.getAnExportedValue(_).getAFunctionValue()) and
       this.getParameter(0) =
-        eventParameterOfType("aws-lambda.Event", "aws-lambda.EventFunctionHandler")
+        exportedEventParameterOfType("aws-lambda.Event", "aws-lambda.EventFunctionHandler")
     }
   }
 
@@ -47,7 +58,7 @@ module AwsLambda {
   private class EventBridgeEventSource extends TaintedObject::Source {
     EventBridgeEventSource() {
       this =
-        eventParameterOfType("aws-lambda.EventBridgeEvent", "aws-lambda.EventBridgeHandler")
+        exportedEventParameterOfType("aws-lambda.EventBridgeEvent", "aws-lambda.EventBridgeHandler")
             .getAPropertyRead("detail")
     }
   }
@@ -59,8 +70,8 @@ module AwsLambda {
   private class AppSyncResolverEventSource extends TaintedObject::Source {
     AppSyncResolverEventSource() {
       this =
-        eventParameterOfType("aws-lambda.AppSyncResolverEvent", "aws-lambda.AppSyncResolverHandler")
-            .getAPropertyRead("arguments")
+        exportedEventParameterOfType("aws-lambda.AppSyncResolverEvent",
+          "aws-lambda.AppSyncResolverHandler").getAPropertyRead("arguments")
     }
   }
 }
