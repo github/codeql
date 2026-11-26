@@ -17,9 +17,8 @@
       },
       "data": [
         // namespace, type, subtypes, name, signature, ext, input, kind, provenance
-        ["", "AES", true, "init(key:blockMode:)", "", "", "Argument[blockMode:]", "encryption-block-mode", "manual"],
-        ["", "AES", true, "init(key:blockMode:padding:)", "", "", "Argument[blockMode:]", "encryption-block-mode", "manual"],
-        ["", "Blowfish", true, "init(key:blockMode:padding:)", "", "", "Argument[blockMode:]", "encryption-block-mode", "manual"]
+        ["", "AES", true, "init(key:blockMode:padding?:)", "", "", "Argument[blockMode:]", "encryption-block-mode", "manual"],
+        ["", "Blowfish", true, "init(key:blockMode?:padding:)", "", "", "Argument[blockMode:]", "encryption-block-mode", "manual"]
       ]
     }
   ]
