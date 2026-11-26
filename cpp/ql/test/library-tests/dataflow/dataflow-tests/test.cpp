@@ -432,7 +432,7 @@ void intPointerSourceCaller() {
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast=434:20 ir SPURIOUS: ast=433:7
+  sink(local); // $ ast=434:20 SPURIOUS: ast=433:7
   sink(*local); // $ ast=434:20 ir SPURIOUS: ast=433:7
 }
 
@@ -447,7 +447,7 @@ void intArraySourceCaller() {
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast=449:18 ir SPURIOUS: ast=448:7
+  sink(local); // $ ast=449:18 SPURIOUS: ast=448:7
   sink(*local); // $ ast=449:18 ir SPURIOUS: ast=448:7
 }
 
@@ -1336,4 +1336,16 @@ void certain_def_uninitialized_instruction_test() {
     sink(buffer[0]); // $ SPURIOUS: ast
     buffer[0] = source();
   }
+}
+
+void uninitialized_array_address() {
+  char buf[10];
+  char *p = buf;
+  sink(p); // $ SPURIOUS: ast
+}
+
+void uninitialized_scalar_address() {
+  int x;
+  int *p = &x;
+  sink(p); // $ SPURIOUS: ast
 }
