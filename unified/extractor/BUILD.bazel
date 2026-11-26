@@ -11,6 +11,7 @@ codeql_rust_binary(
     aliases = aliases(),
     compile_data = [
         "ast_types.yml",
+        "string_values.dbscheme",
         "swift_node_types.yml",
     ],
     data = ["//unified/swift-syntax-rs:swift_runtime"],
