@@ -289,18 +289,13 @@ pub fn location_label(writer: &mut trap::Writer, location: trap::Location) -> tr
     loc_label
 }
 
-/// Extracts the source file at `path`, which is assumed to be canonicalized.
-///
-/// When `desugarer` is `Some`, the parsed tree is first transformed
-/// through the supplied yeast desugarer before TRAP extraction. Building
-/// the desugarer (which parses YAML and constructs the schema) is the
-/// caller's responsibility, allowing it to be done once and shared across
-/// files.
-#[allow(clippy::too_many_arguments)]
 /// Extract a file with a tree-sitter grammar, walking the parse tree directly.
+///
+/// `path` is assumed to be canonicalized.
 /// Comments and other `extra` nodes are emitted inline as tokens. This is the
 /// path for languages that don't desugar their syntax tree (and hence have no
-/// `extra` side channel); desugaring languages use [`extract_parsed`] instead.
+/// `extra` side channel); desugaring languages use [`desugaring::LanguageSpec`].
+#[allow(clippy::too_many_arguments)]
 pub fn extract(
     language: &Language,
     language_prefix: &str,
@@ -417,19 +412,13 @@ fn collect_extras(node: Node<'_>, source: &[u8], out: &mut Vec<ExtraToken>) {
     }
 }
 
-/// Extract a file from a [`ParsedTree`]-producing parser that desugars.
+/// Extract a desugared YEAST AST and its side-channel `extra` tokens.
 ///
-/// The parser yields a `yeast::Ast` plus side-channel `extra` tokens; the AST is
-/// rewritten through `desugarer` ([`yeast::Desugarer::run_from_ast`]) before
-/// TRAP extraction, and the `extra` tokens (comments and similar, which the
-/// desugared AST does not carry) are emitted from the side channel. Both
-/// tree-sitter grammars (via [`tree_sitter_parser`]) and custom parsers plug in
-/// here; languages that don't desugar use [`extract`] instead. Parse and
-/// desugaring errors are returned to the multi-file driver so it can skip only
-/// this file and continue extracting the rest.
+/// Returns every TRAP label allocated for each reachable [`yeast::OutputId`].
+/// A single output id may have multiple labels when it occurs in multiple
+/// structural positions.
 #[allow(clippy::too_many_arguments)]
-pub fn extract_parsed(
-    parse: &(dyn Fn(&[u8]) -> Result<ParsedTree, String> + Send + Sync),
+pub fn extract_output_ast(
     language_prefix: &str,
     schema: &NodeTypeMap,
     diagnostics_writer: &mut diagnostics::LogWriter,
@@ -437,21 +426,14 @@ pub fn extract_parsed(
     transformer: Option<&file_paths::PathTransformer>,
     path: &Path,
     source: &[u8],
-    desugarer: &dyn yeast::Desugarer,
-) -> Result<(), String> {
+    ast: &yeast::OutputAst,
+    extras: &[ExtraToken],
+) -> Result<std::collections::BTreeMap<yeast::OutputId, Vec<trap::Label>>, String> {
     let path_str = file_paths::normalize_and_transform_path(path, transformer);
     let source_root = std::env::current_dir()
         .ok()
         .and_then(|d| d.canonicalize().ok());
     let diagnostics_path = file_paths::relativize_for_diagnostic(path, source_root.as_deref());
-    let span = tracing::span!(tracing::Level::TRACE, "extract", file = %path_str);
-    let _enter = span.enter();
-    tracing::debug!("extracting: {}", path_str);
-
-    let parsed = parse(source).map_err(|e| format!("Parsing failed: {e}"))?;
-    let ast = desugarer
-        .run_from_ast(parsed.ast)
-        .map_err(|e| format!("Desugaring failed: {e}"))?;
 
     trap_writer.comment(format!("Auto-generated TRAP file for {path_str}"));
     let file_label = populate_file(trap_writer, path, transformer);
@@ -465,13 +447,13 @@ pub fn extract_parsed(
         schema,
     );
 
-    traverse_yeast(&ast, &mut visitor);
+    traverse_yeast(ast, &mut visitor);
     // Comments and other `extra` tokens are not part of the desugared AST; emit
     // them directly from the parser's side channel.
-    for extra in &parsed.extras {
+    for extra in extras {
         visitor.emit_extra(extra);
     }
-    Ok(())
+    Ok(visitor.output_labels)
 }
 
 /// A lightweight [`AstNode`] over a piece of side-channel `extra` content
@@ -554,6 +536,7 @@ struct Visitor<'a> {
     /// matched against the dbscheme for the node. If the expectations are met
     /// the corresponding row definitions are added to the trap output.
     stack: Vec<(trap::Label, usize, Vec<ChildNode>)>,
+    output_labels: Map<yeast::OutputId, Vec<trap::Label>>,
 }
 
 impl<'a> Visitor<'a> {
@@ -578,7 +561,17 @@ impl<'a> Visitor<'a> {
             trivia_tokeninfo_table_name: format!("{language_prefix}_trivia_tokeninfo"),
             schema,
             stack: Vec::new(),
+            output_labels: Map::new(),
         }
+    }
+
+    fn enter_output_node<N: AstNode>(&mut self, id: yeast::OutputId, node: &N) -> bool {
+        let recurse = self.enter_node(node);
+        if recurse {
+            let label = self.stack.last().expect("entered node must be on stack").0;
+            self.output_labels.entry(id).or_default().push(label);
+        }
+        recurse
     }
 
     /// Emit an `extra` token (a location row plus a `trivia_tokeninfo` row) for
@@ -1051,16 +1044,16 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
 
 fn traverse_yeast(tree: &yeast::OutputAst, visitor: &mut Visitor) {
     let mut cursor = tree.walk();
-    visitor.enter_node(cursor.node());
+    visitor.enter_output_node(cursor.node_id(), cursor.node());
     let mut recurse = true;
     loop {
         if recurse && cursor.goto_first_child() {
-            recurse = visitor.enter_node(cursor.node());
+            recurse = visitor.enter_output_node(cursor.node_id(), cursor.node());
         } else {
             visitor.leave_node(cursor.field_name(), cursor.node());
 
             if cursor.goto_next_sibling() {
-                recurse = visitor.enter_node(cursor.node());
+                recurse = visitor.enter_output_node(cursor.node_id(), cursor.node());
             } else if cursor.goto_parent() {
                 recurse = false;
             } else {
