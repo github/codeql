@@ -1523,6 +1523,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 base: (identifier #{name})
                 type_argument: {args})
         ),
+        // A type in expression position (e.g. the `Int` in an unresolved
+        // `a as Int .& b`). Types are already expressions in the unified AST,
+        // so the wrapper is dropped in favour of the translated type.
+        rule!((typeExpr type: @t) => expr { t }),
         // A named type (`Int`). `identifierType.name` is the type-name token.
         rule!((identifierType name: @@n) => (identifier #{n})),
         // A qualified type (`Outer.Inner`, `NSString.CompareOptions`). swift-syntax
@@ -1856,7 +1860,6 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((poundSourceLocation) => (unsupported_node "")),
         rule!((precedenceGroupDecl) => (unsupported_node "")),
         rule!((suppressedType) => (unsupported_node "")),
-        rule!((typeExpr) => (unsupported_node "")),
         rule!((yieldStmt) => (unsupported_node "")),
         // Anything reaching this final generic handler has neither a
         // dedicated rule nor an explicit unsupported entry.
