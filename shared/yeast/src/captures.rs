@@ -1,19 +1,19 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use crate::{Id, OutputId};
+use crate::{OutputId, TreeId};
 
 #[derive(Debug, Clone)]
-pub struct Captures {
+pub struct Captures<Id: TreeId = crate::Id> {
     captures: BTreeMap<&'static str, Vec<Id>>,
 }
 
-impl Default for Captures {
+impl<Id: TreeId> Default for Captures<Id> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Captures {
+impl<Id: TreeId> Captures<Id> {
     pub fn new() -> Self {
         Captures {
             captures: BTreeMap::new(),
@@ -54,26 +54,7 @@ impl Captures {
         self.captures.entry(key).or_default().push(id);
     }
 
-    pub(crate) fn translate_except(
-        &self,
-        skip: &[&str],
-        mut f: impl FnMut(Id) -> Vec<OutputId>,
-    ) -> TranslatedCaptures {
-        let mut translated = TranslatedCaptures::new();
-        for (name, ids) in &self.captures {
-            if skip.contains(name) {
-                continue;
-            }
-            for &id in ids {
-                for translated_id in f(id) {
-                    translated.insert(name, translated_id);
-                }
-            }
-        }
-        translated
-    }
-
-    pub fn merge(&mut self, other: &Captures) {
+    pub fn merge(&mut self, other: &Captures<Id>) {
         for (key, ids) in &other.captures {
             self.captures.entry(key).or_default().extend(ids);
         }
@@ -82,7 +63,7 @@ impl Captures {
     pub fn un_star<'a>(
         &'a self,
         children: &'a BTreeSet<&'static str>,
-    ) -> Result<impl Iterator<Item = Captures> + 'a, String> {
+    ) -> Result<impl Iterator<Item = Captures<Id>> + 'a, String> {
         let mut id_iter = children.iter();
 
         if let Some(fst) = id_iter.next() {
@@ -106,6 +87,27 @@ impl Captures {
         } else {
             Err("Repeated captures must have at least one capture".to_string())
         }
+    }
+}
+
+impl Captures<crate::Id> {
+    pub(crate) fn translate_except(
+        &self,
+        skip: &[&str],
+        mut f: impl FnMut(crate::Id) -> Vec<OutputId>,
+    ) -> TranslatedCaptures {
+        let mut translated = TranslatedCaptures::new();
+        for (name, ids) in &self.captures {
+            if skip.contains(name) {
+                continue;
+            }
+            for &id in ids {
+                for translated_id in f(id) {
+                    translated.insert(name, translated_id);
+                }
+            }
+        }
+        translated
     }
 }
 

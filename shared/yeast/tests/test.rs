@@ -35,6 +35,49 @@ macro_rules! build_tree_from_template {
     }};
 }
 
+yeast::query_match_schema! {
+    test_input,
+    "tests/input-types.yml",
+}
+
+yeast::query_match_schema! {
+    test_output,
+    "tests/node-types.yml",
+}
+
+use test_input::query_match as schema_query_match;
+use test_input::query_match_with_context as schema_query_match_with_context;
+use test_output::query_match as schema_output_query_match;
+
+macro_rules! match_forwarded_input_node {
+    ($node:ident, $context:expr) => {{
+        let builder = $context;
+        schema_query_match_with_context!(
+            builder,
+            $node,
+            (program child: (assignment) @assignment)
+            where *ctx && ast.get_node(assignment).is_some()
+            => {
+                assignment
+            },
+        )
+    }};
+}
+
+macro_rules! match_forwarded_block {
+    ($node:ident, $context:expr, $body:block) => {{
+        let ctx = $context;
+        schema_query_match_with_context!(ctx, $node, (program) => $body)
+    }};
+}
+
+macro_rules! match_forwarded_block_expr {
+    ($node:ident, $context:expr, $body:expr) => {{
+        let ctx = $context;
+        schema_query_match_with_context!(ctx, $node, (program) => $body)
+    }};
+}
+
 /// Helper: parse Ruby source with no rules, return dump.
 fn parse_and_dump(input: &str) -> String {
     let ast = parse_input(input);
@@ -370,6 +413,339 @@ fn test_query_match() {
     assert!(matched);
     assert!(captures.get_var("left").is_ok());
     assert!(captures.get_var("right").is_ok());
+}
+
+#[test]
+fn test_query_match_binds_raw_captures() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment)
+        => {
+            assignment
+        }
+    );
+
+    let (left, right) = schema_query_match!(
+        assignment,
+        (assignment
+            left: (_) @left
+            right: (_) @@right)
+        => {
+            (left, right)
+        }
+    );
+    assert_eq!(ast.get_node(left).unwrap().kind_name(), "identifier");
+    assert_eq!(ast.get_node(right).unwrap().kind_name(), "integer");
+
+    let call = schema_query_match!(
+        ast.get_root(),
+        (program child: (call)? @call)
+        => {
+            call
+        }
+    );
+    assert!(call.is_none());
+
+    let children = schema_query_match!(
+        ast.get_root(),
+        (program child: (_)* @children)
+        => {
+            children
+        }
+    );
+    assert_eq!(children, vec![assignment]);
+}
+
+#[test]
+#[deny(unused_braces)]
+fn test_query_match_tries_arms_in_order() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment) => {
+            assignment
+        },
+    );
+
+    let mut attempted_call = false;
+    let mut second_assignment_ran = false;
+    let left = schema_query_match!(
+        assignment,
+        (call) => {
+            attempted_call = true;
+            assignment
+        },
+        (assignment left: (_) @left) => {
+            left
+        },
+        (assignment) => {
+            second_assignment_ran = true;
+            assignment
+        },
+    );
+    assert!(!attempted_call);
+    assert!(!second_assignment_ran);
+    assert_eq!(ast.get_node(left).unwrap().kind_name(), "identifier");
+
+    let mut unmatched_body_ran = false;
+    let result = schema_query_match!(
+        assignment,
+        (call) => {
+            unmatched_body_ran = true;
+            Some(())
+        },
+        _ => {
+            None
+        },
+    );
+    assert!(result.is_none());
+    assert!(!unmatched_body_ran);
+}
+
+#[test]
+fn test_query_match_guards() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut enabled);
+
+    let children = schema_query_match!(
+        ast.get_root(),
+        (program child: (_)* @children)
+        where children
+            .into_iter()
+            .all(|child| ast.get_node(child).unwrap().is_named())
+        => {
+            children
+        },
+    );
+    let assignment = children[0];
+
+    let mut guarded_body_ran = false;
+    let right = schema_query_match!(
+        assignment,
+        (assignment left: (_) @left)
+        where false
+        => {
+            guarded_body_ran = true;
+            left
+        },
+        (assignment right: (_) @right)
+        where ast.get_node(right).is_some()
+        => {
+            right
+        },
+    );
+    assert!(!guarded_body_ran);
+
+    let left = schema_query_match!(
+        assignment,
+        (assignment left: (_) @left)
+        where *ctx
+        => {
+            left
+        },
+    );
+    assert_eq!(ast.get_node(left).unwrap().kind_name(), "identifier");
+    assert_eq!(ast.get_node(right).unwrap().kind_name(), "integer");
+}
+
+#[test]
+fn test_query_match_allows_return_from_body() {
+    #[allow(clippy::needless_return)]
+    fn matched_left(ast: &Ast, assignment: Id) -> Id {
+        let mut output = empty_output_ast("x = 1");
+        let mut user_ctx = ();
+        let ctx = yeast::build::BuildCtx::new(ast, &mut output, &mut user_ctx);
+        schema_query_match!(
+            assignment,
+            (assignment left: (_) @left)
+            => {
+                return left;
+            }
+        );
+    }
+
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment) => {
+            assignment
+        },
+    );
+    assert_eq!(
+        ast.get_node(matched_left(&ast, assignment))
+            .unwrap()
+            .kind_name(),
+        "identifier"
+    );
+}
+
+#[test]
+#[allow(clippy::needless_continue)]
+fn test_query_match_allows_continue_from_body() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = schema_query_match!(
+        ast.get_root(),
+        (program child: (assignment) @assignment) => {
+            assignment
+        },
+    );
+
+    let mut continued = false;
+    for node in [assignment] {
+        schema_query_match!(
+            node,
+            (assignment)
+            => {
+                continued = true;
+                continue;
+            }
+        );
+    }
+    assert!(continued);
+}
+
+#[test]
+#[should_panic(expected = "no query arm matched node of kind `program`")]
+fn test_query_match_panics_when_no_arm_matches() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+
+    schema_query_match!(
+        ast.get_root(),
+        (call) => {}
+    );
+}
+
+#[test]
+fn test_query_match_binds_output_captures_and_releases_borrow() {
+    let ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&ast, &mut output, &mut user_ctx);
+    let assignment = tree!((assignment
+        left: (identifier "x")
+        right: (integer "1")));
+
+    let (left, right, call) = schema_output_query_match!(
+        assignment,
+        (assignment
+            left: (identifier) @left
+            right: (integer) @right)
+        where ast.get_node(left).unwrap().kind_name() == "identifier"
+        => {
+            let call = tree!((call method: {left}));
+            (left, right, call)
+        },
+    );
+
+    assert_eq!(ctx.output.get_node(left).unwrap().kind_name(), "identifier");
+    assert_eq!(ctx.output.get_node(right).unwrap().kind_name(), "integer");
+    assert_eq!(ctx.output.get_node(call).unwrap().kind_name(), "call");
+}
+
+#[test]
+fn test_explicit_context_uses_selected_user_context() {
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let root = input_ast.get_root();
+    let ctx = &false;
+
+    let assignment = match_forwarded_input_node!(
+        root,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut enabled)
+    );
+
+    assert_eq!(
+        input_ast.get_node(assignment).unwrap().kind_name(),
+        "assignment"
+    );
+    assert!(!*ctx);
+}
+
+#[test]
+fn test_explicit_context_accepts_ast_identifier() {
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let root = input_ast.get_root();
+    let ast = yeast::build::BuildCtx::new(&input_ast, &mut output, &mut enabled);
+
+    let assignment = schema_query_match_with_context!(
+        ast,
+        root,
+        (program child: (assignment) @assignment)
+        where *ctx && ast.get_node(assignment).is_some()
+        => {
+            assignment
+        },
+    );
+
+    assert_eq!(
+        input_ast.get_node(assignment).unwrap().kind_name(),
+        "assignment"
+    );
+}
+
+#[test]
+fn test_explicit_context_accepts_ctx_identifier() {
+    let input_ast = parse_input("x = 1");
+    let mut output = empty_output_ast("x = 1");
+    let mut enabled = true;
+    let root = input_ast.get_root();
+    let ctx = yeast::build::BuildCtx::new(&input_ast, &mut output, &mut enabled);
+
+    assert!(schema_query_match_with_context!(
+        ctx,
+        root,
+        (program)
+        where *ctx
+        => {
+            true
+        },
+    ));
+}
+
+#[test]
+fn test_explicit_context_accepts_forwarded_bodies() {
+    let input_ast = parse_input("x = 1");
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let root = input_ast.get_root();
+    let value = match_forwarded_block!(
+        root,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx),
+        { 41 }
+    );
+    assert_eq!(value, 41);
+
+    let mut output = empty_output_ast("x = 1");
+    let mut user_ctx = ();
+    let value = match_forwarded_block_expr!(
+        root,
+        yeast::build::BuildCtx::new(&input_ast, &mut output, &mut user_ctx),
+        { 42 }
+    );
+    assert_eq!(value, 42);
 }
 
 #[test]
@@ -844,6 +1220,12 @@ fn test_tree_schema_namespace() {
 }
 
 #[test]
+fn test_query_match_schema_namespace() {
+    assert_eq!(test_input::SCHEMA, include_str!("input-types.yml"));
+    assert_eq!(test_output::SCHEMA, OUTPUT_SCHEMA_YAML);
+}
+
+#[test]
 fn test_explicit_context_builders_support_forwarded_templates() {
     let input_ast = parse_input("x = 1");
 
@@ -993,10 +1375,7 @@ fn test_choice_fallback_can_reuse_consumed_splice() {
 
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let items = vec![
-        tree!((identifier "x")),
-        tree!((identifier "y")),
-    ];
+    let items = vec![tree!((identifier "x")), tree!((identifier "y"))];
     let use_first = false;
     let root = tree!(
         (assignment
@@ -1178,8 +1557,7 @@ fn test_location_interpolation_materializes_context_iterator() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = BorrowedInterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let location =
-        tree!((identifier "location" location: {input_ast.get_root()}));
+    let location = tree!((identifier "location" location: {input_ast.get_root()}));
     ctx.locations.push(location);
 
     let call = tree!((call location: {ctx.locations.drain(..)}));

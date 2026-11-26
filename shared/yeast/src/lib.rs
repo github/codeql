@@ -16,10 +16,14 @@ mod visitor;
 
 pub use range::{Point, Range};
 #[doc(hidden)]
+pub use yeast_macros::query_match_with_schema as __query_match_with_schema;
+#[doc(hidden)]
+pub use yeast_macros::query_match_with_schema_and_context as __query_match_with_schema_and_context;
+#[doc(hidden)]
 pub use yeast_macros::tree_with_schema as __tree_with_schema;
 #[doc(hidden)]
 pub use yeast_macros::trees_with_schema as __trees_with_schema;
-pub use yeast_macros::{query, rule, rules, tree_schema};
+pub use yeast_macros::{query, query_match_schema, rule, rules, tree_schema};
 
 use captures::{Captures, TranslatedCaptures};
 use query::QueryNode;
