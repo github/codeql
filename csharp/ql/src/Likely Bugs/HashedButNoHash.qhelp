@@ -19,7 +19,7 @@ can yield unexpected results if instances of those classes are stored in a hashi
 </example>
 <references>
 
-  <li>MSDN, C# Programmer's Reference, <a href="http://msdn.microsoft.com/en-us/library/system.object.gethashcode.aspx">Object.GetHashCode</a></li>
+  <li>MSDN, C# Programmer's Reference, <a href="https://msdn.microsoft.com/en-us/library/system.object.gethashcode.aspx">Object.GetHashCode</a></li>
 
 </references>
 </qhelp>
