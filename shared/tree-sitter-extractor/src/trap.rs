@@ -14,6 +14,7 @@ pub struct Location {
     pub end_column: usize,
 }
 
+#[derive(Clone)]
 pub struct Writer {
     /// The accumulated trap entries
     trap_output: Vec<Entry>,
@@ -118,6 +119,7 @@ impl Writer {
     }
 }
 
+#[derive(Clone)]
 pub enum Entry {
     /// Maps the label to a fresh id, e.g. `#123=*`.
     FreshId(Label),

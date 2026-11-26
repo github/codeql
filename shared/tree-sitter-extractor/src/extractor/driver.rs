@@ -171,6 +171,7 @@ pub(crate) fn run_extractor<L: LanguageExtractor>(
                             languages_processed[i] = true;
                             let lang = &languages[i];
 
+                            let trap_checkpoint = trap_writer.clone();
                             let result = lang.extract_file(
                                 &schemas[i],
                                 &mut diagnostics_writer,
@@ -185,6 +186,7 @@ pub(crate) fn run_extractor<L: LanguageExtractor>(
                                     write_trap(trap_dir, &path, &trap_writer, trap_compression)?;
                                 }
                                 Err(error) => {
+                                    trap_writer = trap_checkpoint;
                                     tracing::error!(
                                         file = %path.display(),
                                         error,
@@ -223,10 +225,11 @@ fn write_trap(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::Write;
+    use std::io::{Read, Write};
 
     struct TestLanguage {
         file_globs: Vec<String>,
+        fail_fallback: bool,
     }
 
     impl LanguageExtractor for TestLanguage {
@@ -248,6 +251,9 @@ mod tests {
         ) -> Result<(), String> {
             if source == b"bad" {
                 Err("invalid parser output".to_string())
+            } else if source == b"fallback" && self.fail_fallback {
+                trap_writer.comment("discard-me".to_string());
+                Err("failed after writing".to_string())
             } else {
                 trap_writer.comment("success".to_string());
                 Ok(())
@@ -265,19 +271,29 @@ mod tests {
 
         let good_path = source_dir.join("good.test");
         let bad_path = source_dir.join("bad.test");
+        let fallback_path = source_dir.join("fallback.test");
         std::fs::write(&good_path, b"good").unwrap();
         std::fs::write(&bad_path, b"bad").unwrap();
+        std::fs::write(&fallback_path, b"fallback").unwrap();
 
         let file_list = root.join("files.txt");
         let mut file = std::fs::File::create(&file_list).unwrap();
         writeln!(file, "{}", good_path.display()).unwrap();
         writeln!(file, "{}", bad_path.display()).unwrap();
+        writeln!(file, "{}", fallback_path.display()).unwrap();
 
         run_extractor(
             "test",
-            &[TestLanguage {
-                file_globs: vec!["*.test".to_string()],
-            }],
+            &[
+                TestLanguage {
+                    file_globs: vec!["*.test".to_string()],
+                    fail_fallback: true,
+                },
+                TestLanguage {
+                    file_globs: vec!["fallback.test".to_string()],
+                    fail_fallback: false,
+                },
+            ],
             &trap_dir,
             &source_archive_dir,
             &[file_list],
@@ -287,13 +303,21 @@ mod tests {
 
         let good_trap = file_paths::path_for(&trap_dir, &good_path, "trap.gz", None);
         let bad_trap = file_paths::path_for(&trap_dir, &bad_path, "trap.gz", None);
+        let fallback_trap = file_paths::path_for(&trap_dir, &fallback_path, "trap.gz", None);
         assert!(good_trap.is_file());
         assert!(!bad_trap.exists());
+        let mut fallback_contents = String::new();
+        flate2::read::GzDecoder::new(std::fs::File::open(fallback_trap).unwrap())
+            .read_to_string(&mut fallback_contents)
+            .unwrap();
+        assert_eq!(fallback_contents, "// success\n");
 
         let archived_good = file_paths::path_for(&source_archive_dir, &good_path, "", None);
         let archived_bad = file_paths::path_for(&source_archive_dir, &bad_path, "", None);
+        let archived_fallback = file_paths::path_for(&source_archive_dir, &fallback_path, "", None);
         assert!(archived_good.is_file());
         assert!(archived_bad.is_file());
+        assert!(archived_fallback.is_file());
 
         std::fs::remove_dir_all(root).unwrap();
     }
