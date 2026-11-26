@@ -44,6 +44,7 @@ build:clippy --@rules_rust//rust/toolchain/channel=stable
 build:clippy --compilation_mode=fastbuild
 build:clippy --aspects=@rules_rust//rust:defs.bzl%rust_clippy_aspect
 build:clippy --output_groups=clippy_checks
+build:clippy --keep_going
 build:clippy --@rules_rust//rust/settings:clippy.toml=//:clippy.toml
 
 # Reduce this eventually to empty, once we've fixed all our usages of java, and https://github.com/bazel-contrib/rules_go/issues/4193 is fixed

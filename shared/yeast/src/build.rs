@@ -114,15 +114,14 @@ impl<'a, C> BuildCtx<'a, C> {
         let id = self
             .output
             .create_node_with_range(kind, content, fields, is_named, source_range);
-        if self
-            .output
-            .get_node(id)
-            .is_some_and(|node| node.source_range().is_none())
-        {
-            if let Some(source_range) = self.source_range {
-                self.output
-                    .extend_source_range(id, source_range.empty_at_start());
-            }
+        if let (true, Some(source_range)) = (
+            self.output
+                .get_node(id)
+                .is_some_and(|node| node.source_range().is_none()),
+            self.source_range,
+        ) {
+            self.output
+                .extend_source_range(id, source_range.empty_at_start());
         }
         if !has_explicit_source_range {
             self.created_nodes_without_source_range.insert(id);

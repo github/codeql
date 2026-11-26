@@ -249,12 +249,10 @@ fn dump_node<Id: TreeId>(
         }
     }
 
-    if let Some(context) = type_check {
-        if let Some(err) =
-            type_error_for_node(context.schema, node, context.expected, context.parent_field)
-        {
-            write!(out, " <-- ERROR: {err}").unwrap();
-        }
+    if let Some(err) = type_check.and_then(|context| {
+        type_error_for_node(context.schema, node, context.expected, context.parent_field)
+    }) {
+        write!(out, " <-- ERROR: {err}").unwrap();
     }
 
     writeln!(out).unwrap();
@@ -392,20 +390,18 @@ fn dump_node<Id: TreeId>(
             }
         });
         for &child_id in children {
-            if let Some(child) = ast.get_node(child_id) {
-                if child.is_named() {
-                    let external = is_external_child(node, child);
-                    dump_node(
-                        ast,
-                        child_id,
-                        source,
-                        options,
-                        indent + 1,
-                        child_type_check,
-                        external,
-                        out,
-                    );
-                }
+            if let Some(child) = ast.get_node(child_id).filter(|child| child.is_named()) {
+                let external = is_external_child(node, child);
+                dump_node(
+                    ast,
+                    child_id,
+                    source,
+                    options,
+                    indent + 1,
+                    child_type_check,
+                    external,
+                    out,
+                );
             }
         }
     }
@@ -455,12 +451,10 @@ fn dump_node_inline<Id: TreeId>(
         }
     }
 
-    if let Some(context) = type_check {
-        if let Some(err) =
-            type_error_for_node(context.schema, node, context.expected, context.parent_field)
-        {
-            write!(out, " <-- ERROR: {err}").unwrap();
-        }
+    if let Some(err) = type_check.and_then(|context| {
+        type_error_for_node(context.schema, node, context.expected, context.parent_field)
+    }) {
+        write!(out, " <-- ERROR: {err}").unwrap();
     }
 
     writeln!(out).unwrap();
