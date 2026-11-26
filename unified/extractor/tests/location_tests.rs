@@ -13,10 +13,8 @@ fn desugar(source: &str) -> Ast {
                 .any(|glob| glob.contains("swift"))
         })
         .expect("Swift language spec");
-    let parsed = (lang.parser)(source.as_bytes()).expect("Swift should parse");
-    lang.desugarer
-        .run_from_ast(parsed.ast)
-        .expect("Swift should desugar")
+    let parsed = lang.parse(source.as_bytes()).expect("Swift should parse");
+    lang.desugar(parsed.ast).expect("Swift should desugar")
 }
 
 fn spans(ast: &Ast, source: &str, kind: &str, content: Option<&str>) -> Vec<String> {

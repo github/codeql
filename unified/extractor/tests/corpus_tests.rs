@@ -62,9 +62,8 @@ fn render_corpus(case: &CorpusCase) -> String {
 /// Parse `input` through the language's parser and desugar it, returning the
 /// mapped AST.
 fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<Ast, String> {
-    let parsed = (lang.parser)(input.as_bytes())?;
-    lang.desugarer
-        .run_from_ast(parsed.ast)
+    let parsed = lang.parse(input.as_bytes())?;
+    lang.desugar(parsed.ast)
         .map_err(|e| format!("Desugaring failed: {e}"))
 }
 
@@ -72,7 +71,7 @@ fn run_desugaring(lang: &desugaring::LanguageSpec, input: &str) -> Result<Ast, S
 /// the language's parser builds, before any desugaring rules. Useful for seeing
 /// what the mapping rules operate on.
 fn dump_raw_parse(lang: &desugaring::LanguageSpec, input: &str) -> Result<String, String> {
-    let parsed = (lang.parser)(input.as_bytes())?;
+    let parsed = lang.parse(input.as_bytes())?;
     Ok(dump_ast(&parsed.ast, parsed.ast.get_root(), input))
 }
 

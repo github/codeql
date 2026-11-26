@@ -22,7 +22,6 @@ fn swift_syntax_json_runs_through_the_desugarer() {
         .into_iter()
         .find(|l| l.file_globs.iter().any(|g| g.contains("swift")))
         .expect("swift language spec");
-    let desugarer = lang.desugarer.as_ref();
 
     // Adapt the swift-syntax JSON into a yeast AST (pure Rust, no Swift FFI).
     let adapted =
@@ -39,8 +38,8 @@ fn swift_syntax_json_runs_through_the_desugarer() {
     // Run the real Swift desugaring rules over the externally-built AST. The
     // top-level swift-syntax rules map `sourceFile` to `top_level`/`block`;
     // kinds without swift-syntax rules yet fall back to `unsupported_node`.
-    let desugared = desugarer
-        .run_from_ast(adapted.ast)
+    let desugared = lang
+        .desugar(adapted.ast)
         .expect("desugaring an externally-built AST should not error");
 
     let dump = dump_ast(&desugared, desugared.get_root(), "");
