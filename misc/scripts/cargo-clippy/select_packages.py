@@ -95,16 +95,19 @@ def select(root, changed):
     return sorted(packages[member]["package"]["name"] for member in affected)
 
 
+def changed_files(root, base):
+    return subprocess.check_output(
+        ["git", "diff", "--name-only", "--no-renames", "-z", base, "HEAD"],
+        cwd=root,
+    ).decode().split("\0")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", required=True, help="Base parent of the PR merge commit")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[3]
-    changed = subprocess.check_output(
-        ["git", "diff", "--name-only", "--no-renames", "-z", args.base, "HEAD"],
-        cwd=root,
-    ).decode().split("\0")
-    print(json.dumps(select(root, changed), separators=(",", ":")))
+    print(json.dumps(select(root, changed_files(root, args.base)), separators=(",", ":")))
 
 
 if __name__ == "__main__":

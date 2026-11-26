@@ -24,10 +24,8 @@ jobs:
         run: python3 -m unittest discover -s misc/scripts/cargo-clippy
       - name: Select affected packages
         id: select
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          packages=$(python3 misc/scripts/cargo-clippy/select_packages.py --base "$BASE_SHA")
+          packages=$(python3 misc/scripts/cargo-clippy/select_packages.py --base HEAD^1)
           echo "packages=$packages" >> "$GITHUB_OUTPUT"
           echo "Selected packages: $packages" | tee -a "$GITHUB_STEP_SUMMARY"
 

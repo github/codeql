@@ -1,8 +1,9 @@
 import tempfile
+import subprocess
 import unittest
 from pathlib import Path
 
-from select_packages import select, workspace
+from select_packages import changed_files, select, workspace
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -83,6 +84,39 @@ renamed = { package = "a", path = "a" }
             # Deleted files and rename sources use the same path-based ownership.
             self.assertEqual(select(root, ["a/deleted.rs"]), ["a", "b", "c"])
             self.assertEqual(select(root, ["b/renamed.rs", "c/new.rs"]), ["b", "c"])
+
+    def test_shallow_merge_uses_actual_base_parent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "repo"
+            root.mkdir()
+
+            def git(*args, cwd=root):
+                return subprocess.check_output(
+                    ["git", "-c", "user.name=Test", "-c", "user.email=test@example.com",
+                     *args], cwd=cwd, stderr=subprocess.DEVNULL,
+                )
+
+            git("init", "-b", "base")
+            (root / "Cargo.toml").write_text('[workspace]\nmembers = ["a", "b"]\n')
+            for name in ["a", "b"]:
+                (root / name).mkdir()
+                (root / name / "Cargo.toml").write_text(
+                    f'[package]\nname = "{name}"\nversion = "0.1.0"\n'
+                )
+            git("add", ".")
+            git("commit", "-m", "Initial")
+            git("checkout", "-b", "topic")
+            (root / "a/source.rs").write_text("// Changed on the PR\n")
+            git("add", ".")
+            git("commit", "-m", "Topic")
+            git("checkout", "base")
+            (root / "b/source.rs").write_text("// Changed only on the base\n")
+            git("add", ".")
+            git("commit", "-m", "Advance base")
+            git("merge", "--no-ff", "topic", "-m", "PR merge")
+            clone = Path(directory) / "shallow"
+            git("clone", "--depth=2", root.as_uri(), str(clone))
+            self.assertEqual(select(clone, changed_files(clone, "HEAD^1")), ["a"])
 
 
 if __name__ == "__main__":
