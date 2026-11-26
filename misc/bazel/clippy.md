@@ -13,6 +13,9 @@ python3 misc/bazel/clippy.py --lint extractor
 python3 misc/bazel/clippy.py --lint other
 ```
 
+The workflow can also be dispatched manually with an explicit base revision.
+PR runs always use the PR's actual base, regardless of manual-run inputs.
+
 Selection uses the PR's merge-base diff, not just its most recent commit, and
 Bazel's dependency graph, including native and generated inputs. Changes within
 a package invalidate that package and its reverse dependencies. Root toolchain,

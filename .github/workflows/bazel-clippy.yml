@@ -2,6 +2,12 @@ name: Bazel Clippy
 
 on:
   pull_request:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: Revision whose merge base to compare with the selected branch
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -35,7 +41,7 @@ jobs:
       - name: Select affected targets
         id: select
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base }}
         run: python3 misc/bazel/clippy.py --base "$BASE_SHA"
       - name: Clippy (Rust extractor)
         if: steps.select.outputs.selected == 'true'
