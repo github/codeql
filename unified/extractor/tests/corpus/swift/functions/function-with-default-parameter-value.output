@@ -72,7 +72,9 @@ top_level source="⟨body⟩"
               external_name_node: identifier "name" source="name"
               type: identifier "String" source="String"
               pattern: identifier "name" source="name"
-              default: string_literal "\"world\"" source="\"world\""
+              default:
+                string_literal "\"world\"" source="\"world\""
+                  interpreted: "world"
           body:
             block source="{\n  ⟨stmt⟩\n}"
               stmt:

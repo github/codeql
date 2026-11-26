@@ -62,4 +62,6 @@ top_level source="⟨body⟩"
             block source="{\n  ⟨stmt⟩\n}"
               stmt:
                 return_expr source="return ⟨value⟩"
-                  value: string_literal "\"\"" source="\"\""
+                  value:
+                    string_literal "\"\"" source="\"\""
+                      interpreted: ""

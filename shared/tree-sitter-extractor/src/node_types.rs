@@ -27,6 +27,7 @@ pub enum EntryKind {
     },
     Token {
         kind_id: usize,
+        fields: Vec<Field>,
     },
 }
 
@@ -38,6 +39,9 @@ pub struct TypeName {
 
 #[derive(Debug)]
 pub enum FieldTypeInfo {
+    /// The field contains a scalar string.
+    String,
+
     /// The field has a single type.
     Single(TypeName),
 
@@ -119,6 +123,10 @@ fn convert_types(node_types: &[NodeType]) -> Set<TypeName> {
     node_types.iter().map(convert_type).collect()
 }
 
+fn has_structural_fields(node: &NodeInfo) -> bool {
+    node.children.is_some() || node.fields.values().any(|field| field.scalar.is_none())
+}
+
 #[allow(clippy::too_many_lines)]
 pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
     let mut entries = NodeTypeMap::new();
@@ -126,7 +134,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
 
     // First, find all the token kinds
     for node in nodes {
-        if node.subtypes.is_empty() && node.fields.is_empty() && node.children.is_none() {
+        if node.subtypes.is_empty() && !has_structural_fields(node) {
             let type_name = TypeName {
                 kind: node.kind.clone(),
                 named: node.named,
@@ -141,13 +149,13 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
         let ql_class_name = dbscheme_name_to_class_name(&dbscheme_name);
         let dbscheme_name = format!("{prefix}_{dbscheme_name}");
         let subtypes = &node.subtypes;
+        let type_name = TypeName {
+            kind: node.kind.clone(),
+            named: node.named,
+        };
         if !subtypes.is_empty() {
             // It's a tree-sitter supertype node, for which we create a union
             // type.
-            let type_name = TypeName {
-                kind: node.kind.clone(),
-                named: node.named,
-            };
             let mut fields = Vec::new();
             for (field_name, field_info) in &node.fields {
                 add_field(
@@ -157,6 +165,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     field_info,
                     &mut fields,
                     &token_kinds,
+                    false,
                 );
             }
             if let Some(children) = &node.children {
@@ -167,6 +176,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     children,
                     &mut fields,
                     &token_kinds,
+                    false,
                 );
             }
             entries.insert(
@@ -180,14 +190,10 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     },
                 },
             );
-        } else if node.fields.is_empty() && node.children.is_none() {
+        } else if token_kinds.contains(&type_name) {
             // Token kind, handled above.
         } else {
             // It's a product type, defined by a table.
-            let type_name = TypeName {
-                kind: node.kind.clone(),
-                named: node.named,
-            };
             let table_name = escape_name(&(format!("{flattened_name}_def")));
             let table_name = format!("{prefix}_{table_name}");
 
@@ -203,6 +209,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     field_info,
                     &mut fields,
                     &token_kinds,
+                    false,
                 );
             }
             if let Some(children) = &node.children {
@@ -214,6 +221,7 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
                     children,
                     &mut fields,
                     &token_kinds,
+                    false,
                 );
             }
             entries.insert(
@@ -231,19 +239,38 @@ pub fn convert_nodes(prefix: &str, nodes: &[NodeInfo]) -> NodeTypeMap {
     }
     let mut counter = 0;
     for type_name in token_kinds {
+        let node = nodes
+            .iter()
+            .find(|node| node.kind == type_name.kind && node.named == type_name.named)
+            .unwrap();
+        let mut fields = Vec::new();
+        for (field_name, field_info) in &node.fields {
+            add_field(
+                prefix,
+                &type_name,
+                Some(field_name.clone()),
+                field_info,
+                &mut fields,
+                &Set::new(),
+                true,
+            );
+        }
         let entry = if type_name.named {
             counter += 1;
             let unprefixed_name = node_type_name(&type_name.kind, true);
             Entry {
                 dbscheme_name: escape_name(&format!("{prefix}_token_{unprefixed_name}")),
                 ql_class_name: dbscheme_name_to_class_name(&escape_name(&unprefixed_name)),
-                kind: EntryKind::Token { kind_id: counter },
+                kind: EntryKind::Token {
+                    kind_id: counter,
+                    fields,
+                },
             }
         } else {
             Entry {
                 dbscheme_name: format!("{prefix}_reserved_word"),
                 ql_class_name: "ReservedWord".to_owned(),
-                kind: EntryKind::Token { kind_id: 0 },
+                kind: EntryKind::Token { kind_id: 0, fields },
             }
         };
         entries.insert(type_name, entry);
@@ -258,10 +285,11 @@ fn add_field(
     field_info: &FieldInfo,
     fields: &mut Vec<Field>,
     token_kinds: &Set<TypeName>,
+    force_table_storage: bool,
 ) {
     let parent_flattened_name = node_type_name(&parent_type_name.kind, parent_type_name.named);
     let column_name = escape_name(&name_for_field_or_child(field_name.as_ref()));
-    let storage = if !field_info.multiple && field_info.required {
+    let storage = if !force_table_storage && !field_info.multiple && field_info.required {
         // This field must appear exactly once, so we add it as
         // a column to the main table for the node type.
         Storage::Column { name: column_name }
@@ -281,7 +309,9 @@ fn add_field(
         }
     };
     let converted_types = convert_types(&field_info.types);
-    let type_info = if storage.is_column()
+    let type_info = if matches!(field_info.scalar, Some(ScalarType::String)) {
+        FieldTypeInfo::String
+    } else if storage.is_column()
         && field_info
             .types
             .iter()
@@ -360,7 +390,15 @@ pub struct NodeType {
 pub struct FieldInfo {
     pub multiple: bool,
     pub required: bool,
+    #[serde(default)]
     pub types: Vec<NodeType>,
+    pub scalar: Option<ScalarType>,
+}
+
+#[derive(Copy, Clone, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum ScalarType {
+    String,
 }
 
 /// Given a tree-sitter node type's (kind, named) pair, returns a single string
@@ -535,4 +573,27 @@ named:
             ..
         }
     ));
+}
+
+#[test]
+fn string_fields_are_scalar() {
+    let yaml = r"
+named:
+  string_holder:
+    value: string
+";
+    let json = yeast::node_types_yaml::convert(yaml).unwrap();
+    let nodes = read_node_types_str("test", &json).unwrap();
+    let holder = nodes
+        .get(&TypeName {
+            kind: "string_holder".to_owned(),
+            named: true,
+        })
+        .unwrap();
+    let EntryKind::Token { fields, .. } = &holder.kind else {
+        panic!("string_holder should be a token");
+    };
+
+    assert_eq!(fields.len(), 1);
+    assert!(matches!(fields[0].type_info, FieldTypeInfo::String));
 }

@@ -90,6 +90,21 @@ impl SwiftContext {
     }
 }
 
+fn make_string_literal(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    source: yeast::Id,
+) -> yeast::OutputId {
+    let raw = ctx.source_text(source);
+    let interpreted = raw
+        .strip_prefix('"')
+        .and_then(|value| value.strip_suffix('"'))
+        .unwrap_or(&raw)
+        .to_string();
+    tree!((string_literal #{raw}
+        interpreted: #{interpreted}
+        location: {source}))
+}
+
 fn implicit_parameterless_initializer(
     ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
     members: &[yeast::OutputId],
@@ -296,20 +311,26 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((nilLiteralExpr) @@node => expr {
             tree!((builtin_expr #{node}))
         }),
-        rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
+        rule!((simpleStringLiteralExpr) @@node => expr {
+            make_string_literal(&mut ctx, node)
+        }),
         // String literal with a single constant segment (for some reason not typed as simpleStringLiteralExpr)
         rule!(
             (stringLiteralExpr segments: (stringSegment) segments: _* @@rest) @@node
             where rest.is_empty()
             =>
-            (string_literal #{node})
+            expr {
+                make_string_literal(&mut ctx, node)
+            }
         ),
         rule!(
             (stringLiteralExpr segments: _* @segments)
             =>
             (string_interpolation_expr element: {segments})
         ),
-        rule!((stringSegment content: @@content) => (string_literal #{content})),
+        rule!((stringSegment content: @@content) => expr {
+            make_string_literal(&mut ctx, content)
+        }),
         rule!(
             (expressionSegment expressions: _* @expressions)
             =>

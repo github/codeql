@@ -145,10 +145,14 @@ top_level source="⟨body⟩"
                           member_name_node: identifier "subscript" source="["
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"a\"" source="\"a\""
+                          value:
+                            string_literal "\"a\"" source="\"a\""
+                              interpreted: "a"
                   member_name_node: identifier "subscript" source="["
               argument:
                 argument source="⟨value⟩"
-                  value: string_literal "\"b\"" source="\"b\""
+                  value:
+                    string_literal "\"b\"" source="\"b\""
+                      interpreted: "b"
           operator: infix_operator "=" source="="
           right: identifier "c" source="c"

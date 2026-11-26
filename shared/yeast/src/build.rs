@@ -109,11 +109,35 @@ impl<'a, C> BuildCtx<'a, C> {
         is_named: bool,
         source_range: Option<Range>,
     ) -> OutputId {
+        self.create_node_with_range_and_string_fields(
+            kind,
+            content,
+            fields,
+            BTreeMap::new(),
+            is_named,
+            source_range,
+        )
+    }
+
+    fn create_node_with_range_and_string_fields(
+        &mut self,
+        kind: KindId,
+        content: NodeContent,
+        fields: BTreeMap<FieldId, Vec<OutputId>>,
+        string_fields: BTreeMap<&'static str, String>,
+        is_named: bool,
+        source_range: Option<Range>,
+    ) -> OutputId {
         let has_explicit_source_range =
             source_range.is_some() || matches!(&content, NodeContent::Range(_));
-        let id = self
-            .output
-            .create_node_with_range(kind, content, fields, is_named, source_range);
+        let id = self.output.create_node_with_range_and_string_fields(
+            kind,
+            content,
+            fields,
+            string_fields,
+            is_named,
+            source_range,
+        );
         if self
             .output
             .get_node(id)
@@ -200,6 +224,21 @@ impl<'a, C> BuildCtx<'a, C> {
     }
 
     #[doc(hidden)]
+    pub fn set_node_string_fields(&mut self, node: OutputId, fields: Vec<(&str, String)>) {
+        let fields = fields
+            .into_iter()
+            .map(|(name, value)| {
+                let field_id = self
+                    .output
+                    .field_id_for_name(name)
+                    .unwrap_or_else(|| panic!("build: field '{name}' not found"));
+                (self.output.field_name_for_id(field_id).unwrap(), value)
+            })
+            .collect::<Vec<_>>();
+        self.output.set_string_fields(node, fields);
+    }
+
+    #[doc(hidden)]
     pub fn location_source_range<S: LocationSource>(&self, source: S) -> Option<Range> {
         source.location_range(self)
     }
@@ -213,6 +252,16 @@ impl<'a, C> BuildCtx<'a, C> {
 
     /// Create a named AST node with the given kind and fields.
     pub fn node(&mut self, kind: &str, fields: Vec<(&str, Vec<OutputId>)>) -> OutputId {
+        self.node_with_string_fields(kind, fields, Vec::new())
+    }
+
+    #[doc(hidden)]
+    pub fn node_with_string_fields(
+        &mut self,
+        kind: &str,
+        fields: Vec<(&str, Vec<OutputId>)>,
+        string_fields: Vec<(&str, String)>,
+    ) -> OutputId {
         let kind_id = self
             .output
             .id_for_node_kind(kind)
@@ -225,10 +274,22 @@ impl<'a, C> BuildCtx<'a, C> {
                 .unwrap_or_else(|| panic!("build: field '{name}' not found"));
             field_map.entry(field_id).or_default().extend(ids);
         }
-        self.create_node_with_range(
+        let string_fields = string_fields
+            .into_iter()
+            .map(|(name, value)| {
+                let field_id = self
+                    .output
+                    .field_id_for_name(name)
+                    .unwrap_or_else(|| panic!("build: field '{name}' not found"));
+                let name = self.output.field_name_for_id(field_id).unwrap();
+                (name, value)
+            })
+            .collect();
+        self.create_node_with_range_and_string_fields(
             kind_id,
             NodeContent::DynamicString(String::new()),
             field_map,
+            string_fields,
             true,
             None,
         )

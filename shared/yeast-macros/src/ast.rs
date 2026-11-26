@@ -142,6 +142,11 @@ pub(crate) enum Field {
         /// `{args}`.
         value: Template,
     },
+    /// A scalar string field such as `name: #{value}`.
+    String {
+        name: Ident,
+        value: syn::Block,
+    },
     /// Source-location metadata such as `location: {source}`.
     Location {
         /// A Rust block yielding the node or nodes whose locations should be combined.

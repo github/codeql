@@ -148,7 +148,9 @@ top_level source="⟨body⟩"
                       callee: identifier "print" source="print"
                       argument:
                         argument source="⟨value⟩"
-                          value: string_literal "\"yes\"" source="\"yes\""
+                          value:
+                            string_literal "\"yes\"" source="\"yes\""
+                              interpreted: "yes"
             switch_case source="case ⟨pattern⟩:\n  ⟨body⟩"
               pattern:
                 call_expr source="⟨callee⟩(⟨argument⟩, ⟨argument⟩)"

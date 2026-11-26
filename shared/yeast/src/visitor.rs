@@ -64,6 +64,7 @@ impl Visitor {
                 kind_name: n.kind(),
                 content,
                 fields: BTreeMap::new(),
+                string_fields: BTreeMap::new(),
                 is_missing: n.is_missing(),
                 is_named: n.is_named(),
                 is_extra: n.is_extra(),

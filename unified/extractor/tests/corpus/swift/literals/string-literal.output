@@ -19,4 +19,6 @@ sourceFile
 top_level source="⟨body⟩"
   body:
     block source="⟨stmt⟩"
-      stmt: string_literal "\"hello\"" source="\"hello\""
+      stmt:
+        string_literal "\"hello\"" source="\"hello\""
+          interpreted: "hello"

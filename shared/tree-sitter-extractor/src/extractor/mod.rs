@@ -37,6 +37,9 @@ trait AstNode {
     fn opt_string_content(&self) -> Option<String> {
         None
     }
+    fn string_field(&self, _name: &str) -> Option<&str> {
+        None
+    }
 }
 
 impl AstNode for Node<'_> {
@@ -101,6 +104,9 @@ impl<I: yeast::TreeId> AstNode for yeast::Node<I> {
     }
     fn opt_string_content(&self) -> Option<String> {
         yeast::Node::opt_string_content(self)
+    }
+    fn string_field(&self, name: &str) -> Option<&str> {
+        yeast::Node::string_field(self, name)
     }
 }
 
@@ -714,7 +720,7 @@ impl<'a> Visitor<'a> {
             _ => None,
         };
         match &table.kind {
-            EntryKind::Token { kind_id, .. } => {
+            EntryKind::Token { kind_id, fields } => {
                 self.trap_writer.add_tuple(
                     &self.ast_node_location_table_name,
                     vec![trap::Arg::Label(id), trap::Arg::Label(loc_label)],
@@ -737,6 +743,9 @@ impl<'a> Visitor<'a> {
                         sliced_source_arg(self.source, node),
                     ],
                 );
+                if self.complex_node(node, fields, &child_nodes, id).is_none() {
+                    valid = false;
+                }
             }
             EntryKind::Table {
                 fields,
@@ -812,7 +821,8 @@ impl<'a> Visitor<'a> {
     ) -> Option<Vec<trap::Arg>> {
         let mut map: Map<&Option<String>, (&Field, Vec<trap::Arg>)> = Map::new();
         for field in fields {
-            map.insert(&field.name, (field, Vec::new()));
+            let values = string_field_values(node, field);
+            map.insert(&field.name, (field, values));
         }
         for child_node in child_nodes {
             if let Some((field, values)) = map.get_mut(&child_node.field_name.map(|x| x.to_owned()))
@@ -910,6 +920,7 @@ impl<'a> Visitor<'a> {
 
     fn type_matches(&self, tp: &TypeName, type_info: &node_types::FieldTypeInfo) -> bool {
         match type_info {
+            node_types::FieldTypeInfo::String => return false,
             node_types::FieldTypeInfo::Single(single_type) => {
                 if tp == single_type {
                     return true;
@@ -944,6 +955,15 @@ impl<'a> Visitor<'a> {
             }
         }
         false
+    }
+}
+
+fn string_field_values<N: AstNode>(node: &N, field: &Field) -> Vec<trap::Arg> {
+    match (&field.type_info, &field.name) {
+        (node_types::FieldTypeInfo::String, Some(name)) => node
+            .string_field(name)
+            .map_or_else(Vec::new, |value| vec![trap::Arg::String(value.to_owned())]),
+        _ => Vec::new(),
     }
 }
 

@@ -162,50 +162,63 @@ fn resolve_type_ref(
     json!({"type": kind, "named": named})
 }
 
-/// Convert YAML string to node-types JSON string.
-pub fn convert(yaml_input: &str) -> Result<String, String> {
-    fn add_fields_to_json_entry(
-        entry: &mut serde_json::Value,
-        fields: Option<&BTreeMap<String, TypeRefOrList>>,
-        named_types: &BTreeSet<String>,
-        unnamed_types: &BTreeSet<String>,
-    ) {
-        let mut json_fields = serde_json::Map::new();
-        let mut json_children = None;
+fn is_string_field(type_refs: &TypeRefOrList) -> bool {
+    matches!(type_refs, TypeRefOrList::Single(TypeRef::Name(name)) if name == "string")
+}
 
-        for (raw_field_name, type_refs) in fields.into_iter().flatten() {
-            let spec = parse_field_name(raw_field_name);
+fn add_fields_to_json_entry(
+    entry: &mut serde_json::Value,
+    fields: Option<&BTreeMap<String, TypeRefOrList>>,
+    named_types: &BTreeSet<String>,
+    unnamed_types: &BTreeSet<String>,
+) {
+    let mut json_fields = serde_json::Map::new();
+    let mut json_children = None;
+
+    for (raw_field_name, type_refs) in fields.into_iter().flatten() {
+        let spec = parse_field_name(raw_field_name);
+        let field_info = if is_string_field(type_refs) {
+            json!({
+                "multiple": spec.multiple,
+                "required": spec.required,
+                "types": [],
+                "scalar": "string",
+            })
+        } else {
             let types: Vec<_> = type_refs
                 .clone()
                 .into_vec()
                 .iter()
                 .map(|t| resolve_type_ref(t, named_types, unnamed_types))
                 .collect();
-            let field_info = json!({
+            json!({
                 "multiple": spec.multiple,
                 "required": spec.required,
                 "types": types,
-            });
+            })
+        };
 
-            if let Some(name) = spec.name {
-                json_fields.insert(name, field_info);
-            } else {
-                json_children = Some(field_info);
-            }
-        }
-
-        entry
-            .as_object_mut()
-            .unwrap()
-            .insert("fields".to_string(), json_fields.into());
-        if let Some(children) = json_children {
-            entry
-                .as_object_mut()
-                .unwrap()
-                .insert("children".to_string(), children);
+        if let Some(name) = spec.name {
+            json_fields.insert(name, field_info);
+        } else {
+            json_children = Some(field_info);
         }
     }
 
+    entry
+        .as_object_mut()
+        .unwrap()
+        .insert("fields".to_string(), json_fields.into());
+    if let Some(children) = json_children {
+        entry
+            .as_object_mut()
+            .unwrap()
+            .insert("children".to_string(), children);
+    }
+}
+
+/// Convert YAML string to node-types JSON string.
+pub fn convert(yaml_input: &str) -> Result<String, String> {
     let yaml: YamlNodeTypes =
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
 
@@ -441,18 +454,23 @@ fn apply_fields_to_schema(
             Some(name) => schema.register_field(name),
             None => CHILD_FIELD,
         };
-        let mut node_types = type_refs
-            .clone()
-            .into_vec()
-            .into_iter()
-            .map(|type_ref| {
-                let (kind, named) = resolve_type_ref_pair(&type_ref, named_types, unnamed_types);
-                crate::schema::NodeType { kind, named }
-            })
-            .collect::<Vec<_>>();
-        node_types.sort_by(|a, b| a.kind.cmp(&b.kind).then(a.named.cmp(&b.named)));
-        node_types.dedup_by(|a, b| a.kind == b.kind && a.named == b.named);
-        schema.set_field_types(parent_kind, field_id, node_types);
+        if is_string_field(type_refs) {
+            schema.set_string_field(parent_kind, field_id);
+        } else {
+            let mut node_types = type_refs
+                .clone()
+                .into_vec()
+                .into_iter()
+                .map(|type_ref| {
+                    let (kind, named) =
+                        resolve_type_ref_pair(&type_ref, named_types, unnamed_types);
+                    crate::schema::NodeType { kind, named }
+                })
+                .collect::<Vec<_>>();
+            node_types.sort_by(|a, b| a.kind.cmp(&b.kind).then(a.named.cmp(&b.named)));
+            node_types.dedup_by(|a, b| a.kind == b.kind && a.named == b.named);
+            schema.set_field_types(parent_kind, field_id, node_types);
+        }
         schema.set_field_cardinality(
             parent_kind,
             field_id,
@@ -480,7 +498,7 @@ pub fn leaf_kinds_from_yaml(yaml_input: &str) -> Result<BTreeSet<String>, String
         .filter_map(|(name, fields)| {
             fields
                 .as_ref()
-                .is_none_or(BTreeMap::is_empty)
+                .is_none_or(|fields| fields.is_empty() || fields.values().all(is_string_field))
                 .then_some(name)
         })
         .collect())
@@ -514,7 +532,9 @@ struct JsonNodeType {
 struct JsonFieldInfo {
     multiple: bool,
     required: bool,
+    #[serde(default)]
     types: Vec<JsonNodeType>,
+    scalar: Option<String>,
 }
 
 struct JsonSupertype {
@@ -666,7 +686,9 @@ fn write_json_fields(
             .map(|t| format_type_ref(&t.kind, t.named, all_named, all_unnamed))
             .collect();
 
-        if type_refs.len() == 1 {
+        if info.scalar.as_deref() == Some("string") {
+            writeln!(out, "{indent}{yaml_name}: string").unwrap();
+        } else if type_refs.len() == 1 {
             writeln!(out, "{indent}{yaml_name}: {}", type_refs[0]).unwrap();
         } else {
             writeln!(out, "{indent}{yaml_name}: [{}]", type_refs.join(", ")).unwrap();
@@ -843,6 +865,42 @@ named:
         assert!(leaf_kinds.contains("identifier"));
         assert!(leaf_kinds.contains("empty_fields"));
         assert!(!leaf_kinds.contains("call"));
+    }
+
+    #[test]
+    fn test_string_field_conversion() {
+        let yaml = r"
+named:
+  string_holder:
+    value: string
+";
+
+        let json = convert(yaml).unwrap();
+        let result: Vec<serde_json::Value> = serde_json::from_str(&json).unwrap();
+        let holder = result
+            .iter()
+            .find(|node| node["type"] == "string_holder")
+            .unwrap();
+        assert_eq!(holder["fields"]["value"]["scalar"], "string");
+        assert_eq!(
+            holder["fields"]["value"]["types"]
+                .as_array()
+                .unwrap()
+                .as_slice(),
+            &[] as &[serde_json::Value]
+        );
+
+        let schema = schema_from_yaml(yaml).unwrap();
+        let value = schema.field_id_for_name("value").unwrap();
+        assert!(schema.is_string_field("string_holder", value));
+
+        let yaml_output = convert_from_json(&json).unwrap();
+        assert!(yaml_output.contains("value: string"));
+        let json_output = convert(&yaml_output).unwrap();
+        assert_eq!(
+            serde_json::from_str::<serde_json::Value>(&json).unwrap(),
+            serde_json::from_str::<serde_json::Value>(&json_output).unwrap()
+        );
     }
 
     #[test]

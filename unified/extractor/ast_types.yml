@@ -139,6 +139,7 @@ named:
 
   # A string literal
   string_literal:
+    interpreted: string
 
   # A regex literal
   regex_literal:

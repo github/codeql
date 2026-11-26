@@ -262,6 +262,7 @@ fn make_field_type<'a>(
     nodes: &'a node_types::NodeTypeMap,
 ) -> (ql::Type<'a>, Option<dbscheme::Entry<'a>>) {
     match &field.type_info {
+        node_types::FieldTypeInfo::String => (ql::Type::String, None),
         node_types::FieldTypeInfo::Multiple {
             types,
             dbscheme_union,
@@ -332,7 +333,10 @@ fn add_field_for_table_storage<'a>(
     };
     let field_column = dbscheme::Column {
         unique: true,
-        db_type: dbscheme::DbColumnType::Int,
+        db_type: match &field.type_info {
+            node_types::FieldTypeInfo::String => dbscheme::DbColumnType::String,
+            _ => dbscheme::DbColumnType::Int,
+        },
         name: column_name,
         ql_type: field_ql_type,
         ql_type_is_ref: true,
@@ -363,13 +367,39 @@ fn add_field_for_column_storage<'a>(
     (
         dbscheme::Column {
             unique: false,
-            db_type: dbscheme::DbColumnType::Int,
+            db_type: match &field.type_info {
+                node_types::FieldTypeInfo::String => dbscheme::DbColumnType::String,
+                _ => dbscheme::DbColumnType::Int,
+            },
             name: column_name,
             ql_type: field_ql_type,
             ql_type_is_ref: true,
         },
         field_type_entry,
     )
+}
+
+fn add_token_field_entries<'a>(
+    entries: &mut Vec<dbscheme::Entry<'a>>,
+    fields: &'a [node_types::Field],
+    nodes: &'a node_types::NodeTypeMap,
+) {
+    for field in fields {
+        let node_types::Storage::Table {
+            name,
+            has_index,
+            column_name,
+        } = &field.storage
+        else {
+            panic!("token fields must use table storage");
+        };
+        let (field_table, field_type_entry) =
+            add_field_for_table_storage(field, name, column_name, *has_index, nodes);
+        if let Some(field_type_entry) = field_type_entry {
+            entries.push(field_type_entry);
+        }
+        entries.push(dbscheme::Entry::Table(field_table));
+    }
 }
 
 /// Converts the given tree-sitter node types into CodeQL dbscheme entries.
@@ -387,7 +417,7 @@ fn convert_nodes(
     let token_kinds: Map<&str, usize> = nodes
         .values()
         .filter_map(|node| match &node.kind {
-            node_types::EntryKind::Token { kind_id } => {
+            node_types::EntryKind::Token { kind_id, .. } => {
                 Some((node.dbscheme_name.as_str(), *kind_id))
             }
             _ => None,
@@ -485,7 +515,9 @@ fn convert_nodes(
 
                 entries.push(dbscheme::Entry::Table(main_table));
             }
-            node_types::EntryKind::Token { .. } => {}
+            node_types::EntryKind::Token { fields, .. } => {
+                add_token_field_entries(&mut entries, fields, nodes);
+            }
         }
     }
 
@@ -597,5 +629,38 @@ fn create_token_case<'a>(name: &'a str, token_kinds: &Map<&'a str, usize>) -> db
         name,
         column: "kind",
         branches,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn token_string_field_uses_string_value_column() {
+        let yaml = r"
+named:
+  string_literal:
+    interpreted: string
+";
+        let json = yeast::node_types_yaml::convert(yaml).unwrap();
+        let nodes = node_types::read_node_types_str("test", &json).unwrap();
+        let (entries, _, _) = convert_nodes(&nodes);
+        let table = entries
+            .iter()
+            .find_map(|entry| match entry {
+                dbscheme::Entry::Table(table)
+                    if table.name == "test_string_literal_interpreted" =>
+                {
+                    Some(table)
+                }
+                _ => None,
+            })
+            .unwrap();
+
+        assert_eq!(
+            table.to_string(),
+            "test_string_literal_interpreted(\n  unique int test_token_string_literal: @test_token_string_literal ref,\n  unique string interpreted: string ref\n);"
+        );
     }
 }

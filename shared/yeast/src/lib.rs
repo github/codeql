@@ -782,6 +782,25 @@ impl<Id: TreeId> Ast<Id> {
         is_named: bool,
         source_range: Option<Range>,
     ) -> Id {
+        self.create_node_with_range_and_string_fields(
+            kind,
+            content,
+            fields,
+            BTreeMap::new(),
+            is_named,
+            source_range,
+        )
+    }
+
+    pub fn create_node_with_range_and_string_fields(
+        &mut self,
+        kind: KindId,
+        content: NodeContent,
+        fields: BTreeMap<FieldId, Vec<Id>>,
+        string_fields: BTreeMap<&'static str, String>,
+        is_named: bool,
+        source_range: Option<Range>,
+    ) -> Id {
         let source_range = match &content {
             // Parsed nodes already carry an exact source range in their content.
             NodeContent::Range(_) => source_range,
@@ -801,6 +820,7 @@ impl<Id: TreeId> Ast<Id> {
             kind,
             kind_name: self.schema.node_kind_for_id(kind).unwrap(),
             fields,
+            string_fields,
             content,
             is_missing: false,
             is_error: false,
@@ -839,6 +859,18 @@ impl<Id: TreeId> Ast<Id> {
             panic!("set_source_range: cannot modify a parsed node");
         }
         node.source_range = Some(source_range);
+    }
+
+    pub(crate) fn set_string_fields(
+        &mut self,
+        id: Id,
+        fields: impl IntoIterator<Item = (&'static str, String)>,
+    ) {
+        let node = self
+            .nodes
+            .get_mut(id.index())
+            .unwrap_or_else(|| panic!("set_string_fields: invalid node id {}", id.index()));
+        node.string_fields.extend(fields);
     }
 
     /// Remove the source range from a synthetic node.
@@ -954,6 +986,7 @@ impl<Id: TreeId> Ast<Id> {
             source_range,
             is_extra: false,
             fields: BTreeMap::new(),
+            string_fields: BTreeMap::new(),
             content: NodeContent::DynamicString(content),
         });
         Id::from_index(id)
@@ -992,11 +1025,16 @@ impl<Id: TreeId> Ast<Id> {
             NodeContent::String(s) => s.to_string(),
             NodeContent::DynamicString(s) => s.clone(),
         };
-        if fields.is_empty() {
+        if fields.is_empty() && node.string_fields.is_empty() {
             value.insert(kind, json!(content));
         } else {
             let mut fields: BTreeMap<_, _> =
                 fields.into_iter().map(|(k, v)| (k, json!(v))).collect();
+            fields.extend(
+                node.string_fields
+                    .iter()
+                    .map(|(name, value)| (*name, json!(value))),
+            );
             fields.insert("content", json!(content));
             value.insert(kind, json!(fields));
         }
@@ -1028,6 +1066,7 @@ pub struct Node<Id: TreeId = crate::Id> {
     kind: KindId,
     kind_name: &'static str,
     pub(crate) fields: BTreeMap<FieldId, Vec<Id>>,
+    pub(crate) string_fields: BTreeMap<&'static str, String>,
     pub(crate) content: NodeContent,
     /// For synthetic nodes, the source range of the original node they
     /// were desugared from. Used for location information in TRAP output.
@@ -1105,6 +1144,10 @@ impl<Id: TreeId> Node<Id> {
     /// no such field is present on this node.
     pub fn field_children(&self, field_id: FieldId) -> &[Id] {
         self.fields.get(&field_id).map_or(&[][..], Vec::as_slice)
+    }
+
+    pub fn string_field(&self, name: &str) -> Option<&str> {
+        self.string_fields.get(name).map(String::as_str)
     }
 }
 

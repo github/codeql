@@ -42,6 +42,7 @@ pub struct Schema {
     kind_names: BTreeMap<KindId, &'static str>,
     next_kind_id: KindId,
     field_types: BTreeMap<(String, FieldId), Vec<NodeType>>,
+    string_fields: BTreeSet<(String, FieldId)>,
     field_cardinalities: BTreeMap<(String, FieldId), FieldCardinality>,
     supertypes: BTreeMap<String, Vec<NodeType>>,
     /// Per-node-kind declared field order (named fields only), as written in
@@ -68,6 +69,7 @@ impl Schema {
             kind_names: BTreeMap::new(),
             next_kind_id: 1, // 0 is reserved
             field_types: BTreeMap::new(),
+            string_fields: BTreeSet::new(),
             field_cardinalities: BTreeMap::new(),
             supertypes: BTreeMap::new(),
             field_order: BTreeMap::new(),
@@ -261,6 +263,7 @@ impl Schema {
             None => CHILD_FIELD,
         };
         self.field_types(parent_kind, field_id).is_some()
+            || self.is_string_field(parent_kind, field_id)
     }
 
     pub fn node_kind_for_id(&self, id: KindId) -> Option<&'static str> {
@@ -279,6 +282,16 @@ impl Schema {
 
     pub fn field_types(&self, parent_kind: &str, field_id: FieldId) -> Option<&Vec<NodeType>> {
         self.field_types.get(&(parent_kind.to_string(), field_id))
+    }
+
+    pub fn set_string_field(&mut self, parent_kind: &str, field_id: FieldId) {
+        self.string_fields
+            .insert((parent_kind.to_string(), field_id));
+    }
+
+    pub fn is_string_field(&self, parent_kind: &str, field_id: FieldId) -> bool {
+        self.string_fields
+            .contains(&(parent_kind.to_string(), field_id))
     }
 
     /// Record the declared (named) field order for a node kind, as authored in

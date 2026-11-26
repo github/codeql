@@ -550,6 +550,7 @@ impl Node {
 
         let mut stmts = Vec::new();
         let mut field_args = Vec::new();
+        let mut string_field_args = Vec::new();
         let location_none = self
             .fields
             .iter()
@@ -575,6 +576,33 @@ impl Node {
                     ));
                 }
                 Field::LocationNone => {}
+                Field::String { name, value } => {
+                    let field_name = name.to_string();
+                    let field_str = field_name
+                        .strip_prefix("r#")
+                        .unwrap_or(&field_name)
+                        .to_string();
+                    let temp = Ident::new(
+                        &format!("__string_field_{field_str}_{field_counter}"),
+                        Span::call_site(),
+                    );
+                    let uses_ctx = block_uses_ctx(value);
+                    let value = rust_block(value);
+                    let interpolation = isolated_interpolation(
+                        uses_ctx,
+                        ctx,
+                        &quote! {
+                            let __expr = #value;
+                            yeast::YeastDisplay::yeast_to_string(&__expr, &#ctx)
+                        },
+                    );
+                    stmts.push(quote! {
+                        let #temp: ::std::string::String = #interpolation;
+                    });
+                    string_field_args.push(quote! {
+                        __string_fields.push((#field_str, #temp));
+                    });
+                }
                 Field::Named { name, value } => {
                     let field_name = name.to_string();
                     let field_str = field_name
@@ -635,7 +663,15 @@ impl Node {
             quote! {
                 let mut __fields: Vec<(&str, Vec<yeast::OutputId>)> = Vec::new();
                 #(#field_args)*
-                let __node: yeast::OutputId = #ctx.node(#kind_str, __fields);
+                let __node: yeast::OutputId =
+                    #ctx.node_with_string_fields(#kind_str, __fields, __string_fields);
+            }
+        } else {
+            TokenStream::new()
+        };
+        let attach_string_fields = if self.content.is_some() {
+            quote! {
+                #ctx.set_node_string_fields(__node, __string_fields);
             }
         } else {
             TokenStream::new()
@@ -644,9 +680,12 @@ impl Node {
         quote! {
             {
                 let mut __location_ranges: Vec<yeast::Range> = Vec::new();
+                let mut __string_fields: Vec<(&str, ::std::string::String)> = Vec::new();
                 #node_init
                 #(#stmts)*
+                #(#string_field_args)*
                 #build_node
+                #attach_string_fields
                 if #location_none {
                     #ctx.set_node_locationless(__node)
                 } else {

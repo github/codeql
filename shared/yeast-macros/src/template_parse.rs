@@ -76,12 +76,6 @@ fn parse_node(group: &proc_macro2::Group) -> Result<Node> {
     while peek_is_field(&mut tokens) {
         let name = expect_ident(&mut tokens, "expected field name")?;
         let is_location = name == "location";
-        if content.is_some() && !is_location {
-            return Err(syn::Error::new_spanned(
-                name,
-                "literal nodes can only have the special `location` field",
-            ));
-        }
         expect_punct(&mut tokens, ':', "expected `:` after field name")?;
         if is_location {
             if matches!(tokens.peek(), Some(TokenTree::Ident(ident)) if ident == "none") {
@@ -128,8 +122,20 @@ fn parse_node(group: &proc_macro2::Group) -> Result<Node> {
             continue;
         }
 
-        let value = parse_one(&mut tokens)?;
-        fields.push(Field::Named { name, value });
+        if peek_is_hash(&mut tokens) {
+            tokens.next();
+            let value = parse_block(expect_group(&mut tokens, Delimiter::Brace)?)?;
+            fields.push(Field::String { name, value });
+        } else {
+            if content.is_some() {
+                return Err(syn::Error::new_spanned(
+                    name,
+                    "literal nodes can only have scalar or `location` fields",
+                ));
+            }
+            let value = parse_one(&mut tokens)?;
+            fields.push(Field::Named { name, value });
+        }
     }
 
     if let Some(token) = tokens.next() {

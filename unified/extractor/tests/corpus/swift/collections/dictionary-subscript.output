@@ -56,4 +56,6 @@ top_level source="⟨body⟩"
                   member_name_node: identifier "subscript" source="["
               argument:
                 argument source="⟨value⟩"
-                  value: string_literal "\"key\"" source="\"key\""
+                  value:
+                    string_literal "\"key\"" source="\"key\""
+                      interpreted: "key"

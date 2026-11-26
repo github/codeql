@@ -63,6 +63,25 @@ fn empty_output_ast(input: &str) -> OutputAst {
     ast
 }
 
+#[test]
+fn test_inline_string_field() {
+    let input_ast = parse_input("x");
+    let mut ast = empty_output_ast("x");
+    let mut user_ctx = ();
+    let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
+    let holder = tree!((string_holder value: #{"hello"}));
+    ast.set_root(holder);
+
+    assert_eq!(
+        ast.get_node(holder).unwrap().string_field("value"),
+        Some("hello")
+    );
+    assert_eq!(
+        dump_ast(&ast, holder, "x"),
+        "string_holder\n  value: \"hello\"\n"
+    );
+}
+
 fn with_passthrough_rules<C: Clone + 'static>(mut rules: Vec<Rule<C>>) -> Vec<Rule<C>> {
     let program_rule = Rule::new(
         yeast::query!((program (_)* @children)),
@@ -993,10 +1012,7 @@ fn test_choice_fallback_can_reuse_consumed_splice() {
 
     let mut user_ctx = ();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let items = vec![
-        tree!((identifier "x")),
-        tree!((identifier "y")),
-    ];
+    let items = vec![tree!((identifier "x")), tree!((identifier "y"))];
     let use_first = false;
     let root = tree!(
         (assignment
@@ -1178,8 +1194,7 @@ fn test_location_interpolation_materializes_context_iterator() {
     let mut ast = empty_output_ast(input);
     let mut user_ctx = BorrowedInterpolationContext::default();
     let mut ctx = yeast::build::BuildCtx::new(&input_ast, &mut ast, &mut user_ctx);
-    let location =
-        tree!((identifier "location" location: {input_ast.get_root()}));
+    let location = tree!((identifier "location" location: {input_ast.get_root()}));
     ctx.locations.push(location);
 
     let call = tree!((call location: {ctx.locations.drain(..)}));

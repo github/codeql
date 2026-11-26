@@ -50,6 +50,9 @@ named:
   identifier:
   integer:
 
+  string_holder:
+    value: string
+
   # Output-only kinds, used by tests of chained desugaring rules.
   # Neither exists in the input tree-sitter-ruby grammar.
   first_node:

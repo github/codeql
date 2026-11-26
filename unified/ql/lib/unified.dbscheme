@@ -809,6 +809,11 @@ unified_string_interpolation_expr_def(
   unique int id: @unified_string_interpolation_expr
 );
 
+unified_string_literal_interpreted(
+  unique int unified_token_string_literal: @unified_token_string_literal ref,
+  unique string interpreted: string ref
+);
+
 #keyset[unified_switch_case, index]
 unified_switch_case_modifier(
   int unified_switch_case: @unified_switch_case ref,

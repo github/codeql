@@ -60,4 +60,6 @@ top_level source="⟨body⟩"
                   callee: identifier "print" source="print"
                   argument:
                     argument source="⟨value⟩"
-                      value: string_literal "\"hello\"" source="\"hello\""
+                      value:
+                        string_literal "\"hello\"" source="\"hello\""
+                          interpreted: "hello"

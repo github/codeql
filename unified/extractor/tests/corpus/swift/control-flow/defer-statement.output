@@ -92,9 +92,13 @@ top_level source="⟨body⟩"
                           callee: identifier "print" source="print"
                           argument:
                             argument source="⟨value⟩"
-                              value: string_literal "\"cleanup\"" source="\"cleanup\""
+                              value:
+                                string_literal "\"cleanup\"" source="\"cleanup\""
+                                  interpreted: "cleanup"
                 call_expr source="⟨callee⟩(⟨argument⟩)"
                   callee: identifier "print" source="print"
                   argument:
                     argument source="⟨value⟩"
-                      value: string_literal "\"work\"" source="\"work\""
+                      value:
+                        string_literal "\"work\"" source="\"work\""
+                          interpreted: "work"

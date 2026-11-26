@@ -641,6 +641,7 @@ fn create_field_getters<'a>(
     // For the expression to get a value, what variable name should the result
     // be bound to?
     let get_value_result_var_name = match &field.type_info {
+        node_types::FieldTypeInfo::String => "result",
         node_types::FieldTypeInfo::ReservedWordInt(_) => "value",
         node_types::FieldTypeInfo::Single(_) => "result",
         node_types::FieldTypeInfo::Multiple { .. } => "result",
@@ -687,6 +688,7 @@ fn create_field_getters<'a>(
         ),
     };
     let (body, optional_expr) = match &field.type_info {
+        node_types::FieldTypeInfo::String => (get_value, None),
         node_types::FieldTypeInfo::ReservedWordInt(int_mapping) => {
             // Create an expression that binds the corresponding string to `result` for each `value`, e.g.:
             //   result = "foo" and value = 0 or
@@ -768,6 +770,7 @@ fn field_getter_return_type<'a>(
     nodes: &'a node_types::NodeTypeMap,
 ) -> Option<ql::Type<'a>> {
     match &field.type_info {
+        node_types::FieldTypeInfo::String => Some(ql::Type::String),
         node_types::FieldTypeInfo::Single(t) => {
             Some(ql::Type::Facade(&nodes.get(t).unwrap().ql_class_name))
         }
@@ -915,8 +918,8 @@ fn compute_exposed_predicate_signatures(
         .map(|(type_name, node)| {
             let fields = match &node.kind {
                 node_types::EntryKind::Union { fields, .. }
-                | node_types::EntryKind::Table { fields, .. } => fields.as_slice(),
-                node_types::EntryKind::Token { .. } => &[],
+                | node_types::EntryKind::Table { fields, .. }
+                | node_types::EntryKind::Token { fields, .. } => fields.as_slice(),
             };
             let signatures = fields.iter().flat_map(field_predicate_signatures).collect();
             (type_name.clone(), signatures)
@@ -976,10 +979,25 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
 
     for (type_name, node) in nodes {
         match &node.kind {
-            node_types::EntryKind::Token { .. } => {
+            node_types::EntryKind::Token { fields, .. } => {
                 if type_name.named {
                     let get_a_primary_ql_class =
                         create_get_a_primary_ql_class(&node.ql_class_name, true);
+                    let mut predicates = vec![get_a_primary_ql_class];
+                    let mut unused_column_index = 0;
+                    for field in fields {
+                        let (mut getters, _) =
+                            create_field_getters("", 0, &mut unused_column_index, field, nodes);
+                        for predicate in &mut getters {
+                            predicate.overridden = is_predicate_inherited(
+                                type_name,
+                                predicate,
+                                nodes,
+                                &exposed_predicate_signatures,
+                            );
+                        }
+                        predicates.extend(getters);
+                    }
                     let mut supertypes =
                         class_supertypes(type_name, &node.dbscheme_name, &direct_supertypes);
                     supertypes.insert(ql::Type::Facade("Token"));
@@ -992,7 +1010,7 @@ pub fn convert_nodes(nodes: &node_types::NodeTypeMap) -> Vec<ql::TopLevel<'_>> {
                         alias: None,
                         supertypes,
                         characteristic_predicate: None,
-                        predicates: vec![get_a_primary_ql_class],
+                        predicates,
                     }));
                 }
             }
@@ -1128,7 +1146,8 @@ pub fn create_print_ast_module(nodes: &node_types::NodeTypeMap) -> ql::TopLevel<
                 // `getAFieldOrChild`).
                 if matches!(
                     field.type_info,
-                    node_types::FieldTypeInfo::ReservedWordInt(_)
+                    node_types::FieldTypeInfo::String
+                        | node_types::FieldTypeInfo::ReservedWordInt(_)
                 ) {
                     continue;
                 }
@@ -1302,5 +1321,23 @@ named:
             generated
                 .contains("final override F::Block getBody() { test_function_body(this, result) }")
         );
+    }
+
+    #[test]
+    fn generates_string_getter_without_generic_child() {
+        let yaml = r"
+named:
+  string_holder:
+    metadata: string
+";
+        let json = yeast::node_types_yaml::convert(yaml).unwrap();
+        let nodes = node_types::read_node_types_str("test", &json).unwrap();
+        let generated = convert_nodes(&nodes)
+            .into_iter()
+            .map(|element| element.to_string())
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        assert!(generated.contains("final string getMetadata()"));
     }
 }

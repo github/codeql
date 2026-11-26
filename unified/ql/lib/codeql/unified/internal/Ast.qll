@@ -1277,6 +1277,9 @@ module Unified {
   class StringLiteral extends @unified_token_string_literal, F::Expr, F::Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "StringLiteral" }
+
+    /** Gets the node corresponding to the field `interpreted`. */
+    final string getInterpreted() { unified_string_literal_interpreted(this, result) }
   }
 
   /** A class representing `super_expr` tokens. */

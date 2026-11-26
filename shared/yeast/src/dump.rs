@@ -273,6 +273,12 @@ fn dump_node<Id: TreeId>(
             .keys()
             .copied()
             .filter(|&f| f != CHILD_FIELD)
+            .chain(
+                node.string_fields
+                    .keys()
+                    .filter_map(|name| ast.field_id_for_name(name))
+                    .filter(|&f| f != CHILD_FIELD),
+            )
             .collect();
         match type_check.and_then(|context| {
             context
@@ -285,7 +291,13 @@ fn dump_node<Id: TreeId>(
                     .iter()
                     .filter_map(|&f| schema.field_name_for_id(f))
                     .filter_map(|name| ast.field_id_for_name(name))
-                    .filter(|&f| f != CHILD_FIELD && node.fields.contains_key(&f))
+                    .filter(|&f| {
+                        f != CHILD_FIELD
+                            && (node.fields.contains_key(&f)
+                                || ast
+                                    .field_name_for_id(f)
+                                    .is_some_and(|name| node.string_fields.contains_key(name)))
+                    })
                     .collect();
                 for &f in &present {
                     if !result.contains(&f) {
@@ -298,8 +310,12 @@ fn dump_node<Id: TreeId>(
         }
     };
     for field_id in named_field_ids {
-        let children = &node.fields[&field_id];
         let field_name = ast.field_name_for_id(field_id).unwrap_or("?");
+        if let Some(value) = node.string_field(field_name) {
+            writeln!(out, "{prefix}  {field_name}: {value:?}").unwrap();
+            continue;
+        }
+        let children = &node.fields[&field_id];
         let child_type_check = type_check.map(|context| {
             let expected = expected_for_field(context.schema, node.kind_name(), field_name)
                 .or(Some(EMPTY_NODE_TYPES));
@@ -316,7 +332,7 @@ fn dump_node<Id: TreeId>(
             // Inline single child
             let child = ast.get_node(children[0]);
             let external = child.is_some_and(|child| is_external_child(node, child));
-            if child.is_some_and(is_leaf) {
+            if child.is_some_and(|child| is_leaf(child) && child.string_fields.is_empty()) {
                 write!(out, " ").unwrap();
                 dump_node_inline(
                     ast,
@@ -364,9 +380,11 @@ fn dump_node<Id: TreeId>(
     if let Some(context) = type_check {
         for (_field_id, field_name) in context.schema.required_fields_for_kind(node.kind_name()) {
             let present = match field_name {
-                Some(n) => ast
-                    .field_id_for_name(n)
-                    .is_some_and(|fid| node.fields.contains_key(&fid)),
+                Some(n) => {
+                    ast.field_id_for_name(n)
+                        .is_some_and(|fid| node.fields.contains_key(&fid))
+                        || node.string_fields.contains_key(n)
+                }
                 None => node.fields.contains_key(&CHILD_FIELD),
             };
             if !present {
