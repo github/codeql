@@ -199,7 +199,7 @@ void test_initializer_side_effect()
 void use(...);
 
 template<typename... Args>
-void f_args(const Args&... args) // $ Alert // BAD: empty parameter pack is reported as an unused local
+void f_args(const Args&... args) // GOOD: the compiler-generated parameter pack should be ignored
 {
 	use(args...);
 }
