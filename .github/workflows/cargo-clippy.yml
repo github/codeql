@@ -1,0 +1,76 @@
+name: Cargo Clippy
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cargo-clippy-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.select.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # The merge commit and its parents suffice: no full repository history.
+          fetch-depth: 2
+      - name: Test package selection
+        run: python3 -m unittest discover -s misc/scripts/cargo-clippy
+      - name: Select affected packages
+        id: select
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          packages=$(python3 misc/scripts/cargo-clippy/select_packages.py --base "$BASE_SHA")
+          echo "packages=$packages" >> "$GITHUB_OUTPUT"
+          echo "Selected packages: $packages" | tee -a "$GITHUB_STEP_SUMMARY"
+
+  clippy:
+    needs: select
+    if: needs.select.outputs.packages != '[]'
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v5
+      - name: Restore Cargo cache
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-clippy-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-${{ github.sha }}
+          restore-keys: |
+            cargo-clippy-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-
+      - name: Show stable toolchain and cache
+        env:
+          CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          rustup show active-toolchain
+          cargo clippy --version
+          echo "Exact cache hit: ${CACHE_HIT:-false}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Inject ast-generator sources
+        if: contains(fromJSON(needs.select.outputs.packages), 'ast-generator')
+        run: bazel run //rust/ast-generator:inject-sources
+      - name: Clippy
+        env:
+          PACKAGES: ${{ needs.select.outputs.packages }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          packages = json.loads(os.environ["PACKAGES"])
+          args = ["cargo", "clippy", "--locked", "--all-targets", "--no-deps"]
+          for package in packages:
+              args.extend(["--package", package])
+          subprocess.run([*args, "--", "-D", "warnings"], check=True)
+          PY
