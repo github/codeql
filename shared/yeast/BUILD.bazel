@@ -10,6 +10,7 @@ rust_library(
         exclude = ["src/bin/**"],
     ),
     aliases = aliases(),
+    edition = "2021",
     proc_macro_deps = [
         "//shared/yeast-macros",
     ],
