@@ -8,7 +8,7 @@ To make changes to the documentation on [codeql.github.com](https://codeql.githu
 
 ## Contributing to CodeQL CLI docs on `docs.github.com`
 
-We have moved documentation about the CodeQL CLI from [github/codeql](docs/codeql) to the public [github/docs](https://github.com/github/docs) repository so that this documentation is published on the [GitHub Docs](https://docs.github.com/en/code-security/codeql-cli) site. This includes all articles that were under the "[Using the CodeQL CLI](https://codeql.github.com/docs/codeql-cli/using-the-codeql-cli/)" and "[CodeQL CLI reference](https://codeql.github.com/docs/codeql-cli/codeql-cli-reference/)" categories on the CodeQL microsite. This will make it easier for code scanning users to find information about using CodeQL to query their codebases.
+We have moved documentation about the CodeQL CLI from [github/codeql](docs/codeql) to the public [github/docs](https://github.com/github/docs) repository so that this documentation is published on the [GitHub Docs](https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/scan-from-the-command-line) site. This includes all articles that were under the "[Using the CodeQL CLI](https://codeql.github.com/docs/codeql-cli/using-the-codeql-cli/)" and "[CodeQL CLI reference](https://codeql.github.com/docs/codeql-cli/codeql-cli-reference/)" categories on the CodeQL microsite. This will make it easier for code scanning users to find information about using CodeQL to query their codebases.
 
 To contribute to these docs, follow the [GitHub Docs contribution guide](https://docs.github.com/en/contributing/collaborating-on-github-docs/about-contributing-to-github-docs).
 
