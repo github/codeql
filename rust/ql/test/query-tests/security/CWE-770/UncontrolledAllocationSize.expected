@@ -193,8 +193,8 @@ edges
 | main.rs:192:9:192:10 | l2 | main.rs:194:45:194:46 | l2 | provenance | Sink:MaD:8 |
 | main.rs:192:9:192:10 | l2 | main.rs:195:41:195:42 | l2 | provenance | Sink:MaD:10 |
 | main.rs:192:9:192:10 | l2 | main.rs:196:48:196:49 | l2 | provenance | Sink:MaD:11 |
-| main.rs:192:9:192:10 | l2 | main.rs:197:41:197:42 | l2 | provenance | Sink:MaD:1 |
-| main.rs:192:9:192:10 | l2 | main.rs:198:48:198:49 | l2 | provenance | Sink:MaD:2 |
+| main.rs:192:9:192:10 | l2 | main.rs:197:41:197:42 | l2 | provenance | Sink:MaD:5 |
+| main.rs:192:9:192:10 | l2 | main.rs:198:48:198:49 | l2 | provenance | Sink:MaD:6 |
 | main.rs:192:9:192:10 | l2 | main.rs:208:53:208:54 | l2 | provenance | Sink:MaD:12 |
 | main.rs:192:9:192:10 | l2 | main.rs:210:60:210:61 | l2 | provenance | Sink:MaD:13 |
 | main.rs:192:9:192:10 | l2 | main.rs:213:51:213:52 | l2 | provenance | Sink:MaD:14 |
@@ -206,10 +206,10 @@ edges
 | main.rs:217:27:217:34 | ...: usize | main.rs:222:30:222:30 | v | provenance | Sink:MaD:19 |
 | main.rs:217:27:217:34 | ...: usize | main.rs:223:26:223:26 | v | provenance | Sink:MaD:19 |
 | main.rs:217:27:217:34 | ...: usize | main.rs:224:31:224:31 | v | provenance | Sink:MaD:21 |
-| main.rs:227:24:227:31 | ...: usize | main.rs:228:43:228:43 | v | provenance | Sink:MaD:3 |
-| main.rs:227:24:227:31 | ...: usize | main.rs:229:39:229:39 | v | provenance | Sink:MaD:5 |
-| main.rs:227:24:227:31 | ...: usize | main.rs:230:46:230:46 | v | provenance | Sink:MaD:4 |
-| main.rs:227:24:227:31 | ...: usize | main.rs:231:42:231:42 | v | provenance | Sink:MaD:6 |
+| main.rs:227:24:227:31 | ...: usize | main.rs:228:43:228:43 | v | provenance | Sink:MaD:1 |
+| main.rs:227:24:227:31 | ...: usize | main.rs:229:39:229:39 | v | provenance | Sink:MaD:3 |
+| main.rs:227:24:227:31 | ...: usize | main.rs:230:46:230:46 | v | provenance | Sink:MaD:2 |
+| main.rs:227:24:227:31 | ...: usize | main.rs:231:42:231:42 | v | provenance | Sink:MaD:4 |
 | main.rs:282:24:282:41 | ...: String | main.rs:283:21:283:30 | user_input | provenance |  |
 | main.rs:283:9:283:17 | num_bytes | main.rs:285:54:285:62 | num_bytes | provenance |  |
 | main.rs:283:21:283:30 | user_input | main.rs:283:21:283:47 | user_input.parse() [Ok] | provenance | MaD:23 |
@@ -246,12 +246,12 @@ edges
 | main.rs:347:22:347:22 | v | main.rs:227:24:227:31 | ...: usize | provenance |  |
 | main.rs:349:24:349:24 | v | main.rs:317:26:317:33 | ...: usize | provenance |  |
 models
-| 1 | Sink: <alloc::alloc::Global as core::alloc::Allocator>::allocate; Argument[0]; alloc-layout |
-| 2 | Sink: <alloc::alloc::Global as core::alloc::Allocator>::allocate_zeroed; Argument[0]; alloc-layout |
-| 3 | Sink: <alloc::vec::Vec>::try_with_capacity; Argument[0]; alloc-layout |
-| 4 | Sink: <alloc::vec::Vec>::try_with_capacity_in; Argument[0]; alloc-layout |
-| 5 | Sink: <alloc::vec::Vec>::with_capacity; Argument[0]; alloc-layout |
-| 6 | Sink: <alloc::vec::Vec>::with_capacity_in; Argument[0]; alloc-layout |
+| 1 | Sink: <alloc::vec::Vec>::try_with_capacity; Argument[0]; alloc-layout |
+| 2 | Sink: <alloc::vec::Vec>::try_with_capacity_in; Argument[0]; alloc-layout |
+| 3 | Sink: <alloc::vec::Vec>::with_capacity; Argument[0]; alloc-layout |
+| 4 | Sink: <alloc::vec::Vec>::with_capacity_in; Argument[0]; alloc-layout |
+| 5 | Sink: <core::alloc::Allocator>::allocate; Argument[0]; alloc-layout |
+| 6 | Sink: <core::alloc::Allocator>::allocate_zeroed; Argument[0]; alloc-layout |
 | 7 | Sink: <core::alloc::global::GlobalAlloc>::alloc; Argument[0]; alloc-layout |
 | 8 | Sink: <core::alloc::global::GlobalAlloc>::alloc_zeroed; Argument[0]; alloc-layout |
 | 9 | Sink: <core::alloc::global::GlobalAlloc>::realloc; Argument[2]; alloc-size |
@@ -268,7 +268,7 @@ models
 | 20 | Sink: libc::unix::malloc; Argument[0]; alloc-size |
 | 21 | Sink: libc::unix::realloc; Argument[1]; alloc-size |
 | 22 | Source: std::env::args; ReturnValue.Element; commandargs |
-| 23 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self]; ReturnValue; value |
+| 23 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue.Reference; taint |
 | 24 | Summary: <core::alloc::layout::Layout>::align_to; Argument[self].Reference; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 25 | Summary: <core::alloc::layout::Layout>::array; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)]; taint |
 | 26 | Summary: <core::alloc::layout::Layout>::extend; Argument[0]; ReturnValue.Field[core::result::Result::Ok(0)].Field[0]; taint |
