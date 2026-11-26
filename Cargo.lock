@@ -3773,6 +3773,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "yeast-python"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cc",
+ "clap",
+ "serde_json",
+ "tree-sitter",
+ "tree-sitter-language",
+ "yeast",
+]
+
+[[package]]
 name = "yeast-schema"
 version = "0.1.0"
 dependencies = [

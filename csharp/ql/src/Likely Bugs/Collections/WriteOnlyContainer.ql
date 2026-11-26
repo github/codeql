@@ -26,7 +26,12 @@ where
     a = any(AssignExpr ass | ass.getRightOperand() instanceof ObjectCreation).getLeftOperand() or
     a =
       any(LocalVariableDeclAndInitExpr ass | ass.getRightOperand() instanceof ObjectCreation)
-          .getLeftOperand()
+          .getLeftOperand() or
+    a =
+      any(LocalVariableDeclExpr decl |
+        not decl.hasInitializer() and
+        not decl.isOutArgument()
+      ).getAccess()
   ) and
   not v = any(ForEachStmt fs).getVariable() and
   not v = any(BindingPatternExpr vpe).getVariableDeclExpr().getVariable() and

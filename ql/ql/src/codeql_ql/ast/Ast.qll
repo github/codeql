@@ -2832,7 +2832,7 @@ module YAML {
         (
           name = dep
           or
-          name.matches("codeql/%") and
+          name.startsWith("codeql/") and
           name = dep + "/all"
         )
       )

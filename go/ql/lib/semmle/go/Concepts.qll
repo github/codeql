@@ -377,7 +377,7 @@ class LoggerCall extends DataFlow::Node instanceof LoggerCall::Range {
       // We already know that `formatSpecifier` starts with `%`, so we check
       // that it ends with `T` to confirm that it is `%T` or possibly some
       // variation on it.
-      formatSpecifier.matches("%T")
+      formatSpecifier.endsWith("T")
     )
   }
 }

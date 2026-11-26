@@ -97,7 +97,7 @@ class SpringBeanXmlAutowiredSetterMethod extends Method {
       // The resulting bean is of the right type.
       result.getClass().getAnAncestor() = this.getParameter(0).getType() and
       this.getNumberOfParameters() = 1 and
-      this.getName().matches("set%")
+      this.getName().startsWith("set")
     )
   }
 }

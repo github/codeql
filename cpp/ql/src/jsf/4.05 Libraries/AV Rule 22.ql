@@ -12,5 +12,5 @@
 import cpp
 
 from Include incl
-where incl.getIncludedFile().getAbsolutePath().matches("%stdio.h")
+where incl.getIncludedFile().getAbsolutePath().endsWith("stdio.h")
 select incl, "AV Rule 22: The input/output library <stdio.h> shall not be used."

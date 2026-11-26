@@ -104,7 +104,7 @@ predicate zenteredIssueFormBodyParserSource(DataFlow::Node pred, DataFlow::Node 
       o.getFieldName() = "data"
       or
       o instanceof JsonReferenceExpression and
-      o.(JsonReferenceExpression).getInnerExpression().matches("%.data")
+      o.(JsonReferenceExpression).getInnerExpression().endsWith(".data")
     ) and
     succ.asExpr() = o
   )
@@ -124,7 +124,7 @@ predicate octokitRequestActionTaintStep(DataFlow::Node pred, DataFlow::Node succ
       o.getFieldName() = "data"
       or
       o instanceof JsonReferenceExpression and
-      o.(JsonReferenceExpression).getInnerExpression().matches("%.data") and
+      o.(JsonReferenceExpression).getInnerExpression().endsWith(".data") and
       o.(JsonReferenceExpression)
           .getAccessPath()
           .matches([

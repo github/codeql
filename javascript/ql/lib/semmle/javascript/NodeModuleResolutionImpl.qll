@@ -225,7 +225,7 @@ private string getAnEnclosingExportProperty(JsonValue part) {
 
 private string getExportRelativePath(JsonValue part) {
   result = getAnEnclosingExportProperty(part) and
-  result.matches(".%")
+  result.startsWith(".")
 }
 
 deprecated module MainModulePath {

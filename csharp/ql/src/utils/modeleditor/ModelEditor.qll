@@ -142,6 +142,6 @@ class TestRelatedFile extends File {
     this instanceof TestFile
     or
     this.getAbsolutePath().matches(["%/test/%", "%/tests/%"]) and
-    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+    not this.getAbsolutePath().contains("/ql/test/") // allows our test cases to work
   }
 }

@@ -4,5 +4,5 @@ from ConstructorFieldInit cfi, Expr e, string clazz
 where
   e = cfi.getExpr() and
   clazz = e.getAQlClass() and
-  clazz.matches("%Literal")
+  clazz.endsWith("Literal")
 select cfi, e, clazz

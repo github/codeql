@@ -34,7 +34,7 @@ private class PermissionsCheckMethodCall extends MethodCall, PermissionsConstruc
       m.getDeclaringType() instanceof TypeShiroSubject and
       m.getName() = "isPermitted"
       or
-      m.getName().toLowerCase().matches("%permitted%") and
+      m.getName().toLowerCase().contains("permitted") and
       m.getNumberOfParameters() = 1
     )
   }

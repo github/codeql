@@ -16,24 +16,17 @@ import semmle.go.security.InsecureFeatureFlag::InsecureFeatureFlag
 private import semmle.go.controlflow.Guards
 
 /**
- * Holds if it is insecure to assign TLS version `val` named `name` to `tls.Config` field `fieldName`.
+ * Holds if `val` is the integer value of an insecure TLS version constant named `name`.
  */
-predicate isInsecureTlsVersion(int val, string name, string fieldName) {
-  (fieldName = "MinVersion" or fieldName = "MaxVersion") and
-  (
-    // tls.VersionSSL30
-    val = 768 and name = "VersionSSL30"
-    or
-    // tls.VersionTLS10
-    val = 769 and name = "VersionTLS10"
-    or
-    // tls.VersionTLS11
-    val = 770 and name = "VersionTLS11"
-    or
-    // Zero indicates the lowest available version setting for MinVersion,
-    // or the highest available version setting for MaxVersion.
-    val = 0 and name = "" and fieldName = "MinVersion"
-  )
+predicate isInsecureTlsVersion(int val, string name) {
+  // tls.VersionSSL30
+  val = 768 and name = "VersionSSL30"
+  or
+  // tls.VersionTLS10
+  val = 769 and name = "VersionTLS10"
+  or
+  // tls.VersionTLS11
+  val = 770 and name = "VersionTLS11"
 }
 
 /**
@@ -47,9 +40,9 @@ int getASecureTlsVersion() {
  * Returns integers that may represent a TLS version.
  *
  * Integer values corresponding to versions are defined at https://golang.org/pkg/crypto/tls/#pkg-constants
- * Zero means the default version; at the time of writing, TLS 1.0.
+ * Zero selects the default version for the relevant field and is not tracked.
  */
-int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
+int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _) }
 
 module TlsVersionFlowConfig implements DataFlow::ConfigSig {
   /**
@@ -81,29 +74,27 @@ module TlsVersionFlowConfig implements DataFlow::ConfigSig {
 module TlsVersionFlow = TaintTracking::Global<TlsVersionFlowConfig>;
 
 /**
- * Holds if `config` exhibits a secure TLS version flowing from `source` to `sink`, which flows into `fld`.
+ * Holds if a secure TLS version flows from `source` to `sink`.
  */
-predicate secureTlsVersionFlow(DataFlow::Node source, DataFlow::Node sink, Field fld) {
+predicate secureTlsVersionFlow(DataFlow::Node source, DataFlow::Node sink) {
   exists(int version |
     TlsVersionFlow::flow(source, sink) and
     TlsVersionFlowConfig::intIsSource(source, version) and
-    not isInsecureTlsVersion(version, _, fld.getName())
+    not isInsecureTlsVersion(version, _)
   )
 }
 
 /**
- * Holds if a secure TLS version reaches `sink`, which flows into `fld`.
+ * Holds if a secure TLS version reaches `sink`.
  */
-predicate secureTlsVersionFlowsToSink(DataFlow::Node sink, Field fld) {
-  secureTlsVersionFlow(_, sink, fld)
-}
+predicate secureTlsVersionFlowsToSink(DataFlow::Node sink) { secureTlsVersionFlow(_, sink) }
 
 /**
  * Holds if a secure TLS version may reach `accessPath`.`fld`
  */
 predicate secureTlsVersionFlowsToField(SsaWithFields accessPath, Field fld) {
   exists(DataFlow::Node sink, DataFlow::Node base |
-    secureTlsVersionFlow(_, sink, fld) and
+    secureTlsVersionFlow(_, sink) and
     TlsVersionFlowConfig::isSink(sink, fld, base, _) and
     accessPath.getAUse() = base
   )
@@ -125,29 +116,22 @@ predicate isInsecureTlsVersionFlow(
   TlsVersionFlow::PathNode source, TlsVersionFlow::PathNode sink, string message,
   DataFlow::Node base
 ) {
-  exists(int version, Field fld |
+  exists(int version, string name, Field fld |
     TlsVersionFlow::flowPath(source, sink) and
     TlsVersionFlowConfig::intIsSource(source.getNode(), version) and
     TlsVersionFlowConfig::isSink(sink.getNode(), fld, base, _) and
-    isInsecureTlsVersion(version, _, fld.getName()) and
+    isInsecureTlsVersion(version, name) and
     // Exclude cases where a secure TLS version can also flow to the same
     // sink, or to different sinks that refer to the same base and field,
     // which suggests a configurable security mode.
-    not secureTlsVersionFlowsToSink(sink.getNode(), fld) and
+    not secureTlsVersionFlowsToSink(sink.getNode()) and
     not exists(SsaWithFields insecureAccessPath, SsaWithFields secureAccessPath |
       nodeOrDeref(insecureAccessPath.getAUse()) = base and
       secureAccessPath = insecureAccessPath.similar()
     |
       secureTlsVersionFlowsToField(secureAccessPath, fld)
-    )
-  |
-    version = 0 and
-    message = "Using lowest TLS version for " + fld + "."
-    or
-    version != 0 and
-    exists(string name | isInsecureTlsVersion(version, name, _) |
-      message = "Using insecure TLS version " + name + " for " + fld + "."
-    )
+    ) and
+    message = "Using insecure TLS version " + name + " for " + fld + "."
   )
 }
 

@@ -18,7 +18,7 @@ predicate thymeleafIsUsed() {
       ]
   )
   or
-  exists(SpringBean b | b.getClassNameRaw().matches("org.thymeleaf.spring%"))
+  exists(SpringBean b | b.getClassNameRaw().startsWith("org.thymeleaf.spring"))
 }
 
 /** Models methods from the `javax.portlet.RenderState` package which return data from externally controlled sources. */

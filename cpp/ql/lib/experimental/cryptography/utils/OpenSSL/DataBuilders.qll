@@ -38,7 +38,7 @@ private string privateNormalizeFunctionName(Function f, string algType) {
   (
     result.matches("ES256")
     implies
-    not exists(string res2 | res2 = basicNormalizeFunctionName(f, _) and res2.matches("AES%"))
+    not exists(string res2 | res2 = basicNormalizeFunctionName(f, _) and res2.startsWith("AES"))
   )
 }
 
@@ -70,7 +70,7 @@ string normalizeFunctionName(Function f, string algType) {
   (
     (result.length() <= 4 and result = "DESX")
     implies
-    (f.getName().toUpperCase().matches("%DESX%") or f.getName().toUpperCase().matches("%DES_X%"))
+    (f.getName().toUpperCase().contains("DESX") or f.getName().toUpperCase().matches("%DES_X%"))
   ) and
   // (result.length() <= 3 implies (not f.getName().toUpperCase().regexpMatch(".*" + result + "[a-zA-Z0-9].*|.*[a-zA-Z0-9]" + result + ".*")))
   // and
@@ -80,11 +80,11 @@ string normalizeFunctionName(Function f, string algType) {
     implies
     not f.getName().toUpperCase().regexpMatch(".*DES[a-zA-Z0-9].*|.*[a-zA-Z0-9]DES.*")
   ) and
-  // ((result.matches("%DES%")) implies not exists(string s | s in ["DESCRIBE", "DESTROY", "DESCRIPTION", "DESCRIPTOR", "NODES"] |
+  // ((result.contains("DES")) implies not exists(string s | s in ["DESCRIBE", "DESTROY", "DESCRIPTION", "DESCRIPTOR", "NODES"] |
   //     f.getName().toUpperCase().matches("%" + s + "%"))) and
   // SEED specific false positives
   (
-    result.matches("%SEED%")
+    result.contains("SEED")
     implies
     not not exists(string s |
       s in ["NEW_SEED", "GEN_SEED", "SET_SEED", "GET_SEED", "GET0_SEED", "RESEED", "SEEDING"]
@@ -93,7 +93,7 @@ string normalizeFunctionName(Function f, string algType) {
     )
   ) and
   // ARIA specific false positives
-  (result.matches("%ARIA%") implies not f.getName().toUpperCase().matches("%VARIANT%"))
+  (result.contains("ARIA") implies not f.getName().toUpperCase().contains("VARIANT"))
 }
 
 /**
@@ -148,6 +148,6 @@ string normalizeName(string name, string algType) {
   (
     result.matches("ES256")
     implies
-    not exists(string res2 | res2 = privateNormalizeName(name, _) and res2.matches("AES%"))
+    not exists(string res2 | res2 = privateNormalizeName(name, _) and res2.startsWith("AES"))
   )
 }

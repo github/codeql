@@ -28,7 +28,7 @@ predicate isConsoleErrorRedefinedSomewhere() {
 }
 
 predicate isCallToConsoleWrite(MethodCall mc) {
-  mc.getTarget().getName().matches("Write%") and
+  mc.getTarget().getName().startsWith("Write") and
   mc.getTarget().getDeclaringType().hasFullyQualifiedName("System", "Console")
 }
 

@@ -11,7 +11,7 @@ private import codeql.rust.internal.typeinference.Type
 bindingset[algorithmName]
 private string simplifyAlgorithmName(string algorithmName) {
   // the cipher library gives triple-DES names like "TdesEee2" and "TdesEde2"
-  if algorithmName.matches("Tdes%") then result = "3des" else result = algorithmName
+  if algorithmName.startsWith("Tdes") then result = "3des" else result = algorithmName
 }
 
 /**

@@ -11,7 +11,7 @@ class PackageJsonEx extends PackageJson {
     or
     exists(string prop, string prevPath |
       result = this.getAPartOfExportsSection(prevPath).getPropValue(prop) and
-      if prop.matches("./%") then pattern = prop.suffix(2) else pattern = prevPath
+      if prop.startsWith("./") then pattern = prop.suffix(2) else pattern = prevPath
     )
   }
 
@@ -21,7 +21,7 @@ class PackageJsonEx extends PackageJson {
 
   predicate hasExactPathMapping(string pattern, string newPath) {
     this.getAPartOfExportsSection(pattern).getStringValue() = newPath and
-    not pattern.matches("%*%")
+    not pattern.contains("*")
   }
 
   predicate hasPrefixPathMapping(string pattern, string newPath) {
@@ -122,7 +122,7 @@ private module Resolver = Folder::Resolve<ResolverConfig>;
 bindingset[name]
 private string stripPackageScope(string name) { result = name.regexpReplaceAll("^@[^/]+/", "") }
 
-private predicate isImplementationFile(File f) { not f.getBaseName().matches("%.d.ts") }
+private predicate isImplementationFile(File f) { not f.getBaseName().endsWith(".d.ts") }
 
 File guessPackageJsonMain1(PackageJsonEx pkg) {
   not isImplementationFile(pkg.getMainFile()) and

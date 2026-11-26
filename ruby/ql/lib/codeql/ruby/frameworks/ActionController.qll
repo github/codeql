@@ -387,7 +387,7 @@ private string getActionControllerClassRelativePath(ActionControllerClass cls) {
 pragma[nomagic]
 private string getErbFileRelativePath(ErbFile templateFile) {
   result = templateFile.getRelativePath() and
-  result.matches("%app/views/layouts/%")
+  result.contains("app/views/layouts/")
 }
 
 bindingset[result]

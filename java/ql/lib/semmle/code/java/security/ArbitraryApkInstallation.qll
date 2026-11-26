@@ -76,7 +76,7 @@ class ExternalApkSource extends ApiSourceNode {
   ExternalApkSource() {
     sourceNode(this, "android-external-storage-dir") or
     this.asExpr().(MethodCall).getMethod() instanceof UriConstructorMethod or
-    this.asExpr().(StringLiteral).getValue().matches("file://%") or
+    this.asExpr().(StringLiteral).getValue().startsWith("file://") or
     this instanceof ActiveThreatModelSource
   }
 }

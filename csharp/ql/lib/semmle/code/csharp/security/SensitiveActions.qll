@@ -170,13 +170,13 @@ class AuthMethod extends SensitiveExecutionMethod {
   AuthMethod() {
     exists(string s | s = this.getName().toLowerCase() |
       (
-        s.matches("%login%") or
-        s.matches("%auth%")
+        s.contains("login") or
+        s.contains("auth")
       ) and
       not (
-        s.matches("get%") or
-        s.matches("set%") or
-        s.matches("%loginfo%")
+        s.startsWith("get") or
+        s.startsWith("set") or
+        s.contains("loginfo")
       )
     )
   }
@@ -185,7 +185,7 @@ class AuthMethod extends SensitiveExecutionMethod {
 /** A method that sends data, and so should not be run conditionally on user input. */
 class SendingMethod extends SensitiveExecutionMethod {
   SendingMethod() {
-    exists(string s | s.matches("%Socket") |
+    exists(string s | s.endsWith("Socket") |
       this.getDeclaringType().hasFullyQualifiedName("System.Net.Sockets", s) and
       this.hasName("Send")
     )

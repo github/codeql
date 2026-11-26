@@ -81,7 +81,7 @@ module InsecureTemporaryFile {
     OSTempDir() {
       this = DataFlow::moduleImport("os").getAMemberCall("tmpdir")
       or
-      this.getStringValue().matches("/tmp/%")
+      this.getStringValue().startsWith("/tmp/")
     }
   }
 

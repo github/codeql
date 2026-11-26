@@ -25,7 +25,7 @@ where
         not alg instanceof Literal and
         resMsg = "Use of unrecognized symmetric encryption algorithm."
       ) else (
-        not alg.getEncryptionName().matches("AES%") and
+        not alg.getEncryptionName().startsWith("AES") and
         resMsg = "Use of banned symmetric encryption algorithm: " + alg.getEncryptionName() + "."
       )
     ) and

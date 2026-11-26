@@ -453,14 +453,14 @@ module Make<InputSig Input> {
     /** Join-order helper for `getTargetPath`. Gets the path but only if it is an absolute path. */
     private string getAbsolutePath() {
       result = this.getValue() and
-      result.matches("/%")
+      result.startsWith("/")
     }
 
     /** Join-order helper for `getTargetPath`. Gets the path, but only if it is a relative path. */
     pragma[noinline]
     private string getRelativePath() {
       result = this.getValue() and
-      not result.matches("/%")
+      not result.startsWith("/")
     }
   }
 

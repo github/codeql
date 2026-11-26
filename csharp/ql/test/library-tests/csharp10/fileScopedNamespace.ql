@@ -5,7 +5,7 @@ query predicate fileScopedNamespace(Namespace n, Member m) {
   exists(Class c |
     c.getNamespace() = n and
     c.hasMember(m) and
-    m.getLocation().toString().matches("%FileScopedNamespace.cs%")
+    m.getLocation().toString().contains("FileScopedNamespace.cs")
   )
 }
 

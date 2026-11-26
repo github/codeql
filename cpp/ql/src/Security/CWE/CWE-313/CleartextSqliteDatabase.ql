@@ -67,7 +67,7 @@ class SqliteFunctionBindCall extends SqliteFunctionCall {
 }
 
 predicate sqlite_encryption_used() {
-  any(StringLiteral l).getValue().toLowerCase().matches("pragma key%") or
+  any(StringLiteral l).getValue().toLowerCase().startsWith("pragma key") or
   any(StringLiteral l).getValue().toLowerCase().matches("%attach%database%key%") or
   any(FunctionCall fc).getTarget().getName().matches("sqlite%\\_key\\_%")
 }

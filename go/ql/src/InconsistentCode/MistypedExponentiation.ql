@@ -22,7 +22,7 @@ predicate maybeXorBitPattern(Expr e) {
   // 0 makes no sense as an xor bit pattern
   not e.getNumericValue() = 0 and
   // include octal and hex literals
-  [e, getConstantInitialiser(e)].(IntLit).getText().matches("0%")
+  [e, getConstantInitialiser(e)].(IntLit).getText().startsWith("0")
   or
   e.getNumericValue() = 1
 }

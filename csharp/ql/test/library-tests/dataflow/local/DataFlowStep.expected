@@ -983,7 +983,7 @@
 | Splitting.cs:57:13:57:24 | access to field Item1 | Splitting.cs:57:9:57:9 | access to local variable x |
 | Splitting.cs:57:17:57:17 | access to local variable y | Splitting.cs:58:27:58:27 | access to local variable y |
 | Splitting.cs:58:22:58:22 | SSA def(s) | Splitting.cs:59:19:59:19 | access to local variable s |
-| Splitting.cs:58:22:58:22 | String s | Splitting.cs:58:22:58:22 | SSA def(s) |
+| Splitting.cs:58:22:58:22 | access to local variable s | Splitting.cs:58:22:58:22 | SSA def(s) |
 | UseUseExplosion.cs:1:7:1:7 | this | UseUseExplosion.cs:1:7:1:7 | this access |
 | UseUseExplosion.cs:21:10:21:10 | SSA entry def(this.Prop) | UseUseExplosion.cs:24:13:24:16 | access to property Prop |
 | UseUseExplosion.cs:21:10:21:10 | this | UseUseExplosion.cs:24:13:24:16 | this access |

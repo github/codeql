@@ -1,5 +1,5 @@
 import java
 
 from Type t
-where t.getName().matches("Iface%")
+where t.getName().startsWith("Iface")
 select t

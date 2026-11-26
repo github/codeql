@@ -145,7 +145,7 @@ class JaxbBoundField extends Field {
  * A getter or setter method, as defined by whether the method name starts with "set" or "get".
  */
 class GetterOrSetterMethod extends Method {
-  GetterOrSetterMethod() { this.getName().matches("get%") or this.getName().matches("set%") }
+  GetterOrSetterMethod() { this.getName().startsWith("get") or this.getName().startsWith("set") }
 
   Field getField() {
     result.getDeclaringType() = this.getDeclaringType() and

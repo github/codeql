@@ -6,6 +6,6 @@ int relativeLine(Locatable first, Locatable second) {
 
 from Class c, FriendDecl d
 where
-  c.getName().matches("Outer%") and
+  c.getName().startsWith("Outer") and
   d = c.getAFriendDecl()
 select c.toString(), d.getFriend().toString(), relativeLine(c, d)

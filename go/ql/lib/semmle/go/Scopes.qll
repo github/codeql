@@ -152,29 +152,6 @@ class Entity extends @object {
     or
     result = any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable()).getLocation()
   }
-
-  /**
-   * DEPRECATED: Use `getLocation()` instead.
-   *
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    or
-    // otherwise fall back on dummy location
-    not exists(this.getLocation()) and
-    filepath = "" and
-    startline = 0 and
-    startcolumn = 0 and
-    endline = 0 and
-    endcolumn = 0
-  }
 }
 
 /** A declared entity (that is, type, constant, variable or function). */
@@ -209,14 +186,8 @@ class DeclaredTypeEntity extends TypeEntity, DeclaredEntity, TypeParamParentEnti
   TypeSpec getSpec() { result.getNameExpr() = this.getDeclaration() }
 }
 
-/** DEPRECATED: Use `DeclaredTypeEntity` instead. */
-deprecated class DeclaredType = DeclaredTypeEntity;
-
 /** A built-in type. */
 class BuiltinTypeEntity extends TypeEntity, BuiltinEntity, @builtintypeobject { }
-
-/** DEPRECATED: Use `BuiltinTypeEntity` instead. */
-deprecated class BuiltinType = BuiltinTypeEntity;
 
 /** A built-in or declared constant, variable, field, method or function. */
 class ValueEntity extends Entity, @valueobject {
@@ -701,19 +672,6 @@ class Callable extends TCallable {
   /** Gets the location of this callable. */
   Location getLocation() {
     result = this.asFunction().getLocation() or result = this.asFuncLit().getLocation()
-  }
-
-  /**
-   * DEPRECATED: Use `getLocation()` instead.
-   *
-   * Holds if this element is at the specified location.
-   * The location spans column `sc` of line `sl` to
-   * column `ec` of line `el` in file `fp`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-    this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
   }
 }
 

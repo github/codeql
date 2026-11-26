@@ -124,6 +124,7 @@ def test_records_old_parser_usage_once(mocker, monkeypatch):
     monkeypatch.delenv("CODEQL_PYTHON_DISABLE_OLD_PARSER", raising=False)
     monkeypatch.delenv("CODEQL_PYTHON_DISABLE_TSG_PARSER", raising=False)
     old_ast = object()
+    mocker.patch("semmle.python.parser.yeast_parser.parse", return_value=None)
     mocker.patch("semmle.python.parser.parse", return_value=old_ast)
     diagnostics_writer = worker.DiagnosticsWriter(1)
     module = PythonSourceModule(
@@ -142,10 +143,110 @@ def test_records_old_parser_usage_once(mocker, monkeypatch):
     assert diagnostics_writer.parser_statistics() == (1, 0)
 
 
+def test_tries_yeast_parser_before_old_parser(mocker, monkeypatch):
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_YEAST_PARSER", raising=False)
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_OLD_PARSER", raising=False)
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_TSG_PARSER", raising=False)
+    calls = []
+    old_ast = object()
+    mocker.patch(
+        "semmle.python.parser.yeast_parser.parse",
+        side_effect=lambda *_args: calls.append("yeast"),
+    )
+    mocker.patch(
+        "semmle.python.parser.parse",
+        side_effect=lambda *_args: calls.append("old") or old_ast,
+    )
+    diagnostics_writer = worker.DiagnosticsWriter(1)
+    module = PythonSourceModule(
+        None,
+        "test.py",
+        mocker.Mock(),
+        diagnostics_writer,
+        bytes_source=b"x = 1\n",
+    )
+
+    assert module.py_ast is old_ast
+    assert calls == ["yeast", "old"]
+    assert diagnostics_writer.parser_statistics() == (1, 0)
+
+
+def test_can_disable_yeast_parser(mocker, monkeypatch):
+    monkeypatch.setenv("CODEQL_PYTHON_DISABLE_YEAST_PARSER", "1")
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_OLD_PARSER", raising=False)
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_TSG_PARSER", raising=False)
+    old_ast = object()
+    yeast_parse = mocker.patch("semmle.python.parser.yeast_parser.parse")
+    mocker.patch("semmle.python.parser.parse", return_value=old_ast)
+    diagnostics_writer = worker.DiagnosticsWriter(1)
+    module = PythonSourceModule(
+        None,
+        "test.py",
+        mocker.Mock(),
+        diagnostics_writer,
+        bytes_source=b"x = 1\n",
+    )
+
+    assert module.py_ast is old_ast
+    yeast_parse.assert_not_called()
+    assert diagnostics_writer.parser_statistics() == (1, 0)
+
+
+def test_passes_decoded_non_utf8_source_to_yeast_parser(mocker, monkeypatch):
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_YEAST_PARSER", raising=False)
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_OLD_PARSER", raising=False)
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_TSG_PARSER", raising=False)
+    old_ast = object()
+    yeast_parse = mocker.patch(
+        "semmle.python.parser.yeast_parser.parse", return_value=None
+    )
+    mocker.patch("semmle.python.parser.parse", return_value=old_ast)
+    diagnostics_writer = worker.DiagnosticsWriter(1)
+    logger = mocker.Mock()
+    module = PythonSourceModule(
+        None,
+        "test.py",
+        logger,
+        diagnostics_writer,
+        bytes_source=b"# coding: latin-1\nvalue = '\xe9'\n",
+    )
+
+    assert module.py_ast is old_ast
+    yeast_parse.assert_called_once_with(
+        "test.py", "# coding: latin-1\nvalue = '\xe9'\n", logger
+    )
+    assert diagnostics_writer.parser_statistics() == (1, 0)
+
+
+def test_falls_back_when_yeast_parser_fails(mocker, monkeypatch):
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_YEAST_PARSER", raising=False)
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_OLD_PARSER", raising=False)
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_TSG_PARSER", raising=False)
+    old_ast = object()
+    mocker.patch(
+        "semmle.python.parser.yeast_parser.parse",
+        side_effect=ValueError("unsupported input"),
+    )
+    mocker.patch("semmle.python.parser.parse", return_value=old_ast)
+    diagnostics_writer = worker.DiagnosticsWriter(1)
+    module = PythonSourceModule(
+        None,
+        "test.py",
+        mocker.Mock(),
+        diagnostics_writer,
+        bytes_source=b"x = 1\n",
+    )
+
+    assert module.py_ast is old_ast
+    assert diagnostics_writer.parser_statistics() == (1, 0)
+
+
 def test_records_tree_sitter_parser_usage_once(mocker, monkeypatch):
+    monkeypatch.delenv("CODEQL_PYTHON_DISABLE_YEAST_PARSER", raising=False)
     monkeypatch.delenv("CODEQL_PYTHON_DISABLE_OLD_PARSER", raising=False)
     monkeypatch.delenv("CODEQL_PYTHON_DISABLE_TSG_PARSER", raising=False)
     tree_sitter_ast = object()
+    mocker.patch("semmle.python.parser.yeast_parser.parse", return_value=None)
     mocker.patch("semmle.python.parser.parse", side_effect=SyntaxError("old parser failed"))
     mocker.patch(
         "semmle.python.parser.tsg_parser.parse", return_value=tree_sitter_ast

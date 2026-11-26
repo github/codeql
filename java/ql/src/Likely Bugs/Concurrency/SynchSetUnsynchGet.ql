@@ -46,7 +46,7 @@ predicate bothAccessVolatileField(Method set, Method get) {
 from Method set, Method get
 where
   set.getDeclaringType() = get.getDeclaringType() and
-  set.getName().matches("set%") and
+  set.getName().startsWith("set") and
   get.getName() = "get" + set.getName().substring(3, set.getName().length()) and
   set.isSynchronized() and
   not (get.isSynchronized() or isSynchronizedByBlock(get)) and

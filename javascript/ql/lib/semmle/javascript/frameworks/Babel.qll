@@ -12,7 +12,7 @@ module Babel {
    */
   class Config extends JsonObject {
     Config() {
-      this.isTopLevel() and this.getJsonFile().getBaseName().matches(".babelrc%")
+      this.isTopLevel() and this.getJsonFile().getBaseName().startsWith(".babelrc")
       or
       this = any(PackageJson pkg).getPropValue("babel")
     }

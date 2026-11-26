@@ -931,7 +931,7 @@ module Routing {
   private string singularize(string input) {
     exists(string prefix | prefix = input.regexpCapture("(.*)ies", 1) | result = prefix + "y")
     or
-    not input.matches("%ies") and
+    not input.endsWith("ies") and
     exists(string prefix | prefix = input.regexpCapture("(.*)s", 1) | result = prefix)
     or
     not input.regexpMatch(".*(ies|s)") and result = input

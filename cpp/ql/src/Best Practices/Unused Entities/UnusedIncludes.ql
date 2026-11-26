@@ -24,6 +24,6 @@ where
   unneeded = include.getIncludedFile() and
   not unneeded.getAnIncludedFile*() = source.getMetrics().getAFileDependency() and
   unneeded.fromSource() and
-  not unneeded.getBaseName().matches("%Debug.h")
+  not unneeded.getBaseName().endsWith("Debug.h")
 select include, "Redundant include, this file does not require $@.", unneeded,
   unneeded.getAbsolutePath()

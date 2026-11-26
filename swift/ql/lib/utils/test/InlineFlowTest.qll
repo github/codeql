@@ -52,7 +52,7 @@ private predicate defaultSource(DataFlow::Node source) {
 }
 
 private predicate defaultSink(DataFlow::Node sink) {
-  exists(CallExpr ca | ca.getStaticTarget().(Function).getShortName().matches("sink%") |
+  exists(CallExpr ca | ca.getStaticTarget().(Function).getShortName().startsWith("sink") |
     sink.asExpr() = ca.getAnArgument().getExpr()
   )
 }

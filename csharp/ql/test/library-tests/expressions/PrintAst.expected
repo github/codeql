@@ -429,7 +429,8 @@ expressions.cs:
 #   11|       4: [BlockStmt] {...}
 #   12|         0: [LocalVariableDeclStmt] ... ...;
 #   12|           0: [LocalVariableDeclExpr] Boolean b
-#   12|             0: [TypeMention] bool
+#   12|             -1: [TypeMention] bool
+#   12|             0: [LocalVariableAccess] access to local variable b
 #   13|         1: [ExprStmt] ...;
 #   13|           0: [AssignExpr] ... = ...
 #   13|             0: [LocalVariableAccess] access to local variable b
@@ -450,7 +451,8 @@ expressions.cs:
 #   16|             1: [CharLiteral] @
 #   17|         5: [LocalVariableDeclStmt] ... ...;
 #   17|           0: [LocalVariableDeclExpr] Int32 i
-#   17|             0: [TypeMention] int
+#   17|             -1: [TypeMention] int
+#   17|             0: [LocalVariableAccess] access to local variable i
 #   18|         6: [ExprStmt] ...;
 #   18|           0: [AssignExpr] ... = ...
 #   18|             0: [LocalVariableAccess] access to local variable i
@@ -462,21 +464,24 @@ expressions.cs:
 #   19|               0: [LocalVariableAccess] access to local variable i
 #   20|         8: [LocalVariableDeclStmt] ... ...;
 #   20|           0: [LocalVariableDeclExpr] Int64 l
-#   20|             0: [TypeMention] long
+#   20|             -1: [TypeMention] long
+#   20|             0: [LocalVariableAccess] access to local variable l
 #   21|         9: [ExprStmt] ...;
 #   21|           0: [AssignExpr] ... = ...
 #   21|             0: [LocalVariableAccess] access to local variable l
 #   21|             1: [LongLiteral] 8989898
 #   22|         10: [LocalVariableDeclStmt] ... ...;
 #   22|           0: [LocalVariableDeclExpr] UInt32 ui
-#   22|             0: [TypeMention] uint
+#   22|             -1: [TypeMention] uint
+#   22|             0: [LocalVariableAccess] access to local variable ui
 #   23|         11: [ExprStmt] ...;
 #   23|           0: [AssignExpr] ... = ...
 #   23|             0: [LocalVariableAccess] access to local variable ui
 #   23|             1: [UIntLiteral] 3
 #   24|         12: [LocalVariableDeclStmt] ... ...;
 #   24|           0: [LocalVariableDeclExpr] UInt64 ul
-#   24|             0: [TypeMention] ulong
+#   24|             -1: [TypeMention] ulong
+#   24|             0: [LocalVariableAccess] access to local variable ul
 #   25|         13: [ExprStmt] ...;
 #   25|           0: [AssignExpr] ... = ...
 #   25|             0: [LocalVariableAccess] access to local variable ul
@@ -488,28 +493,32 @@ expressions.cs:
 #   26|             1: [FloatLiteral] 4.5
 #   27|         15: [LocalVariableDeclStmt] ... ...;
 #   27|           0: [LocalVariableDeclExpr] Double d
-#   27|             0: [TypeMention] double
+#   27|             -1: [TypeMention] double
+#   27|             0: [LocalVariableAccess] access to local variable d
 #   28|         16: [ExprStmt] ...;
 #   28|           0: [AssignExpr] ... = ...
 #   28|             0: [LocalVariableAccess] access to local variable d
 #   28|             1: [DoubleLiteral] 4.565
 #   29|         17: [LocalVariableDeclStmt] ... ...;
 #   29|           0: [LocalVariableDeclExpr] Decimal m
-#   29|             0: [TypeMention] decimal
+#   29|             -1: [TypeMention] decimal
+#   29|             0: [LocalVariableAccess] access to local variable m
 #   30|         18: [ExprStmt] ...;
 #   30|           0: [AssignExpr] ... = ...
 #   30|             0: [LocalVariableAccess] access to local variable m
 #   30|             1: [DecimalLiteral] 123.456
 #   31|         19: [LocalVariableDeclStmt] ... ...;
 #   31|           0: [LocalVariableDeclExpr] String s
-#   31|             0: [TypeMention] string
+#   31|             -1: [TypeMention] string
+#   31|             0: [LocalVariableAccess] access to local variable s
 #   32|         20: [ExprStmt] ...;
 #   32|           0: [AssignExpr] ... = ...
 #   32|             0: [LocalVariableAccess] access to local variable s
 #   32|             1: [StringLiteralUtf16] "test"
 #   33|         21: [LocalVariableDeclStmt] ... ...;
 #   33|           0: [LocalVariableDeclExpr] Object o
-#   33|             0: [TypeMention] object
+#   33|             -1: [TypeMention] object
+#   33|             0: [LocalVariableAccess] access to local variable o
 #   34|         22: [ExprStmt] ...;
 #   34|           0: [AssignExpr] ... = ...
 #   34|             0: [LocalVariableAccess] access to local variable o
@@ -885,7 +894,8 @@ expressions.cs:
 #  145|       4: [BlockStmt] {...}
 #  146|         0: [LocalVariableDeclStmt] ... ...;
 #  146|           0: [LocalVariableDeclExpr] Int32 a
-#  146|             0: [TypeMention] int
+#  146|             -1: [TypeMention] int
+#  146|             0: [LocalVariableAccess] access to local variable a
 #  147|         1: [LocalVariableDeclStmt] ... ...;
 #  147|           0: [LocalVariableDeclAndInitExpr] Int32 b = ...
 #  147|             -1: [TypeMention] int
@@ -1097,7 +1107,8 @@ expressions.cs:
 #  193|                 0: [StringLiteralUtf16] ""
 #  195|         16: [LocalVariableDeclStmt] ... ...;
 #  195|           0: [LocalVariableDeclExpr] ContextCallback d
-#  195|             0: [TypeMention] ContextCallback
+#  195|             -1: [TypeMention] ContextCallback
+#  195|             0: [LocalVariableAccess] access to local variable d
 #  197|         17: [LocalFunctionStmt] LocalFunction(...)
 #  197|           0: [LocalFunction] LocalFunction
 #-----|             2: (Parameters)
@@ -1336,7 +1347,8 @@ expressions.cs:
 #  297|               0: [IntLiteral] 4
 #  298|         1: [LocalVariableDeclStmt] ... ...;
 #  298|           0: [LocalVariableDeclExpr] IntVector iv2
-#  298|             0: [TypeMention] IntVector
+#  298|             -1: [TypeMention] IntVector
+#  298|             0: [LocalVariableAccess] access to local variable iv2
 #  299|         2: [ExprStmt] ...;
 #  299|           0: [AssignExpr] ... = ...
 #  299|             0: [LocalVariableAccess] access to local variable iv2

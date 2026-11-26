@@ -1073,7 +1073,7 @@ private module Debug {
   AstNode getRelevantNode() {
     exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
       result.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-      filepath.matches("%/test.swift") and
+      filepath.endsWith("/test.swift") and
       startline = 1
     )
   }

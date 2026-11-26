@@ -9,5 +9,5 @@
 import python
 
 from StringLiteral s
-where s.getPrefix().matches("%r%")
+where s.getPrefix().contains("r")
 select s

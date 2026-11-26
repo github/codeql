@@ -115,7 +115,7 @@ predicate hasSafeBound(Loop l) {
 }
 
 predicate markedAsNonterminating(Loop l) {
-  exists(Comment c | c.getContents().matches("%@non-terminating@%") | c.getCommentedElement() = l)
+  exists(Comment c | c.getContents().contains("@non-terminating@") | c.getCommentedElement() = l)
 }
 
 from Loop loop, string msg

@@ -24,7 +24,7 @@ string getPasswordRegex() { result = "(?i).*pass(wd|word|code|phrase).*" }
 class PasswordVarExpr extends VarAccess {
   PasswordVarExpr() {
     exists(string name | name = this.getVariable().getName().toLowerCase() |
-      name.regexpMatch(getPasswordRegex()) and not name.matches("%hash%") // Exclude variable names such as `passwordHash` since their values were already hashed
+      name.regexpMatch(getPasswordRegex()) and not name.contains("hash") // Exclude variable names such as `passwordHash` since their values were already hashed
     )
   }
 }

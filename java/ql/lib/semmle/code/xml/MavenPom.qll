@@ -133,7 +133,7 @@ class Pom extends ProtoPom {
    * occurs by considering the properties defined by this project or an ancestor project.
    */
   string resolvePlaceholder(string name) {
-    if name.matches("project.%")
+    if name.startsWith("project.")
     then
       exists(PomElement p |
         p = this.getProjectProperty() and
@@ -289,7 +289,7 @@ class PomElement extends XmlElement {
   string getValue() {
     exists(string s |
       s = this.allCharactersString() and
-      if s.matches("${%")
+      if s.startsWith("${")
       then
         // Resolve the placeholder in the parent POM
         result = this.getParent*().(Pom).resolvePlaceholder(s.substring(2, s.length() - 1))

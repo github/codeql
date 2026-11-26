@@ -1,0 +1,71 @@
+| DefiningAccesses.cs:7:34:7:35 | access to parameter id | DefiningAccesses.cs:7:27:7:28 | id | V |
+| DefiningAccesses.cs:8:25:8:25 | T | DefiningAccesses.cs:8:22:8:22 | T | T |
+| DefiningAccesses.cs:9:38:9:42 | access to parameter value | DefiningAccesses.cs:9:29:9:33 | value | V |
+| DefiningAccesses.cs:9:46:9:51 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:10:34:10:39 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:10:46:10:51 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:14:30:14:33 | access to parameter text | DefiningAccesses.cs:12:37:12:40 | text | V |
+| DefiningAccesses.cs:15:13:15:22 | call to method Sink<Char> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:15:19:15:23 | access to local variable chars | DefiningAccesses.cs:14:22:14:26 | chars | V |
+| DefiningAccesses.cs:21:9:21:21 | access to local variable uninitialized | DefiningAccesses.cs:20:13:20:25 | uninitialized | V |
+| DefiningAccesses.cs:21:25:21:30 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:22:9:22:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:22:14:22:26 | access to local variable uninitialized | DefiningAccesses.cs:20:13:20:25 | uninitialized | V |
+| DefiningAccesses.cs:25:29:25:33 | access to local variable index | DefiningAccesses.cs:25:18:25:22 | index | V |
+| DefiningAccesses.cs:25:37:25:44 | access to local variable constant | DefiningAccesses.cs:24:19:24:26 | constant | V |
+| DefiningAccesses.cs:25:47:25:51 | access to local variable index | DefiningAccesses.cs:25:18:25:22 | index | V |
+| DefiningAccesses.cs:26:13:26:23 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:26:18:26:22 | access to local variable index | DefiningAccesses.cs:25:18:25:22 | index | V |
+| DefiningAccesses.cs:27:27:27:32 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:28:9:28:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:28:14:28:24 | access to local variable initialized | DefiningAccesses.cs:27:13:27:23 | initialized | V |
+| DefiningAccesses.cs:29:9:29:11 | call to method Out | DefiningAccesses.cs:9:17:9:19 | Out | M |
+| DefiningAccesses.cs:30:9:30:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:30:14:30:19 | access to local variable output | DefiningAccesses.cs:29:21:29:26 | output | V |
+| DefiningAccesses.cs:31:9:31:11 | call to method Out | DefiningAccesses.cs:9:17:9:19 | Out | M |
+| DefiningAccesses.cs:32:49:32:54 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:32:61:32:66 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:32:72:32:77 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:33:9:33:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:33:14:33:18 | access to local variable first | DefiningAccesses.cs:32:14:32:18 | first | V |
+| DefiningAccesses.cs:34:9:34:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:34:14:34:19 | access to local variable second | DefiningAccesses.cs:32:26:32:31 | second | V |
+| DefiningAccesses.cs:35:9:35:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:35:14:35:18 | access to local variable third | DefiningAccesses.cs:32:38:32:42 | third | V |
+| DefiningAccesses.cs:36:32:36:37 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:36:43:36:48 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:37:9:37:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:37:14:37:19 | access to local variable fourth | DefiningAccesses.cs:36:14:36:19 | fourth | V |
+| DefiningAccesses.cs:38:9:38:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:38:14:38:18 | access to local variable fifth | DefiningAccesses.cs:36:22:36:26 | fifth | V |
+| DefiningAccesses.cs:39:32:39:35 | call to method Pair | DefiningAccesses.cs:10:23:10:26 | Pair | M |
+| DefiningAccesses.cs:40:9:40:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:40:14:40:18 | access to local variable sixth | DefiningAccesses.cs:39:14:39:18 | sixth | V |
+| DefiningAccesses.cs:41:9:41:19 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:41:14:41:20 | access to local variable seventh | DefiningAccesses.cs:39:21:39:27 | seventh | V |
+| DefiningAccesses.cs:42:30:42:35 | access to parameter values | DefiningAccesses.cs:18:39:18:44 | values | V |
+| DefiningAccesses.cs:43:13:43:23 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:43:18:43:21 | access to local variable item | DefiningAccesses.cs:42:22:42:25 | item | V |
+| DefiningAccesses.cs:44:41:44:46 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:45:13:45:23 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:45:18:45:24 | access to local variable element | DefiningAccesses.cs:44:22:44:28 | element | V |
+| DefiningAccesses.cs:46:48:46:53 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:46:59:46:64 | call to method Source | DefiningAccesses.cs:7:16:7:21 | Source | M |
+| DefiningAccesses.cs:48:13:48:23 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:48:18:48:21 | access to local variable left | DefiningAccesses.cs:46:23:46:26 | left | V |
+| DefiningAccesses.cs:49:13:49:23 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:49:18:49:22 | access to local variable right | DefiningAccesses.cs:46:29:46:33 | right | V |
+| DefiningAccesses.cs:52:43:52:51 | access to local variable exception | DefiningAccesses.cs:52:26:52:34 | exception | V |
+| DefiningAccesses.cs:52:72:52:86 | call to method Sink<Exception> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:52:77:52:85 | access to local variable exception | DefiningAccesses.cs:52:26:52:34 | exception | V |
+| DefiningAccesses.cs:53:13:53:17 | access to parameter input | DefiningAccesses.cs:18:54:18:58 | input | V |
+| DefiningAccesses.cs:54:13:54:23 | call to method Sink<Int32> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:54:18:54:24 | access to local variable pattern | DefiningAccesses.cs:53:26:53:32 | pattern | V |
+| DefiningAccesses.cs:56:9:56:26 | call to method Sink<MemoryStream> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:56:14:56:19 | access to local variable stream | DefiningAccesses.cs:55:19:55:24 | stream | V |
+| DefiningAccesses.cs:57:35:57:40 | access to parameter values | DefiningAccesses.cs:18:39:18:44 | values | V |
+| DefiningAccesses.cs:57:53:57:57 | access to local variable value | DefiningAccesses.cs:57:26:57:30 | value | V |
+| DefiningAccesses.cs:57:53:57:57 | access to local variable value | DefiningAccesses.cs:57:26:57:30 | value | V |
+| DefiningAccesses.cs:57:70:57:73 | access to local variable next | DefiningAccesses.cs:57:46:57:49 | next | V |
+| DefiningAccesses.cs:58:9:58:32 | call to method Sink<IEnumerable<Int32>> | DefiningAccesses.cs:8:17:8:23 | Sink`1 | M |
+| DefiningAccesses.cs:58:14:58:18 | access to local variable query | DefiningAccesses.cs:57:13:57:17 | query | V |

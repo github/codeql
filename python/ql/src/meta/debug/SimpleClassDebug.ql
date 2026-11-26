@@ -8,7 +8,7 @@ import semmle.python.dataflow.new.internal.DataFlowPrivate
 
 predicate interestingClass(Class cls) {
   cls.getName() = "YourClassName"
-  // and cls.getLocation().getFile().getAbsolutePath().matches("%/folder/file.py")
+  // and cls.getLocation().getFile().getAbsolutePath().endsWith("/folder/file.py")
 }
 
 query predicate superClasses(Class cls, Class super_) {

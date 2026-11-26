@@ -35,7 +35,7 @@ module JsonSchema {
   /** An object literal with a `$schema` property indicating it is the root of a JSON schema. */
   private class SchemaNodeByTag extends SchemaRoot, DataFlow::ObjectLiteralNode {
     SchemaNodeByTag() {
-      this.getAPropertyWrite("$schema").getRhs().getStringValue().matches("%//json-schema.org%")
+      this.getAPropertyWrite("$schema").getRhs().getStringValue().contains("//json-schema.org")
     }
   }
 

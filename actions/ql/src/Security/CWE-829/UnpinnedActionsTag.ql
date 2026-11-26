@@ -37,7 +37,7 @@ private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+")
 // resolved at the commit the calling workflow is running. Like `./` local (self workspace)
 // references, it is inherently pinned and can never be an unpinned-tag finding, so we never flag it.
 bindingset[nwo]
-private predicate isSelfRepository(string nwo) { nwo.matches("$/%") }
+private predicate isSelfRepository(string nwo) { nwo.startsWith("$/") }
 
 private predicate hasUsesContainerName(Uses uses, string name) {
   exists(Workflow workflow |

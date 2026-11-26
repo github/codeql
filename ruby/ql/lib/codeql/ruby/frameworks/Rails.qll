@@ -160,7 +160,7 @@ private module Config {
  */
 private module Settings {
   private predicate isInTestConfiguration(Location loc) {
-    loc.getFile().getRelativePath().matches("%test/%") or
+    loc.getFile().getRelativePath().contains("test/") or
     loc.getFile().getStem() = "test"
   }
 

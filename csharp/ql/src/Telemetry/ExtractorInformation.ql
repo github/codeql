@@ -11,8 +11,8 @@ import semmle.code.csharp.commons.Diagnostics
 import DatabaseQuality
 
 predicate compilationInfo(string key, float value) {
-  not key.matches("Compiler diagnostic count for%") and
-  not key.matches("Extractor message count for group%") and
+  not key.startsWith("Compiler diagnostic count for") and
+  not key.startsWith("Extractor message count for group") and
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
     key = infoKey and
     value = infoValue.toFloat()
@@ -24,12 +24,12 @@ predicate compilationInfo(string key, float value) {
 }
 
 predicate compilerDiagnostics(string key, int value) {
-  key.matches("Compiler diagnostic count for%") and
+  key.startsWith("Compiler diagnostic count for") and
   strictsum(Compilation c | | c.getInfo(key).toInt()) = value
 }
 
 predicate extractorMessages(string key, int value) {
-  key.matches("Extractor message count for group%") and
+  key.startsWith("Extractor message count for group") and
   strictsum(Compilation c | | c.getInfo(key).toInt()) = value
 }
 

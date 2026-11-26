@@ -8,4 +8,4 @@
 
 import swift
 
-select count(AstNode n | n.getAPrimaryQlClass().matches("Unresolved%") | n)
+select count(AstNode n | n.getAPrimaryQlClass().startsWith("Unresolved") | n)

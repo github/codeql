@@ -14,7 +14,7 @@ predicate importsAndroidModule(TopLevel t) {
   t.getFile() =
     any(YAML::QLPack pack | pack.getADependency*().getExtractor() = "java").getAFileInPack() and
   exists(Import i | t.getAnImport() = i |
-    i.getImportString().toLowerCase().matches("%android%")
+    i.getImportString().toLowerCase().contains("android")
     or
     exists(TopLevel t2 |
       t2.getAModule() = i.getResolvedModule().asModule() and
@@ -25,8 +25,8 @@ predicate importsAndroidModule(TopLevel t) {
 
 from QueryDoc d
 where
-  d.getLocation().getFile().getRelativePath().matches("%src/Security/%") and
-  not d.getQueryId().matches("android/%") and
+  d.getLocation().getFile().getRelativePath().contains("src/Security/") and
+  not d.getQueryId().startsWith("android/") and
   not d.getQueryId() = ["improper-intent-verification", "improper-webview-certificate-validation"] and // known badly identified queries that sadly we can't fix
   importsAndroidModule(d.getParent())
 select d, "This Android query is missing the `android/` prefix in its `@id`."

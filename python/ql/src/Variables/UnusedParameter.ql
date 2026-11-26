@@ -27,7 +27,7 @@ predicate unused_parameter(FunctionValue f, LocalVariable v) {
 }
 
 predicate is_abstract(FunctionValue func) {
-  func.getScope().getADecorator().(Name).getId().matches("%abstract%")
+  func.getScope().getADecorator().(Name).getId().contains("abstract")
 }
 
 from PythonFunctionValue f, LocalVariable v

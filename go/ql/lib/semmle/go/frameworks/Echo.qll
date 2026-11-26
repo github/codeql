@@ -55,20 +55,4 @@ private module Echo {
 
     override DataFlow::Node getAContentTypeNode() { result = callNode.getArgument(1) }
   }
-
-  /**
-   * DEPRECATED: Use `FileSystemAccess::Range` instead.
-   *
-   * The File system access sinks
-   */
-  deprecated class FsOperations extends FileSystemAccess::Range, DataFlow::CallNode {
-    FsOperations() {
-      exists(Method m |
-        m.hasQualifiedName(packagePath(), "Context", ["Attachment", "File"]) and
-        this = m.getACall()
-      )
-    }
-
-    override DataFlow::Node getAPathArgument() { result = this.getArgument(0) }
-  }
 }
