@@ -40,6 +40,9 @@
         ["<alloc::boxed::Box>::pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer].Field[alloc::boxed::Box(0)]", "value", "manual"],
         ["<alloc::boxed::Box>::new", "Argument[0]", "ReturnValue.Field[alloc::boxed::Box(0)]", "value", "manual"],
         ["<alloc::boxed::Box>::into_pin", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"],
+        // Cow
+        ["<alloc::borrow::Cow>::to_mut", "Argument[self].Reference.Field[alloc::borrow::Cow::Owned(0)]", "ReturnValue.Reference", "value", "manual"],
+        ["<alloc::borrow::Cow>::to_mut", "Argument[self].Reference.Field[alloc::borrow::Cow::Borrowed(0)].Reference", "ReturnValue.Reference", "taint", "manual"],
         // Fmt
         ["alloc::fmt::format", "Argument[0]", "ReturnValue", "taint", "manual"],
         // Layout
