@@ -193,3 +193,18 @@ void test_initializer_side_effect()
 {
 	int initialized = initialize(); // GOOD (initializer has a side effect)
 }
+
+// ---
+
+void use(...);
+
+template<typename... Args>
+void f_args(const Args&... args) // $ Alert // BAD: empty parameter pack is reported as an unused local
+{
+	use(args...);
+}
+
+void test_call_f_args()
+{
+	f_args();
+}
