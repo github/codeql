@@ -10,7 +10,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: ruby/extractor-pack
-        key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/scripts/create-extractor-pack.sh', 'ruby/extractor/**/Cargo.lock', 'ruby/actions/create-extractor-pack/action.yml') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ruby/extractor/**/*.rs') }}-${{ hashFiles('ruby/codeql-extractor.yml', 'ruby/downgrades', 'ruby/tools', 'ruby/ql/lib/ruby.dbscheme', 'ruby/ql/lib/ruby.dbscheme.stats') }}
+        key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('Cargo.toml', 'Cargo.lock', 'ruby/extractor/Cargo.toml', 'ruby/extractor/rust-toolchain.toml', 'ruby/scripts/create-extractor-pack.sh', 'ruby/extractor/**/Cargo.lock', 'ruby/actions/create-extractor-pack/action.yml') }}-${{ hashFiles('shared/tree-sitter-extractor/**', 'shared/tree-sitter-extractor/Cargo.toml', 'shared/extractor-common/**', 'shared/extractor-common/Cargo.toml') }}-${{ hashFiles('ruby/extractor/**/*.rs') }}-${{ hashFiles('ruby/codeql-extractor.yml', 'ruby/downgrades', 'ruby/tools', 'ruby/ql/lib/ruby.dbscheme', 'ruby/ql/lib/ruby.dbscheme.stats') }}
     - name: Cache cargo
       uses: actions/cache@v4
       if: steps.cache-extractor.outputs.cache-hit != 'true'

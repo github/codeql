@@ -37,7 +37,7 @@ jobs:
           path: |
             ql/extractor-pack/
             target/release/buramu
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('Cargo.toml', 'Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ql/**/*.rs') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-extractor-${{ hashFiles('Cargo.toml', 'Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('shared/extractor-common/**/*.rs') }}-${{ hashFiles('ql/**/*.rs') }}
       - name: Cache cargo
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         uses: actions/cache@v3

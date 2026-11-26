@@ -1,0 +1,10 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+exports_files(["Cargo.toml"])
+
+rust_library(
+    name = "extractor-common",
+    srcs = glob(["src/**/*.rs"]),
+    crate_name = "extractor_common",
+    visibility = ["//visibility:public"],
+)

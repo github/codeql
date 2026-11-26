@@ -466,6 +466,7 @@ name = "codeql-extractor"
 version = "0.2.0"
 dependencies = [
  "chrono",
+ "extractor-common",
  "flate2",
  "globset",
  "num_cpus",
@@ -507,6 +508,7 @@ dependencies = [
  "clap",
  "codeql-extractor",
  "encoding",
+ "extractor-common",
  "rayon",
  "regex",
  "serde_json",
@@ -546,6 +548,7 @@ dependencies = [
  "clap",
  "codeql-extractor",
  "dunce",
+ "extractor-common",
  "figment",
  "glob",
  "itertools 0.15.0",
@@ -1021,6 +1024,10 @@ dependencies = [
  "libc",
  "windows-sys 0.60.2",
 ]
+
+[[package]]
+name = "extractor-common"
+version = "0.1.0"
 
 [[package]]
 name = "fastrand"

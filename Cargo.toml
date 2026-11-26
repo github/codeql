@@ -7,6 +7,7 @@
 
 resolver = "2"
 members = [
+    "shared/extractor-common",
     "shared/tree-sitter-extractor",
     "shared/yeast",
     "shared/yeast-macros",

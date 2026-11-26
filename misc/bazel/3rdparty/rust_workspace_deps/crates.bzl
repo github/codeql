@@ -324,6 +324,7 @@ _CRATE_EDITIONS = {
     "rust/autobuild": "2024",
     "rust/extractor": "2024",
     "rust/extractor/macros": "2024",
+    "shared/extractor-common": "2024",
     "shared/tree-sitter-extractor": "2024",
     "shared/yeast": "2021",
     "shared/yeast-macros": "2021",
@@ -462,6 +463,8 @@ _NORMAL_DEPENDENCIES = {
             "syn": Label("@vendor_rs//syn-3.0.9"),
         },
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
             "chrono": Label("@vendor_rs//chrono-0.4.45"),
@@ -560,6 +563,8 @@ _NORMAL_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
         },
@@ -607,6 +612,8 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "rust/extractor/macros": {
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
             "rand": Label("@vendor_rs//rand-0.10.3"),
@@ -649,6 +656,8 @@ _NORMAL_DEV_ALIASES = {
     },
     "rust/extractor/macros": {
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
         },
@@ -688,6 +697,8 @@ _PROC_MACRO_DEPENDENCIES = {
     },
     "rust/extractor/macros": {
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
     },
     "shared/yeast": {
@@ -724,6 +735,8 @@ _PROC_MACRO_ALIASES = {
     "rust/extractor": {
     },
     "rust/extractor/macros": {
+    },
+    "shared/extractor-common": {
     },
     "shared/tree-sitter-extractor": {
     },
@@ -762,6 +775,8 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     },
     "rust/extractor/macros": {
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
     },
     "shared/yeast": {
@@ -798,6 +813,8 @@ _PROC_MACRO_DEV_ALIASES = {
     "rust/extractor": {
     },
     "rust/extractor/macros": {
+    },
+    "shared/extractor-common": {
     },
     "shared/tree-sitter-extractor": {
         _COMMON_CONDITION: {
@@ -844,6 +861,8 @@ _BUILD_DEPENDENCIES = {
     },
     "rust/extractor/macros": {
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
     },
     "shared/yeast": {
@@ -885,6 +904,8 @@ _BUILD_ALIASES = {
     },
     "rust/extractor/macros": {
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
     },
     "shared/yeast": {
@@ -922,6 +943,8 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "rust/extractor/macros": {
     },
+    "shared/extractor-common": {
+    },
     "shared/tree-sitter-extractor": {
     },
     "shared/yeast": {
@@ -958,6 +981,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "rust/extractor": {
     },
     "rust/extractor/macros": {
+    },
+    "shared/extractor-common": {
     },
     "shared/tree-sitter-extractor": {
     },
