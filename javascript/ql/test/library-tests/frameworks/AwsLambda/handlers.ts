@@ -3,6 +3,7 @@ import type {
   APIGatewayProxyHandler,
   APIGatewayProxyHandlerV2,
   Handler,
+  SQSEvent,
   SQSHandler,
 } from "aws-lambda";
 
@@ -21,5 +22,17 @@ export const nonHttpHandler: SQSHandler = async (event) => {}; // source
 // Not exported, so not invoked by Lambda.
 const privateHandler: APIGatewayProxyHandler = async (event) => {}; // not a source
 
-// `Handler` does not say what the event is.
+// Base `Handler` type does not have a specific event type.
 export const genericHandler: Handler = async (event) => {}; // not a source
+
+// An untyped handler function assigned to a variable is considered an AWS Lambda handler
+// when exported with a type.
+const untypedHandler = async (event) => {}; // source
+export const exportedAliasedHandler: APIGatewayProxyHandler = untypedHandler;
+
+// Passing a typed event to a function does not make the function an AWS Lambda handler.
+function typedPrivateCaller(e: SQSEvent) {
+  exportedGenericFunction(e);
+}
+
+export function exportedGenericFunction(e: any) {} // not a source
