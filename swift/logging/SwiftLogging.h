@@ -1,14 +1,15 @@
 #pragma once
 
 #include <chrono>
+#include <filesystem>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <string>
+#include <system_error>
+#include <utility>
 #include <vector>
-
-#include <fmt/format.h>
-#include <fmt/chrono.h>
-#include <fmt/std.h>
 
 #include <binlog/binlog.hpp>
 #include <binlog/TextOutputStream.hpp>
@@ -19,6 +20,31 @@
 #include <binlog/adapt_stdvariant.hpp>
 
 #include "swift/logging/SwiftDiagnostics.h"
+
+namespace codeql::detail {
+
+template <typename T>
+const T& diagnosticFormatArg(const T& value) {
+  return value;
+}
+
+// C++23 has no formatters for paths or error codes.
+inline std::string diagnosticFormatArg(const std::filesystem::path& value) {
+  return value.string();
+}
+
+inline std::string diagnosticFormatArg(const std::error_code& value) {
+  return std::format("{}:{}", value.category().name(), value.value());
+}
+
+template <typename... Args>
+std::string formatDiagnostic(
+    std::format_string<decltype(diagnosticFormatArg(std::declval<const Args&>()))...> format,
+    const Args&... args) {
+  return std::format(format, diagnosticFormatArg(args)...);
+}
+
+}  // namespace codeql::detail
 
 // Logging macros. These will call `logger()` to get a Logger instance, picking up any `logger`
 // defined in the current scope. Domain-specific loggers can be added or used by either:
@@ -52,7 +78,7 @@
 
 // Emit errors with a specified SwiftDiagnostic object. These will be both logged and outputted as
 // JSON DB diagnostics. The format must be appliable to the following arguments both as binlog and
-// as fmt::format formatting.
+// as std::format formatting.
 // Beware that contrary to LOG_* macros, arguments right of the format will be evaluated twice. ID
 // is evaluated once though.
 #define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
@@ -63,8 +89,9 @@
   do {                                                                               \
     auto _now = ::binlog::clockNow();                                                \
     const ::codeql::Diagnostic& _id = ID;                                            \
-    ::codeql::Log::diagnose(_id, std::chrono::nanoseconds{_now},                     \
-                            fmt::format(FORMAT __VA_OPT__(, ) __VA_ARGS__));         \
+    ::codeql::Log::diagnose(                                                         \
+        _id, std::chrono::nanoseconds{_now},                                         \
+        ::codeql::detail::formatDiagnostic(FORMAT __VA_OPT__(, ) __VA_ARGS__));      \
     LOG_WITH_LEVEL_AND_TIME(LEVEL, _now, CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX FORMAT, \
                             _id.abbreviation() __VA_OPT__(, ) __VA_ARGS__);          \
   } while (false)
