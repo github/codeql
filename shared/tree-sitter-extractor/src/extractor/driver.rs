@@ -6,6 +6,7 @@
 //! by glob, writing TRAP, and copying into the source archive — is identical
 //! and lives here, parameterised over the [`LanguageExtractor`] trait.
 
+use extractor_common::file_paths;
 use globset::{GlobBuilder, GlobSetBuilder};
 use rayon::prelude::*;
 use std::fs::File;
@@ -13,7 +14,6 @@ use std::io::BufRead;
 use std::path::{Path, PathBuf};
 
 use crate::diagnostics;
-use crate::file_paths;
 use crate::node_types::NodeTypeMap;
 use crate::trap;
 
@@ -147,12 +147,8 @@ pub(crate) fn run_extractor<L: LanguageExtractor>(
         .try_for_each(|line| {
             let mut diagnostics_writer = diagnostics.logger();
             let path = PathBuf::from(line).canonicalize()?;
-            let src_archive_file = crate::file_paths::path_for(
-                source_archive_dir,
-                &path,
-                "",
-                path_transformer.as_ref(),
-            );
+            let src_archive_file =
+                file_paths::path_for(source_archive_dir, &path, "", path_transformer.as_ref());
             let source = std::fs::read(&path)?;
             let mut trap_writer = trap::Writer::new();
 
@@ -219,7 +215,7 @@ fn write_trap(
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
-    let trap_file = crate::file_paths::path_for(trap_dir, path, trap_compression.extension(), None);
+    let trap_file = file_paths::path_for(trap_dir, path, trap_compression.extension(), None);
     std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }
