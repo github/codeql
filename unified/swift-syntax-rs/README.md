@@ -169,6 +169,9 @@ For Rust-only checks, use `SWIFT_SYNTAX_RS_CHECK_ONLY=1 cargo clippy` (or
 Rust wrapper and build script. Do not set this variable for `cargo build`,
 `cargo test` or `cargo run`: they need the native library at link time.
 The default build behavior is unchanged.
+The build script watches this variable, so unsetting it reruns native setup
+rather than reusing the check-only result. Check-only mode retains the native
+library link requirement, but does not supply the library or its search paths.
 
 ## Regenerating the extractor node types
 

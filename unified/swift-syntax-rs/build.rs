@@ -25,6 +25,8 @@ fn main() {
     // Cargo check and Clippy do not link the native shim.
     if env::var("SWIFT_SYNTAX_RS_CHECK_ONLY").as_deref() == Ok("1") {
         println!("cargo:warning=skipping the Swift FFI build (SWIFT_SYNTAX_RS_CHECK_ONLY=1)");
+        // Keep the link requirement so this cannot produce a shim-free executable.
+        println!("cargo:rustc-link-lib=dylib=SwiftSyntaxFFI");
         return;
     }
 

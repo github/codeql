@@ -31,6 +31,8 @@ Only selection containing `ast-generator` runs its Bazel source-injection step.
 Clippy sets `SWIFT_SYNTAX_RS_CHECK_ONLY=1` to avoid building the native Swift shim:
 it checks the Rust wrapper and build script but does not link native code.
 Normal builds and tests still build and link Swift.
+Unsetting the check-only flag reruns native setup. Leaving it set does not
+remove the native library requirement from linked builds.
 
 Run the selector tests with:
 
