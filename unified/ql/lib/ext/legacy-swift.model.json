@@ -197,9 +197,7 @@
         ["", "Process", true, "executableURL", "", "", "PostUpdate", "command-injection", "manual"],
         ["", "Process", true, "launchPath", "", "", "PostUpdate", "command-injection", "manual"],
         ["", "Process", true, "launchedProcess(launchPath:arguments:)", "", "", "Argument[launchPath:,arguments:]", "command-injection", "manual"],
-        // Calls may omit the defaulted terminationHandler argument.
-        ["", "Process", true, "run(_:arguments:)", "", "", "Argument[0,arguments:]", "command-injection", "manual"],
-        ["", "Process", true, "run(_:arguments:terminationHandler:)", "", "", "Argument[0,arguments:]", "command-injection", "manual"],
+        ["", "Process", true, "run(_:arguments:terminationHandler?:)", "", "", "Argument[0,arguments:]", "command-injection", "manual"],
         ["", "Process", true, "standardError", "", "", "PostUpdate", "command-injection", "manual"],
         ["", "Process", true, "standardInput", "", "", "PostUpdate", "command-injection", "manual"],
         ["", "Process", true, "standardOutput", "", "", "PostUpdate", "command-injection", "manual"],
