@@ -117,13 +117,14 @@ fn parse_node(group: &proc_macro2::Group) -> Result<Node> {
                 };
                 return Err(error);
             }
-            if let Some(TokenTree::Punct(punctuation)) = tokens.peek() {
-                if punctuation.as_char() == '?' {
+            match tokens.peek() {
+                Some(TokenTree::Punct(punctuation)) if punctuation.as_char() == '?' => {
                     return Err(syn::Error::new_spanned(
                         punctuation.clone(),
                         "`?` is not valid on a `location` field",
                     ));
                 }
+                _ => {}
             }
             continue;
         }

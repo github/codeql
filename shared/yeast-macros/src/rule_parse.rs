@@ -306,8 +306,8 @@ fn parse_replacement(input: TokenStream) -> Result<Replacement> {
         return Ok(Replacement::Rust { annotation, body });
     }
 
-    if let Some(TokenTree::Group(group)) = tokens.peek() {
-        if group.delimiter() == Delimiter::Brace {
+    match tokens.peek() {
+        Some(TokenTree::Group(group)) if group.delimiter() == Delimiter::Brace => {
             return Err(syn::Error::new(
                 group.span(),
                 "bare `{...}` rule bodies are no longer accepted; \
@@ -316,6 +316,7 @@ fn parse_replacement(input: TokenStream) -> Result<Replacement> {
                  optionally suffixed with `?` or `*` for cardinality)",
             ));
         }
+        _ => {}
     }
 
     let templates = crate::template_parse::parse_templates(tokens.collect())?;

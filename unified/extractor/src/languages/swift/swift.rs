@@ -1076,9 +1076,10 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 pattern: (identifier #{name})
                 value: {
                     // Expand [x] into [x = x]
-                    match val {
-                        Some(val) => val,
-                        None => tree!((identifier #{name})),
+                    if let Some(val) = val {
+                        val
+                    } else {
+                        tree!((identifier #{name}))
                     }
                 })
         ),
