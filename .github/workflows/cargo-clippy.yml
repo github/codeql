@@ -63,6 +63,8 @@ jobs:
       - name: Clippy
         env:
           PACKAGES: ${{ needs.select.outputs.packages }}
+          # Clippy checks Rust without linking the native Swift shim.
+          SWIFT_SYNTAX_RS_CHECK_ONLY: "1"
         run: |
           python3 - <<'PY'
           import json

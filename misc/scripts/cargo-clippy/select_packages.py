@@ -21,6 +21,15 @@ GLOBAL_INPUTS = {
 # Inputs read by build scripts outside their package's directory.
 EXTERNAL_INPUTS = {
     "python/extractor/tsg-python/tsp/src/": "python/extractor/yeast-python",
+    "misc/bazel/": "rust/ast-generator",
+}
+
+AST_GENERATOR_INPUTS = {
+    "MODULE.bazel",
+    "MODULE.bazel.lock",
+    ".bazelrc",
+    ".bazelrc.internal",
+    ".bazelversion",
 }
 
 
@@ -70,6 +79,8 @@ def select(root, changed):
         for prefix, member in EXTERNAL_INPUTS.items():
             if path.startswith(prefix):
                 affected.add(member)
+        if path in AST_GENERATOR_INPUTS:
+            affected.add("rust/ast-generator")
         # A nested member owns its files, not its containing package.
         for member in members:
             if path.startswith(member + "/"):

@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use std::process::Command;
 
 fn main() {
+    println!("cargo:rerun-if-env-changed=SWIFT_SYNTAX_RS_CHECK_ONLY");
     let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
     let swift_dir = manifest_dir.join("swift");
 
@@ -19,6 +20,12 @@ fn main() {
         manifest_dir.join(".swift-version"),
     ] {
         println!("cargo:rerun-if-changed={}", input.display());
+    }
+
+    // Cargo check and Clippy do not link the native shim.
+    if env::var("SWIFT_SYNTAX_RS_CHECK_ONLY").as_deref() == Ok("1") {
+        println!("cargo:warning=skipping the Swift FFI build (SWIFT_SYNTAX_RS_CHECK_ONLY=1)");
+        return;
     }
 
     // Build the Swift FFI package as a release dynamic library.

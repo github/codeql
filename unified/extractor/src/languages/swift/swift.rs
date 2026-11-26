@@ -1076,10 +1076,7 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
                 pattern: (identifier #{name})
                 value: {
                     // Expand [x] into [x = x]
-                    match val {
-                        Some(val) => val,
-                        None => tree!((identifier #{name})),
-                    }
+                    val.unwrap_or_else(|| tree!((identifier #{name})))
                 })
         ),
         // A closure parameter clause (`(x: Int, y)`) unwraps to its parameters.

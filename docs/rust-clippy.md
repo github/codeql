@@ -10,6 +10,8 @@ the deepest matching workspace member. All files in a package count, not just
 Rust source: build scripts, templates and native parser sources can affect Rust
 compilation. The Python parser sources outside `yeast-python` are mapped
 explicitly in `misc/scripts/cargo-clippy/select_packages.py`.
+The Bazel module and setup files also affect `ast-generator`, whose injected
+rust-analyzer sources are obtained through Bazel.
 
 Selection follows reverse first-party path dependencies transitively, including
 build, development and target-specific dependencies. Changing workspace
@@ -26,8 +28,9 @@ linted. Cargo's registry, git dependencies and target directory are cached by
 platform, toolchain and lockfile, with a new entry per revision. Cargo fingerprints
 invalidate changed inputs. Superseded runs on the same PR are cancelled.
 Only selection containing `ast-generator` runs its Bazel source-injection step.
-The Swift wrapper's existing build script runs normally, including reporting
-native Swift build failures.
+Clippy sets `SWIFT_SYNTAX_RS_CHECK_ONLY=1` to avoid building the native Swift shim:
+it checks the Rust wrapper and build script but does not link native code.
+Normal builds and tests still build and link Swift.
 
 Run the selector tests with:
 

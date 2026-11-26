@@ -45,6 +45,11 @@ class SelectionTests(unittest.TestCase):
             ["yeast-python"],
         )
 
+    def test_ast_generator_source_injection_inputs(self):
+        for path in ["MODULE.bazel", ".bazelversion", "misc/bazel/runfiles.sh"]:
+            with self.subTest(path=path):
+                self.assertEqual(select(ROOT, [path]), ["ast-generator"])
+
     def test_global_configuration_and_selector(self):
         packages, _ = workspace(ROOT)
         expected = sorted(p["package"]["name"] for p in packages.values())
