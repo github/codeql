@@ -32,6 +32,7 @@ class Test {
 			{
 				// BAD: foo is an unknown algorithm that may not be secure
 				secretKeySpec = new SecretKeySpec(byteKey, "foo"); // $ Alert[java/potentially-weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWITHSHA1ANDRC2_40"); // $ Alert[java/potentially-weak-cryptographic-algorithm]
 			}
 
 			// GOOD: GCM is a strong algorithm
@@ -48,6 +49,30 @@ class Test {
 				cipher = Cipher.getInstance("aes/cbc/pkcs5padding"); // $ Alert[java/weak-cryptographic-algorithm]
 				cipher = Cipher.getInstance("AES/cbc/Pkcs5Padding"); // $ Alert[java/weak-cryptographic-algorithm]
 			}
+			{
+				// BAD: Triple DES (3TDEA) and Skipjack are disallowed by NIST SP 800-131A Rev. 2
+				cipher = Cipher.getInstance("DESede/CBC/PKCS5Padding"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("DESEDE"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("DESedeRFC3211Wrap"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("DESEDERFC3211WRAP"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("desederfc3211wrap"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("DESedeRFC3217Wrap"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWithSHA1AndDESedE"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWITHSHA1ANDDESEDE"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("pbewithsha1anddesede"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWITHMD5ANDTRIPLEDES"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("PBEWITHSHAAND3-KEYTRIPLEDES-CBC"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("pbewithshaand3-keytripledes-cbc"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("TripleDES"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("3DES"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("SKIPJACK"); // $ Alert[java/weak-cryptographic-algorithm]
+				cipher = Cipher.getInstance("Skipjack"); // $ Alert[java/weak-cryptographic-algorithm]
+			}
+			// GOOD: ChaCha20 and ChaCha20-Poly1305 are strong modern algorithms
+			keyGenerator = KeyGenerator.getInstance("ChaCha20");
+			cipher = Cipher.getInstance("ChaCha20-Poly1305");
+			cipher = Cipher.getInstance("ChaCha20Poly1305");
+
 			// GOOD: ECIES is a strong algorithm
 			cipher = Cipher.getInstance("ECIES");
 			cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
