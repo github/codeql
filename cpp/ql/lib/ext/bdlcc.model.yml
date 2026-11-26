@@ -1,0 +1,31 @@
+# BDE single-element concurrent queue operations (C++11 reference overloads).
+# https://github.com/bloomberg/bde/tree/ec310b87e008199ecbdbc00a0b0264a53d806a0a/groups/bdl/bdlcc
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data:
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "pushBack", "(const T &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "pushBack", "(T &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "pushFront", "(const T &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "pushFront", "(T &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "forcePushBack", "(const T &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "forcePushBack", "(T &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "forcePushFront", "(const T &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "forcePushFront", "(T &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "tryPushBack", "(const T &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "tryPushBack", "(T &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "popBack", "(T *)", "", "Argument[-1].Element[@]", "Argument[*@0]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "popFront", "(T *)", "", "Argument[-1].Element[@]", "Argument[*@0]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "tryPopBack", "(T *)", "", "Argument[-1].Element[@]", "Argument[*@0]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque<T>", False, "tryPopFront", "(T *)", "", "Argument[-1].Element[@]", "Argument[*@0]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "BoundedQueue<T>", False, "pushBack", "(const T &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "BoundedQueue<T>", False, "pushBack", "(T &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "BoundedQueue<T>", False, "tryPushBack", "(const T &)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "BoundedQueue<T>", False, "tryPushBack", "(T &&)", "", "Argument[*@0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "BoundedQueue<T>", False, "popFront", "(T *)", "", "Argument[-1].Element[@]", "Argument[*@0]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "BoundedQueue<T>", False, "tryPopFront", "(T *)", "", "Argument[-1].Element[@]", "Argument[*@0]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque", False, "popBack", "", "", "Argument[-1].Element[]", "ReturnValue", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque", False, "popFront", "", "", "Argument[-1].Element[]", "ReturnValue", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque", False, "popBack", "", "", "Argument[-1].Element[*@]", "ReturnValue[*@]", "value", "manual"]
+      - ["BloombergLP::bdlcc", "Deque", False, "popFront", "", "", "Argument[-1].Element[*@]", "ReturnValue[*@]", "value", "manual"]

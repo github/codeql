@@ -10897,8 +10897,21 @@ getSignatureParameterName
 | (Strtab *,const char *,size_t) |  | strtabadd | 2 | size_t |
 | (Strtab *,size_t *) |  | strtabfinalize | 0 | Strtab * |
 | (Strtab *,size_t *) |  | strtabfinalize | 1 | size_t * |
+| (T &&) | BoundedQueue<T> | pushBack | 0 | class:0 && |
+| (T &&) | BoundedQueue<T> | tryPushBack | 0 | class:0 && |
+| (T &&) | Deque<T> | forcePushBack | 0 | class:0 && |
+| (T &&) | Deque<T> | forcePushFront | 0 | class:0 && |
+| (T &&) | Deque<T> | pushBack | 0 | class:0 && |
+| (T &&) | Deque<T> | pushFront | 0 | class:0 && |
+| (T &&) | Deque<T> | tryPushBack | 0 | class:0 && |
+| (T *) | BoundedQueue<T> | popFront | 0 | class:0 * |
+| (T *) | BoundedQueue<T> | tryPopFront | 0 | class:0 * |
 | (T *) | ComPtr | ComPtr<T> | 0 | func:0 * |
 | (T *) | ComPtr<T> | operator= | 0 | class:0 * |
+| (T *) | Deque<T> | popBack | 0 | class:0 * |
+| (T *) | Deque<T> | popFront | 0 | class:0 * |
+| (T *) | Deque<T> | tryPopBack | 0 | class:0 * |
+| (T *) | Deque<T> | tryPopFront | 0 | class:0 * |
 | (T **) | ComPtr | CopyTo<T> | 0 | func:0 ** |
 | (T **) | ComPtr<T> | CopyTo | 0 | class:0 ** |
 | (TLS_FEATURE *) |  | TLS_FEATURE_free | 0 | TLS_FEATURE * |
@@ -16102,6 +16115,13 @@ getSignatureParameterName
 | (const SXNETID *,unsigned char **) |  | i2d_SXNETID | 0 | const SXNETID * |
 | (const SXNETID *,unsigned char **) |  | i2d_SXNETID | 1 | unsigned char ** |
 | (const StringRef &) | ByteInStream | reset | 0 | const StringRef & |
+| (const T &) | BoundedQueue<T> | pushBack | 0 | const class:0 & |
+| (const T &) | BoundedQueue<T> | tryPushBack | 0 | const class:0 & |
+| (const T &) | Deque<T> | forcePushBack | 0 | const class:0 & |
+| (const T &) | Deque<T> | forcePushFront | 0 | const class:0 & |
+| (const T &) | Deque<T> | pushBack | 0 | const class:0 & |
+| (const T &) | Deque<T> | pushFront | 0 | const class:0 & |
+| (const T &) | Deque<T> | tryPushBack | 0 | const class:0 & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 0 | const class:0 & |
 | (const T &,BOOL) | CComSafeArray<T> | Add | 1 | BOOL |
 | (const TS_ACCURACY *) |  | TS_ACCURACY_dup | 0 | const TS_ACCURACY * |
