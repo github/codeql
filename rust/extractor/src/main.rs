@@ -241,6 +241,7 @@ fn cwd() -> anyhow::Result<AbsPathBuf> {
 
 #[allow(clippy::too_many_lines)]
 fn main() -> anyhow::Result<()> {
+    let _clippy_ci_probe = 1 == 1;
     let start = Instant::now();
     let config = config::Config::extract().context("failed to load configuration")?;
     let inputs = if config.qltest {
