@@ -14,6 +14,7 @@ codeql_rust_binary(
     deps = all_crate_deps(
         normal = True,
     ) + [
+        "//shared/extractor-common",
         "//shared/tree-sitter-extractor",
     ],
 )

@@ -34,6 +34,7 @@ serde = "1.0.229"
 serde_with = "3.24.0"
 triomphe = "0.1.17"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
+extractor-common = { path = "../../shared/extractor-common" }
 rust-extractor-macros = { path = "macros" }
 itertools = "0.15.0"
 glob = "0.3.4"

@@ -3,6 +3,7 @@ name: Test tree-sitter-extractor
 on:
   push:
     paths: &tree_sitter_paths
+      - "shared/extractor-common/**"
       - "shared/tree-sitter-extractor/**"
       - Cargo.toml
       - Cargo.lock
@@ -33,18 +34,18 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Check formatting
-        run: cargo fmt -- --check
+        run: cargo fmt -p extractor-common -p codeql-extractor -- --check
       - name: Run tests
-        run: cargo test --verbose
+        run: cargo test -p extractor-common -p codeql-extractor --verbose
   fmt:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Check formatting
-        run: cargo fmt --check
+        run: cargo fmt -p extractor-common -p codeql-extractor --check
   clippy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - name: Run clippy
-        run: cargo clippy -- --no-deps -D warnings
+        run: cargo clippy -p extractor-common -p codeql-extractor --no-deps -- -D warnings

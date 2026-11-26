@@ -13,6 +13,7 @@ rust_library(
         "src/generator/prefix.dbscheme",
     ],
     deps = all_crate_deps() + [
+        "//shared/extractor-common",
         "//shared/yeast",
     ],
 )
