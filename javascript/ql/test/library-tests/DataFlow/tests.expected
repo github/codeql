@@ -32,23 +32,28 @@ basicBlock
 | arguments.js:2:16:2:16 | x | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:3:13:3:20 | firstArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:3:13:3:24 | firstArg = x | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:3:24:3:24 | [ssa-read] x | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:3:24:3:24 | x | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:13:4:24 | alsoFirstArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:13:4:39 | alsoFir ... ents[0] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:4:28:4:36 | [ssa-read] arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:28:4:36 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:28:4:39 | arguments[0] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:4:38:4:38 | 0 | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:13:5:21 | secondArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:13:5:36 | secondA ... ents[1] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:5:25:5:33 | [ssa-read] arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:25:5:33 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:25:5:36 | arguments[1] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:5:35:5:35 | 1 | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:6:13:6:16 | args | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:6:13:6:16 | args | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:6:13:6:28 | args = arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:6:20:6:28 | [ssa-read] arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:6:20:6:28 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:7:13:7:20 | thirdArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:7:13:7:30 | thirdArg = args[2] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:7:24:7:27 | [ssa-read] args | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:7:24:7:27 | args | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:7:24:7:30 | args[2] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:7:29:7:29 | 2 | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
@@ -58,9 +63,11 @@ basicBlock
 | arguments.js:8:21:8:22 | {} | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:9:13:9:23 | notFirstArg | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:9:13:9:38 | notFirs ... ents[0] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:9:27:9:35 | [ssa-read] arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:9:27:9:35 | arguments | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:9:27:9:38 | arguments[0] | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
 | arguments.js:9:37:9:37 | 0 | arguments.js:2:5:2:4 | entry node of functio ... ;\\n    } |
+| arguments.js:11:5:11:5 | [ssa-read] f | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:11:5:11:5 | f | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:11:5:11:14 | exceptional return of f(1, 2, 3) | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
 | arguments.js:11:5:11:14 | f(1, 2, 3) | arguments.js:1:2:1:1 | entry node of functio ... , 3);\\n} |
@@ -82,6 +89,7 @@ basicBlock
 | eval.js:3:3:3:16 | eval("x = 23") | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:3:3:3:16 | exceptional return of eval("x = 23") | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:3:8:3:15 | "x = 23" | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
+| eval.js:4:3:4:3 | [ssa-read] x | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | eval.js:4:3:4:3 | x | eval.js:1:1:1:0 | entry node of functio ... eval`\\n} |
 | sources.js:1:1:1:0 | this | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:1:1:1:12 | exceptional return of new (x => x) | sources.js:1:1:1:0 | entry node of <toplevel> |
@@ -93,6 +101,7 @@ basicBlock
 | sources.js:1:6:1:11 | exceptional return of anonymous function | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:6:1:11 | return of anonymous function | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:6:1:11 | x => x | sources.js:1:1:1:0 | entry node of <toplevel> |
+| sources.js:1:11:1:11 | [ssa-read] x | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:1:11:1:11 | x | sources.js:1:6:1:5 | entry node of x => x |
 | sources.js:3:1:5:2 | (functi ... +19;\\n}) | sources.js:1:1:1:0 | entry node of <toplevel> |
 | sources.js:3:1:5:6 | (functi ... \\n})(23) | sources.js:1:1:1:0 | entry node of <toplevel> |
@@ -104,6 +113,7 @@ basicBlock
 | sources.js:3:2:5:1 | return of anonymous function | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:3:11:3:11 | x | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:3:11:3:11 | x | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
+| sources.js:4:10:4:10 | [ssa-read] x | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:4:10:4:10 | x | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:4:10:4:13 | x+19 | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
 | sources.js:4:12:4:13 | 19 | sources.js:3:2:3:1 | entry node of functio ... x+19;\\n} |
@@ -120,7 +130,9 @@ basicBlock
 | sources.js:10:12:10:14 | key | sources.js:10:8:10:14 | let key |
 | sources.js:10:12:10:14 | key | sources.js:10:8:10:14 | let key |
 | sources.js:10:12:10:14 | key | sources.js:10:8:10:14 | let key |
+| sources.js:10:19:10:23 | [ssa-read] array | sources.js:9:1:9:0 | entry node of functio ... ey; }\\n} |
 | sources.js:10:19:10:23 | array | sources.js:9:1:9:0 | entry node of functio ... ey; }\\n} |
+| sources.js:10:28:10:30 | [ssa-read] key | sources.js:10:8:10:14 | let key |
 | sources.js:10:28:10:30 | key | sources.js:10:8:10:14 | let key |
 | sources.js:11:12:11:18 | { key } | sources.js:11:8:11:18 | let { key } |
 | sources.js:11:12:11:18 | { key } | sources.js:11:8:11:18 | let { key } |
@@ -129,7 +141,9 @@ basicBlock
 | sources.js:11:14:11:16 | key | sources.js:11:8:11:18 | let { key } |
 | sources.js:11:14:11:16 | key | sources.js:11:8:11:18 | let { key } |
 | sources.js:11:14:11:16 | key | sources.js:11:8:11:18 | let { key } |
+| sources.js:11:23:11:27 | [ssa-read] array | sources.js:11:23:11:27 | array |
 | sources.js:11:23:11:27 | array | sources.js:11:23:11:27 | array |
+| sources.js:11:32:11:34 | [ssa-read] key | sources.js:11:8:11:18 | let { key } |
 | sources.js:11:32:11:34 | key | sources.js:11:8:11:18 | let { key } |
 | tst2.ts:1:1:1:0 | A | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:1:1:1:0 | this | tst2.ts:1:1:1:0 | entry node of <toplevel> |
@@ -141,9 +155,11 @@ basicBlock
 | tst2.ts:2:14:2:14 | x | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:2:14:2:19 | x = 42 | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:2:18:2:19 | 42 | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:3:3:3:6 | [ssa-read] setX | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:3:3:3:6 | setX | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:3:3:3:8 | exceptional return of setX() | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:3:3:3:8 | setX() | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:4:3:4:3 | [ssa-read] x | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:4:3:4:3 | x | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:7:1:7:0 | A | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
 | tst2.ts:7:1:7:0 | this | tst2.ts:7:1:7:0 | entry node of functio ... = 23;\\n} |
@@ -171,6 +187,8 @@ basicBlock
 | tst2.ts:13:39:13:38 | (...arg ... rgs); } | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst2.ts:13:39:13:38 | ...args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | [function self-reference] (...arg ... rgs); } | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
+| tst2.ts:13:39:13:38 | [ssa-read] args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
+| tst2.ts:13:39:13:38 | [ssa-read] super | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
@@ -205,32 +223,43 @@ basicBlock
 | tst.js:4:9:4:12 | "hi" | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:5:5:5:5 | z | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:5:5:5:5 | z | tst.js:1:1:1:0 | entry node of <toplevel> |
+| tst.js:7:1:7:2 | [ssa-read] fs | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:7:1:7:2 | fs | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:8:1:8:1 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:9:1:9:3 | (x) | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:9:2:9:2 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:10:1:10:1 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:10:1:10:4 | x, y | tst.js:1:1:1:0 | entry node of <toplevel> |
+| tst.js:10:4:10:4 | [ssa-read] y | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:10:4:10:4 | y | tst.js:1:1:1:0 | entry node of <toplevel> |
+| tst.js:11:1:11:1 | [ssa-synth-read] y | tst.js:11:1:11:1 | guard: x is false |
 | tst.js:11:1:11:1 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:11:1:11:1 | x | tst.js:11:1:11:1 | guard: x is false |
 | tst.js:11:1:11:1 | x | tst.js:11:1:11:1 | guard: x is true |
 | tst.js:11:1:11:6 | x && y | tst.js:1:1:1:0 | entry node of <toplevel> |
+| tst.js:11:6:11:6 | [ssa-read] y | tst.js:11:1:11:1 | guard: x is true |
 | tst.js:11:6:11:6 | y | tst.js:11:1:11:1 | guard: x is true |
+| tst.js:12:1:12:1 | [ssa-synth-read] y | tst.js:12:1:12:1 | guard: x is true |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:1 | guard: x is false |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:1 | guard: x is true |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:7 | x \|\| y; |
 | tst.js:12:1:12:6 | x \|\| y | tst.js:12:1:12:7 | x \|\| y; |
+| tst.js:12:1:12:7 | [ssa-synth-read] y | tst.js:12:1:12:7 | x \|\| y; |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:7 | x \|\| y; |
+| tst.js:12:6:12:6 | [ssa-read] y | tst.js:12:1:12:1 | guard: x is false |
 | tst.js:12:6:12:6 | y | tst.js:12:1:12:1 | guard: x is false |
 | tst.js:13:1:13:1 | z | tst.js:13:1:13:6 | z = y; |
 | tst.js:13:1:13:1 | z | tst.js:13:1:13:6 | z = y; |
 | tst.js:13:1:13:5 | z = y | tst.js:13:1:13:6 | z = y; |
 | tst.js:13:1:13:6 | x | tst.js:13:1:13:6 | z = y; |
+| tst.js:13:5:13:5 | [ssa-read] y | tst.js:13:1:13:6 | z = y; |
 | tst.js:13:5:13:5 | y | tst.js:13:1:13:6 | z = y; |
+| tst.js:14:1:14:1 | [ssa-read] z | tst.js:13:1:13:6 | z = y; |
 | tst.js:14:1:14:1 | z | tst.js:13:1:13:6 | z = y; |
 | tst.js:14:1:14:9 | z ? x : y | tst.js:13:1:13:6 | z = y; |
+| tst.js:14:5:14:5 | [ssa-synth-read] y | tst.js:14:1:14:1 | guard: z is true |
 | tst.js:14:5:14:5 | x | tst.js:14:1:14:1 | guard: z is true |
+| tst.js:14:9:14:9 | [ssa-read] y | tst.js:14:1:14:1 | guard: z is false |
 | tst.js:14:9:14:9 | y | tst.js:14:1:14:1 | guard: z is false |
 | tst.js:16:1:20:2 | (functi ...  "";\\n}) | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:16:1:20:9 | (functi ... ("arg") | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -250,6 +279,7 @@ basicBlock
 | tst.js:17:7:17:25 | Math.random() > 0.5 | tst.js:16:2:16:1 | entry node of functio ... n "";\\n} |
 | tst.js:17:12:17:17 | random | tst.js:16:2:16:1 | entry node of functio ... n "";\\n} |
 | tst.js:17:23:17:25 | 0.5 | tst.js:16:2:16:1 | entry node of functio ... n "";\\n} |
+| tst.js:18:12:18:12 | [ssa-read] a | tst.js:17:7:17:25 | guard: Math.random() > 0.5 is true |
 | tst.js:18:12:18:12 | a | tst.js:17:7:17:25 | guard: Math.random() > 0.5 is true |
 | tst.js:19:10:19:11 | "" | tst.js:17:7:17:25 | guard: Math.random() > 0.5 is false |
 | tst.js:20:4:20:8 | "arg" | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -260,7 +290,9 @@ basicBlock
 | tst.js:22:7:22:18 | readFileSync | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:22:7:22:18 | readFileSync | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:22:7:22:18 | readFileSync | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:22:24:22:25 | [ssa-read] fs | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:22:24:22:25 | fs | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:23:1:23:12 | [ssa-read] readFileSync | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:23:1:23:12 | readFileSync | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:25:1:25:3 | ++x | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:25:3:25:3 | x | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -285,6 +317,7 @@ basicBlock
 | tst.js:32:10:32:10 | g | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:32:12:32:12 | b | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
 | tst.js:33:10:33:10 | x | tst.js:32:1:32:0 | entry node of functio ... ables\\n} |
+| tst.js:35:1:35:1 | [ssa-read] g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:35:1:35:1 | g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:35:1:35:7 | exceptional return of g(true) | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:35:1:35:7 | g(true) | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -305,10 +338,13 @@ basicBlock
 | tst.js:39:4:41:3 | [function self-reference] () {\\n    this;\\n  } | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:39:4:41:3 | exceptional return of method m | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:39:4:41:3 | return of method m | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
+| tst.js:40:5:40:8 | [ssa-read] this | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
 | tst.js:40:5:40:8 | this | tst.js:39:4:39:3 | entry node of () {\\n    this;\\n  } |
+| tst.js:43:1:43:1 | [ssa-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:43:1:43:1 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:43:1:43:3 | o.x | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:43:3:43:3 | x | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:44:1:44:1 | [ssa-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:1:44:1 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:1:44:3 | o.m | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:44:1:44:5 | exceptional return of o.m() | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -330,12 +366,14 @@ basicBlock
 | tst.js:50:14:53:3 | [function self-reference] () {\\n   ... et`\\n  } | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | exceptional return of constructor of class A | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:50:14:53:3 | return of constructor of class A | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
+| tst.js:51:5:51:9 | [ssa-read] super | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:9 | super | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:13 | exceptional return of super(42) | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:5:51:13 | super(42) | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:51:11:51:12 | 42 | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:52:5:52:14 | new.target | tst.js:50:14:50:13 | entry node of () {\\n   ... et`\\n  } |
 | tst.js:55:1:55:1 | A | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:55:1:55:1 | [ssa-read] A | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:57:1:57:9 | `x: ${x}` | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:57:2:57:4 | x:  | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:57:7:57:7 | x | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -344,13 +382,17 @@ basicBlock
 | tst.js:58:5:58:13 | `x: ${x}` | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:58:6:58:8 | x:  | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:58:11:58:11 | x | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:60:1:60:1 | [ssa-read] g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:60:1:60:1 | g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:1:61:5 | ::o.m | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:61:3:61:3 | [ssa-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:3:61:3 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:3:61:5 | o.m | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:61:5:61:5 | m | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:62:1:62:1 | [ssa-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:62:1:62:1 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:62:1:62:4 | o::g | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:62:4:62:4 | [ssa-read] g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:62:4:62:4 | g | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:64:1:64:0 | this | tst.js:64:1:64:0 | entry node of functio ... lysed\\n} |
 | tst.js:64:1:67:1 | [function self-reference] functio ... lysed\\n} | tst.js:64:1:64:0 | entry node of functio ... lysed\\n} |
@@ -367,9 +409,11 @@ basicBlock
 | tst.js:68:5:68:8 | iter | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:68:5:68:8 | iter | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:68:5:68:14 | iter = h() | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:68:12:68:12 | [ssa-read] h | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:68:12:68:12 | h | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:68:12:68:14 | exceptional return of h() | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:68:12:68:14 | h() | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:69:1:69:4 | [ssa-read] iter | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:69:1:69:4 | iter | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:69:1:69:9 | iter.next | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:69:1:69:13 | exceptional return of iter.next(23) | tst.js:16:1:20:10 | (functi ... "arg"); |
@@ -393,12 +437,16 @@ basicBlock
 | tst.js:77:10:77:10 | i | tst.js:77:6:77:10 | let i |
 | tst.js:77:10:77:10 | i | tst.js:77:6:77:10 | let i |
 | tst.js:77:10:77:10 | i | tst.js:77:6:77:10 | let i |
+| tst.js:77:15:77:15 | [ssa-read] o | tst.js:16:1:20:10 | (functi ... "arg"); |
 | tst.js:77:15:77:15 | o | tst.js:16:1:20:10 | (functi ... "arg"); |
+| tst.js:78:3:78:3 | [ssa-read] i | tst.js:77:6:77:10 | let i |
 | tst.js:78:3:78:3 | i | tst.js:77:6:77:10 | let i |
 | tst.js:80:10:80:10 | v | tst.js:80:6:80:10 | let v |
 | tst.js:80:10:80:10 | v | tst.js:80:6:80:10 | let v |
 | tst.js:80:10:80:10 | v | tst.js:80:6:80:10 | let v |
+| tst.js:80:15:80:15 | [ssa-read] o | tst.js:80:15:80:15 | o |
 | tst.js:80:15:80:15 | o | tst.js:80:15:80:15 | o |
+| tst.js:81:3:81:3 | [ssa-read] v | tst.js:80:6:80:10 | let v |
 | tst.js:81:3:81:3 | v | tst.js:80:6:80:10 | let v |
 | tst.js:83:5:83:7 | vs1 | tst.js:83:1:83:29 | var vs1 ... o) v ]; |
 | tst.js:83:5:83:28 | vs1 = [ ...  o) v ] | tst.js:83:5:83:28 | vs1 = [ ...  o) v ] |
@@ -406,7 +454,9 @@ basicBlock
 | tst.js:83:13:83:24 | for (v of o) | tst.js:83:1:83:29 | var vs1 ... o) v ]; |
 | tst.js:83:18:83:18 | v | tst.js:83:18:83:18 | v |
 | tst.js:83:18:83:18 | v | tst.js:83:18:83:18 | v |
+| tst.js:83:23:83:23 | [ssa-read] o | tst.js:83:1:83:29 | var vs1 ... o) v ]; |
 | tst.js:83:23:83:23 | o | tst.js:83:1:83:29 | var vs1 ... o) v ]; |
+| tst.js:83:26:83:26 | [ssa-read] v | tst.js:83:18:83:18 | v |
 | tst.js:83:26:83:26 | v | tst.js:83:18:83:18 | v |
 | tst.js:85:5:85:7 | vs2 | tst.js:83:5:83:28 | vs1 = [ ...  o) v ] |
 | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
@@ -414,7 +464,9 @@ basicBlock
 | tst.js:85:13:85:24 | for (v of o) | tst.js:83:5:83:28 | vs1 = [ ...  o) v ] |
 | tst.js:85:18:85:18 | v | tst.js:85:18:85:18 | v |
 | tst.js:85:18:85:18 | v | tst.js:85:18:85:18 | v |
+| tst.js:85:23:85:23 | [ssa-read] o | tst.js:83:5:83:28 | vs1 = [ ...  o) v ] |
 | tst.js:85:23:85:23 | o | tst.js:83:5:83:28 | vs1 = [ ...  o) v ] |
+| tst.js:85:26:85:26 | [ssa-read] v | tst.js:85:18:85:18 | v |
 | tst.js:85:26:85:26 | v | tst.js:85:18:85:18 | v |
 | tst.js:87:1:92:2 | (functi ... + z;\\n}) | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:87:1:96:2 | (functi ... r: 0\\n}) | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
@@ -440,6 +492,7 @@ basicBlock
 | tst.js:88:9:88:12 | q: y | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:88:12:88:12 | y | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:88:12:88:12 | y | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
+| tst.js:88:18:88:18 | [ssa-read] o | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:88:18:88:18 | o | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:89:7:89:7 | z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:89:7:89:7 | z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
@@ -451,11 +504,15 @@ basicBlock
 | tst.js:90:6:90:9 | r: z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:90:9:90:9 | z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:90:9:90:9 | z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
+| tst.js:90:15:90:15 | [ssa-read] o | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:90:15:90:15 | o | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
+| tst.js:91:10:91:10 | [ssa-read] x | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:91:10:91:10 | x | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:91:10:91:14 | x + y | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:91:10:91:18 | x + y + z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
+| tst.js:91:14:91:14 | [ssa-read] y | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:91:14:91:14 | y | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
+| tst.js:91:18:91:18 | [ssa-read] z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:91:18:91:18 | z | tst.js:87:2:87:1 | entry node of functio ...  + z;\\n} |
 | tst.js:92:4:96:1 | {\\n  p:  ...  r: 0\\n} | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:93:3:93:3 | p | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
@@ -490,6 +547,7 @@ basicBlock
 | tst.js:99:9:99:9 | y | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:99:9:99:9 | y | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:99:9:99:9 | y | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
+| tst.js:99:15:99:18 | [ssa-read] rest | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:99:15:99:18 | rest | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:100:7:100:7 | z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:100:7:100:7 | z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
@@ -498,11 +556,15 @@ basicBlock
 | tst.js:101:7:101:7 | z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:101:7:101:7 | z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:101:7:101:7 | z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
+| tst.js:101:13:101:16 | [ssa-read] rest | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:101:13:101:16 | rest | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
+| tst.js:102:10:102:10 | [ssa-read] x | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:102:10:102:10 | x | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:102:10:102:14 | x + y | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:102:10:102:18 | x + y + z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
+| tst.js:102:14:102:14 | [ssa-read] y | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:102:14:102:14 | y | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
+| tst.js:102:18:102:18 | [ssa-read] z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:102:18:102:18 | z | tst.js:98:2:98:1 | entry node of functio ...  + z;\\n} |
 | tst.js:103:4:103:16 | [ 19, 23, 0 ] | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:103:6:103:7 | 19 | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
@@ -513,6 +575,7 @@ basicBlock
 | tst.js:103:14:103:14 | 0 | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:105:1:105:1 | x | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
 | tst.js:105:1:105:6 | x ?? y | tst.js:85:5:85:28 | vs2 = ( ...  o) v ) |
+| tst.js:105:6:105:6 | [ssa-read] y | tst.js:105:6:105:6 | y |
 | tst.js:105:6:105:6 | y | tst.js:105:6:105:6 | y |
 | tst.js:107:1:113:2 | (functi ... v2c;\\n}) | tst.js:107:1:113:3 | (functi ... 2c;\\n}); |
 | tst.js:107:2:107:1 | this | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
@@ -540,10 +603,13 @@ basicBlock
 | tst.js:108:23:108:31 | v1c = o1c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:108:29:108:31 | o1c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:108:36:108:38 | o1d | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
+| tst.js:109:2:109:4 | [ssa-read] v1a | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:109:2:109:4 | v1a | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:109:2:109:10 | v1a + v1b | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:109:2:109:16 | v1a + v1b + v1c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
+| tst.js:109:8:109:10 | [ssa-read] v1b | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:109:8:109:10 | v1b | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
+| tst.js:109:14:109:16 | [ssa-read] v1c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:109:14:109:16 | v1c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:111:6:111:32 | [v2a, v ...  = o2c] | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:111:6:111:38 | [v2a, v ... ] = o2d | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
@@ -559,10 +625,13 @@ basicBlock
 | tst.js:111:23:111:25 | v2c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:111:29:111:31 | o2c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:111:36:111:38 | o2d | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
+| tst.js:112:2:112:4 | [ssa-read] v2a | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:112:2:112:4 | v2a | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:112:2:112:10 | v2a + v2b | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:112:2:112:16 | v2a + v2b + v2c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
+| tst.js:112:8:112:10 | [ssa-read] v2b | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:112:8:112:10 | v2b | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
+| tst.js:112:14:112:16 | [ssa-read] v2c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:112:14:112:16 | v2c | tst.js:107:2:107:1 | entry node of functio ...  v2c;\\n} |
 | tst.js:115:1:115:5 | Array | tst.js:107:1:113:3 | (functi ... 2c;\\n}); |
 | tst.js:115:1:115:10 | Array.call | tst.js:107:1:113:3 | (functi ... 2c;\\n}); |
@@ -947,8 +1016,6 @@ enclosingExpr
 flowStep
 | arguments.js:1:2:12:1 | functio ... , 3);\\n} | arguments.js:1:1:12:2 | (functi ...  3);\\n}) |
 | arguments.js:2:5:2:4 | arguments | arguments.js:4:28:4:36 | arguments |
-| arguments.js:2:5:2:4 | arguments | arguments.js:5:25:5:33 | arguments |
-| arguments.js:2:5:2:4 | arguments | arguments.js:6:20:6:28 | arguments |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:4:28:4:36 | arguments |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:5:25:5:33 | arguments |
 | arguments.js:2:5:10:5 | 'arguments' object of function f | arguments.js:6:20:6:28 | arguments |
@@ -958,6 +1025,10 @@ flowStep
 | arguments.js:2:14:2:14 | f | arguments.js:11:5:11:5 | f |
 | arguments.js:2:16:2:16 | x | arguments.js:2:16:2:16 | x |
 | arguments.js:2:16:2:16 | x | arguments.js:3:24:3:24 | x |
+| arguments.js:4:28:4:36 | [post update] arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:4:28:4:36 | arguments | arguments.js:5:25:5:33 | arguments |
+| arguments.js:5:25:5:33 | [post update] arguments | arguments.js:6:20:6:28 | arguments |
+| arguments.js:5:25:5:33 | arguments | arguments.js:6:20:6:28 | arguments |
 | arguments.js:6:13:6:16 | args | arguments.js:7:24:7:27 | args |
 | arguments.js:6:20:6:28 | arguments | arguments.js:6:13:6:16 | args |
 | arguments.js:8:9:8:17 | arguments | arguments.js:9:27:9:35 | arguments |
@@ -978,8 +1049,8 @@ flowStep
 | sources.js:5:4:5:5 | 23 | sources.js:3:11:3:11 | x |
 | sources.js:9:14:9:18 | array | sources.js:9:14:9:18 | array |
 | sources.js:9:14:9:18 | array | sources.js:10:19:10:23 | array |
-| sources.js:9:14:9:18 | array | sources.js:11:23:11:27 | array |
 | sources.js:10:12:10:14 | key | sources.js:10:28:10:30 | key |
+| sources.js:10:19:10:23 | array | sources.js:11:23:11:27 | array |
 | sources.js:11:14:11:16 | key | sources.js:11:14:11:16 | key |
 | sources.js:11:14:11:16 | key | sources.js:11:32:11:34 | key |
 | tst2.ts:1:1:1:0 | A | tst2.ts:1:18:1:18 | A |
@@ -1004,7 +1075,6 @@ flowStep
 | tst.js:1:1:1:0 | x | tst.js:3:5:3:5 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:7:1:7:2 | fs |
-| tst.js:1:10:1:11 | fs | tst.js:22:24:22:25 | fs |
 | tst.js:3:5:3:5 | x | tst.js:3:5:3:5 | x |
 | tst.js:3:5:3:5 | x | tst.js:8:1:8:1 | x |
 | tst.js:3:5:3:5 | x | tst.js:9:2:9:2 | x |
@@ -1016,31 +1086,39 @@ flowStep
 | tst.js:3:5:3:5 | x | tst.js:32:1:32:0 | x |
 | tst.js:3:9:3:10 | 42 | tst.js:3:5:3:5 | x |
 | tst.js:4:5:4:5 | y | tst.js:10:4:10:4 | y |
-| tst.js:4:5:4:5 | y | tst.js:11:6:11:6 | y |
-| tst.js:4:5:4:5 | y | tst.js:12:6:12:6 | y |
-| tst.js:4:5:4:5 | y | tst.js:13:5:13:5 | y |
-| tst.js:4:5:4:5 | y | tst.js:14:9:14:9 | y |
-| tst.js:4:5:4:5 | y | tst.js:105:6:105:6 | y |
 | tst.js:4:9:4:12 | "hi" | tst.js:4:5:4:5 | y |
+| tst.js:7:1:7:2 | fs | tst.js:22:24:22:25 | fs |
 | tst.js:9:2:9:2 | x | tst.js:9:1:9:3 | (x) |
 | tst.js:10:4:10:4 | y | tst.js:10:1:10:4 | x, y |
+| tst.js:10:4:10:4 | y | tst.js:11:1:11:1 | [ssa-synth-read] y |
+| tst.js:10:4:10:4 | y | tst.js:11:6:11:6 | y |
+| tst.js:11:1:11:1 | [ssa-synth-read] y | tst.js:12:1:12:7 | [ssa-synth-read] y |
 | tst.js:11:1:11:1 | x | tst.js:12:1:12:7 | x |
 | tst.js:11:1:11:1 | x | tst.js:12:1:12:7 | x |
 | tst.js:11:6:11:6 | y | tst.js:11:1:11:6 | x && y |
+| tst.js:11:6:11:6 | y | tst.js:12:1:12:7 | [ssa-synth-read] y |
+| tst.js:12:1:12:1 | [ssa-synth-read] y | tst.js:13:5:13:5 | y |
 | tst.js:12:1:12:1 | x | tst.js:12:1:12:6 | x \|\| y |
 | tst.js:12:1:12:1 | x | tst.js:13:1:13:6 | x |
 | tst.js:12:1:12:1 | x | tst.js:13:1:13:6 | x |
+| tst.js:12:1:12:7 | [ssa-synth-read] y | tst.js:12:1:12:1 | [ssa-synth-read] y |
+| tst.js:12:1:12:7 | [ssa-synth-read] y | tst.js:12:6:12:6 | y |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:1 | x |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:1 | x |
 | tst.js:12:1:12:7 | x | tst.js:12:1:12:1 | x |
 | tst.js:12:6:12:6 | y | tst.js:12:1:12:6 | x \|\| y |
+| tst.js:12:6:12:6 | y | tst.js:13:5:13:5 | y |
 | tst.js:13:1:13:1 | z | tst.js:14:1:14:1 | z |
 | tst.js:13:1:13:6 | x | tst.js:14:5:14:5 | x |
 | tst.js:13:1:13:6 | x | tst.js:25:3:25:3 | x |
 | tst.js:13:5:13:5 | y | tst.js:13:1:13:1 | z |
 | tst.js:13:5:13:5 | y | tst.js:13:1:13:5 | z = y |
+| tst.js:13:5:13:5 | y | tst.js:14:5:14:5 | [ssa-synth-read] y |
+| tst.js:13:5:13:5 | y | tst.js:14:9:14:9 | y |
+| tst.js:14:5:14:5 | [ssa-synth-read] y | tst.js:105:6:105:6 | y |
 | tst.js:14:5:14:5 | x | tst.js:14:1:14:9 | z ? x : y |
 | tst.js:14:9:14:9 | y | tst.js:14:1:14:9 | z ? x : y |
+| tst.js:14:9:14:9 | y | tst.js:105:6:105:6 | y |
 | tst.js:16:2:20:1 | functio ... n "";\\n} | tst.js:16:1:20:2 | (functi ...  "";\\n}) |
 | tst.js:16:13:16:13 | a | tst.js:16:13:16:13 | a |
 | tst.js:16:13:16:13 | a | tst.js:18:12:18:12 | a |
@@ -1064,40 +1142,44 @@ flowStep
 | tst.js:32:1:32:0 | x | tst.js:33:10:33:10 | x |
 | tst.js:32:1:34:1 | functio ... ables\\n} | tst.js:32:10:32:10 | g |
 | tst.js:32:10:32:10 | g | tst.js:35:1:35:1 | g |
-| tst.js:32:10:32:10 | g | tst.js:60:1:60:1 | g |
-| tst.js:32:10:32:10 | g | tst.js:62:4:62:4 | g |
 | tst.js:33:10:33:10 | x | tst.js:32:1:34:1 | return of function g |
+| tst.js:35:1:35:1 | [post update] g | tst.js:60:1:60:1 | g |
+| tst.js:35:1:35:1 | g | tst.js:60:1:60:1 | g |
 | tst.js:37:5:37:5 | o | tst.js:43:1:43:1 | o |
-| tst.js:37:5:37:5 | o | tst.js:44:1:44:1 | o |
-| tst.js:37:5:37:5 | o | tst.js:61:3:61:3 | o |
-| tst.js:37:5:37:5 | o | tst.js:62:1:62:1 | o |
-| tst.js:37:5:37:5 | o | tst.js:77:15:77:15 | o |
-| tst.js:37:5:37:5 | o | tst.js:80:15:80:15 | o |
-| tst.js:37:5:37:5 | o | tst.js:83:23:83:23 | o |
-| tst.js:37:5:37:5 | o | tst.js:85:23:85:23 | o |
 | tst.js:37:9:42:1 | {\\n  x:  ... ;\\n  }\\n} | tst.js:37:5:37:5 | o |
 | tst.js:39:4:39:3 | this | tst.js:40:5:40:8 | this |
+| tst.js:43:1:43:1 | [post update] o | tst.js:44:1:44:1 | o |
+| tst.js:43:1:43:1 | o | tst.js:44:1:44:1 | o |
+| tst.js:44:1:44:1 | [post update] o | tst.js:61:3:61:3 | o |
+| tst.js:44:1:44:1 | o | tst.js:61:3:61:3 | o |
 | tst.js:46:10:46:11 | "" | tst.js:46:1:46:11 | global = "" |
 | tst.js:49:1:54:1 | class A ... `\\n  }\\n} | tst.js:49:7:49:7 | A |
 | tst.js:49:7:49:7 | A | tst.js:55:1:55:1 | A |
 | tst.js:50:14:50:13 | this | tst.js:51:5:51:9 | implicit 'this' |
+| tst.js:60:1:60:1 | g | tst.js:62:4:62:4 | g |
+| tst.js:61:3:61:3 | [post update] o | tst.js:62:1:62:1 | o |
+| tst.js:61:3:61:3 | o | tst.js:62:1:62:1 | o |
+| tst.js:62:1:62:1 | o | tst.js:77:15:77:15 | o |
 | tst.js:64:1:67:1 | functio ... lysed\\n} | tst.js:64:11:64:11 | h |
 | tst.js:64:11:64:11 | h | tst.js:68:12:68:12 | h |
 | tst.js:68:5:68:8 | iter | tst.js:69:1:69:4 | iter |
 | tst.js:68:12:68:14 | h() | tst.js:68:5:68:8 | iter |
 | tst.js:77:10:77:10 | i | tst.js:78:3:78:3 | i |
+| tst.js:77:15:77:15 | o | tst.js:80:15:80:15 | o |
 | tst.js:80:10:80:10 | v | tst.js:81:3:81:3 | v |
+| tst.js:80:15:80:15 | o | tst.js:83:23:83:23 | o |
 | tst.js:83:18:83:18 | v | tst.js:83:26:83:26 | v |
+| tst.js:83:23:83:23 | o | tst.js:85:23:85:23 | o |
 | tst.js:85:18:85:18 | v | tst.js:85:26:85:26 | v |
 | tst.js:87:2:92:1 | functio ...  + z;\\n} | tst.js:87:1:92:2 | (functi ... + z;\\n}) |
 | tst.js:87:13:87:16 | p: x | tst.js:87:16:87:16 | x |
 | tst.js:87:16:87:16 | x | tst.js:91:10:91:10 | x |
 | tst.js:87:22:87:22 | ...o | tst.js:87:22:87:22 | o |
 | tst.js:87:22:87:22 | o | tst.js:88:18:88:18 | o |
-| tst.js:87:22:87:22 | o | tst.js:90:15:90:15 | o |
 | tst.js:88:9:88:12 | q: y | tst.js:88:12:88:12 | y |
 | tst.js:88:12:88:12 | y | tst.js:91:14:91:14 | y |
 | tst.js:88:18:88:18 | o | tst.js:88:7:88:14 | { q: y } |
+| tst.js:88:18:88:18 | o | tst.js:90:15:90:15 | o |
 | tst.js:90:4:90:15 | { r: z } = o | tst.js:90:3:90:16 | ({ r: z } = o) |
 | tst.js:90:6:90:9 | r: z | tst.js:90:9:90:9 | z |
 | tst.js:90:9:90:9 | z | tst.js:91:18:91:18 | z |
@@ -1111,10 +1193,10 @@ flowStep
 | tst.js:98:13:98:13 | x | tst.js:102:10:102:10 | x |
 | tst.js:98:19:98:22 | ...rest | tst.js:98:19:98:22 | rest |
 | tst.js:98:19:98:22 | rest | tst.js:99:15:99:18 | rest |
-| tst.js:98:19:98:22 | rest | tst.js:101:13:101:16 | rest |
 | tst.js:99:9:99:9 | y | tst.js:99:9:99:9 | y |
 | tst.js:99:9:99:9 | y | tst.js:102:14:102:14 | y |
 | tst.js:99:15:99:18 | rest | tst.js:99:7:99:11 | [ y ] |
+| tst.js:99:15:99:18 | rest | tst.js:101:13:101:16 | rest |
 | tst.js:101:7:101:7 | z | tst.js:101:7:101:7 | z |
 | tst.js:101:7:101:7 | z | tst.js:102:18:102:18 | z |
 | tst.js:101:13:101:16 | rest | tst.js:101:3:101:9 | [ , z ] |

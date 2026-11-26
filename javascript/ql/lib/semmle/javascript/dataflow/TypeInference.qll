@@ -40,10 +40,10 @@ import internal.VariableTypeInference
  */
 class AnalyzedNode extends DataFlow::Node {
   /**
-   * Gets another data flow node whose value flows into this node in one local step
-   * (that is, not involving global variables).
+   * Gets a predecessor used for local value inference, without propagating
+   * reflective uncertainty out of reads in `with` statements.
    */
-  AnalyzedNode localFlowPred() { result = this.getAPredecessor() }
+  AnalyzedNode localFlowPred() { DataFlow::localFlowStepForTypeInference(result, this) }
 
   /**
    * Gets an abstract value that this node may evaluate to at runtime.

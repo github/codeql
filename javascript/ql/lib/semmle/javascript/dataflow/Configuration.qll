@@ -525,7 +525,12 @@ deprecated private predicate barrierGuardBlocksEdge(
     SsaVariable input, SsaPhiNode phi, BasicBlock bb, ConditionGuardNode cond, boolean outcome
   |
     bb = getADominatedBasicBlock(guard, cond) and
-    pred = DataFlow::ssaDefinitionNode(input) and
+    (
+      pred = DataFlow::ssaDefinitionNode(input)
+      or
+      pred = succ.getAPredecessor() and
+      pred.getBasicBlock() = bb
+    ) and
     succ = DataFlow::ssaDefinitionNode(phi) and
     input = phi.getInputFromBlock(bb) and
     outcome = cond.getOutcome() and

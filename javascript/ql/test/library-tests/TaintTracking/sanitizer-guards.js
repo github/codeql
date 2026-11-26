@@ -61,7 +61,7 @@ function phi() {
   } else {
     x = null;
   }
-  sink(x); // OK [INCONSISTENCY] - dataflow2 cannot block the phi edge
+  sink(x); // OK
 }
 
 function phi2() {
