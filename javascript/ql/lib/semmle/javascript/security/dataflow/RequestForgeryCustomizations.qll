@@ -88,8 +88,11 @@ module RequestForgery {
    * `https://example.com`, or a `URL` object, which is always absolute.
    */
   private predicate isAbsoluteUrl(DataFlow::Node nd) {
-    forex(DataFlow::SourceNode src | src = nd.getALocalSource() |
-      src instanceof UrlObject or src.getStringValue().regexpMatch("(?i)[a-z][a-z0-9+.-]*://.*")
+    forex(DataFlow::Node origin |
+      origin = nd.getAPredecessor*() and not exists(origin.getAPredecessor())
+    |
+      origin instanceof UrlObject or
+      origin.getStringValue().regexpMatch("(?i)[a-z][a-z0-9+.-]*://.*")
     )
   }
 

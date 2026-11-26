@@ -179,6 +179,15 @@ var server4 = http.createServer(function (req, res) {
 
     const target7 = new URL('HTTPS:path', input);
     axios.get(target7.toString()); // $ Alert[js/request-forgery]
+
+    // A concatenation in one branch must not be ignored when determining if the first argument is absolute.
+    const mixed = flag ? 'https://fixed.example' : '/assets/' + id;
+    const target8 = new URL(mixed, input);
+    axios.get(target8.toString()); // $ Alert[js/request-forgery]
+
+    // A constant concatenation of an absolute url will ignore the base argument.
+    const target9 = new URL('https://fixed.example' + '/path', input);
+    axios.get(target9.toString()); // Safe
 });
 
 // Tests for tainted 'base' argument using 'url' library.
