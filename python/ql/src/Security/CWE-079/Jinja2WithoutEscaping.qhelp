@@ -32,7 +32,7 @@ The second view is safe as <code>first_name</code> is escaped, so it is not vuln
 
 <references>
 <li>
-Jinja2: <a href="http://jinja.pocoo.org/docs/2.10/api/">API</a>.
+Jinja2: <a href="https://jinja.palletsprojects.com/en/stable/api/">API</a>.
 </li>
 <li>
 Wikipedia: <a href="https://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
