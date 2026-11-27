@@ -1,7 +1,9 @@
 use std::mem;
 
 use codeql_extractor::extractor::desugaring;
-use yeast::{ConcreteDesugarer, DesugaringConfig, Rule};
+use std::cell::RefCell;
+use std::rc::Rc;
+use yeast::{DesugaringConfig, Rule};
 
 yeast::tree_schema! {
     swift_tree,
@@ -16,6 +18,8 @@ yeast::query_match_schema! {
 }
 
 use swift_output_query::query_match as output_query_match;
+
+const STRING_VALUE_TABLE: &str = "unified_string_literal_interpreted";
 
 /// User context propagated from outer rules down to the inner rules that
 /// emit the corresponding output declarations, so that each emitted node
@@ -74,6 +78,8 @@ struct SwiftContext {
     /// name has no argument label. It is cleared when translating accessor
     /// bodies.
     subscript: Option<SubscriptContext>,
+    /// Interpreted values keyed by their output string literal.
+    interpreted_strings: Rc<RefCell<Vec<(yeast::OutputId, String)>>>,
 }
 
 /// The parts of a `subscriptDecl` shared by its getter and setter. These are
@@ -102,8 +108,27 @@ impl SwiftContext {
     /// interpolations additionally restore the context after evaluation,
     /// preventing mutations from leaking into sibling fields.
     fn reset(&mut self) {
+        let interpreted_strings = Rc::clone(&self.interpreted_strings);
         *self = SwiftContext::default();
+        self.interpreted_strings = interpreted_strings;
     }
+}
+
+fn make_string_literal(
+    ctx: &mut yeast::build::BuildCtx<'_, SwiftContext>,
+    source: yeast::Id,
+) -> yeast::OutputId {
+    let raw = ctx.source_text(source);
+    let interpreted = raw
+        .strip_prefix('"')
+        .and_then(|value| value.strip_suffix('"'))
+        .unwrap_or(&raw)
+        .to_string();
+    let literal = tree!((string_literal #{source}));
+    ctx.interpreted_strings
+        .borrow_mut()
+        .push((literal, interpreted));
+    literal
 }
 
 fn implicit_parameterless_initializer(
@@ -372,20 +397,26 @@ fn translation_rules() -> Vec<Rule<SwiftContext>> {
         rule!((nilLiteralExpr) @@node => expr {
             tree!((builtin_expr #{node}))
         }),
-        rule!((simpleStringLiteralExpr) @@node => (string_literal #{node})),
+        rule!((simpleStringLiteralExpr) @@node => expr {
+            make_string_literal(&mut ctx, node)
+        }),
         // String literal with a single constant segment (for some reason not typed as simpleStringLiteralExpr)
         rule!(
             (stringLiteralExpr segments: (stringSegment) segments: _* @@rest) @@node
             where rest.is_empty()
             =>
-            (string_literal #{node})
+            expr {
+                make_string_literal(&mut ctx, node)
+            }
         ),
         rule!(
             (stringLiteralExpr segments: _* @segments)
             =>
             (string_interpolation_expr element: {segments})
         ),
-        rule!((stringSegment content: @@content) => (string_literal #{content})),
+        rule!((stringSegment content: @@content) => expr {
+            make_string_literal(&mut ctx, content)
+        }),
         rule!(
             (expressionSegment expressions: _* @expressions)
             =>
@@ -2024,13 +2055,33 @@ pub fn language_spec(desugared_ast_schema: &'static str) -> desugaring::Language
         .with_ignored_location_fields(["trailingComma"])
         .add_phase("translate", translation_rules())
         .with_output_node_types_yaml(desugared_ast_schema);
-    let desugarer =
-        ConcreteDesugarer::without_language(config).expect("failed to build Swift desugarer");
-    desugaring::LanguageSpec {
+    desugaring::LanguageSpecBuilder {
         prefix: "swift",
         parser: Box::new(super::swift_parse::parse),
-        node_types: "",
+        desugaring: config,
         file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
-        desugarer: Box::new(desugarer),
+        post_extract: Some(Box::new(
+            |context: &SwiftContext,
+             labels: &desugaring::OutputLabels,
+             trap_writer: &mut codeql_extractor::trap::Writer| {
+                for (node, value) in context.interpreted_strings.borrow().iter() {
+                    let node_labels = labels.get(node).ok_or_else(|| {
+                        format!(
+                            "interpreted string references unreachable output node {}",
+                            node.0
+                        )
+                    })?;
+                    for label in node_labels {
+                        trap_writer.add_tuple(
+                            STRING_VALUE_TABLE,
+                            vec![(*label).into(), value.clone().into()],
+                        );
+                    }
+                }
+                Ok(())
+            },
+        )),
     }
+    .build()
+    .expect("failed to build Swift desugarer")
 }

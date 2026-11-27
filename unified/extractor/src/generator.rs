@@ -1,4 +1,5 @@
 use clap::Args;
+use std::io::Write;
 use std::path::PathBuf;
 
 use codeql_extractor::generator::{generate, language::Language};
@@ -31,11 +32,14 @@ pub fn run(options: Options) -> std::io::Result<()> {
         desugar: Some(desugar),
     }];
 
+    let dbscheme = options.dbscheme.clone();
     generate(
         languages,
         options.dbscheme,
         options.library,
         true, // use facade AST
         "run unified/scripts/create-extractor-pack.sh",
-    )
+    )?;
+    let mut dbscheme = std::fs::OpenOptions::new().append(true).open(dbscheme)?;
+    writeln!(dbscheme, "\n{}", include_str!("../string_values.dbscheme"))
 }

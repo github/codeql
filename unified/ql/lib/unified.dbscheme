@@ -1059,3 +1059,9 @@ unified_ast_node_parent(
   int parent_index: int ref
 );
 
+
+unified_string_literal_interpreted(
+  unique int node: @unified_token_string_literal ref,
+  string value: string ref
+);
+

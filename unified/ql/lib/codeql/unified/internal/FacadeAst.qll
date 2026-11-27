@@ -115,17 +115,7 @@ module Unified {
   /** An expression */
   class Expr extends G::Expr {
     /** Gets the string value of this expression, if it is a known string constant. */
-    string getStringValue() {
-      // TODO: we'll want to cook the string literals extractor-side, but for now
-      // just strip the quotes here and ignore escape sequences.
-      exists(string text | text = this.(StringLiteral).getValue() |
-        result = text.regexpCapture("\"(.*)\"", 1)
-        or
-        // Constant-segments of string interpolations are represented as string literals, but their raw text does not have quotes
-        not exists(text.regexpCapture("\"(.*)\"", 1)) and
-        result = text
-      )
-    }
+    string getStringValue() { result = this.(StringLiteral).getInterpretedValue() }
 
     /** Gets the immediately-enclosing expression, skipping over intermediate sub-nodes like `Argument`, and without crossing a function boundary. */
     Expr getEnclosingExpr() {
@@ -140,6 +130,11 @@ module Unified {
 
     /** Gets the basic block containing this expression. */
     BasicBlock getBasicBlock() { result = this.getControlFlowNode().getBasicBlock() }
+  }
+
+  class StringLiteral extends G::StringLiteral {
+    /** Gets the interpreted value of this string literal or constant segment. */
+    string getInterpretedValue() { unified_string_literal_interpreted(this, result) }
   }
 
   class AccessorDeclaration extends G::AccessorDeclaration {
