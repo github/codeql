@@ -173,9 +173,9 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
     print("", separator: "", terminator: password) // $ Alert[unified/swift/cleartext-logging]
     print(passwordHash) // safe
 
-    debugPrint(password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    debugPrint(password) // $ Alert[unified/swift/cleartext-logging]
 
-    dump(password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    dump(password) // $ Alert[unified/swift/cleartext-logging]
 
     NSLog(password) // $ Alert[unified/swift/cleartext-logging]
     NSLog("%@", password) // $ Alert[unified/swift/cleartext-logging]
@@ -222,7 +222,7 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
     NSLog(pass_phrase) // $ Alert[unified/swift/cleartext-logging]
 
     os_log("%@", log: .default, type: .default, "") // safe
-    os_log("%@", log: .default, type: .default, password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    os_log("%@", log: .default, type: .default, password) // $ Alert[unified/swift/cleartext-logging]
     os_log("%@ %@ %@", log: .default, type: .default, "", "", password) // $ MISSING: Alert[unified/swift/cleartext-logging]
 }
 
@@ -335,8 +335,8 @@ func test4(harmless: String, password: String) {
 	dump(harmless, to: &myString6)
 	dump(myString6) // safe
 
-	dump(password, to: &myString7) // $ MISSING: Source[unified/swift/cleartext-logging]
-	dump(myString7) // $ MISSING: Alert[unified/swift/cleartext-logging]
+	dump(password, to: &myString7) // $ Alert[unified/swift/cleartext-logging]
+	dump(myString7) // $ Sink[unified/swift/cleartext-logging]
 
 	myString8.write(harmless)
 	print(myString8)
@@ -368,15 +368,15 @@ func test5(password: String, caseNum: Int) {
 
 	switch caseNum {
 	case 0:
-		assert(false, password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+		assert(false, password) // $ Alert[unified/swift/cleartext-logging]
 	case 1:
-		assertionFailure(password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+		assertionFailure(password) // $ Alert[unified/swift/cleartext-logging]
 	case 2:
-		precondition(false, password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+		precondition(false, password) // $ Alert[unified/swift/cleartext-logging]
 	case 3:
-		preconditionFailure(password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+		preconditionFailure(password) // $ Alert[unified/swift/cleartext-logging]
 	default:
-		fatalError(password) // $ MISSING: Alert[unified/swift/cleartext-logging]
+		fatalError(password) // $ Alert[unified/swift/cleartext-logging]
 	}
 }
 
