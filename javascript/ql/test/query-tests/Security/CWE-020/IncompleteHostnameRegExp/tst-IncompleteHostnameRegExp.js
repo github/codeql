@@ -1,3 +1,5 @@
+import { LinkifyIt, linkifyit } from "linkify-it";
+
 (function() {
 	/^http:\/\/example.com/;
 	/^http:\/\/test.example.com/; // $ Alert
@@ -64,4 +66,8 @@
 	const sinon = require('sinon');
 	const megacliteUrl = "https://a.b.com";
 	sinon.assert.calledWith(postStub.firstCall, sinon.match(megacliteUrl));
+
+	const scanner = new LinkifyIt().add("ftp:", null).set({ fuzzyLink: false }).tlds("onion", true);
+	if (scanner.match(megacliteUrl)) {}
+	if (linkifyit().match(megacliteUrl)) {}
 });
