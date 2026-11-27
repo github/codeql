@@ -1,0 +1,18 @@
+#select
+| Test.cs:65:35:65:39 | access to local variable input | Test.cs:55:24:55:50 | access to property QueryString : NameValueCollection | Test.cs:65:35:65:39 | access to local variable input | This log entry depends on a $@. | Test.cs:55:24:55:50 | access to property QueryString | user-provided value |
+| Test.cs:66:50:66:54 | access to local variable input | Test.cs:55:24:55:50 | access to property QueryString : NameValueCollection | Test.cs:66:50:66:54 | access to local variable input | This log entry depends on a $@. | Test.cs:55:24:55:50 | access to property QueryString | user-provided value |
+edges
+| Test.cs:55:16:55:20 | access to local variable input : String | Test.cs:65:35:65:39 | access to local variable input | provenance |  |
+| Test.cs:55:16:55:20 | access to local variable input : String | Test.cs:66:50:66:54 | access to local variable input | provenance |  |
+| Test.cs:55:24:55:50 | access to property QueryString : NameValueCollection | Test.cs:55:16:55:20 | access to local variable input : String | provenance |  |
+| Test.cs:55:24:55:50 | access to property QueryString : NameValueCollection | Test.cs:55:24:55:59 | access to indexer : String | provenance | MaD:1 |
+| Test.cs:55:24:55:59 | access to indexer : String | Test.cs:55:16:55:20 | access to local variable input : String | provenance |  |
+models
+| 1 | Summary: System.Collections.Specialized; NameValueCollection; false; get_Item; (System.String); ; Argument[this]; ReturnValue; taint; df-generated |
+nodes
+| Test.cs:55:16:55:20 | access to local variable input : String | semmle.label | access to local variable input : String |
+| Test.cs:55:24:55:50 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| Test.cs:55:24:55:59 | access to indexer : String | semmle.label | access to indexer : String |
+| Test.cs:65:35:65:39 | access to local variable input | semmle.label | access to local variable input |
+| Test.cs:66:50:66:54 | access to local variable input | semmle.label | access to local variable input |
+subpaths
