@@ -342,6 +342,13 @@ named:
     type: expr
 
   # A top-level function declaration.
+  #
+  # A function with a parameter whose external name is the reserved name
+  # `#newValue` is a setter method, such as the setter of a Swift subscript. A
+  # call `x.foo(...)` that is the target of an assignment, or is otherwise
+  # updated in place, invokes the setter method named `foo` (whereas a call in
+  # a read position invokes the ordinary method `foo`), passing the new value
+  # as the `#newValue` argument.
   function_declaration:
     modifier*: modifier
     name_node: identifier

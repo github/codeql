@@ -141,3 +141,15 @@ const password = "horsebatterystaplecorrect"
 func test2() {
 	log.Println(password) // OK
 }
+
+func mergedPassword(b, c bool) {
+	password := "P@ssw0rd1" // $ Source=def1
+	if b {
+		password = "P@ssw0rd2" // $ Source=def2
+	}
+	if c {
+		log.Println(password) // $ Alert=def1 Alert=def2
+	} else {
+		log.Println(password) // $ Alert=def1 Alert=def2
+	}
+}

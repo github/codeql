@@ -23,7 +23,7 @@ import semmle.javascript.RestrictedLocations
 predicate isThrowOrReturn(Stmt s) {
   s instanceof ReturnStmt or
   s instanceof ThrowStmt or
-  s.(ExprStmt).getExpr().(CallExpr).getCalleeName().matches("%throw%")
+  s.(ExprStmt).getExpr().(CallExpr).getCalleeName().contains("throw")
 }
 
 /**

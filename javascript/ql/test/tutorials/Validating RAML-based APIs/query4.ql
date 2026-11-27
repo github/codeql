@@ -13,7 +13,7 @@ class RamlResource extends YamlMapping {
     this.getDocument() instanceof RamlSpec and
     exists(YamlMapping m, string name |
       this = m.lookup(name) and
-      name.matches("/%")
+      name.startsWith("/")
     )
   }
 

@@ -323,7 +323,7 @@ where
   // The call doesn't flow to a select
   not flowsToSelect(call) and
   // It's in a query
-  call.getLocation().getFile().getBaseName().matches("%.ql") and
+  call.getLocation().getFile().getBaseName().endsWith(".ql") and
   // ... and not in a test
   not (
     call.getLocation()

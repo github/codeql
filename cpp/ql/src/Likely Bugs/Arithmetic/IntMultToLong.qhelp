@@ -26,7 +26,7 @@ the expression would produce a result that would be too large to fit in the smal
   MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/multiplicative-operators-and-the-modulus-operator">Multiplicative Operators and the Modulus Operator</a>.
 </li>
 <li>
-  Cplusplus.com: <a href="http://www.cplusplus.com/articles/DE18T05o/">Integer overflow</a>.
+  Cplusplus.com: <a href="https://www.cplusplus.com/articles/DE18T05o/">Integer overflow</a>.
 </li>
 
 

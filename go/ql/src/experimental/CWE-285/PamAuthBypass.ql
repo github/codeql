@@ -15,8 +15,8 @@
 import go
 
 predicate isInTestFile(Expr r) {
-  r.getFile().getAbsolutePath().matches("%test%") and
-  not r.getFile().getAbsolutePath().matches("%/ql/test/%")
+  r.getFile().getAbsolutePath().contains("test") and
+  not r.getFile().getAbsolutePath().contains("/ql/test/")
 }
 
 class PamAuthenticate extends Method {

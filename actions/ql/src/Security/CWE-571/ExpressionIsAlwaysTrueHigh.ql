@@ -18,10 +18,10 @@ from If i
 where
   not i instanceof ControlCheck and
   (
-    i.getCondition().matches("%${{%") and
+    i.getCondition().contains("${{") and
     (
-      not i.getCondition().matches("${{%") or
-      not i.getCondition().matches("%}}")
+      not i.getCondition().startsWith("${{") or
+      not i.getCondition().endsWith("}}")
     )
     or
     count(i.getCondition().splitAt("${{")) > 2

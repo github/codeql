@@ -10,5 +10,5 @@
 import cpp
 
 from Comment c
-where c.getContents().matches("%TODO%")
+where c.getContents().contains("TODO")
 select c

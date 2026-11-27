@@ -77,9 +77,9 @@ module HardcodedCredentials {
     not (
       source.getNode().asExpr().getFile() instanceof TestFile and
       exists(MethodCall createOrAddCall, string createOrAddMethodName |
-        createOrAddMethodName.matches("Update%") or
-        createOrAddMethodName.matches("Create%") or
-        createOrAddMethodName.matches("Add%")
+        createOrAddMethodName.startsWith("Update") or
+        createOrAddMethodName.startsWith("Create") or
+        createOrAddMethodName.startsWith("Add")
       |
         createOrAddCall.getTarget().hasName(createOrAddMethodName) and
         createOrAddCall.getAnArgument() = sink.getNode().asExpr()

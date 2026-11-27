@@ -1,4 +1,4 @@
-use codeql_extractor::file_paths;
+use extractor_common::file_paths;
 use std::fs;
 use std::path::{Path, PathBuf};
 use tracing::{debug, warn};

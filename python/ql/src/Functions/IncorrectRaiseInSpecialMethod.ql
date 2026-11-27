@@ -144,7 +144,7 @@ predicate noNeedToAlwaysRaise(Function meth, string message, boolean allowNotImp
 }
 
 /** Holds if `func` has a decorator likely marking it as an abstract method. */
-predicate isAbstract(Function func) { func.getADecorator().(Name).getId().matches("%abstract%") }
+predicate isAbstract(Function func) { func.getADecorator().(Name).getId().contains("abstract") }
 
 /** Holds if `f` always raises the exception `exec`. */
 predicate alwaysRaises(Function f, Expr exec) {

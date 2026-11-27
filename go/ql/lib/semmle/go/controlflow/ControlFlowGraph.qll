@@ -80,28 +80,6 @@ module ControlFlow {
 
     /** Gets the file to which this node belongs. */
     File getFile() { result = this.getLocation().getFile() }
-
-    /**
-     * DEPRECATED: Use `getLocation()` instead.
-     *
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    deprecated predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      or
-      not exists(this.getLocation()) and
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
-    }
   }
 
   /** A synthetic entry node for a function or a file. */

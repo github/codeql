@@ -1,12 +1,10 @@
 | main.go:22:2:24:2 | SSA def(outer) | main.go:25:7:25:11 | outer |
 | main.go:22:11:24:2 | struct literal | main.go:22:2:24:2 | SSA def(outer) |
-| main.go:22:11:24:2 | struct literal [postupdate] | main.go:22:2:24:2 | SSA def(outer) |
 | main.go:25:7:25:11 | outer | main.go:26:7:26:11 | outer |
 | main.go:26:7:26:11 | outer | main.go:27:7:27:11 | outer |
 | main.go:27:7:27:11 | outer | main.go:28:7:28:11 | outer |
 | main.go:30:2:32:2 | SSA def(outerp) | main.go:33:7:33:12 | outerp |
 | main.go:30:12:32:2 | &... | main.go:30:2:32:2 | SSA def(outerp) |
-| main.go:30:12:32:2 | &... [postupdate] | main.go:30:2:32:2 | SSA def(outerp) |
 | main.go:33:7:33:12 | outerp | main.go:34:7:34:12 | outerp |
 | main.go:33:7:33:12 | outerp [postupdate] | main.go:34:7:34:12 | outerp |
 | main.go:34:7:34:12 | outerp | main.go:35:7:35:12 | outerp |
@@ -15,13 +13,11 @@
 | main.go:35:7:35:12 | outerp [postupdate] | main.go:36:7:36:12 | outerp |
 | main.go:40:2:40:40 | SSA def(outer) | main.go:41:7:41:11 | outer |
 | main.go:40:11:40:40 | struct literal | main.go:40:2:40:40 | SSA def(outer) |
-| main.go:40:11:40:40 | struct literal [postupdate] | main.go:40:2:40:40 | SSA def(outer) |
 | main.go:41:7:41:11 | outer | main.go:42:7:42:11 | outer |
 | main.go:42:7:42:11 | outer | main.go:43:7:43:11 | outer |
 | main.go:43:7:43:11 | outer | main.go:44:7:44:11 | outer |
 | main.go:46:2:46:42 | SSA def(outerp) | main.go:47:7:47:12 | outerp |
 | main.go:46:12:46:42 | &... | main.go:46:2:46:42 | SSA def(outerp) |
-| main.go:46:12:46:42 | &... [postupdate] | main.go:46:2:46:42 | SSA def(outerp) |
 | main.go:47:7:47:12 | outerp | main.go:48:7:48:12 | outerp |
 | main.go:47:7:47:12 | outerp [postupdate] | main.go:48:7:48:12 | outerp |
 | main.go:48:7:48:12 | outerp | main.go:49:7:49:12 | outerp |
@@ -30,49 +26,37 @@
 | main.go:49:7:49:12 | outerp [postupdate] | main.go:50:7:50:12 | outerp |
 | main.go:54:2:54:25 | SSA def(inner) | main.go:55:19:55:23 | inner |
 | main.go:54:11:54:25 | struct literal | main.go:54:2:54:25 | SSA def(inner) |
-| main.go:54:11:54:25 | struct literal [postupdate] | main.go:54:2:54:25 | SSA def(inner) |
 | main.go:55:2:55:24 | SSA def(middle) | main.go:56:17:56:22 | middle |
 | main.go:55:12:55:24 | struct literal | main.go:55:2:55:24 | SSA def(middle) |
-| main.go:55:12:55:24 | struct literal [postupdate] | main.go:55:2:55:24 | SSA def(middle) |
 | main.go:56:2:56:23 | SSA def(outer) | main.go:57:7:57:11 | outer |
 | main.go:56:11:56:23 | struct literal | main.go:56:2:56:23 | SSA def(outer) |
-| main.go:56:11:56:23 | struct literal [postupdate] | main.go:56:2:56:23 | SSA def(outer) |
 | main.go:57:7:57:11 | outer | main.go:58:7:58:11 | outer |
 | main.go:58:7:58:11 | outer | main.go:59:7:59:11 | outer |
 | main.go:59:7:59:11 | outer | main.go:60:7:60:11 | outer |
 | main.go:62:2:62:26 | SSA def(innerp) | main.go:63:20:63:25 | innerp |
 | main.go:62:12:62:26 | struct literal | main.go:62:2:62:26 | SSA def(innerp) |
-| main.go:62:12:62:26 | struct literal [postupdate] | main.go:62:2:62:26 | SSA def(innerp) |
 | main.go:63:2:63:26 | SSA def(middlep) | main.go:64:18:64:24 | middlep |
 | main.go:63:13:63:26 | struct literal | main.go:63:2:63:26 | SSA def(middlep) |
-| main.go:63:13:63:26 | struct literal [postupdate] | main.go:63:2:63:26 | SSA def(middlep) |
 | main.go:64:2:64:25 | SSA def(outerp) | main.go:65:7:65:12 | outerp |
 | main.go:64:12:64:25 | struct literal | main.go:64:2:64:25 | SSA def(outerp) |
-| main.go:64:12:64:25 | struct literal [postupdate] | main.go:64:2:64:25 | SSA def(outerp) |
 | main.go:65:7:65:12 | outerp | main.go:66:7:66:12 | outerp |
 | main.go:66:7:66:12 | outerp | main.go:67:7:67:12 | outerp |
 | main.go:67:7:67:12 | outerp | main.go:68:7:68:12 | outerp |
 | main.go:72:2:72:25 | SSA def(inner) | main.go:73:26:73:30 | inner |
 | main.go:72:11:72:25 | struct literal | main.go:72:2:72:25 | SSA def(inner) |
-| main.go:72:11:72:25 | struct literal [postupdate] | main.go:72:2:72:25 | SSA def(inner) |
 | main.go:73:2:73:31 | SSA def(middle) | main.go:74:25:74:30 | middle |
 | main.go:73:12:73:31 | struct literal | main.go:73:2:73:31 | SSA def(middle) |
-| main.go:73:12:73:31 | struct literal [postupdate] | main.go:73:2:73:31 | SSA def(middle) |
 | main.go:74:2:74:31 | SSA def(outer) | main.go:75:7:75:11 | outer |
 | main.go:74:11:74:31 | struct literal | main.go:74:2:74:31 | SSA def(outer) |
-| main.go:74:11:74:31 | struct literal [postupdate] | main.go:74:2:74:31 | SSA def(outer) |
 | main.go:75:7:75:11 | outer | main.go:76:7:76:11 | outer |
 | main.go:76:7:76:11 | outer | main.go:77:7:77:11 | outer |
 | main.go:77:7:77:11 | outer | main.go:78:7:78:11 | outer |
 | main.go:80:2:80:26 | SSA def(innerp) | main.go:81:27:81:32 | innerp |
 | main.go:80:12:80:26 | struct literal | main.go:80:2:80:26 | SSA def(innerp) |
-| main.go:80:12:80:26 | struct literal [postupdate] | main.go:80:2:80:26 | SSA def(innerp) |
 | main.go:81:2:81:33 | SSA def(middlep) | main.go:82:26:82:32 | middlep |
 | main.go:81:13:81:33 | struct literal | main.go:81:2:81:33 | SSA def(middlep) |
-| main.go:81:13:81:33 | struct literal [postupdate] | main.go:81:2:81:33 | SSA def(middlep) |
 | main.go:82:2:82:33 | SSA def(outerp) | main.go:83:7:83:12 | outerp |
 | main.go:82:12:82:33 | struct literal | main.go:82:2:82:33 | SSA def(outerp) |
-| main.go:82:12:82:33 | struct literal [postupdate] | main.go:82:2:82:33 | SSA def(outerp) |
 | main.go:83:7:83:12 | outerp | main.go:84:7:84:12 | outerp |
 | main.go:84:7:84:12 | outerp | main.go:85:7:85:12 | outerp |
 | main.go:85:7:85:12 | outerp | main.go:86:7:86:12 | outerp |

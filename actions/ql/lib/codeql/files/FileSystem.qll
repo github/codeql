@@ -117,7 +117,7 @@ abstract class Container extends @container {
       absPath = pref and result = ""
       or
       absPath = pref.regexpReplaceAll("/$", "") + "/" + result and
-      not result.matches("/%")
+      not result.startsWith("/")
     )
   }
 

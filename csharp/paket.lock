@@ -1,6 +1,6 @@
 STORAGE: NONE
 STRATEGY: MAX
-RESTRICTION: == net10.0
+RESTRICTION: == net11.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
     Basic.CompilerLog.Util (0.9.66)
@@ -20,14 +20,14 @@ NUGET
     MessagePackAnalyzer (3.1.12)
     Microsoft.Bcl.AsyncInterfaces (11.0)
     Microsoft.Bcl.Memory (11.0)
-    Microsoft.Build (18.9.6)
-      Microsoft.Build.Framework (>= 18.9.6)
-      System.Configuration.ConfigurationManager (>= 10.0.8)
-      System.Diagnostics.EventLog (>= 10.0.8)
-      System.Reflection.MetadataLoadContext (>= 10.0.8)
-      System.Security.Cryptography.ProtectedData (>= 10.0.8)
-    Microsoft.Build.Framework (18.9.6)
-      Microsoft.NET.StringTools (>= 18.9.6)
+    Microsoft.Build (18.12.2)
+      Microsoft.Build.Framework (18.12.2)
+      System.Configuration.ConfigurationManager (>= 10.0.10)
+      System.Diagnostics.EventLog (>= 10.0.10)
+      System.Reflection.MetadataLoadContext (>= 10.0.10)
+      System.Security.Cryptography.ProtectedData (>= 10.0.10)
+    Microsoft.Build.Framework (18.12.2)
+      Microsoft.NET.StringTools (18.12.2)
     Microsoft.Build.Utilities.Core (18.9.6)
       Microsoft.Build.Framework (>= 18.9.6)
       System.Configuration.ConfigurationManager (>= 10.0.8)
@@ -80,7 +80,7 @@ NUGET
       System.Composition (>= 10.0.10)
     Microsoft.CodeCoverage (18.12)
     Microsoft.Extensions.ObjectPool (11.0)
-    Microsoft.NET.StringTools (18.9.6)
+    Microsoft.NET.StringTools (18.12.2)
     Microsoft.NET.Test.Sdk (18.12)
       Microsoft.CodeCoverage (>= 18.12)
       Microsoft.TestPlatform.TestHost (>= 18.12)
@@ -120,10 +120,7 @@ NUGET
     System.Memory (4.6.3)
     System.Numerics.Vectors (4.6.1)
     System.Reflection.Metadata (11.0)
-      System.Collections.Immutable (>= 11.0)
     System.Reflection.MetadataLoadContext (11.0)
-      System.Collections.Immutable (>= 11.0)
-      System.Reflection.Metadata (>= 11.0)
     System.Runtime.CompilerServices.Unsafe (6.1.2)
     System.Security.Cryptography.ProtectedData (11.0)
     System.Text.Encoding.CodePages (11.0)

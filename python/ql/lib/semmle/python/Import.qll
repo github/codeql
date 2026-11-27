@@ -30,7 +30,7 @@ class ImportExpr extends ImportExpr_ {
     or
     exists(string bpnm1 |
       bpnm1 = this.basePackageName(n - 1) and
-      bpnm1.matches("%.%") and
+      bpnm1.contains(".") and
       result = bpnm1.regexpReplaceAll("\\.[^.]*$", "")
     )
   }

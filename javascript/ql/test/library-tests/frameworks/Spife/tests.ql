@@ -13,10 +13,10 @@ class InlineTest extends LineComment {
   InlineTest() { tests = this.getText().regexpCapture("\\s*test:(.*)", 1) }
 
   string getPositiveTest() {
-    result = tests.trim().splitAt(",").trim() and not result.matches("!%")
+    result = tests.trim().splitAt(",").trim() and not result.startsWith("!")
   }
 
-  string getNegativeTest() { result = tests.trim().splitAt(",").trim() and result.matches("!%") }
+  string getNegativeTest() { result = tests.trim().splitAt(",").trim() and result.startsWith("!") }
 
   predicate hasPositiveTest(string test) { test = this.getPositiveTest() }
 

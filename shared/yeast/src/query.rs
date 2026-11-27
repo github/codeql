@@ -1,4 +1,21 @@
-use crate::{captures::Captures, Ast, Id};
+use crate::{build::BuildCtx, captures::Captures, Ast, TreeId};
+
+#[doc(hidden)]
+pub trait QueryTarget: TreeId {
+    fn query_ast<'a, C>(self, ctx: &'a BuildCtx<'_, C>) -> &'a Ast<Self>;
+}
+
+impl QueryTarget for crate::Id {
+    fn query_ast<'a, C>(self, ctx: &'a BuildCtx<'_, C>) -> &'a Ast<Self> {
+        ctx.ast()
+    }
+}
+
+impl QueryTarget for crate::OutputId {
+    fn query_ast<'a, C>(self, ctx: &'a BuildCtx<'_, C>) -> &'a Ast<Self> {
+        &*ctx.output
+    }
+}
 
 #[derive(Debug, Clone)]
 pub enum QueryNode {
@@ -64,7 +81,12 @@ impl QueryNode {
         }
     }
 
-    pub fn do_match(&self, ast: &Ast, node: Id, matches: &mut Captures) -> bool {
+    pub fn do_match<Id: TreeId>(
+        &self,
+        ast: &Ast<Id>,
+        node: Id,
+        matches: &mut Captures<Id>,
+    ) -> bool {
         match self {
             QueryNode::Any { match_unnamed } => {
                 // `(_)` only matches named nodes, matching tree-sitter
@@ -116,21 +138,21 @@ impl QueryNode {
     }
 }
 
-fn match_children<'a>(
+fn match_children<'a, Id: TreeId>(
     mut child_matchers: impl Iterator<Item = &'a QueryListElem>,
-    ast: &Ast,
+    ast: &Ast<Id>,
     remaining_children: &mut (impl Iterator<Item = Id> + Clone),
-    matches: &mut Captures,
+    matches: &mut Captures<Id>,
 ) -> bool {
     child_matchers.all(|child| child.do_match(ast, remaining_children, matches))
 }
 
 impl QueryListElem {
-    fn do_match(
+    fn do_match<Id: TreeId>(
         &self,
-        ast: &Ast,
+        ast: &Ast<Id>,
         remaining_children: &mut (impl Iterator<Item = Id> + Clone),
-        matches: &mut Captures,
+        matches: &mut Captures<Id>,
     ) -> bool {
         match self {
             QueryListElem::Repeated { children, rep } => {

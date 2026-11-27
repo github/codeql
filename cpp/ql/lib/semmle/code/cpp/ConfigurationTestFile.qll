@@ -20,7 +20,7 @@ class CmakeTryCompileFile extends ConfigurationTestFile {
       folder = this.getParentContainer() and
       parent = folder.getParentContainer()
     |
-      folder.getBaseName().matches("TryCompile-%") and
+      folder.getBaseName().startsWith("TryCompile-") and
       parent.getBaseName() = "CMakeScratch" and
       parent.getParentContainer().getBaseName() = "CMakeFiles"
     )
@@ -37,7 +37,7 @@ class MesonPrivateTestFile extends ConfigurationTestFile {
       folder = this.getParentContainer() and
       parent = folder.getParentContainer()
     |
-      folder.getBaseName().matches("tmp%") and
+      folder.getBaseName().startsWith("tmp") and
       parent.getBaseName() = "meson-private"
     )
   }

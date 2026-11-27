@@ -13,9 +13,9 @@ import cpp
 
 from Macro m, string msg
 where
-  m.getHead().matches("%...%") and
+  m.getHead().contains("...") and
   msg = "The macro " + m.getHead() + " is variadic, and hence not allowed."
   or
-  m.getBody().matches("%##%") and
+  m.getBody().contains("##") and
   msg = "The macro " + m.getHead() + " uses token pasting and is not allowed."
 select m, msg

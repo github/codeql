@@ -12,5 +12,5 @@
 import cpp
 
 from Include incl
-where incl.getIncludedFile().getAbsolutePath().matches("%signal.h")
+where incl.getIncludedFile().getAbsolutePath().endsWith("signal.h")
 select incl, "AV Rule 21: The signal handling facilities of <signal.h> shall not be used."

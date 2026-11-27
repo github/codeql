@@ -8,7 +8,7 @@ models
 | 7 | Source: std::env::var_os; ReturnValue.Field[core::option::Option::Some(0)]; environment |
 | 8 | Source: std::env::vars; ReturnValue.Element; environment |
 | 9 | Source: std::env::vars_os; ReturnValue.Element; environment |
-| 10 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self]; ReturnValue; value |
+| 10 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self].Reference; ReturnValue.Reference; taint |
 | 11 | Summary: <core::iter::traits::iterator::Iterator>::collect; Argument[self].Element; ReturnValue.Element; value |
 | 12 | Summary: <core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 13 | Summary: <core::ops::index::Index>::index; Argument[self].Reference.Element; ReturnValue.Reference; value |

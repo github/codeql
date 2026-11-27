@@ -37,7 +37,7 @@ to override <code>ToString</code> in that case). The output results are
 </example>
 <references>
 
-<li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/system.object.tostring.aspx">Object.ToString Method</a>, <a href="https://msdn.microsoft.com/en-us/library/wb77sz3h(v=vs.110).aspx">ValueType.ToString Method</a>.</li>
+<li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/system.object.tostring.aspx">Object.ToString Method</a>, <a href="https://msdn.microsoft.com/en-us/library/wb77sz3h(v=vs.110).aspx">ValueType.ToString Method</a>.</li>
 
 </references>
 </qhelp>

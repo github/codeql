@@ -30,8 +30,8 @@
 </example>
 
 <references>
-  <li>Mongoengine: <a href="http://mongoengine.org/">Documentation</a>.</li>
-  <li>Flask-Mongoengine: <a href="http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/">Documentation</a>.</li>
+  <li>Mongoengine: <a href="https://mongoengine.org/">Documentation</a>.</li>
+  <li>Flask-Mongoengine: <a href="https://docs.mongoengine.org/projects/flask-mongoengine/en/latest/">Documentation</a>.</li>
   <li>PyMongo: <a href="https://pypi.org/project/pymongo/">Documentation</a>.</li>
   <li>Flask-PyMongo: <a href="https://flask-pymongo.readthedocs.io/en/latest/">Documentation</a>.</li>
   <li>OWASP: <a href="https://owasp.org/www-pdf-archive/GOD16-NOSQL.pdf">NoSQL Injection</a>.</li>

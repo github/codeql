@@ -104,7 +104,7 @@ predicate implicitRequire(NpmPackage pkg, string name) {
     setViewEngine.getTopLevel() = pkg.getAModule()
   |
     // chop off leading dot, if any
-    if engine.matches(".%") then name = engine.suffix(1) else name = engine
+    if engine.startsWith(".") then name = engine.suffix(1) else name = engine
   )
 }
 

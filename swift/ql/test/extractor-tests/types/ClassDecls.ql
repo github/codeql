@@ -2,7 +2,7 @@ import codeql.swift.elements
 
 from Decl d, ClassType s, string parent
 where
-  d.getLocation().getFile().getName().matches("%swift/ql/test%") and
+  d.getLocation().getFile().getName().contains("swift/ql/test") and
   d = s.getDeclaration() and
   (
     parent = s.getParent().toString()

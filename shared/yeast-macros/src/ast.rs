@@ -2,6 +2,21 @@ use std::collections::BTreeSet;
 
 use proc_macro2::{Ident, Literal};
 
+/// An imperative query match over one input or output AST node.
+pub(crate) struct QueryMatch {
+    /// Rust expression yielding the node to match.
+    pub(crate) node: syn::Expr,
+    /// Ordered query arms.
+    pub(crate) arms: Vec<QueryMatchArm>,
+}
+
+/// One query, optional guard, and Rust result body.
+pub(crate) struct QueryMatchArm {
+    pub(crate) pattern: Pattern,
+    pub(crate) guard: Option<syn::Expr>,
+    pub(crate) body: syn::Block,
+}
+
 /// A complete rewrite rule such as `(input) where guard => (output)`.
 pub(crate) struct Rule {
     /// Input pattern before `where` or `=>`.

@@ -79,7 +79,7 @@ abstract class JSLintDirective extends SlashStarComment {
    */
   predicate definesFlag(string name, string value) {
     exists(string defn | defn = this.getContent().splitAt(",").trim() |
-      if defn.matches("%:%")
+      if defn.contains(":")
       then (
         name = defn.splitAt(":", 0).trim() and
         value = defn.splitAt(":", 1).trim()

@@ -19,7 +19,7 @@ class FutureDateExpr extends MethodCall {
       pa.getTarget().hasName("Now") and
       pa.getTarget().getDeclaringType().hasFullyQualifiedName("System", "DateTime")
     ) and
-    this.getTarget().getName().matches("Add%")
+    this.getTarget().getName().startsWith("Add")
   }
 
   float getTimeInSecond() {

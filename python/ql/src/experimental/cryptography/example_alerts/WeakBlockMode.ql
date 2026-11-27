@@ -21,7 +21,7 @@ where
       .getFile()
       .getAbsolutePath()
       .toString()
-      .matches("%cryptography/hazmat/%") and
+      .contains("cryptography/hazmat/") and
   (
     op instanceof BlockMode and
     // ECB is only allowed for KeyWrapOperations, i.e., only alert on ECB is not a KeyWrapOperation

@@ -149,7 +149,7 @@ class TSConfig extends JsonObject {
    */
   predicate hasExactPathMapping(string pattern, string newPath) {
     this.hasPathMapping(pattern, newPath) and
-    not pattern.matches("%*%")
+    not pattern.contains("*")
   }
 
   /**

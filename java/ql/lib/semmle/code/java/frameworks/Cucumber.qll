@@ -10,7 +10,7 @@ import java
  * An annotation defined in the Cucumber library.
  */
 class CucumberAnnotation extends Annotation {
-  CucumberAnnotation() { this.getType().getPackage().getName().matches("cucumber.api.java%") }
+  CucumberAnnotation() { this.getType().getPackage().getName().startsWith("cucumber.api.java") }
 }
 
 /**

@@ -39,7 +39,7 @@ class LiveLiteral extends MethodCall {
 
 /** A live literal method. */
 class LiveLiteralMethod extends Method {
-  LiveLiteralMethod() { this.getDeclaringType().getName().matches("LiveLiterals$%") }
+  LiveLiteralMethod() { this.getDeclaringType().getName().startsWith("LiveLiterals$") }
 }
 
 private predicate methodReturns(Method m, Expr res) {

@@ -14,6 +14,6 @@ import cpp
 from Function f
 where
   f.getName() = ["abort", "exit", "getenv", "system"] and
-  f.getFile().getAbsolutePath().matches("%stdlib.h")
+  f.getFile().getAbsolutePath().endsWith("stdlib.h")
 select f.getACallToThisFunction(),
   "The library functions abort, exit, getenv and system from library <stdlib.h> should not be used."

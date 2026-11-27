@@ -17,11 +17,11 @@ from TypeExpr te
 where
   te.isDBType() and
   not te.getLocation().getFile().getAbsolutePath().matches("%/" + folderWithDbTypes() + "/%") and
-  exists(File f | f.getAbsolutePath().matches("%/lib/%")) and
+  exists(File f | f.getAbsolutePath().contains("/lib/")) and
   // it is needed in one case.
   not te = any(Class c | c.getName() = "SuppressionScope").getASuperType() and
   // QL-for-QL only has a src/ folder.
-  not te.getLocation().getFile().getAbsolutePath().matches("%/ql/ql/%") and
+  not te.getLocation().getFile().getAbsolutePath().contains("/ql/ql/") and
   // tests are allowed to use DB types.
-  not te.getLocation().getFile().getAbsolutePath().matches("%/test/%")
+  not te.getLocation().getFile().getAbsolutePath().contains("/test/")
 select te, "Database type used outside the language lib/ folder."

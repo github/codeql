@@ -107,7 +107,7 @@ string getServiceKind(InjectableFunctionServiceRequest request, string serviceNa
         or
         (
           custom instanceof ProviderRecipeDefinition and
-          if serviceName.matches("%Provider")
+          if serviceName.endsWith("Provider")
           then result = "provider"
           else result = "provider-value"
         )

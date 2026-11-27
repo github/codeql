@@ -17,5 +17,5 @@
 import python
 
 from Comment c
-where c.getText().matches("%TODO%") or c.getText().matches("%TO DO%")
+where c.getText().contains("TODO") or c.getText().contains("TO DO")
 select c, c.getText()

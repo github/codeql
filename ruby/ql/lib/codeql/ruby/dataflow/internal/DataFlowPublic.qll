@@ -30,19 +30,6 @@ class Node extends TNode {
   final Location getLocation() { result = getLocation(this) }
 
   /**
-   * Holds if this element is at the specified location.
-   * The location spans column `startcolumn` of line `startline` to
-   * column `endcolumn` of line `endline` in file `filepath`.
-   * For more information, see
-   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-   */
-  deprecated predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  /**
    * Gets a local source node from which data may flow to this node in zero or
    * more local data-flow steps.
    */
@@ -571,73 +558,6 @@ module Content {
    */
   ConstantValue getKnownElementIndex(Expr e) {
     result = getElementContent(e.getConstantValue()).(KnownElementContent).getIndex()
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * An element inside a synthetic splat argument. All positional arguments
-   * (including splat arguments) are implicitly stored inside a synthetic
-   * splat argument. For example, in
-   *
-   * ```rb
-   * foo(1, 2, 3)
-   * ```
-   *
-   * we have an implicit splat argument containing `[1, 2, 3]`.
-   */
-  deprecated class SplatContent extends Content, TSplatContent {
-    private int i;
-    private boolean shifted;
-
-    SplatContent() { this = TSplatContent(i, shifted) }
-
-    /** Gets the position of this splat element. */
-    int getPosition() { result = i }
-
-    /**
-     * Holds if this element represents a value from an actual splat argument
-     * that had its index shifted. For example, in
-     *
-     * ```rb
-     * foo(x, *args)
-     * ```
-     *
-     * the elements of `args` will have their index shifted by 1 before being
-     * put into the synthetic splat argument.
-     */
-    predicate isShifted() { shifted = true }
-
-    override string toString() {
-      exists(string s |
-        (if this.isShifted() then s = " (shifted)" else s = "") and
-        result = "splat position " + i + s
-      )
-    }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * An element inside a synthetic hash-splat argument. All keyword arguments
-   * are implicitly stored inside a synthetic hash-splat argument. For example,
-   * in
-   *
-   * ```rb
-   * foo(a: 1, b: 2, c: 3)
-   * ```
-   *
-   * we have an implicit hash-splat argument containing `{:a => 1, :b => 2, :c => 3}`.
-   */
-  deprecated class HashSplatContent extends Content, THashSplatContent {
-    private ConstantValue::ConstantSymbolValue cv;
-
-    HashSplatContent() { this = THashSplatContent(cv) }
-
-    /** Gets the hash key. */
-    ConstantValue::ConstantSymbolValue getKey() { result = cv }
-
-    override string toString() { result = "hash-splat position " + cv }
   }
 
   /**

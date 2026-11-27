@@ -33,7 +33,7 @@ predicate maybeInjectedByAngular() {
 predicate hasDynamicHrefHostAttributeValue(DOM::ElementDefinition elem) {
   exists(DOM::AttributeDefinition attr |
     attr = elem.getAnAttribute() and
-    attr.getName().matches("%href%")
+    attr.getName().contains("href")
   |
     // unknown string
     not exists(attr.getStringValue())

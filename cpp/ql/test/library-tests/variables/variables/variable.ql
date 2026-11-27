@@ -3,9 +3,9 @@ import cpp
 string interestingQlClass(Variable v) {
   result = v.getAQlClass() and
   (
-    result.matches("%Variable%")
+    result.contains("Variable")
     or
-    result.matches("%Field%")
+    result.contains("Field")
   )
 }
 

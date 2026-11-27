@@ -5,5 +5,5 @@ string describe(Decl decl) {
 }
 
 from Decl decl
-where decl.getLocation().getFile().getName().matches("%swift/ql/test%")
+where decl.getLocation().getFile().getName().contains("swift/ql/test")
 select decl, concat(describe(decl), ", ")

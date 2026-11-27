@@ -17,7 +17,7 @@ module DecodingAfterSanitizationConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     exists(DataFlow::CallNode call |
-      call.getCalleeName().matches("decodeURI%") and
+      call.getCalleeName().startsWith("decodeURI") and
       node = call.getArgument(0)
     )
   }

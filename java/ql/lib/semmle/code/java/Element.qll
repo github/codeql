@@ -43,7 +43,7 @@ class Element extends @element, Top {
    * An implementation is considered a stub, if the the path to the
    * source file contains `/stubs/`.
    */
-  predicate isStub() { this.fromSource() and this.getFile().getAbsolutePath().matches("%/stubs/%") }
+  predicate isStub() { this.fromSource() and this.getFile().getAbsolutePath().contains("/stubs/") }
 
   /** Gets the compilation unit that this element belongs to. */
   CompilationUnit getCompilationUnit() { result = this.getFile() }

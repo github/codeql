@@ -28,7 +28,7 @@ using System.Reflection;
 [assembly: AssemblyCompany("GitHub")]
 [assembly: AssemblyCopyright("Copyright © 2024 GitHub")]
 
-[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v10.0", FrameworkDisplayName = ".NET 10.0")]
+[assembly: System.Runtime.Versioning.TargetFramework(".NETCoreApp,Version=v11.0", FrameworkDisplayName = ".NET 11.0")]
 
 """
 output_file.write_text(output_file_contents)

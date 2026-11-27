@@ -67,9 +67,9 @@ class ClientSideGwtCompilationUnit extends GwtCompilationUnit {
 
 private predicate jsni(Javadoc jsni, File file, int startline) {
   // The comment must start with `-{` ...
-  jsni.getChild(0).getText().matches("-{%") and
+  jsni.getChild(0).getText().startsWith("-{") and
   // ... and it must end with `}-`.
-  jsni.getChild(jsni.getNumChild() - 1).getText().matches("%}-") and
+  jsni.getChild(jsni.getNumChild() - 1).getText().endsWith("}-") and
   file = jsni.getFile() and
   startline = jsni.getLocation().getStartLine()
 }

@@ -40,5 +40,5 @@ class DataFlowInternalFile extends File {
 from DataFlowConfigModule m
 where
   not m.getFile() instanceof DataFlowInternalFile and
-  not m.getName().matches("%Config")
+  not m.getName().endsWith("Config")
 select m, "Modules implementing a data flow configuration should end in `Config`."

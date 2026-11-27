@@ -165,7 +165,7 @@ class NodeModule extends Module {
       (searchRoot = this.getFile().getParentContainer() and priority = 0)
       or
       // paths starting with `/` are resolved relative to the file system root
-      pathval.matches("/%") and
+      pathval.startsWith("/") and
       (searchRoot.getBaseName() = "" and priority = 0)
       or
       // paths that do not start with `./`, `../` or `/` are resolved relative

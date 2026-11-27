@@ -23,7 +23,7 @@ class DataBoundAnnotated extends Callable {
       this = an.getAnnotatedElement()
     )
     or
-    exists(Javadoc doc | doc.getAChild().getText().matches("%@stapler-constructor%") |
+    exists(Javadoc doc | doc.getAChild().getText().contains("@stapler-constructor") |
       doc.getCommentedElement() = this
     )
   }

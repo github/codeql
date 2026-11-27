@@ -126,7 +126,7 @@ private class JaxValueType extends RefType {
     // Mutually exclusive with other `JaxAcceptableType`s
     not this instanceof Array and
     not this instanceof JaxAcceptableStandardClass and
-    not this.getPackage().getName().matches("java.%") and
+    not this.getPackage().getName().startsWith("java.") and
     // Must not implement (directly or indirectly) the java.rmi.Remote interface.
     not this.getAnAncestor() instanceof TypeRemote and
     // The Java type of a public field must be a supported JAX-RPC type as specified in the section 5.1.

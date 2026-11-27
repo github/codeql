@@ -4,6 +4,11 @@ load("//misc/bazel/3rdparty/py_deps:defs.bzl", "aliases", "all_crate_deps")
 
 package(default_visibility = ["//visibility:public"])
 
+filegroup(
+    name = "parser-sources",
+    srcs = glob(["src/**"]),
+)
+
 # This will run the build script from the root of the workspace, and
 # collect the outputs.
 cargo_build_script(

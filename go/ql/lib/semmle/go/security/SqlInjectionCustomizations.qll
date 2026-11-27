@@ -26,11 +26,6 @@ module SqlInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
-   */
-  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
-
   /** A source of untrusted data, considered as a taint source for SQL injection. */
   private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 

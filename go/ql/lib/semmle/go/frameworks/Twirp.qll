@@ -54,9 +54,6 @@ module Twirp {
     /** Gets the name of the interface. */
     override string getName() { result = definedType.getName() }
 
-    /** DEPRECATED: Use `getDefinedType` instead. */
-    deprecated DefinedType getNamedType() { result = this.getDefinedType() }
-
     /** Gets the defined type on top of this interface type. */
     DefinedType getDefinedType() { result = definedType }
   }

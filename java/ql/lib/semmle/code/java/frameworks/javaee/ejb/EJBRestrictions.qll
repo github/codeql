@@ -150,7 +150,7 @@ ThisAccess forbiddenThisUse(Callable c) {
 class ReflectionPackage extends Package {
   ReflectionPackage() {
     this.getName() = "java.lang.reflect" or
-    this.getName().matches("java.lang.reflect.%")
+    this.getName().startsWith("java.lang.reflect.")
   }
 }
 
@@ -158,7 +158,7 @@ class ReflectionPackage extends Package {
 class GraphicsPackage extends Package {
   GraphicsPackage() {
     this.getName() = "java.awt" or
-    this.getName().matches("java.awt.%") or
+    this.getName().startsWith("java.awt.") or
     this.getName() = javaxOrJakarta() + ".swing" or
     this.getName().matches(javaxOrJakarta() + ".swing.%")
   }
@@ -168,7 +168,7 @@ class GraphicsPackage extends Package {
 class ConcurrentPackage extends Package {
   ConcurrentPackage() {
     this.getName() = "java.util.concurrent" or
-    this.getName().matches("java.util.concurrent.%")
+    this.getName().startsWith("java.util.concurrent.")
   }
 }
 

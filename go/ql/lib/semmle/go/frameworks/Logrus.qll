@@ -29,16 +29,16 @@ module Logrus {
       )
     }
 
-    override predicate mustNotReturnNormally() { this.getName() = "Fatal" + any(string suffix) }
+    override predicate mustNotReturnNormally() { this.getName().startsWith("Fatal") }
 
-    override predicate mustPanic() { this.getName() = "Panic" + any(string suffix) }
+    override predicate mustPanic() { this.getName().startsWith("Panic") }
   }
 
   private class StringFormatters extends StringOps::Formatting::Range instanceof LogFunction {
     int argOffset;
 
     StringFormatters() {
-      this.getName().matches("%f") and
+      this.getName().endsWith("f") and
       if this.getName() = "Logf" then argOffset = 1 else argOffset = 0
     }
 

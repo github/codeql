@@ -326,7 +326,7 @@ private predicate qualifierToMethodStep(Expr tracked, MethodCall sink, string mo
  */
 private predicate taintPreservingQualifierToMethod(Method m, string model) {
   model = "%StringWriter" and
-  m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
+  m.getDeclaringType().getQualifiedName().endsWith("StringWriter") and
   (
     m.getName() = "getBuffer"
     or
@@ -335,7 +335,7 @@ private predicate taintPreservingQualifierToMethod(Method m, string model) {
   or
   model = "TypeObjectInputStream.read%" and
   m.getDeclaringType() instanceof TypeObjectInputStream and
-  m.getName().matches("read%")
+  m.getName().startsWith("read")
   or
   model = "SpringUntrustedDataType.getter" and
   m instanceof GetterMethod and
@@ -388,7 +388,7 @@ private predicate taintPreservingArgumentToMethod(Method method, int arg, string
   (
     method.getName() = "decodeBase64" and arg = 0
     or
-    method.getName().matches("encodeBase64%") and arg = 0
+    method.getName().startsWith("encodeBase64") and arg = 0
   )
   or
   model = "TaintPreservingCallable" and

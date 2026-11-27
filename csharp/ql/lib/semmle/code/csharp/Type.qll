@@ -717,13 +717,6 @@ class Enum extends ValueType, @enum_type {
  * ```
  */
 class Struct extends ValueType, @struct_type {
-  /**
-   * DEPRECATED: Use `instanceof RefStruct` instead.
-   *
-   * Holds if this `struct` has a `ref` modifier.
-   */
-  deprecated predicate isRef() { this.hasModifier("ref") }
-
   /** Holds if this `struct` has a `readonly` modifier. */
   predicate isReadonly() { this.hasModifier("readonly") }
 

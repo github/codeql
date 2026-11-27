@@ -84,9 +84,11 @@ BinaryPattern.cs:
 #   10|       0: [ParameterAccess] access to parameter c
 #   10|       1: [AndPatternExpr] ... and ...
 #   10|         0: [VariablePatternExpr] Object o
-#   10|           0: [TypeMention] object
+#   10|           -1: [TypeMention] object
+#   10|           0: [LocalVariableAccess] access to local variable o
 #   10|         1: [RecursivePatternExpr] { ... }
 #   10|           0: [VariablePatternExpr] BinaryPattern u
+#   10|             0: [LocalVariableAccess] access to local variable u
 #   10|           1: [TypeAccessPatternExpr] access to type BinaryPattern
 #   10|             0: [TypeMention] BinaryPattern
 #   10|           3: [PropertyPatternExpr] { ... }
@@ -100,9 +102,11 @@ BinaryPattern.cs:
 #   12|       0: [ParameterAccess] access to parameter c
 #   12|       1: [AndPatternExpr] ... and ...
 #   12|         0: [VariablePatternExpr] Object o
-#   12|           0: [TypeMention] object
+#   12|           -1: [TypeMention] object
+#   12|           0: [LocalVariableAccess] access to local variable o
 #   12|         1: [VariablePatternExpr] BinaryPattern u
-#   12|           0: [TypeMention] BinaryPattern
+#   12|           -1: [TypeMention] BinaryPattern
+#   12|           0: [LocalVariableAccess] access to local variable u
 #   14|   10: [Method] M4
 #   14|     -1: [TypeMention] string
 #-----|     2: (Parameters)
@@ -243,7 +247,8 @@ ForeachExtension.cs:
 #   23|               1: [IntLiteral] 10
 #   24|       1: [ForEachStmt] foreach (... ... in ...) ...
 #   24|         0: [LocalVariableDeclExpr] Int32 item
-#   24|           0: [TypeMention] int
+#   24|           -1: [TypeMention] int
+#   24|           0: [LocalVariableAccess] access to local variable item
 #   24|         1: [LocalVariableAccess] access to local variable enumerator1
 #   25|         2: [BlockStmt] {...}
 #   28|       2: [LocalVariableDeclStmt] ... ...;
@@ -254,17 +259,20 @@ ForeachExtension.cs:
 #   28|           1: [MethodCall] call to method GetAsyncEnumerator
 #   29|       3: [ForEachStmt] foreach (... ... in ...) ...
 #   29|         0: [LocalVariableDeclExpr] Int32 item
-#   29|           0: [TypeMention] int
+#   29|           -1: [TypeMention] int
+#   29|           0: [LocalVariableAccess] access to local variable item
 #   29|         1: [LocalVariableAccess] access to local variable enumerator2
 #   30|         2: [BlockStmt] {...}
 #   33|       4: [ForEachStmt] foreach (... ... in ...) ...
 #   33|         0: [LocalVariableDeclExpr] Int32 item
-#   33|           0: [TypeMention] int
+#   33|           -1: [TypeMention] int
+#   33|           0: [LocalVariableAccess] access to local variable item
 #   33|         1: [IntLiteral] 42
 #   34|         2: [BlockStmt] {...}
 #   37|       5: [ForEachStmt] foreach (... ... in ...) ...
 #   37|         0: [LocalVariableDeclExpr] Int32 i
-#   37|           0: [TypeMention] int
+#   37|           -1: [TypeMention] int
+#   37|           0: [LocalVariableAccess] access to local variable i
 #   37|         1: [ArrayCreation] array creation of type Int32[]
 #   37|           -2: [TypeMention] Int32[]
 #   37|             1: [TypeMention] int
@@ -729,6 +737,7 @@ ParenthesizedPattern.cs:
 #    9|           0: [ParameterAccess] access to parameter o
 #    9|           1: [RecursivePatternExpr] { ... }
 #    9|             0: [VariablePatternExpr] Object p1
+#    9|               0: [LocalVariableAccess] access to local variable p1
 #    9|             3: [PropertyPatternExpr] { ... }
 #   10|         1: [BlockStmt] {...}
 #   13|       1: [IfStmt] if (...) ...
@@ -736,6 +745,7 @@ ParenthesizedPattern.cs:
 #   13|           0: [ParameterAccess] access to parameter o
 #   13|           1: [RecursivePatternExpr] { ... }
 #   13|             0: [VariablePatternExpr] Object p2
+#   13|               0: [LocalVariableAccess] access to local variable p2
 #   13|             3: [PropertyPatternExpr] { ... }
 #   14|         1: [BlockStmt] {...}
 #   18|   7: [Method] M2
@@ -758,7 +768,8 @@ ParenthesizedPattern.cs:
 #   23|               2: [IntLiteral] 2
 #   24|             2: [SwitchCaseExpr] ... => ...
 #   24|               0: [VariablePatternExpr] T t
-#   24|                 0: [TypeMention] T
+#   24|                 -1: [TypeMention] T
+#   24|                 0: [LocalVariableAccess] access to local variable t
 #   24|               1: [IsExpr] ... is ...
 #   24|                 0: [LocalVariableAccess] access to local variable t
 #   24|                 1: [RecursivePatternExpr] { ... }
@@ -766,7 +777,8 @@ ParenthesizedPattern.cs:
 #   24|               2: [IntLiteral] 3
 #   25|             3: [SwitchCaseExpr] ... => ...
 #   25|               0: [VariablePatternExpr] Object o1
-#   25|                 0: [TypeMention] object
+#   25|                 -1: [TypeMention] object
+#   25|                 0: [LocalVariableAccess] access to local variable o1
 #   25|               1: [IsExpr] ... is ...
 #   25|                 0: [LocalVariableAccess] access to local variable o1
 #   25|                 1: [RecursivePatternExpr] { ... }
@@ -1100,7 +1112,9 @@ Record.cs:
 #   72|         0: [AssignExpr] ... = ...
 #   72|           0: [TupleExpr] (..., ...)
 #   72|             0: [LocalVariableDeclExpr] String first
+#   72|               0: [LocalVariableAccess] access to local variable first
 #   72|             1: [LocalVariableDeclExpr] String last
+#   72|               0: [LocalVariableAccess] access to local variable last
 #   72|           1: [LocalVariableAccess] access to local variable p1
 #   73|       2: [ExprStmt] ...;
 #   73|         0: [MethodCall] call to method WriteLine
@@ -1502,7 +1516,8 @@ TypePattern.cs:
 #   11|               1: [IntLiteral] 1
 #   12|           1: [SwitchCaseExpr] ... => ...
 #   12|             0: [VariablePatternExpr] Double d
-#   12|               0: [TypeMention] double
+#   12|               -1: [TypeMention] double
+#   12|               0: [LocalVariableAccess] access to local variable d
 #   12|             2: [CastExpr] (...) ...
 #   12|               1: [LocalVariableAccess] access to local variable d
 #   13|           2: [SwitchCaseExpr] ... => ...
@@ -1512,7 +1527,8 @@ TypePattern.cs:
 #   13|               1: [IntLiteral] 3
 #   14|           3: [SwitchCaseExpr] ... => ...
 #   14|             0: [VariablePatternExpr] Object o
-#   14|               0: [TypeMention] object
+#   14|               -1: [TypeMention] object
+#   14|               0: [LocalVariableAccess] access to local variable o
 #   14|             2: [LocalVariableAccess] access to local variable o
 UnaryPattern.cs:
 #    3| [Class] UnaryPattern
@@ -1550,6 +1566,7 @@ UnaryPattern.cs:
 #   12|       1: [NotPatternExpr] not ...
 #   12|         0: [RecursivePatternExpr] { ... }
 #   12|           0: [VariablePatternExpr] UnaryPattern u
+#   12|             0: [LocalVariableAccess] access to local variable u
 #   12|           1: [TypeAccessPatternExpr] access to type UnaryPattern
 #   12|             0: [TypeMention] UnaryPattern
 #   12|           3: [PropertyPatternExpr] { ... }

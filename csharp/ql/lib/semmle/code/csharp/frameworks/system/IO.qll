@@ -53,13 +53,13 @@ class SystemIOStreamClass extends SystemIOClass {
   /** Gets a method that performs a read. */
   Method getAReadMethod() {
     result = this.getAMethod() and
-    result.getName().matches("%Read%")
+    result.getName().contains("Read")
   }
 
   /** Gets a method that performs a write. */
   Method getAWriteMethod() {
     result = this.getAMethod() and
-    result.getName().matches("%Write%")
+    result.getName().contains("Write")
   }
 
   /** Gets the `Read(byte[], int, int)` method. */

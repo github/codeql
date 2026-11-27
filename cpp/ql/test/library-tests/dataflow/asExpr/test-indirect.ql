@@ -3,7 +3,7 @@ import utils.test.InlineExpectationsTest
 import semmle.code.cpp.dataflow.new.DataFlow::DataFlow
 
 bindingset[s]
-string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
+string quote(string s) { if s.contains(" ") then result = "\"" + s + "\"" else result = s }
 
 string formatNumberOfNodesForIndirectExpr(Expr e) {
   exists(int n | n = strictcount(Node node | node.asIndirectExpr() = e) |

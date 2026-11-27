@@ -25,6 +25,7 @@ expressions
 | A.cs:40:35:40:51 | "Handler removed" |
 | A.cs:46:20:46:20 | access to parameter a |
 | A.cs:55:20:55:20 | String y |
+| A.cs:55:20:55:20 | access to local variable y |
 | A.cs:56:13:56:13 | access to local variable y |
 | A.cs:56:13:56:31 | ... = ... |
 | A.cs:56:17:56:31 | $"..." |

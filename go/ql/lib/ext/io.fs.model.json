@@ -7,6 +7,8 @@
       },
       "data": [
         ["io/fs", "", false, "FileInfoToDirEntry", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["io/fs", "", false, "FormatDirEntry", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
+        ["io/fs", "", false, "FormatFileInfo", "", "", "Argument[0]", "ReturnValue", "taint", "manual"],
         ["io/fs", "", false, "Glob", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
         ["io/fs", "", false, "ReadDir", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
         ["io/fs", "", false, "ReadFile", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"],
