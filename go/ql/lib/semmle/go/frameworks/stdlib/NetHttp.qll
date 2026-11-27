@@ -112,21 +112,20 @@ module NetHttp {
     }
   }
 
+  // Filter summary stacks to array elements before joining them with call-site arguments.
+  pragma[noinline]
+  private SummaryComponentStack getVarargsArgumentStack(int lastParamIndex) {
+    result =
+      SummaryComponentStack::push(SummaryComponent::content(any(DataFlow::ArrayContent c)
+              .asContentSet()), SummaryComponentStack::argument(lastParamIndex))
+  }
+
   private DataFlow::Node getSummaryInputOrOutputNode(
     DataFlow::CallNode call, SummaryComponentStack stack
   ) {
     exists(int n | result = call.getSyntacticArgument(n) |
       if result = call.getImplicitVarargsArgument(_)
-      then
-        exists(
-          int lastParamIndex, SummaryComponentStack varArgsSliceArgument,
-          SummaryComponent arrayContentSC, DataFlow::ArrayContent arrayContent
-        |
-          lastParamIndex = call.getCall().getCalleeType().getNumParameter() - 1 and
-          varArgsSliceArgument = SummaryComponentStack::argument(lastParamIndex) and
-          arrayContentSC = SummaryComponent::content(arrayContent.asContentSet()) and
-          stack = SummaryComponentStack::push(arrayContentSC, varArgsSliceArgument)
-        )
+      then stack = getVarargsArgumentStack(call.getCall().getCalleeType().getNumParameter() - 1)
       else stack = SummaryComponentStack::argument(n)
     )
     or
