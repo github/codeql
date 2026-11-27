@@ -74,19 +74,22 @@ module RequestForgery {
   }
 
   /**
+   * A new instantiation of a `URL` object.
+   */
+  private class UrlObject extends DataFlow::NewNode {
+    UrlObject() {
+      this = DataFlow::globalVarRef("URL").getAnInstantiation() or
+      this = API::moduleImport("url").getMember("URL").getAnInstantiation()
+    }
+  }
+
+  /**
    * Holds if there is a taint step from `pred` to `succ` for request forgery.
    */
   predicate isAdditionalRequestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::NewNode url | url = DataFlow::globalVarRef("URL").getAnInstantiation() |
+    exists(UrlObject url |
       succ = url and
-      pred = url.getArgument(0)
-    )
-    or
-    exists(DataFlow::NewNode url |
-      url = API::moduleImport("url").getMember("URL").getAnInstantiation()
-    |
-      succ = url and
-      pred = url.getArgument(0)
+      pred = url.getArgument([0, 1])
     )
     or
     exists(HtmlSanitizerCall call |

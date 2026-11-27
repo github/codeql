@@ -134,7 +134,7 @@ var server2 = http.createServer(function (req, res) {
     axios.get(myEncodedUrl);
 })
 
-var server2 = http.createServer(function (req, res) {
+var server3 = http.createServer(function (req, res) {
     const { URL } = require('url');
     const input = req.query.url; // $ Source[js/request-forgery]
     const target = new URL(input);
@@ -145,6 +145,39 @@ var server2 = http.createServer(function (req, res) {
     axios.get(encodedUrl); // $ Alert[js/request-forgery]
     const escapedUrl = escape(input);
     axios.get(escapedUrl); // $ Alert[js/request-forgery]
+});
+
+// Tests for tainted 'base' argument using global URL.
+var server4 = http.createServer(function (req, res) {
+    const input = req.query.input; // $ Source[js/request-forgery]
+
+    const target1 = new URL('/path', input);
+    axios.get(target1.toString()); // $ Alert[js/request-forgery]
+
+    // An absolute url will ignore the base argument.
+    // This is not modeled, so the base is still treated as tainted.
+    const fixed = 'https://fixed.example/path';
+    const target2 = new URL(fixed, input);
+    axios.get(target2.toString()); // $ SPURIOUS: Alert[js/request-forgery]
+
+    // A URL object is always absolute and will ignore the base argument, but this is not modeled.
+    const absolute = new URL('https://fixed.example/path');
+    const target3 = new URL(absolute, input);
+    axios.get(target3.toString()); // $ SPURIOUS: Alert[js/request-forgery]
+
+    // Tainted input in 'url' argument with absolute url in 'base' argument.
+    const target4 = new URL(input, 'https://fixed.example');
+    axios.get(target4.toString()); // $ Alert[js/request-forgery]
+});
+
+// Tests for tainted 'base' argument using 'url' library.
+var server5 = http.createServer(function (req, res) {
+    const { URL } = require('url');
+
+    const input = req.query.input; // $ Source[js/request-forgery]
+
+    const target = new URL('/path', input);
+    axios.get(target.toString()); // $ Alert[js/request-forgery]
 });
 
 const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]
