@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 extern crate self as yeast;
 
 use serde::Serialize;
-use serde_json::{json, Value};
+use serde_json::{Value, json};
 
 pub mod build;
 pub mod captures;
@@ -1009,20 +1009,12 @@ impl<Id: TreeId> Ast<Id> {
 
     pub fn id_for_node_kind(&self, kind: &str) -> Option<KindId> {
         let id = self.schema.id_for_node_kind(kind).unwrap_or(0);
-        if id == 0 {
-            None
-        } else {
-            Some(id)
-        }
+        if id == 0 { None } else { Some(id) }
     }
 
     pub fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
         let id = self.schema.id_for_unnamed_node_kind(kind).unwrap_or(0);
-        if id == 0 {
-            None
-        } else {
-            Some(id)
-        }
+        if id == 0 { None } else { Some(id) }
     }
 }
 

@@ -306,16 +306,16 @@ fn parse_replacement(input: TokenStream) -> Result<Replacement> {
         return Ok(Replacement::Rust { annotation, body });
     }
 
-    if let Some(TokenTree::Group(group)) = tokens.peek() {
-        if group.delimiter() == Delimiter::Brace {
-            return Err(syn::Error::new(
-                group.span(),
-                "bare `{...}` rule bodies are no longer accepted; \
+    if let Some(TokenTree::Group(group)) = tokens.peek()
+        && group.delimiter() == Delimiter::Brace
+    {
+        return Err(syn::Error::new(
+            group.span(),
+            "bare `{...}` rule bodies are no longer accepted; \
                  use the annotation form `=> kind [? | *] { ... }` \
                  (where the kind names the output node's schema kind, \
                  optionally suffixed with `?` or `*` for cardinality)",
-            ));
-        }
+        ));
     }
 
     let templates = crate::template_parse::parse_templates(tokens.collect())?;

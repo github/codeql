@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 use tree_sitter::{Language, Tree};
 
-use crate::{Ast, Id, Node, NodeContent, CHILD_FIELD};
+use crate::{Ast, CHILD_FIELD, Id, Node, NodeContent};
 
 #[derive(Debug)]
 struct VisitorNode {

@@ -3142,10 +3142,10 @@ fn test_rule_annotation_repeated() {
     // top-level `assignment` nodes should appear as siblings.
     let mut count = 0usize;
     for id in ast.reachable_node_ids() {
-        if let Some(n) = ast.get_node(id) {
-            if n.kind_name() == "assignment" {
-                count += 1;
-            }
+        if let Some(n) = ast.get_node(id)
+            && n.kind_name() == "assignment"
+        {
+            count += 1;
         }
     }
     assert!(
@@ -3191,10 +3191,10 @@ fn test_rule_annotation_single() {
     let ast = run_and_ast("x = 1", vec![r]);
     let mut has_assignment = false;
     for id in ast.reachable_node_ids() {
-        if let Some(n) = ast.get_node(id) {
-            if n.kind_name() == "assignment" {
-                has_assignment = true;
-            }
+        if let Some(n) = ast.get_node(id)
+            && n.kind_name() == "assignment"
+        {
+            has_assignment = true;
         }
     }
     assert!(has_assignment, "expected an assignment node");
