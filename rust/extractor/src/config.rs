@@ -31,7 +31,6 @@ use crate::toolchain::select_toolchain;
 #[clap(rename_all = "lowercase")]
 pub enum Compression {
     None,
-    Gzip,
     #[default]
     Zstd,
 }
@@ -40,7 +39,6 @@ impl From<Compression> for trap::Compression {
     fn from(val: Compression) -> Self {
         match val {
             Compression::None => Self::None,
-            Compression::Gzip => Self::Gzip,
             Compression::Zstd => Self::Zstd,
         }
     }
