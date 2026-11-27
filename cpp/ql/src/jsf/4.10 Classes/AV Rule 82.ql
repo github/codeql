@@ -92,9 +92,53 @@ predicate assignOperatorWithWrongType(Operator op, string msg) {
   )
 }
 
+/** Gets the unqualified referent type of an lvalue reference. */
+private Type referenceBaseType(Type t) {
+  result = t.getUnspecifiedType().(LValueReferenceType).getBaseType().getUnspecifiedType()
+}
+
+/** Holds if `e` has an explicit cast in its conversion chain. */
+private predicate hasExplicitCast(Expr e) {
+  exists(Cast c | c = e.getUnconverted().getConversion*() and not c.isImplicit())
+}
+
+/** Holds if a visible, non-virtual function always returns the reference parameter `p`. */
+private predicate returnsReferenceParameter(Function f, Parameter p) {
+  p.getFunction() = f and
+  exists(f.getBlock()) and
+  not f.isVirtual() and
+  referenceBaseType(f.getType()) = referenceBaseType(p.getType()) and
+  exists(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s)) and
+  forall(ReturnStmt s | s.getEnclosingFunction() = f and reachable(s) |
+    s.getExpr().getUnconverted().(VariableAccess).getTarget() = p and
+    not hasExplicitCast(s.getExpr())
+  )
+}
+
+/** Holds if an assignment returns a helper call that passes through a direct `*this` argument. */
+private predicate returnsThisThroughHelper(Operator op, Expr e) {
+  exists(FunctionCall call, Parameter p, Expr arg, PointerDereferenceExpr deref, Expr operand |
+    call = e.getUnconverted() and
+    returnsReferenceParameter(call.getTarget(), p) and
+    arg = call.getArgument(p.getIndex()) and
+    deref = arg.getUnconverted() and
+    operand = deref.getChild(0) and
+    operand.getUnconverted() instanceof ThisExpr and
+    deref.getType().getUnspecifiedType() = referenceBaseType(p.getType()) and
+    referenceBaseType(op.getType()) = referenceBaseType(p.getType()) and
+    not hasExplicitCast(e) and
+    not hasExplicitCast(arg) and
+    not hasExplicitCast(operand)
+  )
+}
+
 predicate assignOperatorWithWrongResult(Operator op, string msg) {
   op.hasName("operator=") and
-  not returnsDereferenceThis(op) and
+  exists(ReturnStmt s |
+    s.getEnclosingFunction() = op and
+    reachable(s) and
+    not (dereferenceThis(s.getExpr()) or returnsThisThroughHelper(op, s.getExpr()))
+  ) and
   exists(op.getBlock()) and
   not op.getType() instanceof VoidType and
   not assignOperatorWithWrongType(op, _) and
