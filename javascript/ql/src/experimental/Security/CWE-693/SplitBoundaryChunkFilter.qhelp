@@ -1,0 +1,54 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+A stream arrives in chunks whose boundaries are chosen by the sender, the transport or the
+tokenizer, not by the receiving code. When a filter applies a regular expression to each chunk
+on its own, a value that starts in one chunk and ends in the next is never seen as a whole:
+neither piece matches, so a redaction filter forwards the value unchanged and a blocking filter
+lets it through. The failure only shows up when a boundary happens to fall inside a match, so
+tests that feed the filter whole strings pass.
+</p>
+<p>
+This query flags a regular expression that can match two or more characters when it is applied
+to a value derived from the current chunk alone inside a per-chunk callback: a Node.js
+<code>Transform</code> or <code>Writable</code> implementation, a web <code>TransformStream</code>
+transformer, a <code>'data'</code> event listener, or the body of a <code>for await</code> loop.
+Applying the pattern to the chunk joined with carried text (for example a held-back tail or an
+accumulated buffer) is not flagged.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Carry state between chunks. Hold back a tail at least as long as the longest possible match,
+prepend it to the next chunk before matching, emit only the part that can no longer be the start
+of a match, and flush the tail when the stream ends. Alternatively buffer to a natural boundary
+(a line, a message) and apply the pattern once per boundary. For patterns with unbounded
+matches, set an explicit cap and treat reaching it as a reportable condition rather than
+silently cutting the match.
+</p>
+</recommendation>
+
+<example>
+<p>
+In the following example the pattern is applied to each chunk separately. An email address
+that is split across two chunks, such as <code>jane.do</code> and <code>e@example.com</code>, is
+forwarded without redaction.
+</p>
+<sample src="examples/SplitBoundaryChunkFilterBad.js" />
+<p>
+The corrected version keeps the last 64 characters of the previous chunk, matches against the
+join, and releases the held tail at the end of the stream.
+</p>
+<sample src="examples/SplitBoundaryChunkFilterGood.js" />
+</example>
+
+<references>
+<li>CWE-693: <a href="https://cwe.mitre.org/data/definitions/693.html">Protection Mechanism Failure</a>.</li>
+<li>T. Ptacek and T. Newsham, <a href="https://insecure.org/stf/secnet_ids/secnet_ids.html">Insertion, Evasion, and Denial of Service: Eluding Network Intrusion Detection</a>, 1998: the same mechanism at the network layer.</li>
+<li>N. Phalak, <a href="https://doi.org/10.5281/zenodo.22909585">Split-Boundary Leaks in Streaming Guardrails</a>: measurements across streaming redaction filters.</li>
+</references>
+</qhelp>

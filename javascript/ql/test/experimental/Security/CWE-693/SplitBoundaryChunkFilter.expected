@@ -1,0 +1,66 @@
+edges
+| test.js:8:14:8:18 | chunk | test.js:9:14:9:18 | chunk | provenance |  |
+| test.js:9:14:9:18 | chunk | test.js:9:14:9:29 | chunk.toString() | provenance | Config |
+| test.js:15:13:15:17 | chunk | test.js:16:18:16:22 | chunk | provenance |  |
+| test.js:16:11:16:14 | text | test.js:17:14:17:17 | text | provenance |  |
+| test.js:16:18:16:22 | chunk | test.js:16:18:16:39 | chunk.t ... 'utf8') | provenance | Config |
+| test.js:16:18:16:39 | chunk.t ... 'utf8') | test.js:16:11:16:14 | text | provenance |  |
+| test.js:23:13:23:17 | chunk | test.js:24:24:24:28 | chunk | provenance |  |
+| test.js:31:11:31:15 | delta | test.js:32:11:32:15 | delta | provenance |  |
+| test.js:31:19:31:23 | chunk | test.js:31:19:31:31 | chunk.choices | provenance | Config |
+| test.js:31:19:31:31 | chunk.choices | test.js:31:19:31:34 | chunk.choices[0] | provenance | Config |
+| test.js:31:19:31:34 | chunk.choices[0] | test.js:31:19:31:40 | chunk.c ... ].delta | provenance | Config |
+| test.js:31:19:31:40 | chunk.c ... ].delta | test.js:31:19:31:48 | chunk.c ... content | provenance | Config |
+| test.js:31:19:31:48 | chunk.c ... content | test.js:31:11:31:15 | delta | provenance |  |
+| test.js:38:19:38:22 | data | test.js:39:22:39:25 | data | provenance |  |
+| test.js:39:22:39:25 | data | test.js:39:15:39:26 | String(data) | provenance | Config |
+| test.js:45:13:45:17 | chunk | test.js:46:51:46:55 | chunk | provenance |  |
+| test.js:46:51:46:55 | chunk | test.js:46:51:46:66 | chunk.toString() | provenance | Config |
+| test.js:54:13:54:17 | chunk | test.js:55:26:55:30 | chunk | provenance |  |
+| test.js:55:11:55:11 | s | test.js:56:24:56:24 | s | provenance |  |
+| test.js:55:15:55:49 | dec.dec ... true }) | test.js:55:11:55:11 | s | provenance |  |
+| test.js:55:26:55:30 | chunk | test.js:55:15:55:49 | dec.dec ... true }) | provenance | Config |
+| test.js:62:13:62:17 | chunk | test.js:63:14:63:18 | chunk | provenance |  |
+| test.js:63:14:63:18 | chunk | test.js:63:14:63:29 | chunk.toString() | provenance | Config |
+nodes
+| test.js:8:14:8:18 | chunk | semmle.label | chunk |
+| test.js:9:14:9:18 | chunk | semmle.label | chunk |
+| test.js:9:14:9:29 | chunk.toString() | semmle.label | chunk.toString() |
+| test.js:15:13:15:17 | chunk | semmle.label | chunk |
+| test.js:16:11:16:14 | text | semmle.label | text |
+| test.js:16:18:16:22 | chunk | semmle.label | chunk |
+| test.js:16:18:16:39 | chunk.t ... 'utf8') | semmle.label | chunk.t ... 'utf8') |
+| test.js:17:14:17:17 | text | semmle.label | text |
+| test.js:23:13:23:17 | chunk | semmle.label | chunk |
+| test.js:24:24:24:28 | chunk | semmle.label | chunk |
+| test.js:31:11:31:15 | delta | semmle.label | delta |
+| test.js:31:19:31:23 | chunk | semmle.label | chunk |
+| test.js:31:19:31:31 | chunk.choices | semmle.label | chunk.choices |
+| test.js:31:19:31:34 | chunk.choices[0] | semmle.label | chunk.choices[0] |
+| test.js:31:19:31:40 | chunk.c ... ].delta | semmle.label | chunk.c ... ].delta |
+| test.js:31:19:31:48 | chunk.c ... content | semmle.label | chunk.c ... content |
+| test.js:32:11:32:15 | delta | semmle.label | delta |
+| test.js:38:19:38:22 | data | semmle.label | data |
+| test.js:39:15:39:26 | String(data) | semmle.label | String(data) |
+| test.js:39:22:39:25 | data | semmle.label | data |
+| test.js:45:13:45:17 | chunk | semmle.label | chunk |
+| test.js:46:51:46:55 | chunk | semmle.label | chunk |
+| test.js:46:51:46:66 | chunk.toString() | semmle.label | chunk.toString() |
+| test.js:54:13:54:17 | chunk | semmle.label | chunk |
+| test.js:55:11:55:11 | s | semmle.label | s |
+| test.js:55:15:55:49 | dec.dec ... true }) | semmle.label | dec.dec ... true }) |
+| test.js:55:26:55:30 | chunk | semmle.label | chunk |
+| test.js:56:24:56:24 | s | semmle.label | s |
+| test.js:62:13:62:17 | chunk | semmle.label | chunk |
+| test.js:63:14:63:18 | chunk | semmle.label | chunk |
+| test.js:63:14:63:29 | chunk.toString() | semmle.label | chunk.toString() |
+subpaths
+#select
+| test.js:9:14:9:58 | chunk.t ... CTED]') | test.js:8:14:8:18 | chunk | test.js:9:14:9:29 | chunk.toString() | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:8:14:8:18 | chunk | a single stream chunk |
+| test.js:17:14:17:60 | text.re ... [SSN]') | test.js:15:13:15:17 | chunk | test.js:17:14:17:17 | text | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:15:13:15:17 | chunk | a single stream chunk |
+| test.js:24:24:24:60 | chunk.r ... CTED]') | test.js:23:13:23:17 | chunk | test.js:24:24:24:28 | chunk | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:23:13:23:17 | chunk | a single stream chunk |
+| test.js:32:11:32:44 | delta.r ... CTED]') | test.js:31:19:31:23 | chunk | test.js:32:11:32:15 | delta | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:31:19:31:23 | chunk | a single stream chunk |
+| test.js:39:15:39:67 | String( ... [KEY]') | test.js:38:19:38:22 | data | test.js:39:15:39:26 | String(data) | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:38:19:38:22 | data | a single stream chunk |
+| test.js:46:9:46:67 | /-----B ... ring()) | test.js:45:13:45:17 | chunk | test.js:46:51:46:66 | chunk.toString() | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:45:13:45:17 | chunk | a single stream chunk |
+| test.js:56:24:56:53 | s.repla ... CTED]') | test.js:54:13:54:17 | chunk | test.js:56:24:56:24 | s | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:54:13:54:17 | chunk | a single stream chunk |
+| test.js:63:14:63:72 | chunk.t ... ), '#') | test.js:62:13:62:17 | chunk | test.js:63:14:63:29 | chunk.toString() | A pattern that can match more than one character is applied to $@ with no state carried from the previous chunk; a value that straddles two chunks is not matched. | test.js:62:13:62:17 | chunk | a single stream chunk |
