@@ -42,6 +42,7 @@
 | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | command-line-parameter-command-injection.js:145:22:145:35 | program.opts() | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:145:22:145:35 | program.opts() | command-line argument |
 | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | command-line argument |
 | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line argument |
+| command-line-parameter-command-injection.js:155:2:155:68 | cp.exec ... used"]) | command-line-parameter-command-injection.js:152:15:152:26 | process.argv | command-line-parameter-command-injection.js:155:31:155:50 | "wc -c < " + argv[0] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:152:15:152:26 | process.argv | command-line argument |
 edges
 | actions.js:4:6:4:16 | process.env | actions.js:4:6:4:29 | process ... _DATA'] | provenance |  |
 | actions.js:7:15:7:15 | e | actions.js:8:10:8:10 | e | provenance |  |
@@ -179,6 +180,15 @@ edges
 | command-line-parameter-command-injection.js:145:22:145:35 | program.opts() | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | provenance |  |
 | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | provenance |  |
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | provenance |  |
+| command-line-parameter-command-injection.js:152:8:152:11 | argv | command-line-parameter-command-injection.js:155:44:155:47 | argv | provenance |  |
+| command-line-parameter-command-injection.js:152:8:152:11 | argv [ArrayElement] | command-line-parameter-command-injection.js:155:44:155:47 | argv [ArrayElement] | provenance |  |
+| command-line-parameter-command-injection.js:152:15:152:26 | process.argv | command-line-parameter-command-injection.js:152:15:152:35 | process ... lice(2) | provenance |  |
+| command-line-parameter-command-injection.js:152:15:152:26 | process.argv | command-line-parameter-command-injection.js:152:15:152:35 | process ... lice(2) [ArrayElement] | provenance |  |
+| command-line-parameter-command-injection.js:152:15:152:35 | process ... lice(2) | command-line-parameter-command-injection.js:152:8:152:11 | argv | provenance |  |
+| command-line-parameter-command-injection.js:152:15:152:35 | process ... lice(2) [ArrayElement] | command-line-parameter-command-injection.js:152:8:152:11 | argv [ArrayElement] | provenance |  |
+| command-line-parameter-command-injection.js:155:44:155:47 | argv | command-line-parameter-command-injection.js:155:31:155:50 | "wc -c < " + argv[0] | provenance |  |
+| command-line-parameter-command-injection.js:155:44:155:47 | argv [ArrayElement] | command-line-parameter-command-injection.js:155:44:155:50 | argv[0] | provenance |  |
+| command-line-parameter-command-injection.js:155:44:155:50 | argv[0] | command-line-parameter-command-injection.js:155:31:155:50 | "wc -c < " + argv[0] | provenance |  |
 nodes
 | actions.js:4:6:4:16 | process.env | semmle.label | process.env |
 | actions.js:4:6:4:29 | process ... _DATA'] | semmle.label | process ... _DATA'] |
@@ -342,4 +352,13 @@ nodes
 | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | semmle.label | program ... zzaType |
 | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | semmle.label | "cmd.sh ... zzaType |
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | semmle.label | program.pizzaType |
+| command-line-parameter-command-injection.js:152:8:152:11 | argv | semmle.label | argv |
+| command-line-parameter-command-injection.js:152:8:152:11 | argv [ArrayElement] | semmle.label | argv [ArrayElement] |
+| command-line-parameter-command-injection.js:152:15:152:26 | process.argv | semmle.label | process.argv |
+| command-line-parameter-command-injection.js:152:15:152:35 | process ... lice(2) | semmle.label | process ... lice(2) |
+| command-line-parameter-command-injection.js:152:15:152:35 | process ... lice(2) [ArrayElement] | semmle.label | process ... lice(2) [ArrayElement] |
+| command-line-parameter-command-injection.js:155:31:155:50 | "wc -c < " + argv[0] | semmle.label | "wc -c < " + argv[0] |
+| command-line-parameter-command-injection.js:155:44:155:47 | argv | semmle.label | argv |
+| command-line-parameter-command-injection.js:155:44:155:47 | argv [ArrayElement] | semmle.label | argv [ArrayElement] |
+| command-line-parameter-command-injection.js:155:44:155:50 | argv[0] | semmle.label | argv[0] |
 subpaths

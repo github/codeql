@@ -147,3 +147,10 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 
 	cp.execFile(program.opts().pizzaType, ["foo", "bar"]);
 });
+
+(function () {
+	const argv = process.argv.slice(2); // $ Source
+	cp.execFileSync("sh", ["-c", 'for f in "$@"; do wc -c < "$f"; done', "sh"].concat(argv));
+	cp.execFileSync("sh", ["-c", 'wc -c < "$1"', "sh", argv[0]]);
+	cp.execFileSync("sh", ["-c", "wc -c < " + argv[0], "sh", "unused"]); // $ Alert
+});

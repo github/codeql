@@ -17,7 +17,6 @@
 | child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:49 | url.par ... ry.path | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:57:5:57:50 | cp.spaw ... t(cmd)) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:48:15:48:17 | cmd | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
-| child_process-test.js:67:3:67:21 | cp.spawn(cmd, args) | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:66:19:66:22 | args | This command line depends on a $@. | child_process-test.js:6:25:6:31 | req.url | user-provided value |
 | child_process-test.js:75:29:75:31 | cmd | child_process-test.js:73:25:73:31 | req.url | child_process-test.js:75:29:75:31 | cmd | This command line depends on a $@. | child_process-test.js:73:25:73:31 | req.url | user-provided value |
 | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | child_process-test.js:83:19:83:36 | req.query.fileName | This command line depends on a $@. | child_process-test.js:83:19:83:36 | req.query.fileName | user-provided value |
 | child_process-test.js:94:11:94:35 | "ping " ... ms.host | child_process-test.js:94:21:94:30 | ctx.params | child_process-test.js:94:11:94:35 | "ping " ... ms.host | This command line depends on a $@. | child_process-test.js:94:21:94:30 | ctx.params | user-provided value |
@@ -44,6 +43,14 @@
 | child_process-test.js:184:26:184:29 | args | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:184:26:184:29 | args | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
 | child_process-test.js:185:29:185:32 | args | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:185:29:185:32 | args | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
 | child_process-test.js:191:26:191:31 | [name] | child_process-test.js:98:28:98:34 | req.url | child_process-test.js:191:26:191:31 | [name] | This command line depends on a $@. | child_process-test.js:98:28:98:34 | req.url | user-provided value |
+| child_process-test.js:225:5:225:68 | cp.exec ...  => {}) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:225:30:225:42 | "grep " + cmd | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
+| child_process-test.js:226:5:226:37 | cp.spaw ... , cmd]) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:226:33:226:35 | cmd | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
+| child_process-test.js:227:5:227:37 | cp.spaw ... , cmd]) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:227:33:227:35 | cmd | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
+| child_process-test.js:228:5:228:37 | cp.spaw ... , cmd]) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:228:33:228:35 | cmd | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
+| child_process-test.js:229:5:229:53 | cp.spaw ... , cmd]) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:229:49:229:51 | cmd | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
+| child_process-test.js:230:5:230:38 | cp.spaw ... t(cmd)) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:207:15:207:49 | url.par ... ry.path | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
+| child_process-test.js:230:5:230:38 | cp.spaw ... t(cmd)) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:230:20:230:37 | ["-c"].concat(cmd) | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
+| child_process-test.js:233:5:233:31 | cp.spaw ... edArgs) | child_process-test.js:207:25:207:31 | req.url | child_process-test.js:207:15:207:49 | url.par ... ry.path | This command line depends on a $@. | child_process-test.js:207:25:207:31 | req.url | user-provided value |
 | command-line-libs.js:14:8:14:18 | options.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:14:8:14:18 | options.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
 | command-line-libs.js:15:8:15:18 | program.cmd | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:15:8:15:18 | program.cmd | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
 | command-line-libs.js:21:12:21:17 | script | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:21:12:21:17 | script | This command line depends on a $@. | command-line-libs.js:9:16:9:23 | req.body | user-provided value |
@@ -153,7 +160,6 @@ edges
 | child_process-test.js:6:9:6:11 | cmd | child_process-test.js:39:26:39:28 | cmd | provenance |  |
 | child_process-test.js:6:9:6:11 | cmd | child_process-test.js:43:15:43:17 | cmd | provenance |  |
 | child_process-test.js:6:9:6:11 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
-| child_process-test.js:6:9:6:11 | cmd | child_process-test.js:48:15:48:17 | cmd | provenance |  |
 | child_process-test.js:6:9:6:11 | cmd | child_process-test.js:53:15:53:17 | cmd | provenance |  |
 | child_process-test.js:6:9:6:11 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
 | child_process-test.js:6:9:6:11 | cmd | child_process-test.js:56:54:56:56 | cmd | provenance |  |
@@ -164,9 +170,6 @@ edges
 | child_process-test.js:6:15:6:49 | url.par ... ry.path | child_process-test.js:6:9:6:11 | cmd | provenance |  |
 | child_process-test.js:6:25:6:31 | req.url | child_process-test.js:6:15:6:38 | url.par ... , true) | provenance |  |
 | child_process-test.js:25:21:25:23 | cmd | child_process-test.js:25:13:25:31 | "foo" + cmd + "bar" | provenance |  |
-| child_process-test.js:48:5:48:8 | [post update] args [1] | child_process-test.js:49:15:49:18 | args [1] | provenance |  |
-| child_process-test.js:48:15:48:17 | cmd | child_process-test.js:48:5:48:8 | [post update] args [1] | provenance |  |
-| child_process-test.js:49:15:49:18 | args [1] | child_process-test.js:66:19:66:22 | args | provenance |  |
 | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | provenance |  |
 | child_process-test.js:56:54:56:56 | cmd | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | provenance |  |
 | child_process-test.js:57:46:57:48 | cmd | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | provenance |  |
@@ -290,6 +293,19 @@ edges
 | child_process-test.js:189:14:189:27 | runWithOptions [name] | child_process-test.js:193:5:193:18 | runWithOptions [name] | provenance |  |
 | child_process-test.js:191:27:191:30 | name | child_process-test.js:191:26:191:31 | [name] | provenance |  |
 | child_process-test.js:193:5:193:18 | runWithOptions [name] | child_process-test.js:191:27:191:30 | name | provenance |  |
+| child_process-test.js:207:9:207:11 | cmd | child_process-test.js:225:40:225:42 | cmd | provenance |  |
+| child_process-test.js:207:9:207:11 | cmd | child_process-test.js:226:33:226:35 | cmd | provenance |  |
+| child_process-test.js:207:9:207:11 | cmd | child_process-test.js:227:33:227:35 | cmd | provenance |  |
+| child_process-test.js:207:9:207:11 | cmd | child_process-test.js:228:33:228:35 | cmd | provenance |  |
+| child_process-test.js:207:9:207:11 | cmd | child_process-test.js:229:49:229:51 | cmd | provenance |  |
+| child_process-test.js:207:9:207:11 | cmd | child_process-test.js:230:34:230:36 | cmd | provenance |  |
+| child_process-test.js:207:15:207:38 | url.par ... , true) | child_process-test.js:207:9:207:11 | cmd | provenance |  |
+| child_process-test.js:207:15:207:38 | url.par ... , true) | child_process-test.js:207:15:207:49 | url.par ... ry.path | provenance |  |
+| child_process-test.js:207:15:207:38 | url.par ... , true) | child_process-test.js:207:15:207:49 | url.par ... ry.path | provenance |  |
+| child_process-test.js:207:15:207:49 | url.par ... ry.path | child_process-test.js:207:9:207:11 | cmd | provenance |  |
+| child_process-test.js:207:25:207:31 | req.url | child_process-test.js:207:15:207:38 | url.par ... , true) | provenance |  |
+| child_process-test.js:225:40:225:42 | cmd | child_process-test.js:225:30:225:42 | "grep " + cmd | provenance |  |
+| child_process-test.js:230:34:230:36 | cmd | child_process-test.js:230:20:230:37 | ["-c"].concat(cmd) | provenance |  |
 | command-line-libs.js:9:9:9:12 | args | command-line-libs.js:12:17:12:20 | args | provenance |  |
 | command-line-libs.js:9:9:9:12 | args | command-line-libs.js:23:29:23:32 | args | provenance |  |
 | command-line-libs.js:9:16:9:23 | req.body | command-line-libs.js:9:9:9:12 | args | provenance |  |
@@ -510,10 +526,7 @@ nodes
 | child_process-test.js:25:21:25:23 | cmd | semmle.label | cmd |
 | child_process-test.js:39:26:39:28 | cmd | semmle.label | cmd |
 | child_process-test.js:43:15:43:17 | cmd | semmle.label | cmd |
-| child_process-test.js:48:5:48:8 | [post update] args [1] | semmle.label | [post update] args [1] |
 | child_process-test.js:48:15:48:17 | cmd | semmle.label | cmd |
-| child_process-test.js:48:15:48:17 | cmd | semmle.label | cmd |
-| child_process-test.js:49:15:49:18 | args [1] | semmle.label | args [1] |
 | child_process-test.js:53:15:53:17 | cmd | semmle.label | cmd |
 | child_process-test.js:56:25:56:58 | ['/C',  ... , cmd]) | semmle.label | ['/C',  ... , cmd]) |
 | child_process-test.js:56:46:56:57 | ["bar", cmd] [1] | semmle.label | ["bar", cmd] [1] |
@@ -521,7 +534,6 @@ nodes
 | child_process-test.js:56:54:56:56 | cmd | semmle.label | cmd |
 | child_process-test.js:57:25:57:49 | ['/C',  ... at(cmd) | semmle.label | ['/C',  ... at(cmd) |
 | child_process-test.js:57:46:57:48 | cmd | semmle.label | cmd |
-| child_process-test.js:66:19:66:22 | args | semmle.label | args |
 | child_process-test.js:73:9:73:11 | cmd | semmle.label | cmd |
 | child_process-test.js:73:15:73:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | child_process-test.js:73:25:73:31 | req.url | semmle.label | req.url |
@@ -606,6 +618,19 @@ nodes
 | child_process-test.js:191:26:191:31 | [name] | semmle.label | [name] |
 | child_process-test.js:191:27:191:30 | name | semmle.label | name |
 | child_process-test.js:193:5:193:18 | runWithOptions [name] | semmle.label | runWithOptions [name] |
+| child_process-test.js:207:9:207:11 | cmd | semmle.label | cmd |
+| child_process-test.js:207:15:207:38 | url.par ... , true) | semmle.label | url.par ... , true) |
+| child_process-test.js:207:15:207:49 | url.par ... ry.path | semmle.label | url.par ... ry.path |
+| child_process-test.js:207:15:207:49 | url.par ... ry.path | semmle.label | url.par ... ry.path |
+| child_process-test.js:207:25:207:31 | req.url | semmle.label | req.url |
+| child_process-test.js:225:30:225:42 | "grep " + cmd | semmle.label | "grep " + cmd |
+| child_process-test.js:225:40:225:42 | cmd | semmle.label | cmd |
+| child_process-test.js:226:33:226:35 | cmd | semmle.label | cmd |
+| child_process-test.js:227:33:227:35 | cmd | semmle.label | cmd |
+| child_process-test.js:228:33:228:35 | cmd | semmle.label | cmd |
+| child_process-test.js:229:49:229:51 | cmd | semmle.label | cmd |
+| child_process-test.js:230:20:230:37 | ["-c"].concat(cmd) | semmle.label | ["-c"].concat(cmd) |
+| child_process-test.js:230:34:230:36 | cmd | semmle.label | cmd |
 | command-line-libs.js:9:9:9:12 | args | semmle.label | args |
 | command-line-libs.js:9:16:9:23 | req.body | semmle.label | req.body |
 | command-line-libs.js:12:17:12:20 | args | semmle.label | args |
