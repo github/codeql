@@ -2,7 +2,7 @@
 name = "yeast-python"
 version = "0.1.0"
 authors = ["Taus <tausbn@github.com>"]
-edition = "2024"
+edition.workspace = true
 
 [dependencies]
 anyhow = "1.0"

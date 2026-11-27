@@ -2,7 +2,7 @@
 name = "extractor-common"
 description = "Code shared between the extractors."
 version = "0.1.0"
-edition = "2024"
+edition.workspace = true
 
 [lints]
 workspace = true
