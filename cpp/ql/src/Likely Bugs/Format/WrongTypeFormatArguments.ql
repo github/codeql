@@ -152,6 +152,21 @@ predicate trivialConversion(ExpectedType expected, Type actual) {
  */
 int sizeof_IntType() { exists(IntType it | result = it.getSize()) }
 
+bindingset[ffc, n, arg]
+private string formatSuggestion(FormattingFunctionCall ffc, int n, Expr arg) {
+  result =
+    concat(string replacement |
+      ffc.getConversionArgument(n) = arg and
+      // Changing one conversion may not fix an argument reused by a positional format.
+      not ffc.getMinFieldWidthArgument(_) = arg and
+      not ffc.getPrecisionArgument(_) = arg and
+      not exists(int other | other != n and ffc.getConversionArgument(other) = arg) and
+      replacement = ffc.getFormat().(FormatLiteral).getSuggestedConversionSpecifier(n, arg)
+    |
+      " Consider using '" + replacement + "' instead."
+    )
+}
+
 from FormattingFunctionCall ffc, int n, Expr arg, Type expected, Type actual
 where
   (
@@ -178,4 +193,4 @@ where
   count(ffc.getTarget().getFormatParameterIndex()) = 1
 select arg,
   "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
-    actual.getUnspecifiedType().getName() + "'."
+    actual.getUnspecifiedType().getName() + "'." + formatSuggestion(ffc, n, arg)

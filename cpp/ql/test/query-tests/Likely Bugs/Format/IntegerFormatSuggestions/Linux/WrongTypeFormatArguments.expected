@@ -1,0 +1,33 @@
+| ../format-suggestions.h:7:19:7:21 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. Consider using '%#08llx' instead. |
+| ../format-suggestions.h:8:16:8:18 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. Consider using '%llo' instead. |
+| ../format-suggestions.h:9:16:9:18 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. Consider using '%llX' instead. |
+| ../format-suggestions.h:10:24:10:25 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%*lld' instead. |
+| ../format-suggestions.h:11:32:11:33 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%2$*1$.*3$lld' instead. |
+| ../format-suggestions.h:12:17:12:19 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. |
+| ../format-suggestions.h:13:16:13:17 | ll | This format specifier for type 'unsigned int' does not match the argument type 'long long'. |
+| ../format-suggestions.h:14:21:14:22 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| ../format-suggestions.h:15:18:15:19 | ld | This format specifier for type 'double' does not match the argument type 'long double'. Consider using '%.3La' instead. |
+| ../format-suggestions.h:16:17:16:17 | d | This format specifier for type 'long double' does not match the argument type 'double'. Consider using '%g' instead. |
+| ../format-suggestions.h:17:18:17:18 | d | This format specifier for type 'long double' does not match the argument type 'double'. |
+| ../format-suggestions.h:18:16:18:19 | wide | This format specifier for type 'char *' does not match the argument type 'wchar_t *'. Consider using '%ls' instead. |
+| ../format-suggestions.h:19:20:19:25 | narrow | This format specifier for type 'wchar_t *' does not match the argument type 'char *'. Consider using '%7.3s' instead. |
+| ../format-suggestions.h:20:18:20:23 | narrow | This format specifier for type 'wchar_t *' does not match the argument type 'char *'. |
+| ../format-suggestions.h:22:16:22:20 | width | This format specifier for type 'void *' does not match the argument type 'int'. |
+| integer-hints.c:7:16:7:17 | ul | This format specifier for type 'int' does not match the argument type 'unsigned long'. Consider using '%lu' instead. |
+| integer-hints.c:8:16:8:17 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%lld' instead. |
+| integer-hints.c:9:16:9:18 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. Consider using '%llu' instead. |
+| integer-hints.c:10:16:10:17 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%lli' instead. |
+| integer-hints.c:11:18:11:18 | i | This format specifier for type 'long long' does not match the argument type 'int'. Consider using '%d' instead. |
+| integer-hints.c:12:18:12:19 | ui | This format specifier for type 'unsigned long long' does not match the argument type 'unsigned int'. Consider using '%u' instead. |
+| integer-hints.c:15:26:15:28 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. Consider using '%llu' instead. |
+| integer-hints.c:16:19:16:20 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%lld' instead. |
+| integer-hints.c:16:23:16:25 | ull | This format specifier for type 'int' does not match the argument type 'unsigned long long'. Consider using '%llu' instead. |
+| integer-hints.c:26:18:26:19 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%08lld' instead. |
+| integer-hints.c:27:17:27:18 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| integer-hints.c:28:18:28:19 | ll | This format specifier for type 'int' does not match the argument type 'long long'. |
+| integer-hints.c:29:18:29:19 | ll | This format specifier for type 'int' does not match the argument type 'long long'. Consider using '%1$lld' instead. |
+| integer-hints.c:30:16:30:18 | ull | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long long'. Consider using '%llx' instead. |
+| integer-hints.c:31:16:31:16 | d | This format specifier for type 'int' does not match the argument type 'double'. |
+| integer-hints.c:32:16:32:17 | ll | This format specifier for type 'char *' does not match the argument type 'long long'. |
+| integer-hints.c:33:16:33:17 | ll | This format specifier for type 'void *' does not match the argument type 'long long'. |
+| integer-hints.c:34:16:34:16 | i | This format specifier for type 'double' does not match the argument type 'int'. |
