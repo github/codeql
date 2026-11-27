@@ -44,11 +44,6 @@ module TaintedPath {
     }
   }
 
-  /**
-   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
-   */
-  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
-
   /** A source of untrusted data, considered as a taint source for path traversal. */
   private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 

@@ -180,7 +180,7 @@ module Spife {
       this =
         rh.getARequestSource()
             .ref()
-            .getAPropertyRead(any(string s | s.matches("validated%")))
+            .getAPropertyRead(any(string s | s.startsWith("validated")))
             .getAMethodCall("get") and
       kind = "body"
     }

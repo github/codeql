@@ -61,9 +61,6 @@ module GoMicro {
      */
     override string getName() { result = definedType.getName() }
 
-    /** DEPRECATED: Use `getDefinedType` instead. */
-    deprecated DefinedType getNamedType() { result = definedType }
-
     /**
      * Gets the defined type on top of this interface type.
      */

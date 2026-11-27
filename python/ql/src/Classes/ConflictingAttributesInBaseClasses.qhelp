@@ -7,7 +7,7 @@
 <p>
 When a class subclasses multiple base classes, attribute lookup is performed from left to right amongst the base classes.
 This form of attribute lookup is called "method resolution order" and is a solution to the 
-<a href="http://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">diamond inheritance problem</a> where several base classes
+<a href="https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem">diamond inheritance problem</a> where several base classes
 override a method in a shared superclass.
 </p>
 <p>
@@ -52,7 +52,7 @@ functionality provided by the two base classes does not overlap, as shown in cla
     <li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html">Data model</a>.</li>
     <li>Python releases: <a href="https://www.python.org/download/releases/2.3/mro/">The Python 2.3 Method Resolution Order</a>.</li>
     <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/C3_linearization">C3 linearization</a>.</li>
-    <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
+    <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>
 
 
 </references>

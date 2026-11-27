@@ -6,7 +6,7 @@ abstract class TestScope extends Scope { }
 class UnitTestClass extends TestScope, Class {
   UnitTestClass() {
     exists(API::Node testCaseClass, string testCaseString |
-      testCaseString.matches("%TestCase") and
+      testCaseString.endsWith("TestCase") and
       testCaseClass = any(API::Node mod).getMember(testCaseString)
     |
       this.getParent() = testCaseClass.getASubclass*().asSource().asExpr()
@@ -20,28 +20,28 @@ abstract class Test extends TestScope { }
 class UnitTestFunction extends Test {
   UnitTestFunction() {
     this.getScope+() instanceof UnitTestClass and
-    this.(Function).getName().matches("test%")
+    this.(Function).getName().startsWith("test")
   }
 }
 
 class PyTestFunction extends Test {
   PyTestFunction() {
     exists(Module pytest | pytest.getName() = "pytest") and
-    this.(Function).getName().matches("test%")
+    this.(Function).getName().startsWith("test")
   }
 }
 
 class NoseTestFunction extends Test {
   NoseTestFunction() {
     exists(Module nose | nose.getName() = "nose") and
-    this.(Function).getName().matches("test%")
+    this.(Function).getName().startsWith("test")
   }
 }
 
 /** A function that is clearly a test, but doesn't belong to a specific framework */
 class UnknownTestFunction extends Test {
   UnknownTestFunction() {
-    this.(Function).getName().matches("test%") and
+    this.(Function).getName().startsWith("test") and
     this.getEnclosingModule().getFile().getShortName().matches("test_%.py")
   }
 }

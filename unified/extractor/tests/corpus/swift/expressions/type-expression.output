@@ -1,0 +1,104 @@
+let a = (any Equatable).self
+let b = [any Equatable]()
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    memberAccessExpr
+                      period: .
+                      declName:
+                        declReferenceExpr
+                          baseName: self
+                      base:
+                        tupleExpr
+                          leftParen: (
+                          rightParen: )
+                          elements:
+                            labeledExpr
+                              expression:
+                                typeExpr
+                                  type:
+                                    someOrAnyType
+                                      constraint:
+                                        identifierType
+                                          name: identifier "Equatable"
+                                      someOrAnySpecifier: any
+              pattern:
+                identifierPattern
+                  identifier: identifier "a"
+    codeBlockItem
+      item:
+        variableDecl
+          attributes:
+          modifiers:
+          bindingSpecifier: let
+          bindings:
+            patternBinding
+              initializer:
+                initializerClause
+                  equal: =
+                  value:
+                    functionCallExpr
+                      leftParen: (
+                      rightParen: )
+                      arguments:
+                      additionalTrailingClosures:
+                      calledExpression:
+                        arrayExpr
+                          elements:
+                            arrayElement
+                              expression:
+                                typeExpr
+                                  type:
+                                    someOrAnyType
+                                      constraint:
+                                        identifierType
+                                          name: identifier "Equatable"
+                                      someOrAnySpecifier: any
+                          leftSquare: [
+                          rightSquare: ]
+              pattern:
+                identifierPattern
+                  identifier: identifier "b"
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩\n⟨stmt⟩"
+      stmt:
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "a" source="a"
+          value:
+            member_access_expr source="(⟨base⟩).⟨member_name_node⟩"
+              base:
+                modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                  modifier: modifier "any" source="any"
+                  type: identifier "Equatable" source="Equatable"
+              member_name_node: identifier "self" source="self"
+        variable_declaration source="⟨modifier⟩ ⟨pattern⟩ = ⟨value⟩"
+          modifier: modifier "let" source="let"
+          pattern: identifier "b" source="b"
+          value:
+            call_expr source="⟨callee⟩()"
+              callee:
+                array_literal source="[⟨element⟩]"
+                  element:
+                    modified_type_expr source="⟨modifier⟩ ⟨type⟩"
+                      modifier: modifier "any" source="any"
+                      type: identifier "Equatable" source="Equatable"

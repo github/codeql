@@ -1,10 +1,12 @@
 use proc_macro2::{Ident, Span, TokenStream, TokenTree};
-use quote::{quote, ToTokens};
+use quote::{quote, quote_spanned, ToTokens};
 use std::cell::RefCell;
 use std::sync::atomic::{AtomicUsize, Ordering};
+use syn::spanned::Spanned;
 
 use crate::ast::{
-    Alternative, Cardinality, Content, Field, Node, Pattern, Replacement, Rule, Template,
+    Alternative, Cardinality, Content, Field, Node, Pattern, QueryMatch, QueryMatchArm,
+    Replacement, Rule, Template,
 };
 
 #[derive(Clone, Copy)]
@@ -44,6 +46,133 @@ struct CaptureBinding {
     name: Ident,
     raw: bool,
     cardinality: Cardinality,
+}
+
+#[derive(Clone, Copy)]
+struct QueryMatchLoweringContext<'a> {
+    build_ctx: &'a Ident,
+    ctx: &'a Ident,
+    ast: &'a Ident,
+    ast_expr: &'a TokenStream,
+}
+
+impl QueryMatch {
+    pub(crate) fn lower(self, explicit_ctx: Option<Ident>) -> TokenStream {
+        let node_span = self.node.span();
+        let has_explicit_ctx = explicit_ctx.is_some();
+        let hygiene_span = explicit_ctx.as_ref().map_or(node_span, Ident::span);
+        let ctx = Ident::new("ctx", hygiene_span);
+        let ast = Ident::new("ast", hygiene_span);
+        let build_ctx = explicit_ctx.unwrap_or_else(|| ctx.clone());
+        let ast_expr = quote! { yeast::query::QueryTarget::query_ast(__node, &#build_ctx) };
+        let context = QueryMatchLoweringContext {
+            build_ctx: &build_ctx,
+            ctx: &ctx,
+            ast: &ast,
+            ast_expr: &ast_expr,
+        };
+        let fallback = if has_explicit_ctx {
+            quote! { ::core::panic!("no query arm matched") }
+        } else {
+            let node_ident = Ident::new("__node", Span::call_site());
+            let matched_node_ident = Ident::new("__matched_node", Span::call_site());
+            let panic = quote_spanned! {node_span=>
+                ::core::panic!(
+                    "no query arm matched node of kind `{}` in {}:{}:{}",
+                    #matched_node_ident.kind_name(),
+                    ::core::file!(),
+                    ::core::line!(),
+                    ::core::column!(),
+                )
+            };
+            quote! {
+                {
+                    let __ast = #ast_expr;
+                    let #matched_node_ident = __ast
+                        .get_node(#node_ident)
+                        .expect("query_match! node must exist in its AST");
+                    #panic
+                }
+            }
+        };
+        let matching = self
+            .arms
+            .into_iter()
+            .rev()
+            .fold(fallback, |fallback, arm| arm.lower(&fallback, context));
+
+        let node = self.node;
+        quote! {
+            {
+                let __node = #node;
+                #matching
+            }
+        }
+    }
+}
+
+impl QueryMatchArm {
+    fn lower(self, fallback: &TokenStream, context: QueryMatchLoweringContext<'_>) -> TokenStream {
+        let Self {
+            pattern,
+            guard,
+            body,
+        } = self;
+        let query = pattern.lower();
+        let captures_ident = Ident::new("__captures", Span::call_site());
+        let captures = pattern.captures();
+        let id_type = quote! { _ };
+        // Give guards and bodies independent bindings so either can consume a
+        // repeated capture without affecting the other.
+        let body_bindings = capture_bindings(captures.iter(), &id_type, &captures_ident);
+        let QueryMatchLoweringContext {
+            build_ctx,
+            ctx,
+            ast,
+            ast_expr,
+        } = context;
+        let guard = guard.map_or_else(
+            || quote! { true },
+            |guard| {
+                let guard_bindings = capture_bindings(captures.iter(), &id_type, &captures_ident);
+                let guard_values = Ident::new("__yeast_query_guard_values", Span::mixed_site());
+                quote! {
+                    {
+                        let #guard_values = (#ast_expr, &*#build_ctx.user_ctx);
+                        #(#guard_bindings)*
+                        #[allow(unused_variables)]
+                        let #ast = #guard_values.0;
+                        #[allow(unused_variables)]
+                        let #ctx = #guard_values.1;
+                        let __guard: bool = #guard;
+                        __guard
+                    }
+                }
+            },
+        );
+        let statements = &body.stmts;
+        let body = quote!({ #(#statements)* });
+
+        quote! {
+            {
+                let __query = #query;
+                let mut __captures = yeast::captures::Captures::new();
+                let __matched = {
+                    let __ast = #ast_expr;
+                    __query.do_match(__ast, __node, &mut __captures)
+                };
+                if __matched && #guard {
+                    #(#body_bindings)*
+                    #[allow(unreachable_code)]
+                    {
+                        #body
+                    }
+                } else {
+                    #fallback
+                }
+            }
+        }
+    }
 }
 
 impl Rule {
@@ -285,20 +414,23 @@ fn capture_bindings<'a>(
     captures
         .map(|capture| {
             let name_string = capture.name.to_string();
-            let name = Ident::new(&name_string, Span::call_site());
+            let name = &capture.name;
             match (capture.cardinality.multiple, capture.cardinality.required) {
                 (true, _) => {
                     quote! {
+                        #[allow(unused_variables)]
                         let #name: Vec<#id_type> = #captures_ident.get_all(#name_string);
                     }
                 }
                 (false, false) => {
                     quote! {
+                        #[allow(unused_variables)]
                         let #name: Option<#id_type> = #captures_ident.get_opt(#name_string);
                     }
                 }
                 (false, true) => {
                     quote! {
+                        #[allow(unused_variables)]
                         let #name: #id_type = #captures_ident.get_var(#name_string).unwrap();
                     }
                 }

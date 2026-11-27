@@ -152,9 +152,9 @@ module TarSlip {
       attr.getObject() = tarInfo
     |
       // The assumption that any test that matches %path is a sanitizer might be too broad.
-      call.getAChild*().(AttrNode).getName().matches("%path")
+      call.getAChild*().(AttrNode).getName().endsWith("path")
       or
-      call.getAChild*().(NameNode).getId().matches("%path")
+      call.getAChild*().(NameNode).getId().endsWith("path")
     ) and
     branch = false
   }

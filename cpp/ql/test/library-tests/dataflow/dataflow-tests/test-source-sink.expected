@@ -172,6 +172,8 @@ astFlow
 | test.cpp:1312:7:1312:12 | call to source | test.cpp:1314:8:1314:8 | x |
 | test.cpp:1329:11:1329:16 | call to source | test.cpp:1330:10:1330:10 | i |
 | test.cpp:1335:10:1335:15 | buffer | test.cpp:1336:10:1336:18 | access to array |
+| test.cpp:1342:8:1342:10 | buf | test.cpp:1344:8:1344:8 | p |
+| test.cpp:1348:7:1348:7 | x | test.cpp:1350:8:1350:8 | p |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
 | true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
@@ -201,7 +203,6 @@ irFlow
 | clang.cpp:35:32:35:37 | call to source | clang.cpp:38:10:38:11 | m2 |
 | clang.cpp:40:42:40:47 | call to source | clang.cpp:42:18:42:19 | m2 |
 | clang.cpp:44:35:44:40 | call to source | clang.cpp:46:17:46:18 | m2 |
-| clang.cpp:50:7:50:16 | definition of stackArray | clang.cpp:52:8:52:17 | stackArray |
 | clang.cpp:50:25:50:30 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:50:35:50:40 | call to source | clang.cpp:53:17:53:26 | *stackArray |
 | clang.cpp:51:19:51:24 | call to source | clang.cpp:53:17:53:26 | *stackArray |
@@ -291,11 +292,9 @@ irFlow
 | test.cpp:417:16:417:20 | intRefSource output argument | test.cpp:418:8:418:12 | local |
 | test.cpp:422:7:422:11 | definition of local | test.cpp:424:8:424:12 | local |
 | test.cpp:423:20:423:25 | intPointerSource output argument | test.cpp:424:8:424:12 | local |
-| test.cpp:433:7:433:11 | definition of local | test.cpp:435:8:435:12 | local |
 | test.cpp:434:20:434:24 | intPointerSource output argument | test.cpp:436:8:436:13 | * ... |
 | test.cpp:440:7:440:11 | definition of local | test.cpp:442:8:442:12 | local |
 | test.cpp:441:18:441:23 | intArraySource output argument | test.cpp:442:8:442:12 | local |
-| test.cpp:448:7:448:11 | definition of local | test.cpp:450:8:450:12 | local |
 | test.cpp:449:18:449:22 | intArraySource output argument | test.cpp:451:8:451:13 | * ... |
 | test.cpp:456:26:456:32 | source1 | test.cpp:457:9:457:22 | (statement expression) |
 | test.cpp:456:26:456:32 | source1 | test.cpp:468:8:468:12 | local |
@@ -341,12 +340,10 @@ irFlow
 | test.cpp:853:55:853:62 | call to source | test.cpp:854:10:854:36 | * ... |
 | test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
 | test.cpp:872:46:872:51 | call to source | test.cpp:875:10:875:31 | global_pointer_dynamic |
-| test.cpp:880:64:880:83 | indirect_source(1) | test.cpp:883:10:883:45 | static_local_array_static_indirect_1 |
-| test.cpp:881:64:881:83 | *indirect_source(2) | test.cpp:886:19:886:54 | *static_local_array_static_indirect_2 |
+| test.cpp:880:64:880:83 | indirect_source(1) | test.cpp:884:19:884:54 | *static_local_array_static_indirect_1 |
 | test.cpp:890:54:890:61 | source | test.cpp:893:10:893:36 | static_local_pointer_static |
 | test.cpp:891:65:891:84 | *indirect_source(1) | test.cpp:895:19:895:56 | *static_local_pointer_static_indirect_1 |
-| test.cpp:901:56:901:75 | indirect_source(1) | test.cpp:907:10:907:39 | global_array_static_indirect_1 |
-| test.cpp:902:56:902:75 | *indirect_source(2) | test.cpp:911:19:911:48 | *global_array_static_indirect_2 |
+| test.cpp:901:56:901:75 | indirect_source(1) | test.cpp:910:19:910:48 | *global_array_static_indirect_1 |
 | test.cpp:914:46:914:53 | source | test.cpp:919:10:919:30 | global_pointer_static |
 | test.cpp:915:57:915:76 | *indirect_source(1) | test.cpp:921:19:921:50 | *global_pointer_static_indirect_1 |
 | test.cpp:932:23:932:28 | call to source | test.cpp:937:10:937:24 | * ... |
@@ -394,6 +391,7 @@ irFlow
 | test.cpp:1312:7:1312:12 | call to source | test.cpp:1314:8:1314:8 | x |
 | test.cpp:1318:13:1318:18 | call to source | test.cpp:1327:10:1327:10 | i |
 | test.cpp:1329:11:1329:16 | call to source | test.cpp:1330:10:1330:10 | i |
+| test.cpp:1354:35:1354:54 | indirect_source(1) | test.cpp:1356:17:1356:38 | *local_array_indirect_1 |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |

@@ -24,7 +24,7 @@ Consider wrapping the code for each case in a function and just using the switch
 <references>
 
 <li>
-  <a href="http://www.learncpp.com/cpp-tutorial/53-switch-statements/">Switch statements</a>
+  <a href="https://www.learncpp.com/cpp-tutorial/53-switch-statements/">Switch statements</a>
 </li>
 
 

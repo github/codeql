@@ -73,7 +73,7 @@ predicate isAnAccidentallyUnusedParameter(Parameter p) {
     not f.inExternsFile() and
     // and p is not documented as being unused
     not exists(JSDocParamTag parmdoc | parmdoc.getDocumentedParameter() = pv |
-      parmdoc.getDescription().toLowerCase().matches("%unused%")
+      parmdoc.getDescription().toLowerCase().contains("unused")
     ) and
     // and f is not marked as abstract
     not f.getDocumentation().getATag().getTitle() = "abstract" and

@@ -15,9 +15,9 @@ string, then <code>ast.literal_eval()</code> can always be used safely.</p>
 </recommendation>
 <references>
 
-  <li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html#input">input</a>,
-  <a href="http://docs.python.org/2/library/ast.html#ast.literal_eval">ast.literal_eval</a>.</li>
-  <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Data_validation">Data validation</a>.</li>
+  <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#input">input</a>,
+  <a href="https://docs.python.org/2/library/ast.html#ast.literal_eval">ast.literal_eval</a>.</li>
+  <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Data_validation">Data validation</a>.</li>
 
 </references>
 </qhelp>

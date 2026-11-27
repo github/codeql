@@ -25,7 +25,7 @@ module AstTest {
     predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
-      source.asParameter().getName().matches("source%")
+      source.asParameter().getName().startsWith("source")
       or
       source.asExpr().(FunctionCall).getTarget().getName() = "indirect_source"
       or
@@ -141,7 +141,7 @@ module IRTest {
         source.asIndirectExpr(n).(StringLiteral).getValue() = s
       )
       or
-      source.asParameter().getName().matches("source%")
+      source.asParameter().getName().startsWith("source")
       or
       source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
       or

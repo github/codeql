@@ -11,7 +11,7 @@ predicate isGwtXmlIncluded() { exists(GwtXmlFile webXml) }
 
 /** A GWT module XML file with a `.gwt.xml` suffix. */
 class GwtXmlFile extends XmlFile {
-  GwtXmlFile() { this.getBaseName().matches("%.gwt.xml") }
+  GwtXmlFile() { this.getBaseName().endsWith(".gwt.xml") }
 
   /** Gets the top-level module element of a GWT module XML file. */
   GwtModuleElement getModuleElement() { result = this.getAChild() }

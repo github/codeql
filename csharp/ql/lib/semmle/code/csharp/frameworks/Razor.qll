@@ -199,12 +199,12 @@ private class RelativeViewCallFilepath extends NormalizableFilepath {
       template = getViewSearchTemplate(idx_, vc_.hasArea())
     |
       (
-        if template.matches("%{2}%")
+        if template.contains("{2}")
         then sub2 = template.replaceAll("{2}", vc_.getAreaName())
         else sub2 = template
       ) and
       (
-        if template.matches("%{1}%")
+        if template.contains("{1}")
         then sub1 = sub2.replaceAll("{1}", vc_.getControllerName())
         else sub1 = sub2
       ) and
@@ -226,7 +226,7 @@ class PageModelClass extends Class {
   /** Gets a handler method such as `OnGetAsync` */
   Method getAHandlerMethod() {
     result = this.getAMethod() and
-    result.getName().matches("On%") and
+    result.getName().startsWith("On") and
     not exists(Attribute attr |
       attr = result.getAnAttribute() and
       attr.getType()

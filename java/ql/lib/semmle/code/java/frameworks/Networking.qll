@@ -30,7 +30,7 @@ class TypeUrl extends RefType {
 
 /** Specifies that if a `URL` is tainted, then so are its synthetic fields. */
 private class UrlFieldsInheritTaint extends DataFlow::SyntheticFieldContent, TaintInheritingContent {
-  UrlFieldsInheritTaint() { this.getField().matches("java.net.URL.%") }
+  UrlFieldsInheritTaint() { this.getField().startsWith("java.net.URL.") }
 }
 
 /** The type `java.net.URLDecoder`. */

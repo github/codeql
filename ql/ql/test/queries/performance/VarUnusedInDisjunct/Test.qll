@@ -11,7 +11,7 @@ class MyStr extends string {
 }
 
 predicate bad1(Big b) {
-  b.toString().matches("%foo")
+  b.toString().endsWith("foo")
   or
   any() // $ Alert
 }
@@ -37,42 +37,42 @@ string good1(Big t) {
     or
     result instanceof MyStr // <- t unused here, but that's ok because of the conjunct that binds t.
   ) and
-  t.toString().regexpMatch(".*foo")
+  t.toString().endsWith("foo")
 }
 
 predicate helper(Big a, Big b) {
   a = b and
-  a.toString().matches("%foo")
+  a.toString().endsWith("foo")
 }
 
 predicate bad4(Big fromType, Big toType) {
   helper(fromType, toType)
   or
-  fromType.toString().matches("%foo")
+  fromType.toString().endsWith("foo")
   or
   helper(toType, fromType) // $ Alert
 }
 
 predicate good2(Big t) {
   exists(Small other |
-    t.toString().matches("%foo")
+    t.toString().endsWith("foo")
     or
-    other.toString().matches("%foo") // <- t unused here, but that's ok because of the conjunct (exists) that binds t.
+    other.toString().endsWith("foo") // <- t unused here, but that's ok because of the conjunct (exists) that binds t.
   |
-    t.toString().regexpMatch(".*foo")
+    t.toString().endsWith("foo")
   )
 }
 
 predicate mixed1(Big good, Small small) {
-  good.toString().matches("%foo")
+  good.toString().endsWith("foo")
   or
   good =
     any(Big bad |
-      small.toString().matches("%foo") and
+      small.toString().endsWith("foo") and
       // the use of good is fine, the comparison further up binds it.
       // the same is not true for bad.
-      (bad.toString().matches("%foo") or good.toString().regexpMatch("foo.*")) and // $ Alert
-      small.toString().regexpMatch(".*foo")
+      (bad.toString().endsWith("foo") or good.toString().startsWith("foo")) and // $ Alert
+      small.toString().endsWith("foo")
     )
 }
 
@@ -81,7 +81,7 @@ newtype OtherSmall =
   Small2(boolean b) { b = true } or
   Small3(boolean b, Small o) {
     b = true and
-    o.toString().matches("%foo")
+    o.toString().endsWith("foo")
   }
 
 predicate good3(OtherSmall small) {
@@ -91,10 +91,10 @@ predicate good3(OtherSmall small) {
 }
 
 predicate good4(Big big, Small small) {
-  big.toString().matches("%foo")
+  big.toString().endsWith("foo")
   or
   // assignment to small type, intentional cartesian product
-  small = any(Small s | s.toString().matches("%foo"))
+  small = any(Small s | s.toString().endsWith("foo"))
 }
 
 predicate good5(Big bb, Big v, boolean certain) {
@@ -107,38 +107,38 @@ predicate good5(Big bb, Big v, boolean certain) {
   v =
     any(Big lsv |
       lsv.getEnclosingPredicate() = bb.(Expr).getEnclosingPredicate() and
-      (lsv.toString().matches("%foo") or v.toString().matches("%foo")) and
+      (lsv.toString().endsWith("foo") or v.toString().endsWith("foo")) and
       certain = false
     )
 }
 
-predicate bad5(Big bb) { if none() then bb.toString().matches("%foo") else any() } // $ Alert
+predicate bad5(Big bb) { if none() then bb.toString().endsWith("foo") else any() } // $ Alert
 
 pragma[inline]
 predicate good5(Big a, Big b) {
   // fine. Assumes it's used somewhere where `a` and `b` are bound.
-  b = any(Big bb | bb.toString().matches("%foo"))
+  b = any(Big bb | bb.toString().endsWith("foo"))
   or
-  a = any(Big bb | bb.toString().matches("%foo"))
+  a = any(Big bb | bb.toString().endsWith("foo"))
 }
 
 predicate bad6(Big a) {
   (
-    a.toString().matches("%foo") // bad
+    a.toString().endsWith("foo") // bad
     or
     any() // $ Alert
   ) and
   (
-    a.toString().matches("%foo") // also bad
+    a.toString().endsWith("foo") // also bad
     or
     any() // $ Alert
   )
 }
 
 predicate good6(Big a) {
-  a.toString().matches("%foo") and
+  a.toString().endsWith("foo") and
   (
-    a.toString().matches("%foo") // good, `a` is bound on the branch of the conjunction.
+    a.toString().endsWith("foo") // good, `a` is bound on the branch of the conjunction.
     or
     any()
   )
@@ -146,11 +146,11 @@ predicate good6(Big a) {
 
 predicate good7() {
   exists(Big l, Big r |
-    l.toString().matches("%foo1") and
-    r.toString().matches("%foo2")
+    l.toString().endsWith("foo1") and
+    r.toString().endsWith("foo2")
     or
-    l.toString().matches("%foo3") and
-    r.toString().matches("%foo4")
+    l.toString().endsWith("foo3") and
+    r.toString().endsWith("foo4")
   |
     not (l.toString().regexpMatch("%foo5") or r.toString().regexpMatch("%foo6")) and
     (l.toString().regexpMatch("%foo7") or r.toString().regexpMatch("%foo8"))
@@ -163,7 +163,7 @@ class HasField extends Big {
   HasField() {
     field = this
     or
-    this.toString().matches("%foo") // $ Alert // <- field only defined here.
+    this.toString().endsWith("foo") // $ Alert // <- field only defined here.
   }
 
   Big getField() { result = field }

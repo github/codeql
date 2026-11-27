@@ -25,10 +25,10 @@ private class LengthRestrictedMethod extends Method {
   LengthRestrictedMethod() {
     this.getName().toLowerCase().matches(["%header%", "%requesturi%", "%requesturl%", "%cookie%"])
     or
-    this.getDeclaringType().getName().toLowerCase().matches("%cookie%") and
-    this.getName().matches("get%")
+    this.getDeclaringType().getName().toLowerCase().contains("cookie") and
+    this.getName().startsWith("get")
     or
-    this.getDeclaringType().getName().toLowerCase().matches("%request%") and
+    this.getDeclaringType().getName().toLowerCase().contains("request") and
     this.getName().toLowerCase().matches(["%get%path%", "get%user%", "%querystring%"])
   }
 }

@@ -18,7 +18,7 @@ predicate relevantSetting(Http::Server::CsrfProtectionSetting s) {
   // rule out test code as this is a common place to turn off CSRF protection.
   // We don't use normal `TestScope` to find test files, since we also want to match
   // a settings file such as `.../integration-tests/settings.py`
-  not s.getLocation().getFile().getAbsolutePath().matches("%test%")
+  not s.getLocation().getFile().getAbsolutePath().contains("test")
 }
 
 predicate vulnerableSetting(Http::Server::CsrfProtectionSetting s) {

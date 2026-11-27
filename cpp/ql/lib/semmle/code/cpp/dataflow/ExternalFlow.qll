@@ -263,7 +263,7 @@ module ModelValidation {
       type = name + "<" + any(string s)
     |
       summaryModel(namespace, type, _, name, _, _, _, output, _, _, _) and
-      output.matches("ReturnValue%") and
+      output.startsWith("ReturnValue") and
       result =
         "Constructor model for " + namespace + "." + type +
           " should use `Argument[this]` in the output, not `ReturnValue`."
@@ -1032,7 +1032,7 @@ private module Cached {
       string kind, string model
     |
       isBarrierGuardNode(n, acceptingValue, kind, model) and
-      n.asNode().asExpr() = e and
+      n.asNode().asConvertedExpr() = e and
       kmp = TMkPair(kind, model) and
       gv = convertAcceptingValue(acceptingValue).asBooleanValue() and
       n.asNode().(Private::ArgumentNode).getCall().asCallInstruction() = g
@@ -1056,7 +1056,7 @@ private module Cached {
     |
       isBarrierGuardNode(interpretNode, acceptingValue, kind, model) and
       arg = interpretNode.asNode() and
-      arg.asIndirectExpr(indirectionIndex) = e and
+      arg.asIndirectConvertedExpr(indirectionIndex) = e and
       kmp = MkKindModelPairIntPair(TMkPair(kind, model), indirectionIndex) and
       gv = convertAcceptingValue(acceptingValue).asBooleanValue() and
       arg.getCall().asCallInstruction() = g

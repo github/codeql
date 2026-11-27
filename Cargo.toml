@@ -7,10 +7,12 @@
 
 resolver = "2"
 members = [
+    "shared/extractor-common",
     "shared/tree-sitter-extractor",
     "shared/yeast",
     "shared/yeast-macros",
     "shared/yeast-schema",
+    "python/extractor/yeast-python",
     "ruby/extractor",
     "unified/extractor",
     "unified/swift-syntax-rs",

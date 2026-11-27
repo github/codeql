@@ -1,7 +1,83 @@
 use proc_macro2::{Ident, Span, TokenStream, TokenTree};
 use quote::quote;
+use syn::parse::{Parse, ParseStream};
+
+use crate::ast::{QueryMatch, QueryMatchArm};
 
 type Result<T> = std::result::Result<T, syn::Error>;
+
+impl Parse for QueryMatch {
+    fn parse(input: ParseStream<'_>) -> syn::Result<Self> {
+        let node = input.parse()?;
+        input.parse::<syn::Token![,]>()?;
+        let arm_tokens: TokenStream = input.parse()?;
+        let mut tokens = arm_tokens.into_iter().peekable();
+        let mut arms = Vec::new();
+        while tokens.peek().is_some() {
+            arms.push(QueryMatchArm::parse(&mut tokens)?);
+        }
+        if arms.is_empty() {
+            return Err(syn::Error::new(
+                Span::call_site(),
+                "query_match! requires at least one query arm",
+            ));
+        }
+        Ok(QueryMatch { node, arms })
+    }
+}
+
+impl QueryMatchArm {
+    fn parse(tokens: &mut Tokens) -> Result<Self> {
+        let mut pattern_and_guard = Vec::new();
+        loop {
+            match tokens.next() {
+                Some(TokenTree::Punct(first))
+                    if first.as_char() == '='
+                        && first.spacing() == proc_macro2::Spacing::Joint
+                        && matches!(
+                            tokens.peek(),
+                            Some(TokenTree::Punct(second)) if second.as_char() == '>'
+                        ) =>
+                {
+                    tokens.next();
+                    break;
+                }
+                Some(token) => pattern_and_guard.push(token),
+                None => {
+                    return Err(syn::Error::new(
+                        Span::call_site(),
+                        "expected `=>` in query_match! arm",
+                    ));
+                }
+            }
+        }
+
+        let body = tokens
+            .next()
+            .ok_or_else(|| syn::Error::new(Span::call_site(), "expected block after `=>`"))?;
+        let body = syn::parse2(TokenStream::from(body))?;
+
+        match tokens.next() {
+            Some(TokenTree::Punct(comma)) if comma.as_char() == ',' => {}
+            Some(token) => {
+                return Err(syn::Error::new_spanned(
+                    token,
+                    "expected `,` after query_match! arm",
+                ));
+            }
+            None => {}
+        }
+
+        let pattern_and_guard = pattern_and_guard.into_iter().collect();
+        let (pattern, guard) = crate::rule_parse::split_guard(pattern_and_guard)?;
+        let pattern = crate::rule_parse::parse_pattern(pattern)?;
+        Ok(Self {
+            pattern,
+            guard,
+            body,
+        })
+    }
+}
 
 pub fn parse_query_top(input: TokenStream) -> Result<TokenStream> {
     let pattern = crate::rule_parse::parse_pattern(input)?.lower();
@@ -9,6 +85,73 @@ pub fn parse_query_top(input: TokenStream) -> Result<TokenStream> {
         {
             let __pattern: yeast::query::QueryNode = #pattern;
             __pattern
+        }
+    })
+}
+
+fn parse_query_match(input: TokenStream, explicit_ctx: Option<Ident>) -> Result<TokenStream> {
+    Ok(syn::parse2::<QueryMatch>(input)?.lower(explicit_ctx))
+}
+
+pub fn parse_query_match_with_schema_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let _schema = parse_string_arg(&mut tokens, "schema")?;
+    expect_punct(&mut tokens, ',', "expected `,` after schema path")?;
+    parse_query_match(tokens.collect(), None)
+}
+
+pub fn parse_query_match_with_schema_and_context_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let _schema = parse_string_arg(&mut tokens, "schema")?;
+    expect_punct(&mut tokens, ',', "expected `,` after schema path")?;
+    let ctx = expect_ident(&mut tokens, "expected context identifier")?;
+    expect_punct(&mut tokens, ',', "expected `,` after context identifier")?;
+    parse_query_match(tokens.collect(), Some(ctx))
+}
+
+pub fn parse_query_match_schema_top(input: TokenStream) -> Result<TokenStream> {
+    let mut tokens = input.into_iter().peekable();
+    let module = expect_ident(&mut tokens, "expected schema module name")?;
+    expect_punct(&mut tokens, ',', "expected `,` after schema module name")?;
+    let schema = parse_string_arg(&mut tokens, "schema")?;
+    if tokens.peek().is_some() {
+        expect_punct(&mut tokens, ',', "expected trailing `,`")?;
+    }
+    if let Some(token) = tokens.next() {
+        return Err(syn::Error::new_spanned(
+            token,
+            "unexpected token after schema declaration",
+        ));
+    }
+
+    let schema_abs = resolve_manifest_path(&schema, "query_match_schema")?;
+    let schema_lit = proc_macro2::Literal::string(&schema_abs.to_string_lossy());
+
+    Ok(quote! {
+        pub(crate) mod #module {
+            #[allow(dead_code)]
+            pub const SCHEMA: &str = ::core::include_str!(#schema_lit);
+
+            macro_rules! query_match {
+                ($($tokens:tt)*) => {
+                    yeast::__query_match_with_schema! {
+                        #schema_lit,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use query_match;
+
+            macro_rules! query_match_with_context {
+                ($ctx:ident, $($tokens:tt)*) => {
+                    yeast::__query_match_with_schema_and_context! {
+                        #schema_lit,
+                        $ctx,
+                        $($tokens)*
+                    }
+                };
+            }
+            pub(crate) use query_match_with_context;
         }
     })
 }

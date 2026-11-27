@@ -19,7 +19,7 @@ private module ResolveTest implements TestSig {
       c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
       c.getCommentText().trim() = text and
       c.fromSource() and
-      not text.matches("$%")
+      not text.startsWith("$")
     )
   }
 

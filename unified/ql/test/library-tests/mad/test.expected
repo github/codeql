@@ -34,6 +34,15 @@ isSink
 | test.swift:218:9:218:14 | string | shorthand-sink |
 | test.swift:239:13:239:13 | 0 | subscript-getter-sink |
 | test.swift:240:5:240:10 | ... .subscript(...) | subscript-setter-sink |
+| test.swift:263:18:263:23 | string | optional-named-sink |
+| test.swift:264:18:264:23 | string | optional-named-sink |
+| test.swift:268:18:268:23 | string | required-named-sink |
+| test.swift:270:20:270:25 | string | optional-positional-sink |
+| test.swift:271:20:271:25 | string | optional-positional-sink |
+| test.swift:275:15:275:20 | string | optional-mixed-sink |
+| test.swift:276:15:276:20 | string | optional-mixed-sink |
+| test.swift:279:29:279:34 | string | optional-init-sink |
+| test.swift:280:29:280:34 | string | optional-init-sink |
 isSource
 | test.swift:4:5:4:27 | String(...) | remote |
 | test.swift:5:5:5:44 | String(...) | remote |
@@ -51,3 +60,4 @@ isSource
 | test.swift:209:5:213:5 | [self param] func ShorthandTestSub.sourceParams | shorthand-source |
 | test.swift:210:11:210:11 | x | shorthand-source |
 | test.swift:232:13:232:13 | v | subscript-setter-source |
+| test.swift:253:11:253:11 | x | optional-source |

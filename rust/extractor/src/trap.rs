@@ -1,5 +1,6 @@
 use crate::{config, generated};
-use codeql_extractor::{extractor, file_paths, trap};
+use codeql_extractor::{extractor, trap};
+use extractor_common::file_paths;
 use ra_ap_ide_db::line_index::LineCol;
 use std::fmt::Debug;
 use std::hash::Hash;

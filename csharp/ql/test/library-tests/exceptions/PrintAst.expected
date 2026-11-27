@@ -15,27 +15,32 @@ exceptions.cs:
 #   15|           0: [EmptyStmt] ;
 #   17|         1: [SpecificCatchClause] catch (...) {...}
 #   17|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#   17|             0: [TypeMention] NullReferenceException
+#   17|             -1: [TypeMention] NullReferenceException
+#   17|             0: [LocalVariableAccess] access to local variable ex
 #   18|           1: [BlockStmt] {...}
 #   19|             0: [EmptyStmt] ;
 #   21|         2: [SpecificCatchClause] catch (...) {...}
 #   21|           0: [LocalVariableDeclExpr] OverflowException ex
-#   21|             0: [TypeMention] OverflowException
+#   21|             -1: [TypeMention] OverflowException
+#   21|             0: [LocalVariableAccess] access to local variable ex
 #   22|           1: [BlockStmt] {...}
 #   23|             0: [EmptyStmt] ;
 #   25|         3: [SpecificCatchClause] catch (...) {...}
 #   25|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#   25|             0: [TypeMention] OutOfMemoryException
+#   25|             -1: [TypeMention] OutOfMemoryException
+#   25|             0: [LocalVariableAccess] access to local variable ex
 #   26|           1: [BlockStmt] {...}
 #   27|             0: [EmptyStmt] ;
 #   29|         4: [SpecificCatchClause] catch (...) {...}
 #   29|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#   29|             0: [TypeMention] DivideByZeroException
+#   29|             -1: [TypeMention] DivideByZeroException
+#   29|             0: [LocalVariableAccess] access to local variable ex
 #   30|           1: [BlockStmt] {...}
 #   31|             0: [EmptyStmt] ;
 #   33|         5: [SpecificCatchClause] catch (...) {...}
 #   33|           0: [LocalVariableDeclExpr] Exception ex
-#   33|             0: [TypeMention] Exception
+#   33|             -1: [TypeMention] Exception
+#   33|             0: [LocalVariableAccess] access to local variable ex
 #   34|           1: [BlockStmt] {...}
 #   35|             0: [EmptyStmt] ;
 #   43|   9: [Method] TestCall
@@ -48,22 +53,26 @@ exceptions.cs:
 #   48|             0: [MethodCall] call to method G
 #   50|         1: [SpecificCatchClause] catch (...) {...}
 #   50|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#   50|             0: [TypeMention] NullReferenceException
+#   50|             -1: [TypeMention] NullReferenceException
+#   50|             0: [LocalVariableAccess] access to local variable ex
 #   51|           1: [BlockStmt] {...}
 #   52|             0: [EmptyStmt] ;
 #   54|         2: [SpecificCatchClause] catch (...) {...}
 #   54|           0: [LocalVariableDeclExpr] OverflowException ex
-#   54|             0: [TypeMention] OverflowException
+#   54|             -1: [TypeMention] OverflowException
+#   54|             0: [LocalVariableAccess] access to local variable ex
 #   55|           1: [BlockStmt] {...}
 #   56|             0: [EmptyStmt] ;
 #   58|         3: [SpecificCatchClause] catch (...) {...}
 #   58|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#   58|             0: [TypeMention] OutOfMemoryException
+#   58|             -1: [TypeMention] OutOfMemoryException
+#   58|             0: [LocalVariableAccess] access to local variable ex
 #   59|           1: [BlockStmt] {...}
 #   60|             0: [EmptyStmt] ;
 #   62|         4: [SpecificCatchClause] catch (...) {...}
 #   62|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#   62|             0: [TypeMention] DivideByZeroException
+#   62|             -1: [TypeMention] DivideByZeroException
+#   62|             0: [LocalVariableAccess] access to local variable ex
 #   63|           1: [BlockStmt] {...}
 #   64|             0: [EmptyStmt] ;
 #   66|         5: [GeneralCatchClause] catch {...}
@@ -83,27 +92,32 @@ exceptions.cs:
 #   77|                 0: [TypeMention] Class1
 #   79|         1: [SpecificCatchClause] catch (...) {...}
 #   79|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#   79|             0: [TypeMention] NullReferenceException
+#   79|             -1: [TypeMention] NullReferenceException
+#   79|             0: [LocalVariableAccess] access to local variable ex
 #   80|           1: [BlockStmt] {...}
 #   81|             0: [EmptyStmt] ;
 #   83|         2: [SpecificCatchClause] catch (...) {...}
 #   83|           0: [LocalVariableDeclExpr] OverflowException ex
-#   83|             0: [TypeMention] OverflowException
+#   83|             -1: [TypeMention] OverflowException
+#   83|             0: [LocalVariableAccess] access to local variable ex
 #   84|           1: [BlockStmt] {...}
 #   85|             0: [EmptyStmt] ;
 #   87|         3: [SpecificCatchClause] catch (...) {...}
 #   87|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#   87|             0: [TypeMention] OutOfMemoryException
+#   87|             -1: [TypeMention] OutOfMemoryException
+#   87|             0: [LocalVariableAccess] access to local variable ex
 #   88|           1: [BlockStmt] {...}
 #   89|             0: [EmptyStmt] ;
 #   91|         4: [SpecificCatchClause] catch (...) {...}
 #   91|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#   91|             0: [TypeMention] DivideByZeroException
+#   91|             -1: [TypeMention] DivideByZeroException
+#   91|             0: [LocalVariableAccess] access to local variable ex
 #   92|           1: [BlockStmt] {...}
 #   93|             0: [EmptyStmt] ;
 #   95|         5: [SpecificCatchClause] catch (...) {...}
 #   95|           0: [LocalVariableDeclExpr] Exception ex
-#   95|             0: [TypeMention] Exception
+#   95|             -1: [TypeMention] Exception
+#   95|             0: [LocalVariableAccess] access to local variable ex
 #   96|           1: [BlockStmt] {...}
 #   97|             0: [EmptyStmt] ;
 #  101|   11: [Method] TestIntAdd
@@ -121,27 +135,32 @@ exceptions.cs:
 #  106|                 1: [IntLiteral] 2
 #  108|         1: [SpecificCatchClause] catch (...) {...}
 #  108|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  108|             0: [TypeMention] NullReferenceException
+#  108|             -1: [TypeMention] NullReferenceException
+#  108|             0: [LocalVariableAccess] access to local variable ex
 #  109|           1: [BlockStmt] {...}
 #  110|             0: [EmptyStmt] ;
 #  112|         2: [SpecificCatchClause] catch (...) {...}
 #  112|           0: [LocalVariableDeclExpr] OverflowException ex
-#  112|             0: [TypeMention] OverflowException
+#  112|             -1: [TypeMention] OverflowException
+#  112|             0: [LocalVariableAccess] access to local variable ex
 #  113|           1: [BlockStmt] {...}
 #  114|             0: [EmptyStmt] ;
 #  116|         3: [SpecificCatchClause] catch (...) {...}
 #  116|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  116|             0: [TypeMention] OutOfMemoryException
+#  116|             -1: [TypeMention] OutOfMemoryException
+#  116|             0: [LocalVariableAccess] access to local variable ex
 #  117|           1: [BlockStmt] {...}
 #  118|             0: [EmptyStmt] ;
 #  120|         4: [SpecificCatchClause] catch (...) {...}
 #  120|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  120|             0: [TypeMention] DivideByZeroException
+#  120|             -1: [TypeMention] DivideByZeroException
+#  120|             0: [LocalVariableAccess] access to local variable ex
 #  121|           1: [BlockStmt] {...}
 #  122|             0: [EmptyStmt] ;
 #  124|         5: [SpecificCatchClause] catch (...) {...}
 #  124|           0: [LocalVariableDeclExpr] Exception ex
-#  124|             0: [TypeMention] Exception
+#  124|             -1: [TypeMention] Exception
+#  124|             0: [LocalVariableAccess] access to local variable ex
 #  125|           1: [BlockStmt] {...}
 #  126|             0: [EmptyStmt] ;
 #  130|   12: [Method] TestIntSub
@@ -159,27 +178,32 @@ exceptions.cs:
 #  135|                 1: [IntLiteral] 2
 #  137|         1: [SpecificCatchClause] catch (...) {...}
 #  137|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  137|             0: [TypeMention] NullReferenceException
+#  137|             -1: [TypeMention] NullReferenceException
+#  137|             0: [LocalVariableAccess] access to local variable ex
 #  138|           1: [BlockStmt] {...}
 #  139|             0: [EmptyStmt] ;
 #  141|         2: [SpecificCatchClause] catch (...) {...}
 #  141|           0: [LocalVariableDeclExpr] OverflowException ex
-#  141|             0: [TypeMention] OverflowException
+#  141|             -1: [TypeMention] OverflowException
+#  141|             0: [LocalVariableAccess] access to local variable ex
 #  142|           1: [BlockStmt] {...}
 #  143|             0: [EmptyStmt] ;
 #  145|         3: [SpecificCatchClause] catch (...) {...}
 #  145|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  145|             0: [TypeMention] OutOfMemoryException
+#  145|             -1: [TypeMention] OutOfMemoryException
+#  145|             0: [LocalVariableAccess] access to local variable ex
 #  146|           1: [BlockStmt] {...}
 #  147|             0: [EmptyStmt] ;
 #  149|         4: [SpecificCatchClause] catch (...) {...}
 #  149|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  149|             0: [TypeMention] DivideByZeroException
+#  149|             -1: [TypeMention] DivideByZeroException
+#  149|             0: [LocalVariableAccess] access to local variable ex
 #  150|           1: [BlockStmt] {...}
 #  151|             0: [EmptyStmt] ;
 #  153|         5: [SpecificCatchClause] catch (...) {...}
 #  153|           0: [LocalVariableDeclExpr] Exception ex
-#  153|             0: [TypeMention] Exception
+#  153|             -1: [TypeMention] Exception
+#  153|             0: [LocalVariableAccess] access to local variable ex
 #  154|           1: [BlockStmt] {...}
 #  155|             0: [EmptyStmt] ;
 #  159|   13: [Method] TestIntMul
@@ -197,27 +221,32 @@ exceptions.cs:
 #  164|                 1: [IntLiteral] 2
 #  166|         1: [SpecificCatchClause] catch (...) {...}
 #  166|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  166|             0: [TypeMention] NullReferenceException
+#  166|             -1: [TypeMention] NullReferenceException
+#  166|             0: [LocalVariableAccess] access to local variable ex
 #  167|           1: [BlockStmt] {...}
 #  168|             0: [EmptyStmt] ;
 #  170|         2: [SpecificCatchClause] catch (...) {...}
 #  170|           0: [LocalVariableDeclExpr] OverflowException ex
-#  170|             0: [TypeMention] OverflowException
+#  170|             -1: [TypeMention] OverflowException
+#  170|             0: [LocalVariableAccess] access to local variable ex
 #  171|           1: [BlockStmt] {...}
 #  172|             0: [EmptyStmt] ;
 #  174|         3: [SpecificCatchClause] catch (...) {...}
 #  174|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  174|             0: [TypeMention] OutOfMemoryException
+#  174|             -1: [TypeMention] OutOfMemoryException
+#  174|             0: [LocalVariableAccess] access to local variable ex
 #  175|           1: [BlockStmt] {...}
 #  176|             0: [EmptyStmt] ;
 #  178|         4: [SpecificCatchClause] catch (...) {...}
 #  178|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  178|             0: [TypeMention] DivideByZeroException
+#  178|             -1: [TypeMention] DivideByZeroException
+#  178|             0: [LocalVariableAccess] access to local variable ex
 #  179|           1: [BlockStmt] {...}
 #  180|             0: [EmptyStmt] ;
 #  182|         5: [SpecificCatchClause] catch (...) {...}
 #  182|           0: [LocalVariableDeclExpr] Exception ex
-#  182|             0: [TypeMention] Exception
+#  182|             -1: [TypeMention] Exception
+#  182|             0: [LocalVariableAccess] access to local variable ex
 #  183|           1: [BlockStmt] {...}
 #  184|             0: [EmptyStmt] ;
 #  188|   14: [Method] TestStringLiteral
@@ -233,27 +262,32 @@ exceptions.cs:
 #  193|               1: [StringLiteralUtf16] ""
 #  195|         1: [SpecificCatchClause] catch (...) {...}
 #  195|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  195|             0: [TypeMention] NullReferenceException
+#  195|             -1: [TypeMention] NullReferenceException
+#  195|             0: [LocalVariableAccess] access to local variable ex
 #  196|           1: [BlockStmt] {...}
 #  197|             0: [EmptyStmt] ;
 #  199|         2: [SpecificCatchClause] catch (...) {...}
 #  199|           0: [LocalVariableDeclExpr] OverflowException ex
-#  199|             0: [TypeMention] OverflowException
+#  199|             -1: [TypeMention] OverflowException
+#  199|             0: [LocalVariableAccess] access to local variable ex
 #  200|           1: [BlockStmt] {...}
 #  201|             0: [EmptyStmt] ;
 #  203|         3: [SpecificCatchClause] catch (...) {...}
 #  203|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  203|             0: [TypeMention] OutOfMemoryException
+#  203|             -1: [TypeMention] OutOfMemoryException
+#  203|             0: [LocalVariableAccess] access to local variable ex
 #  204|           1: [BlockStmt] {...}
 #  205|             0: [EmptyStmt] ;
 #  207|         4: [SpecificCatchClause] catch (...) {...}
 #  207|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  207|             0: [TypeMention] DivideByZeroException
+#  207|             -1: [TypeMention] DivideByZeroException
+#  207|             0: [LocalVariableAccess] access to local variable ex
 #  208|           1: [BlockStmt] {...}
 #  209|             0: [EmptyStmt] ;
 #  211|         5: [SpecificCatchClause] catch (...) {...}
 #  211|           0: [LocalVariableDeclExpr] Exception ex
-#  211|             0: [TypeMention] Exception
+#  211|             -1: [TypeMention] Exception
+#  211|             0: [LocalVariableAccess] access to local variable ex
 #  212|           1: [BlockStmt] {...}
 #  213|             0: [EmptyStmt] ;
 #  217|   15: [Method] TestStringAdd
@@ -276,27 +310,32 @@ exceptions.cs:
 #  223|                 1: [LocalVariableAccess] access to local variable s
 #  225|         1: [SpecificCatchClause] catch (...) {...}
 #  225|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  225|             0: [TypeMention] NullReferenceException
+#  225|             -1: [TypeMention] NullReferenceException
+#  225|             0: [LocalVariableAccess] access to local variable ex
 #  226|           1: [BlockStmt] {...}
 #  227|             0: [EmptyStmt] ;
 #  229|         2: [SpecificCatchClause] catch (...) {...}
 #  229|           0: [LocalVariableDeclExpr] OverflowException ex
-#  229|             0: [TypeMention] OverflowException
+#  229|             -1: [TypeMention] OverflowException
+#  229|             0: [LocalVariableAccess] access to local variable ex
 #  230|           1: [BlockStmt] {...}
 #  231|             0: [EmptyStmt] ;
 #  233|         3: [SpecificCatchClause] catch (...) {...}
 #  233|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  233|             0: [TypeMention] OutOfMemoryException
+#  233|             -1: [TypeMention] OutOfMemoryException
+#  233|             0: [LocalVariableAccess] access to local variable ex
 #  234|           1: [BlockStmt] {...}
 #  235|             0: [EmptyStmt] ;
 #  237|         4: [SpecificCatchClause] catch (...) {...}
 #  237|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  237|             0: [TypeMention] DivideByZeroException
+#  237|             -1: [TypeMention] DivideByZeroException
+#  237|             0: [LocalVariableAccess] access to local variable ex
 #  238|           1: [BlockStmt] {...}
 #  239|             0: [EmptyStmt] ;
 #  241|         5: [SpecificCatchClause] catch (...) {...}
 #  241|           0: [LocalVariableDeclExpr] Exception ex
-#  241|             0: [TypeMention] Exception
+#  241|             -1: [TypeMention] Exception
+#  241|             0: [LocalVariableAccess] access to local variable ex
 #  242|           1: [BlockStmt] {...}
 #  243|             0: [EmptyStmt] ;
 #  247|   16: [Method] TestDivide
@@ -314,27 +353,32 @@ exceptions.cs:
 #  252|                 1: [IntLiteral] 2
 #  254|         1: [SpecificCatchClause] catch (...) {...}
 #  254|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  254|             0: [TypeMention] NullReferenceException
+#  254|             -1: [TypeMention] NullReferenceException
+#  254|             0: [LocalVariableAccess] access to local variable ex
 #  255|           1: [BlockStmt] {...}
 #  256|             0: [EmptyStmt] ;
 #  258|         2: [SpecificCatchClause] catch (...) {...}
 #  258|           0: [LocalVariableDeclExpr] OverflowException ex
-#  258|             0: [TypeMention] OverflowException
+#  258|             -1: [TypeMention] OverflowException
+#  258|             0: [LocalVariableAccess] access to local variable ex
 #  259|           1: [BlockStmt] {...}
 #  260|             0: [EmptyStmt] ;
 #  262|         3: [SpecificCatchClause] catch (...) {...}
 #  262|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  262|             0: [TypeMention] OutOfMemoryException
+#  262|             -1: [TypeMention] OutOfMemoryException
+#  262|             0: [LocalVariableAccess] access to local variable ex
 #  263|           1: [BlockStmt] {...}
 #  264|             0: [EmptyStmt] ;
 #  266|         4: [SpecificCatchClause] catch (...) {...}
 #  266|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  266|             0: [TypeMention] DivideByZeroException
+#  266|             -1: [TypeMention] DivideByZeroException
+#  266|             0: [LocalVariableAccess] access to local variable ex
 #  267|           1: [BlockStmt] {...}
 #  268|             0: [EmptyStmt] ;
 #  270|         5: [SpecificCatchClause] catch (...) {...}
 #  270|           0: [LocalVariableDeclExpr] Exception ex
-#  270|             0: [TypeMention] Exception
+#  270|             -1: [TypeMention] Exception
+#  270|             0: [LocalVariableAccess] access to local variable ex
 #  271|           1: [BlockStmt] {...}
 #  272|             0: [EmptyStmt] ;
 #  276|   17: [Method] TestRemainder
@@ -352,27 +396,32 @@ exceptions.cs:
 #  281|                 1: [IntLiteral] 2
 #  283|         1: [SpecificCatchClause] catch (...) {...}
 #  283|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  283|             0: [TypeMention] NullReferenceException
+#  283|             -1: [TypeMention] NullReferenceException
+#  283|             0: [LocalVariableAccess] access to local variable ex
 #  284|           1: [BlockStmt] {...}
 #  285|             0: [EmptyStmt] ;
 #  287|         2: [SpecificCatchClause] catch (...) {...}
 #  287|           0: [LocalVariableDeclExpr] OverflowException ex
-#  287|             0: [TypeMention] OverflowException
+#  287|             -1: [TypeMention] OverflowException
+#  287|             0: [LocalVariableAccess] access to local variable ex
 #  288|           1: [BlockStmt] {...}
 #  289|             0: [EmptyStmt] ;
 #  291|         3: [SpecificCatchClause] catch (...) {...}
 #  291|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  291|             0: [TypeMention] OutOfMemoryException
+#  291|             -1: [TypeMention] OutOfMemoryException
+#  291|             0: [LocalVariableAccess] access to local variable ex
 #  292|           1: [BlockStmt] {...}
 #  293|             0: [EmptyStmt] ;
 #  295|         4: [SpecificCatchClause] catch (...) {...}
 #  295|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  295|             0: [TypeMention] DivideByZeroException
+#  295|             -1: [TypeMention] DivideByZeroException
+#  295|             0: [LocalVariableAccess] access to local variable ex
 #  296|           1: [BlockStmt] {...}
 #  297|             0: [EmptyStmt] ;
 #  299|         5: [SpecificCatchClause] catch (...) {...}
 #  299|           0: [LocalVariableDeclExpr] Exception ex
-#  299|             0: [TypeMention] Exception
+#  299|             -1: [TypeMention] Exception
+#  299|             0: [LocalVariableAccess] access to local variable ex
 #  300|           1: [BlockStmt] {...}
 #  301|             0: [EmptyStmt] ;
 #  305|   18: [Method] TestMemberAccess
@@ -389,27 +438,32 @@ exceptions.cs:
 #  310|                 -1: [ThisAccess] this access
 #  312|         1: [SpecificCatchClause] catch (...) {...}
 #  312|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  312|             0: [TypeMention] NullReferenceException
+#  312|             -1: [TypeMention] NullReferenceException
+#  312|             0: [LocalVariableAccess] access to local variable ex
 #  313|           1: [BlockStmt] {...}
 #  314|             0: [EmptyStmt] ;
 #  316|         2: [SpecificCatchClause] catch (...) {...}
 #  316|           0: [LocalVariableDeclExpr] OverflowException ex
-#  316|             0: [TypeMention] OverflowException
+#  316|             -1: [TypeMention] OverflowException
+#  316|             0: [LocalVariableAccess] access to local variable ex
 #  317|           1: [BlockStmt] {...}
 #  318|             0: [EmptyStmt] ;
 #  320|         3: [SpecificCatchClause] catch (...) {...}
 #  320|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  320|             0: [TypeMention] OutOfMemoryException
+#  320|             -1: [TypeMention] OutOfMemoryException
+#  320|             0: [LocalVariableAccess] access to local variable ex
 #  321|           1: [BlockStmt] {...}
 #  322|             0: [EmptyStmt] ;
 #  324|         4: [SpecificCatchClause] catch (...) {...}
 #  324|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  324|             0: [TypeMention] DivideByZeroException
+#  324|             -1: [TypeMention] DivideByZeroException
+#  324|             0: [LocalVariableAccess] access to local variable ex
 #  325|           1: [BlockStmt] {...}
 #  326|             0: [EmptyStmt] ;
 #  328|         5: [SpecificCatchClause] catch (...) {...}
 #  328|           0: [LocalVariableDeclExpr] Exception ex
-#  328|             0: [TypeMention] Exception
+#  328|             -1: [TypeMention] Exception
+#  328|             0: [LocalVariableAccess] access to local variable ex
 #  329|           1: [BlockStmt] {...}
 #  330|             0: [EmptyStmt] ;
 #  334|   19: [Method] TestCast
@@ -428,27 +482,32 @@ exceptions.cs:
 #  339|                 1: [IntLiteral] 1
 #  341|         1: [SpecificCatchClause] catch (...) {...}
 #  341|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  341|             0: [TypeMention] NullReferenceException
+#  341|             -1: [TypeMention] NullReferenceException
+#  341|             0: [LocalVariableAccess] access to local variable ex
 #  342|           1: [BlockStmt] {...}
 #  343|             0: [EmptyStmt] ;
 #  345|         2: [SpecificCatchClause] catch (...) {...}
 #  345|           0: [LocalVariableDeclExpr] OverflowException ex
-#  345|             0: [TypeMention] OverflowException
+#  345|             -1: [TypeMention] OverflowException
+#  345|             0: [LocalVariableAccess] access to local variable ex
 #  346|           1: [BlockStmt] {...}
 #  347|             0: [EmptyStmt] ;
 #  349|         3: [SpecificCatchClause] catch (...) {...}
 #  349|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  349|             0: [TypeMention] OutOfMemoryException
+#  349|             -1: [TypeMention] OutOfMemoryException
+#  349|             0: [LocalVariableAccess] access to local variable ex
 #  350|           1: [BlockStmt] {...}
 #  351|             0: [EmptyStmt] ;
 #  353|         4: [SpecificCatchClause] catch (...) {...}
 #  353|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  353|             0: [TypeMention] DivideByZeroException
+#  353|             -1: [TypeMention] DivideByZeroException
+#  353|             0: [LocalVariableAccess] access to local variable ex
 #  354|           1: [BlockStmt] {...}
 #  355|             0: [EmptyStmt] ;
 #  357|         5: [SpecificCatchClause] catch (...) {...}
 #  357|           0: [LocalVariableDeclExpr] Exception ex
-#  357|             0: [TypeMention] Exception
+#  357|             -1: [TypeMention] Exception
+#  357|             0: [LocalVariableAccess] access to local variable ex
 #  358|           1: [BlockStmt] {...}
 #  359|             0: [EmptyStmt] ;
 #  363|   20: [Method] TestThrow
@@ -467,27 +526,32 @@ exceptions.cs:
 #  369|             0: [LocalVariableAccess] access to local variable e
 #  371|         1: [SpecificCatchClause] catch (...) {...}
 #  371|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  371|             0: [TypeMention] NullReferenceException
+#  371|             -1: [TypeMention] NullReferenceException
+#  371|             0: [LocalVariableAccess] access to local variable ex
 #  372|           1: [BlockStmt] {...}
 #  373|             0: [EmptyStmt] ;
 #  375|         2: [SpecificCatchClause] catch (...) {...}
 #  375|           0: [LocalVariableDeclExpr] OverflowException ex
-#  375|             0: [TypeMention] OverflowException
+#  375|             -1: [TypeMention] OverflowException
+#  375|             0: [LocalVariableAccess] access to local variable ex
 #  376|           1: [BlockStmt] {...}
 #  377|             0: [EmptyStmt] ;
 #  379|         3: [SpecificCatchClause] catch (...) {...}
 #  379|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  379|             0: [TypeMention] OutOfMemoryException
+#  379|             -1: [TypeMention] OutOfMemoryException
+#  379|             0: [LocalVariableAccess] access to local variable ex
 #  380|           1: [BlockStmt] {...}
 #  381|             0: [EmptyStmt] ;
 #  383|         4: [SpecificCatchClause] catch (...) {...}
 #  383|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  383|             0: [TypeMention] DivideByZeroException
+#  383|             -1: [TypeMention] DivideByZeroException
+#  383|             0: [LocalVariableAccess] access to local variable ex
 #  384|           1: [BlockStmt] {...}
 #  385|             0: [EmptyStmt] ;
 #  387|         5: [SpecificCatchClause] catch (...) {...}
 #  387|           0: [LocalVariableDeclExpr] Exception ex
-#  387|             0: [TypeMention] Exception
+#  387|             -1: [TypeMention] Exception
+#  387|             0: [LocalVariableAccess] access to local variable ex
 #  388|           1: [BlockStmt] {...}
 #  389|             0: [EmptyStmt] ;
 #  393|   21: [Method] TestUnaryOperation
@@ -506,27 +570,32 @@ exceptions.cs:
 #  399|               0: [LocalVariableAccess] access to local variable a
 #  401|         1: [SpecificCatchClause] catch (...) {...}
 #  401|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  401|             0: [TypeMention] NullReferenceException
+#  401|             -1: [TypeMention] NullReferenceException
+#  401|             0: [LocalVariableAccess] access to local variable ex
 #  402|           1: [BlockStmt] {...}
 #  403|             0: [EmptyStmt] ;
 #  405|         2: [SpecificCatchClause] catch (...) {...}
 #  405|           0: [LocalVariableDeclExpr] OverflowException ex
-#  405|             0: [TypeMention] OverflowException
+#  405|             -1: [TypeMention] OverflowException
+#  405|             0: [LocalVariableAccess] access to local variable ex
 #  406|           1: [BlockStmt] {...}
 #  407|             0: [EmptyStmt] ;
 #  409|         3: [SpecificCatchClause] catch (...) {...}
 #  409|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  409|             0: [TypeMention] OutOfMemoryException
+#  409|             -1: [TypeMention] OutOfMemoryException
+#  409|             0: [LocalVariableAccess] access to local variable ex
 #  410|           1: [BlockStmt] {...}
 #  411|             0: [EmptyStmt] ;
 #  413|         4: [SpecificCatchClause] catch (...) {...}
 #  413|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  413|             0: [TypeMention] DivideByZeroException
+#  413|             -1: [TypeMention] DivideByZeroException
+#  413|             0: [LocalVariableAccess] access to local variable ex
 #  414|           1: [BlockStmt] {...}
 #  415|             0: [EmptyStmt] ;
 #  417|         5: [SpecificCatchClause] catch (...) {...}
 #  417|           0: [LocalVariableDeclExpr] Exception ex
-#  417|             0: [TypeMention] Exception
+#  417|             -1: [TypeMention] Exception
+#  417|             0: [LocalVariableAccess] access to local variable ex
 #  418|           1: [BlockStmt] {...}
 #  419|             0: [EmptyStmt] ;
 #  423|   22: [Method] TestRethrow
@@ -542,7 +611,8 @@ exceptions.cs:
 #  433|                 1: [ThrowStmt] throw ...;
 #  436|         1: [SpecificCatchClause] catch (...) {...}
 #  436|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  436|             0: [TypeMention] OutOfMemoryException
+#  436|             -1: [TypeMention] OutOfMemoryException
+#  436|             0: [LocalVariableAccess] access to local variable ex
 #  437|           1: [BlockStmt] {...}
 #  438|             0: [EmptyStmt] ;
 #  440|         2: [GeneralCatchClause] catch {...}
@@ -569,12 +639,14 @@ exceptions.cs:
 #  452|                 1: [LocalVariableAccess] access to local variable o
 #  454|         1: [SpecificCatchClause] catch (...) {...}
 #  454|           0: [LocalVariableDeclExpr] InvalidCastException ex
-#  454|             0: [TypeMention] InvalidCastException
+#  454|             -1: [TypeMention] InvalidCastException
+#  454|             0: [LocalVariableAccess] access to local variable ex
 #  455|           1: [BlockStmt] {...}
 #  456|             0: [EmptyStmt] ;
 #  458|         2: [SpecificCatchClause] catch (...) {...}
 #  458|           0: [LocalVariableDeclExpr] Exception ex
-#  458|             0: [TypeMention] Exception
+#  458|             -1: [TypeMention] Exception
+#  458|             0: [LocalVariableAccess] access to local variable ex
 #  459|           1: [BlockStmt] {...}
 #  460|             0: [EmptyStmt] ;
 #  464|   24: [Method] TestDivideMaybeZero
@@ -595,26 +667,31 @@ exceptions.cs:
 #  469|                 1: [ParameterAccess] access to parameter i
 #  471|         1: [SpecificCatchClause] catch (...) {...}
 #  471|           0: [LocalVariableDeclExpr] NullReferenceException ex
-#  471|             0: [TypeMention] NullReferenceException
+#  471|             -1: [TypeMention] NullReferenceException
+#  471|             0: [LocalVariableAccess] access to local variable ex
 #  472|           1: [BlockStmt] {...}
 #  473|             0: [EmptyStmt] ;
 #  475|         2: [SpecificCatchClause] catch (...) {...}
 #  475|           0: [LocalVariableDeclExpr] OverflowException ex
-#  475|             0: [TypeMention] OverflowException
+#  475|             -1: [TypeMention] OverflowException
+#  475|             0: [LocalVariableAccess] access to local variable ex
 #  476|           1: [BlockStmt] {...}
 #  477|             0: [EmptyStmt] ;
 #  479|         3: [SpecificCatchClause] catch (...) {...}
 #  479|           0: [LocalVariableDeclExpr] OutOfMemoryException ex
-#  479|             0: [TypeMention] OutOfMemoryException
+#  479|             -1: [TypeMention] OutOfMemoryException
+#  479|             0: [LocalVariableAccess] access to local variable ex
 #  480|           1: [BlockStmt] {...}
 #  481|             0: [EmptyStmt] ;
 #  483|         4: [SpecificCatchClause] catch (...) {...}
 #  483|           0: [LocalVariableDeclExpr] DivideByZeroException ex
-#  483|             0: [TypeMention] DivideByZeroException
+#  483|             -1: [TypeMention] DivideByZeroException
+#  483|             0: [LocalVariableAccess] access to local variable ex
 #  484|           1: [BlockStmt] {...}
 #  485|             0: [EmptyStmt] ;
 #  487|         5: [SpecificCatchClause] catch (...) {...}
 #  487|           0: [LocalVariableDeclExpr] Exception ex
-#  487|             0: [TypeMention] Exception
+#  487|             -1: [TypeMention] Exception
+#  487|             0: [LocalVariableAccess] access to local variable ex
 #  488|           1: [BlockStmt] {...}
 #  489|             0: [EmptyStmt] ;

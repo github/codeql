@@ -146,6 +146,7 @@ class LogFile {
     func error(_ msg: String) {}
     func critical(_ criticalMsg: String) {}
     func fatal(_ str: String) {}
+    func fatal_opt(_ str: String?) {}
 }
 
 // custom
@@ -226,8 +227,13 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
 }
 
 class MyClass {
+    init() {}
+
 	var harmless = "abc"
 	var password = "123"
+	var passwords: [3 of String] = ["abc", "123", "def"]
+	var optionalPassword: String? = "123"
+	var credentials = ["password": "123"]
 
 	func getPassword() -> String { return "" }
 }
@@ -248,7 +254,22 @@ func test3(x: String) {
 	let z = MyClass()
 	NSLog(z.harmless) // safe
 	NSLog(z.password) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(z.passwords[0]) // $ Alert[unified/swift/cleartext-logging]
+	if let v = z.optionalPassword { // $ Alert[unified/swift/cleartext-logging]
+		NSLog(v) // $ Sink[unified/swift/cleartext-logging]
+	}
+	NSLog(z.optionalPassword!) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(z.credentials["password"]!) // $ MISSING: Alert[unified/swift/cleartext-logging]
 	NSLog(z.getPassword()) // $ Alert[unified/swift/cleartext-logging]
+
+    let o: MyClass? = MyClass()
+    NSLog(o!.password) // $ Alert[unified/swift/cleartext-logging]
+    NSLog(o!.getPassword()) // $ Alert[unified/swift/cleartext-logging]
+    NSLog((o?.password)!) // $ Alert[unified/swift/cleartext-logging]
+
+    let a: [MyClass] = [MyClass(), MyClass(), MyClass()]
+    NSLog(a[0].password) // $ Alert[unified/swift/cleartext-logging]
+    NSLog(a[0].getPassword()) // $ Alert[unified/swift/cleartext-logging]
 }
 
 struct MyOuter {
@@ -259,6 +280,8 @@ struct MyOuter {
 	}
 
 	var password: MyInner
+	var passwords: [MyInner]
+	var optionalPassword: MyInner?
 	var harmless: MyInner
 }
 
@@ -266,9 +289,15 @@ func test3(mo : MyOuter) {
 	// struct members...
 
 	NSLog(mo.password.value) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.passwords[0].value) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword!.value) // $ Alert[unified/swift/cleartext-logging]
+	NSLog((mo.optionalPassword?.value)!) // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.value) // safe
 
 	NSLog(mo.password.getValue()) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.passwords[0].getValue()) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword!.getValue()) // $ Alert[unified/swift/cleartext-logging]
+	NSLog(mo.optionalPassword?.getValue() ?? "") // $ Alert[unified/swift/cleartext-logging]
 	NSLog(mo.harmless.getValue()) // safe
 }
 
@@ -352,19 +381,19 @@ func test5(password: String, caseNum: Int) {
 }
 
 func test6(passwordString: String) {
-    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ Alert[unified/swift/cleartext-logging]
     e.raise()
 
-    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ Alert[unified/swift/cleartext-logging]
+    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ Alert[unified/swift/cleartext-logging]
 
     _ = dprintf(0, "\(passwordString) is incorrect!") // $ MISSING: Alert[unified/swift/cleartext-logging]
     _ = dprintf(0, "%s is incorrect!", passwordString) // $ MISSING: Alert[unified/swift/cleartext-logging]
     _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ MISSING: Alert[unified/swift/cleartext-logging]
     _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ MISSING: Alert[unified/swift/cleartext-logging]
     _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ MISSING: Alert[unified/swift/cleartext-logging]
-    _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ MISSING: Alert[unified/swift/cleartext-logging]
+    _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ Alert[unified/swift/cleartext-logging]
+    _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ Alert[unified/swift/cleartext-logging]
     _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // good (`sprintf` is not logging)
     _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // good (`sprintf` is not logging)
 }
@@ -384,14 +413,19 @@ func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, se
     let logger = LogFile()
     let msg = "authKey: " + authKey // $ Alert[unified/swift/cleartext-logging]
     logger.log(msg) // $ Sink[unified/swift/cleartext-logging]
-    logger.trace(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
-    logger.debug(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
-    logger.info(NSString(string: msg)) // $ MISSING: Sink[unified/swift/cleartext-logging]
-    logger.notice(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.trace(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.debug(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.info(NSString(string: msg)) // $ Sink[unified/swift/cleartext-logging]
+    logger.notice(msg) // $ Sink[unified/swift/cleartext-logging]
     logger.warning(msg) // $ Sink[unified/swift/cleartext-logging]
     logger.error(msg) // $ Sink[unified/swift/cleartext-logging]
-    logger.critical(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
-    logger.fatal(msg) // $ MISSING: Sink[unified/swift/cleartext-logging]
+    logger.critical(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.fatal(msg) // $ Sink[unified/swift/cleartext-logging]
+    logger.fatal_opt(msg) // $ Sink[unified/swift/cleartext-logging]
+
+    let msg_opt = authKey.isEmpty ? nil : "authKey: " + authKey // $ Alert[unified/swift/cleartext-logging]
+    logger.fatal(msg_opt ?? "") // $ Sink[unified/swift/cleartext-logging]
+    logger.fatal_opt(msg_opt) // $ Sink[unified/swift/cleartext-logging]
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging
@@ -433,4 +467,12 @@ func testEnums(p: Password, i: Info) {
     case .message(let contents):
         print(contents) // safe
     }
+}
+
+struct Secret {
+    let value: String
+}
+
+func testStructConstructor() {
+    print(Secret(value: "abc")) // $ Alert[unified/swift/cleartext-logging]
 }

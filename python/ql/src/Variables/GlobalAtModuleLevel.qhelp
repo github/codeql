@@ -14,7 +14,7 @@ At the module level, this statement is redundant because the local scope and glo
 </recommendation>
 <references>
 
-  <li>Python Language Reference: <a href="http://docs.python.org/reference/simple_stmts.html#the-global-statement">The global statement</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/reference/simple_stmts.html#the-global-statement">The global statement</a>.</li>
 
 </references>
 </qhelp>

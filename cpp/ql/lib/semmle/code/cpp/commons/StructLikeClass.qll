@@ -47,7 +47,7 @@ class StructLikeClass extends Class {
 predicate setter(MemberVariable v, MemberFunction f, Class c) {
   f.getDeclaringType() = c and
   v.getDeclaringType() = c and
-  f.getName().matches("set%") and
+  f.getName().startsWith("set") and
   v.getAnAssignedValue().getEnclosingFunction() = f and
   forall(MemberVariable v2 | v2.getAnAssignedValue().getEnclosingFunction() = f | v2 = v) and
   f.getNumberOfParameters() = 1 and
@@ -61,7 +61,7 @@ predicate setter(MemberVariable v, MemberFunction f, Class c) {
 predicate getter(MemberVariable v, MemberFunction f, Class c) {
   f.getDeclaringType() = c and
   v.getDeclaringType() = c and
-  f.getName().matches("get%") and
+  f.getName().startsWith("get") and
   v.getAnAccess().getEnclosingFunction() = f and
   forall(MemberVariable v2 | v2.getAnAccess().getEnclosingFunction() = f | v2 = v) and
   f.getNumberOfParameters() = 0 and

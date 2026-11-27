@@ -93,7 +93,7 @@ class LockingCall extends MethodCall {
     this.getTarget() =
       any(Method m |
         m.getDeclaringType().hasFullyQualifiedName("System.Threading", "Monitor") and
-        m.getName().matches("%Enter%")
+        m.getName().contains("Enter")
       ) or
     this.getTarget().hasName("EnterReadLock") or
     this.getTarget().hasName("EnterWriteLock")

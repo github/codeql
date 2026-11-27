@@ -10,7 +10,7 @@ class XmlPullParser extends Interface {
 class XmlPullGetMethod extends Method {
   XmlPullGetMethod() {
     this.getDeclaringType() instanceof XmlPullParser and
-    this.getName().matches("get%")
+    this.getName().startsWith("get")
   }
 }
 
@@ -21,6 +21,6 @@ class XmlAttrSet extends Interface {
 class XmlAttrSetGetMethod extends Method {
   XmlAttrSetGetMethod() {
     this.getDeclaringType() instanceof XmlAttrSet and
-    this.getName().matches("get%")
+    this.getName().startsWith("get")
   }
 }

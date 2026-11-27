@@ -95,7 +95,7 @@ private class WritingMethod extends Method {
   WritingMethod() {
     this.getDeclaringType().getAnAncestor().hasQualifiedName("java.io", _) and
     (
-      this.getName().matches("print%") or
+      this.getName().startsWith("print") or
       this.getName() = "append" or
       this.getName() = "format" or
       this.getName() = "write"

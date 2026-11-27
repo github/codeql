@@ -209,7 +209,7 @@ private predicate isStringPrefixMatch(MethodCall ma) {
     getVisualArgument(ma, 0).(CompileTimeConstantExpr).getIntValue() = 0
     or
     m.hasName("matches") and
-    not getVisualArgument(ma, 0).(ConstantOrRegex).getStringValue().matches(".*%")
+    not getVisualArgument(ma, 0).(ConstantOrRegex).getStringValue().startsWith(".*")
   )
 }
 
@@ -410,9 +410,9 @@ private predicate replacesDirectoryCharactersWithSingleReplaceAll(StringReplacem
     // Search for "\\\\" (needs extra backslashes to avoid escaping the '%')
     targetValue.matches("[%\\\\\\\\%]")
     or
-    targetValue.matches("%|%") and
+    targetValue.contains("|") and
     targetValue.matches("%" + ["[.]", "\\."] + "%") and
-    targetValue.matches("%/%") and
+    targetValue.contains("/") and
     targetValue.matches("%\\\\\\\\%")
   )
 }
@@ -464,7 +464,7 @@ private predicate replacesDirectoryCharactersWithDoubleReplaceOrReplaceAll(Strin
     targetValue2 != targetValue1 and
     // make sure one of the calls replaces '.'
     // then the other call must replace one of '/' or '\' if they are not equal
-    (targetValue2.matches("%.%") or targetValue1.matches("%.%"))
+    (targetValue2.contains(".") or targetValue1.contains("."))
   )
 }
 

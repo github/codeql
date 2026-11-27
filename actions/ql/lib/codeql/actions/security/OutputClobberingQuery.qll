@@ -247,7 +247,7 @@ private module OutputClobberingConfig implements DataFlow::ConfigSig {
       succ.asExpr() = run.getScript() and
       (
         exists(run.getScript().getAFileReadCommand()) or
-        run.getScript().getAStmt().matches("%::set-output %")
+        run.getScript().getAStmt().contains("::set-output ")
       )
     )
   }

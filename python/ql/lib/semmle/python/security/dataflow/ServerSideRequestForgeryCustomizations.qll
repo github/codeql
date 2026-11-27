@@ -45,11 +45,6 @@ module ServerSideRequestForgery {
    */
   abstract class FullUrlControlSanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
-   */
-  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
-
   /** An active threat-model source, considered as a flow source. */
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
   }
@@ -80,9 +75,6 @@ module ServerSideRequestForgery {
    * A comparison with a constant, considered as a sanitizer-guard.
    */
   class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
-
-  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
-  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 
   /**
    * A string construction (concat, format, f-string) where the left side is not

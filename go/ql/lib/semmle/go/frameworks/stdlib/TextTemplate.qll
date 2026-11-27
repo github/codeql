@@ -13,11 +13,11 @@ module TextTemplate {
 
     TemplateEscape() {
       exists(string fn |
-        fn.matches("HTMLEscape%") and kind = "html"
+        fn.startsWith("HTMLEscape") and kind = "html"
         or
-        fn.matches("JSEscape%") and kind = "js"
+        fn.startsWith("JSEscape") and kind = "js"
         or
-        fn.matches("URLQueryEscape%") and kind = "url"
+        fn.startsWith("URLQueryEscape") and kind = "url"
       |
         this.hasQualifiedName("text/template", fn)
       )

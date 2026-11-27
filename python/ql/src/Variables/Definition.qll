@@ -122,9 +122,9 @@ predicate name_acceptable_for_unused_variable(Variable var) {
   exists(string name | var.getId() = name |
     name.regexpMatch("_+") or
     name = "empty" or
-    name.matches("%unused%") or
+    name.contains("unused") or
     name = "dummy" or
-    name.regexpMatch("__.*")
+    name.startsWith("__")
   )
 }
 

@@ -238,7 +238,7 @@ module AccessPath {
       baseName = fromRhs(write.getBase(), root)
       or
       baseName = fromRhs(GetLaterAccess::getLaterBaseAccess(write), root) and
-      not baseName.matches("%.%")
+      not baseName.contains(".")
     )
     or
     exists(GlobalVariable var |

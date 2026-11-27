@@ -82,7 +82,7 @@ abstract class NormalizableFilepath extends string {
       if norm != ""
       then result = norm
       else
-        if this.matches("/%")
+        if this.startsWith("/")
         then result = "/"
         else result = "."
     )

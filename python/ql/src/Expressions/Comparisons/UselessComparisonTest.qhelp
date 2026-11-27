@@ -29,7 +29,7 @@ second test will always be false, and the function <code>_compare</code> will on
 
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/expressions.html#not-in">Comparisons</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/expressions.html#not-in">Comparisons</a>.</li>
 
 </references>
 </qhelp>

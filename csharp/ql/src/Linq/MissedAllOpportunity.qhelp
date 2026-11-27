@@ -26,7 +26,7 @@ clearly expressed), shorter, less error-prone and more maintainable.</p>
 </example>
 <references>
 
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/bb548541.aspx">Enumerable.All&lt;TSource&gt; Method</a>.</li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/bb548541.aspx">Enumerable.All&lt;TSource&gt; Method</a>.</li>
 
 
 </references>

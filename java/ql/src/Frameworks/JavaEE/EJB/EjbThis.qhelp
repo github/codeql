@@ -23,7 +23,7 @@ enterprise bean must pass the result of <code>SessionContext.getBusinessObject</
 
 
 <li>
-  <a href="http://jcp.org/aboutJava/communityprocess/final/jsr220/index.html">
+  <a href="https://jcp.org/aboutJava/communityprocess/final/jsr220/index.html">
   JSR-220 Enterprise JavaBeans 3.0 Final Release</a> (ejbcore),
   Section 21.1.2 Programming Restrictions
 </li>

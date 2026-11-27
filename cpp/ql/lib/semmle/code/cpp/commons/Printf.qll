@@ -587,38 +587,38 @@ class FormatLiteral extends Literal instanceof StringLiteral {
   /**
    * Holds if the nth conversion specifier has alternate flag ("#").
    */
-  predicate hasAlternateFlag(int n) { this.getFlags(n).matches("%#%") }
+  predicate hasAlternateFlag(int n) { this.getFlags(n).contains("#") }
 
   /**
    * Holds if the nth conversion specifier has zero padding flag ("0").
    */
-  predicate isZeroPadded(int n) { this.getFlags(n).matches("%0%") and not this.isLeftAdjusted(n) }
+  predicate isZeroPadded(int n) { this.getFlags(n).contains("0") and not this.isLeftAdjusted(n) }
 
   /**
    * Holds if the nth conversion specifier has flag left adjustment flag
    * ("-").  Note that this overrides the zero padding flag.
    */
-  predicate isLeftAdjusted(int n) { this.getFlags(n).matches("%-%") }
+  predicate isLeftAdjusted(int n) { this.getFlags(n).contains("-") }
 
   /**
    * Holds if the nth conversion specifier has the blank flag (" ").
    */
-  predicate hasBlank(int n) { this.getFlags(n).matches("% %") }
+  predicate hasBlank(int n) { this.getFlags(n).contains(" ") }
 
   /**
    * Holds if the nth conversion specifier has the explicit sign flag ("+").
    */
-  predicate hasSign(int n) { this.getFlags(n).matches("%+%") }
+  predicate hasSign(int n) { this.getFlags(n).contains("+") }
 
   /**
    * Holds if the nth conversion specifier has the thousands grouping flag ("'").
    */
-  predicate hasThousandsGrouping(int n) { this.getFlags(n).matches("%'%") }
+  predicate hasThousandsGrouping(int n) { this.getFlags(n).contains("'") }
 
   /**
    * Holds if the nth conversion specifier has the alternative digits flag ("I").
    */
-  predicate hasAlternativeDigits(int n) { this.getFlags(n).matches("%I%") }
+  predicate hasAlternativeDigits(int n) { this.getFlags(n).contains("I") }
 
   /**
    * Gets the minimum field width of the nth conversion specifier

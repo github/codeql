@@ -50,6 +50,52 @@ pub fn query(input: TokenStream) -> TokenStream {
     }
 }
 
+#[doc(hidden)]
+#[proc_macro]
+pub fn query_match_with_schema(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_query_match_with_schema_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
+#[doc(hidden)]
+#[proc_macro]
+pub fn query_match_with_schema_and_context(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_query_match_with_schema_and_context_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
+/// Declare a matcher namespace for one AST schema.
+///
+/// ```ignore
+/// yeast::query_match_schema! {
+///     swift_input,
+///     "swift_node_types.yml",
+/// }
+///
+/// use swift_input::{query_match, query_match_with_context};
+///
+/// yeast::query_match_schema! {
+///     swift_output,
+///     "ast_types.yml",
+/// }
+///
+/// use swift_output::query_match as output_query_match;
+/// ```
+#[proc_macro]
+pub fn query_match_schema(input: TokenStream) -> TokenStream {
+    let input2: TokenStream2 = input.into();
+    match parse::parse_query_match_schema_top(input2) {
+        Ok(output) => output.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
+}
+
 /// Build a single AST node from a template, returning its `OutputId`.
 ///
 /// A top-level choice returns `Option<OutputId>`.

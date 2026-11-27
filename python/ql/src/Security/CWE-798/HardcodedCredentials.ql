@@ -71,7 +71,7 @@ predicate maybeCredential(ControlFlowNode f) {
   exists(IntegerLiteral lit | f.getNode() = lit |
     not exists(lit.getValue()) and
     /* Not a set of flags or round number */
-    not lit.getN().matches("%00%")
+    not lit.getN().contains("00")
   )
 }
 
@@ -81,14 +81,14 @@ class HardcodedValueSource extends DataFlow::Node {
 
 class CredentialSink extends DataFlow::Node {
   CredentialSink() {
-    exists(string s | s.matches("credentials-%") |
+    exists(string s | s.startsWith("credentials-") |
       // Actual sink-type will be things like `credentials-password` or `credentials-username`
       ModelOutput::sinkNode(this, s)
     )
     or
     exists(string name |
       name.regexpMatch(getACredentialRegex()) and
-      not name.matches("%file")
+      not name.endsWith("file")
     |
       exists(DataFlowDispatch::ArgumentPosition pos | pos.isKeyword(name) |
         this.(DataFlow::ArgumentNode).argumentOf(_, pos)
@@ -107,7 +107,7 @@ class CredentialSink extends DataFlow::Node {
 
 class CredentialSanitizer extends DataFlow::Node {
   CredentialSanitizer() {
-    exists(string s | s.matches("credentials-%") |
+    exists(string s | s.startsWith("credentials-") |
       // Whatever the string, this will sanitize flow to all credential sinks.
       ModelOutput::barrierNode(this, s)
     )

@@ -104,7 +104,7 @@ predicate ssa_consistency(string clsname, string problem, string what) {
   or
   exists(EssaDefinition def |
     clsname = def.getAQlClass() and
-    clsname.matches("Essa%") and
+    clsname.startsWith("Essa") and
     what = " at " + def.getLocation() and
     problem = "not covered by Python-specific subclass."
   )

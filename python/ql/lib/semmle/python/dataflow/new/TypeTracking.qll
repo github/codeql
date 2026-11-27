@@ -9,13 +9,6 @@ import Impl::Shared::TypeTracking<Location, Impl::TypeTrackingInput>
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 
 /**
- * DEPRECATED.
- *
- * A string that may appear as the name of an attribute or access path.
- */
-deprecated class AttributeName = Impl::TypeTrackingInput::Content;
-
-/**
  * A summary of the steps needed to track a value to a given dataflow node.
  *
  * This can be used to track objects that implement a certain API in order to

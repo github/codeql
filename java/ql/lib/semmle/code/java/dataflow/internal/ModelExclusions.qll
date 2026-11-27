@@ -34,20 +34,20 @@ predicate isInTestFile(File file) {
 
 /** Holds if the given compilation unit's package is a JDK internal. */
 private predicate isJdkInternal(CompilationUnit cu) {
-  cu.getPackage().getName().matches("org.graalvm%") or
-  cu.getPackage().getName().matches("com.sun%") or
-  cu.getPackage().getName().matches("sun%") or
-  cu.getPackage().getName().matches("jdk%") or
-  cu.getPackage().getName().matches("java2d%") or
-  cu.getPackage().getName().matches("build.tools%") or
-  cu.getPackage().getName().matches("propertiesparser%") or
-  cu.getPackage().getName().matches("org.jcp%") or
-  cu.getPackage().getName().matches("org.w3c%") or
-  cu.getPackage().getName().matches("org.ietf.jgss%") or
-  cu.getPackage().getName().matches("org.xml.sax%") or
-  cu.getPackage().getName().matches("com.oracle%") or
-  cu.getPackage().getName().matches("org.omg%") or
-  cu.getPackage().getName().matches("org.relaxng%") or
+  cu.getPackage().getName().startsWith("org.graalvm") or
+  cu.getPackage().getName().startsWith("com.sun") or
+  cu.getPackage().getName().startsWith("sun") or
+  cu.getPackage().getName().startsWith("jdk") or
+  cu.getPackage().getName().startsWith("java2d") or
+  cu.getPackage().getName().startsWith("build.tools") or
+  cu.getPackage().getName().startsWith("propertiesparser") or
+  cu.getPackage().getName().startsWith("org.jcp") or
+  cu.getPackage().getName().startsWith("org.w3c") or
+  cu.getPackage().getName().startsWith("org.ietf.jgss") or
+  cu.getPackage().getName().startsWith("org.xml.sax") or
+  cu.getPackage().getName().startsWith("com.oracle") or
+  cu.getPackage().getName().startsWith("org.omg") or
+  cu.getPackage().getName().startsWith("org.relaxng") or
   cu.getPackage().getName() = "compileproperties" or
   cu.getPackage().getName() = "transparentruler" or
   cu.getPackage().getName() = "genstubs" or
@@ -58,7 +58,7 @@ private predicate isJdkInternal(CompilationUnit cu) {
 /** Holds if the given compilation unit's package is internal. */
 private predicate isInternal(CompilationUnit cu) {
   isJdkInternal(cu) or
-  cu.getPackage().getName().matches("%internal%")
+  cu.getPackage().getName().contains("internal")
 }
 
 /** A method relating to lambda flow. */

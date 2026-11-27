@@ -98,7 +98,7 @@ the right-hand side does not need to be promoted to a <code>signed int</code>.
 <sample src="SignedOverflowCheck-good2.cpp" />
 </example>
 <references>
-<li><a href="http://c-faq.com/expr/preservingrules.html">comp.lang.c FAQ list · Question 3.19 (Preserving rules)</a></li>
+<li><a href="https://c-faq.com/expr/preservingrules.html">comp.lang.c FAQ list · Question 3.19 (Preserving rules)</a></li>
 <li><a href="https://wiki.sei.cmu.edu/confluence/display/c/INT31-C.+Ensure+that+integer+conversions+do+not+result+in+lost+or+misinterpreted+data">INT31-C. Ensure that integer conversions do not result in lost or misinterpreted data</a></li>
 <li>W. Dietz, P. Li, J. Regehr, V. Adve. <a href="https://www.cs.utah.edu/~regehr/papers/overflow12.pdf">Understanding Integer Overflow in C/C++</a></li>
 </references>

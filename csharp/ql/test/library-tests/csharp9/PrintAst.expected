@@ -247,7 +247,8 @@ ForeachExtension.cs:
 #   23|               1: [IntLiteral] 10
 #   24|       1: [ForEachStmt] foreach (... ... in ...) ...
 #   24|         0: [LocalVariableDeclExpr] Int32 item
-#   24|           0: [TypeMention] int
+#   24|           -1: [TypeMention] int
+#   24|           0: [LocalVariableAccess] access to local variable item
 #   24|         1: [LocalVariableAccess] access to local variable enumerator1
 #   25|         2: [BlockStmt] {...}
 #   28|       2: [LocalVariableDeclStmt] ... ...;
@@ -258,17 +259,20 @@ ForeachExtension.cs:
 #   28|           1: [MethodCall] call to method GetAsyncEnumerator
 #   29|       3: [ForEachStmt] foreach (... ... in ...) ...
 #   29|         0: [LocalVariableDeclExpr] Int32 item
-#   29|           0: [TypeMention] int
+#   29|           -1: [TypeMention] int
+#   29|           0: [LocalVariableAccess] access to local variable item
 #   29|         1: [LocalVariableAccess] access to local variable enumerator2
 #   30|         2: [BlockStmt] {...}
 #   33|       4: [ForEachStmt] foreach (... ... in ...) ...
 #   33|         0: [LocalVariableDeclExpr] Int32 item
-#   33|           0: [TypeMention] int
+#   33|           -1: [TypeMention] int
+#   33|           0: [LocalVariableAccess] access to local variable item
 #   33|         1: [IntLiteral] 42
 #   34|         2: [BlockStmt] {...}
 #   37|       5: [ForEachStmt] foreach (... ... in ...) ...
 #   37|         0: [LocalVariableDeclExpr] Int32 i
-#   37|           0: [TypeMention] int
+#   37|           -1: [TypeMention] int
+#   37|           0: [LocalVariableAccess] access to local variable i
 #   37|         1: [ArrayCreation] array creation of type Int32[]
 #   37|           -2: [TypeMention] Int32[]
 #   37|             1: [TypeMention] int
@@ -1108,7 +1112,9 @@ Record.cs:
 #   72|         0: [AssignExpr] ... = ...
 #   72|           0: [TupleExpr] (..., ...)
 #   72|             0: [LocalVariableDeclExpr] String first
+#   72|               0: [LocalVariableAccess] access to local variable first
 #   72|             1: [LocalVariableDeclExpr] String last
+#   72|               0: [LocalVariableAccess] access to local variable last
 #   72|           1: [LocalVariableAccess] access to local variable p1
 #   73|       2: [ExprStmt] ...;
 #   73|         0: [MethodCall] call to method WriteLine

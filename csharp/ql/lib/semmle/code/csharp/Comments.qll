@@ -214,7 +214,7 @@ class CommentBlock extends @commentblock {
     // Logic taken verbatim from Java query CommentedCode.qll
     result = this.getAChild() and
     exists(string trimmed | trimmed = result.getText().regexpReplaceAll("\\s*//.*$", "") |
-      trimmed.matches("%;") or trimmed.matches("%{") or trimmed.matches("%}")
+      trimmed.endsWith(";") or trimmed.endsWith("{") or trimmed.endsWith("}")
     )
   }
 }

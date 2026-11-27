@@ -40,5 +40,5 @@ where
   unused(unused) and
   not exists(Options opts | opts.okToIgnoreReturnValue(unused)) and
   (important(unused.getTarget(), message) or dubious(unused.getTarget(), message)) and
-  not unused.getTarget().getName().matches("operator%") // exclude user defined operators
+  not unused.getTarget().getName().startsWith("operator") // exclude user defined operators
 select unused, "Result of call to " + unused.getTarget().getName() + " is ignored; " + message

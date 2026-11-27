@@ -9,10 +9,13 @@ private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
 
+private module SsaFlow = SsaImpl::DataFlowIntegration;
+
 cached
 private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
+  MkSsaSynthReadNode(SsaFlow::SsaSynthReadNode ssa) or
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(IR::EvalInstruction ins) {
     // We only use CallExprs with an EvalInstruction to guarantee reachability.
@@ -25,6 +28,49 @@ private newtype TNode =
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
   private import DataFlowDispatch
+
+  /** A synthetic SSA read at a control-flow merge. */
+  class SsaSynthReadNode extends Node, MkSsaSynthReadNode {
+    private SsaFlow::SsaSynthReadNode ssa;
+
+    SsaSynthReadNode() { this = MkSsaSynthReadNode(ssa) }
+
+    SsaFlow::SsaSynthReadNode getSsaNode() { result = ssa }
+
+    override ControlFlow::Root getRoot() { result = ssa.getBasicBlock().getScope() }
+
+    override BasicBlock getBasicBlock() { result = ssa.getBasicBlock() }
+
+    override Type getType() { result = ssa.getSourceVariable().getType() }
+
+    override string getNodeKind() { result = "SSA synthetic read" }
+
+    override string toString() { result = ssa.toString() }
+
+    override Location getLocation() { result = ssa.getLocation() }
+  }
+
+  /** Gets the Go data-flow node corresponding to `n`. */
+  Node getNodeFromSsaNode(SsaFlow::Node n) {
+    result.(SsaNode).getDefinition() = n.(SsaFlow::SsaDefinitionNode).getDefinition()
+    or
+    result.(SsaSynthReadNode).getSsaNode() = n
+    or
+    exists(IR::Instruction insn, SsaSourceVariable v |
+      n.(SsaFlow::ReadNode).readsAt(insn, v) and
+      insn.reads(v) and
+      result.asInstruction() = insn
+    )
+    or
+    exists(IR::Instruction insn, SsaSourceVariable v |
+      n.(SsaFlow::PostUpdateReadNode).readsAt(insn, v) and
+      insn.reads(v) and
+      result.(PostUpdateNode).getPreUpdateNode().asInstruction() = insn
+    )
+    or
+    result.asInstruction() =
+      n.(SsaFlow::WriteDefSourceNode).getDefinition().(SsaExplicitWrite).getDefinition().getRhs()
+  }
 
   /** Gets the callable in which this node occurs. */
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
@@ -148,21 +194,6 @@ module Public {
 
     /** Gets the location of this node. */
     Location getLocation() { none() }
-
-    /**
-     * DEPRECATED: Use `getLocation()` instead.
-     *
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    deprecated predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
 
     /** Gets the file in which this node appears. */
     File getFile() { result = this.getLocation().getFile() }
@@ -308,6 +339,8 @@ module Public {
     SsaDefinition getDefinition() { result = ssa }
 
     override ControlFlow::Root getRoot() { result = SsaImpl::getSsaDefinitionRoot(ssa) }
+
+    override BasicBlock getBasicBlock() { result = ssa.getBasicBlock() }
 
     override Type getType() { result = ssa.getSourceVariable().getType() }
 

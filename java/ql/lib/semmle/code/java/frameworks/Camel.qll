@@ -26,7 +26,7 @@ class CamelToUri extends string {
 class CamelToBeanUri extends CamelToUri {
   CamelToBeanUri() {
     // A `<to>` element references a bean if the URI starts with "bean:", or there is no scheme.
-    this.matches("bean:%") or
+    this.startsWith("bean:") or
     not exists(this.indexOf(":"))
   }
 

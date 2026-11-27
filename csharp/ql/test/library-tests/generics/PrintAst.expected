@@ -264,8 +264,9 @@ generics.cs:
 #   18|       4: [BlockStmt] {...}
 #   18|         0: [LocalVariableDeclStmt] ... ...;
 #   18|           0: [LocalVariableDeclExpr] A`1 a
-#   18|             0: [TypeMention] A<T>
+#   18|             -1: [TypeMention] A<T>
 #   18|               1: [TypeMention] T
+#   18|             0: [LocalVariableAccess] access to local variable a
 #   18|         1: [ReturnStmt] return ...;
 #   18|           0: [ParameterAccess] access to parameter t
 #   22|   4: [Class] B`1

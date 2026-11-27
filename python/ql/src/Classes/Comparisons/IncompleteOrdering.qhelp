@@ -31,7 +31,7 @@ The <code>__le__</code> method should also be defined, as well as <code>__eq__</
 </example>
 <references>
 
-  <li>Python Language Reference: <a href="http://docs.python.org/3/reference/datamodel.html#object.__lt__">Rich comparisons in Python</a>.</li>
+  <li>Python Language Reference: <a href="https://docs.python.org/3/reference/datamodel.html#object.__lt__">Rich comparisons in Python</a>.</li>
 
 
 </references>

@@ -3,7 +3,7 @@ import semmle.code.cpp.controlflow.Guards
 import codeql.util.Boolean
 
 bindingset[s]
-string escape(string s) { if s.matches("% %") then result = "'" + s + "'" else result = s }
+string escape(string s) { if s.contains(" ") then result = "'" + s + "'" else result = s }
 
 Expr getUnconverted(Element e) {
   not e instanceof Expr and

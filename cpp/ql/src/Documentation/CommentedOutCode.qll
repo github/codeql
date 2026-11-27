@@ -178,7 +178,7 @@ class CommentBlock extends Comment {
     // If a C-style comment starts each line with a *, then it's
     // probably documentation rather than code.
     this instanceof CStyleComment and
-    forex(int i | i in [1 .. this.numLines() - 1] | this.getLine(i).trim().matches("*%"))
+    forex(int i | i in [1 .. this.numLines() - 1] | this.getLine(i).trim().startsWith("*"))
   }
 
   /**

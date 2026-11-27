@@ -60,7 +60,7 @@ Select parseSelect(string id, string lang, string msg, string fingerPrint) {
     msg = getMessage(result).toLowerCase() // case normalize, because some languages upper-case methods.
   ) and
   // excluding experimental
-  not result.getLocation().getFile().getRelativePath().matches("%/experimental/%") and
+  not result.getLocation().getFile().getRelativePath().contains("/experimental/") and
   not lang = "ql" // excluding QL-for-QL
 }
 

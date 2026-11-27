@@ -77,11 +77,6 @@ module UrlRedirect {
     );
   }
 
-  /**
-   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
-   */
-  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
-
   /** An active threat-model source, considered as a flow source. */
   private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
   }
@@ -156,9 +151,6 @@ module UrlRedirect {
       any()
     }
   }
-
-  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
-  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 
   /**
    * A sanitizer which sanitizes all flow states, defined via models-as-data

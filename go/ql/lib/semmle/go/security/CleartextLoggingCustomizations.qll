@@ -145,7 +145,8 @@ module CleartextLogging {
       not this instanceof NonCleartextPassword and
       name.regexpMatch(maybePassword()) and
       (
-        this.(DataFlow::SsaNode).getSourceVariable().getName() = name
+        this.(DataFlow::SsaNode).getSourceVariable().getName() = name and
+        not this.(DataFlow::SsaNode).getDefinition() instanceof SsaPhiDefinition
         or
         exists(DataFlow::FieldReadNode fn |
           fn = this and

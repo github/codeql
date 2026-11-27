@@ -375,7 +375,7 @@ private module HeuristicAllocation {
     override int getSizeArg() { result = sizeArg }
 
     override int getReallocPtrArg() {
-      Function.super.getName().matches("%realloc%") and
+      Function.super.getName().contains("realloc") and
       result = unique( | | getAPointerParameter(this))
     }
 

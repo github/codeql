@@ -616,7 +616,7 @@ private class ConstantReadAccessSynth extends ConstantAccess, TConstantReadAcces
 
   final override Expr getScopeExpr() { synthChild(this, 0, result) }
 
-  final override predicate hasGlobalScope() { value.matches("::%") }
+  final override predicate hasGlobalScope() { value.startsWith("::") }
 }
 
 overlay[local]
@@ -631,5 +631,5 @@ private class ConstantWriteAccessSynth extends ConstantAccess, TConstantWriteAcc
 
   final override Expr getScopeExpr() { synthChild(this, 0, result) }
 
-  final override predicate hasGlobalScope() { value.matches("::%") }
+  final override predicate hasGlobalScope() { value.startsWith("::") }
 }

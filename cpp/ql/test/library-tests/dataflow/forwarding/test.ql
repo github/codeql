@@ -4,7 +4,7 @@ import semmle.code.cpp.dataflow.ExternalFlow
 import semmle.code.cpp.ir.IR
 
 bindingset[s]
-string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
+string quote(string s) { if s.contains(" ") then result = "\"" + s + "\"" else result = s }
 
 string getConstructorId(Constructor constructor) {
   exists(CppStyleComment comment, string filepath, int startline, int endline |

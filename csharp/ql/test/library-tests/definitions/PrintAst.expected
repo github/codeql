@@ -197,11 +197,13 @@ definitions.cs:
 #   84|                   0: [StringLiteralUtf16] "HH:mm:ss"
 #   86|           1: [SpecificCatchClause] catch (...) {...}
 #   86|             0: [LocalVariableDeclExpr] Exception e
-#   86|               0: [TypeMention] Exception
+#   86|               -1: [TypeMention] Exception
+#   86|               0: [LocalVariableAccess] access to local variable e
 #   87|             1: [BlockStmt] {...}
 #   88|               0: [ForEachStmt] foreach (... ... in ...) ...
 #   88|                 0: [LocalVariableDeclExpr] S1 s
-#   88|                   0: [TypeMention] S1
+#   88|                   -1: [TypeMention] S1
+#   88|                   0: [LocalVariableAccess] access to local variable s
 #   88|                 1: [ParameterAccess] access to parameter ss
 #   89|                 2: [BlockStmt] {...}
 #   92|         1: [LocalVariableDeclStmt] ... ...;
