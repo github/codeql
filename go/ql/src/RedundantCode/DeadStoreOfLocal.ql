@@ -33,6 +33,8 @@ from IR::WriteInstruction def, SsaSourceVariable target, IR::Instruction rhs, Ex
 where
   def.writes(target, rhs) and
   not exists(SsaExplicitWrite ssa | ssa.getDefinition() = def) and
+  // Escaped closures may observe writes that have no corresponding SSA read.
+  not target.isCaptured() and
   // exclude assignments in dead code
   def.getBasicBlock() instanceof ReachableBasicBlock and
   // exclude assignments with default values or simple expressions

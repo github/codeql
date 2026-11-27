@@ -633,3 +633,125 @@ func _(v1, v2 int32) (int32, int32) {
 }
 
 func anyFunctionMightPanic()
+
+func capturedInitialization() {
+	x := deadStore() // $ MISSING: Alert
+	x = usedValue()
+	read := func() { _ = x }
+	read()
+}
+
+func capturedWriteBack() int {
+	x := 0
+	update := func() { x = usedValue() }
+	update()
+	return x
+}
+
+func usedValue() int { return 1 }
+
+func overwrittenCapturedWrites() int {
+	x := 0
+	update := func() {
+		x = deadStore() // $ MISSING: Alert
+		x = 1
+		x = deadStore() // $ MISSING: Alert
+		if b {
+			x = 2
+		} else {
+			x = 3
+		}
+		for b {
+			x = deadStore() // $ MISSING: Alert
+			x = 4
+		}
+	}
+	update()
+	return x
+}
+
+func overwrittenAfterClosureCreation() {
+	y := usedValue()
+	x := deadStore() // $ MISSING: Alert
+	read := func() { _ = x }
+	x = y
+	read()
+}
+
+func returnedClosureCapturesWrite() func() int {
+	x := usedValue()
+	return func() int { return x }
+}
+
+func conditionallyOverwrittenCapture() int {
+	x := 0
+	update := func() {
+		x = usedValue()
+		if b {
+			x = 1
+		}
+	}
+	update()
+	return x
+}
+
+func observedCapturedWrite() int {
+	x := 0
+	read := func() { _ = x }
+	update := func() {
+		x = usedValue()
+		read()
+		x = 1
+		x = usedValue()
+		_ = x
+		x = 2
+	}
+	update()
+	return x
+}
+
+func panickingCapturedOverwrite(xs []int, i int) {
+	x := 0
+	defer func() { _ = x }()
+	update := func() {
+		x = usedValue()
+		_ = xs[i]
+		x = 1
+	}
+	update()
+}
+
+func deferredReadAfterCapturedOverwrite() int {
+	x := 0
+	update := func() {
+		x = deadStore() // $ MISSING: Alert
+		defer func() { _ = x }()
+		x = 1
+	}
+	update()
+	return x
+}
+
+func storedClosureBeforeWrite() map[string]func() int {
+	var x int
+	handlers := map[string]func() int{"read": func() int { return x }}
+	x = usedValue()
+	return handlers
+}
+
+func registeredClosureBeforeWrite(register func(func() int)) {
+	var x int
+	register(func() int { return x })
+	x = usedValue()
+}
+
+func goroutineBeforeWrite() {
+	var x int
+	ready := make(chan struct{})
+	go func() {
+		<-ready
+		global = x
+	}()
+	x = usedValue()
+	ready <- struct{}{}
+}
