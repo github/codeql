@@ -43,6 +43,8 @@ CodeQL can be configured to remember the extractor by setting the config file `~
 
 ## Running qltests
 
+To reproduce QL-for-QL CI locally, use the nightly CodeQL toolchain.
+
 Run
 
 ```bash
