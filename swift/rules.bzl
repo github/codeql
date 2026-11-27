@@ -14,7 +14,7 @@ def _transition_impl(settings, attr):
                 "x86_64",
             ],
             "//command_line_option:cxxopt": [
-                "-std=c++20",
+                "-std=c++23",
                 # we currently cannot built the swift extractor for ARM
                 "-arch",
                 "x86_64",
@@ -30,14 +30,14 @@ def _transition_impl(settings, attr):
                 "-fno-rtti",
             ],
             "//command_line_option:cxxopt": [
-                "-std=c++20",
+                "-std=c++23",
             ],
             "//command_line_option:linkopt": [],
         },
         "windows": {
             "//command_line_option:copt": [],
             "//command_line_option:cxxopt": [
-                "/std:c++20",
+                "/std:c++23",
                 "--cxxopt=/Zc:preprocessor",
             ],
             "//command_line_option:linkopt": [],

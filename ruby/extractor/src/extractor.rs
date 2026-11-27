@@ -1,5 +1,5 @@
 use clap::Args;
-use codeql_extractor::file_paths::PathTransformer;
+use extractor_common::file_paths::{self, PathTransformer};
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::collections::HashSet;
@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 use tree_sitter::{Language, Parser, Range};
 
-use codeql_extractor::{diagnostics, extractor, file_paths, node_types, trap};
+use codeql_extractor::{diagnostics, extractor, node_types, trap};
 
 #[derive(Args)]
 pub struct Options {

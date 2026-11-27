@@ -113,6 +113,109 @@ Captures bind matched nodes to names for use in the transform. A capture
 _ @anything                 // capture any node, named or unnamed
 ```
 
+### `query_match!` schema namespaces
+
+Instantiate a matcher namespace for each AST schema being queried:
+
+```rust
+yeast::query_match_schema! {
+    swift_input,
+    "swift_node_types.yml",
+}
+
+yeast::query_match_schema! {
+    swift_output,
+    "ast_types.yml",
+}
+
+use swift_input::{query_match, query_match_with_context};
+use swift_output::{query_match as output_query_match, SCHEMA as OUTPUT_SCHEMA};
+```
+
+Use `query_match!` when matching a query imperatively and consuming its
+captures immediately:
+
+```rust
+let result = query_match!(
+    node,
+    (assignment
+        left: (_) @left
+        type: _? @annotation
+        right: (_) @right)
+    => {
+        (left, annotation, right)
+    },
+    (call function: (_) @function)
+    => {
+        (function, None, function)
+    },
+);
+```
+
+Query arms are tried in order. The result is the expression from the first
+matching arm, and the macro panics when none match. Add a catch-all arm such as
+`_ => { None }` when an unmatched node is expected. Captures are bound as raw
+input ids: a required capture is an `Id`, an optional capture is an
+`Option<Id>`, and a repeated capture is a `Vec<Id>`. `@` and `@@` are
+equivalent in `query_match!`; neither form eagerly translates the capture.
+Like `tree!` and `trees!`, `query_match!` uses the ambient `BuildCtx` binding
+named `ctx`.
+
+An arm may include a rule-style `where` guard:
+
+```rust
+query_match!(
+    node,
+    (tuple element: _* @elements)
+    where elements.is_empty()
+    => {
+        // ...
+    },
+);
+```
+
+The guard receives raw captures, the input AST as `ast`, and the user context
+as read-only `ctx`. Guard bindings are independent of body bindings, so the
+guard may consume a repeated capture without affecting the body's `Vec<Id>`.
+A false guard continues with the next arm.
+
+Passing an `OutputId` makes `query_match!` match against the current output
+tree. Its captures are then raw `OutputId` values, and `ast` in a guard refers
+to the output AST. The output-tree borrow used for matching and guard evaluation
+ends before the body runs, so the body may construct or mutate output nodes.
+
+Each namespace exports a `query_match!` macro alongside its `SCHEMA` constant.
+The node ID selects the input or output tree. Aliasing allows both macros to be
+used together without repeating the paths:
+
+```rust
+query_match!(node, (identifier) => { node });
+output_query_match!(output_node, (Name) => { output_node });
+```
+
+Each generated namespace exposes its schema as the `SCHEMA` constant. Multiple
+schema namespaces may coexist in one crate. `rules!` continues to specify both
+of its schema paths explicitly.
+
+The default matcher infers the hygiene of the ambient `ctx` binding from the
+matched node expression. A macro that forwards that expression must use
+`query_match_with_context!` to pass its local context explicitly. Otherwise the
+generated code may fail to resolve `ctx`, or silently use an unrelated `ctx`
+from the scope where the node expression originated:
+
+```rust
+macro_rules! match_node {
+    ($node:expr, $context:expr) => {{
+        let ctx = $context;
+        query_match_with_context!(
+            ctx,
+            $node,
+            (identifier) => { $node },
+        )
+    }};
+}
+```
+
 ### Named vs unnamed children
 
 The two wildcard forms `(_)` and bare `_` differ:

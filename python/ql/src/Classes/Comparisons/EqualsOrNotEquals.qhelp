@@ -45,8 +45,8 @@ which is not consistent with the equality operation.
 <references>
 
 
-<li>Python Language Reference: <a href="http://docs.python.org/3/reference/datamodel.html#object.__ne__">object.__ne__</a>, 
-<a href="http://docs.python.org/3/reference/expressions.html#comparisons">Comparisons</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/3/reference/datamodel.html#object.__ne__">object.__ne__</a>, 
+<a href="https://docs.python.org/3/reference/expressions.html#comparisons">Comparisons</a>.</li>
 
 
 </references>

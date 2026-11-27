@@ -25,9 +25,9 @@ one of the values in the assignment has been duplicated, causing an exception at
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/simple_stmts.html#grammar-token-assignment_stmt">
+<li>Python Language Reference: <a href="https://docs.python.org/2/reference/simple_stmts.html#grammar-token-assignment_stmt">
 Assignment statements</a>.</li>
-<li>Python Tutorial: <a href="http://docs.python.org/2/tutorial/introduction.html#first-steps-towards-programming">
+<li>Python Tutorial: <a href="https://docs.python.org/2/tutorial/introduction.html#first-steps-towards-programming">
 First steps towards programming</a>.</li> 
 
 

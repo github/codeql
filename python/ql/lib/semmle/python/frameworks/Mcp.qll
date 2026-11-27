@@ -19,6 +19,9 @@ private import semmle.python.ApiGraphs
  * The parameters of tool, resource and prompt handlers are chosen by the MCP client, that is by a
  * language model or by anyone who can reach the server. The low-level server of `mcp`, the HTTP
  * headers and the bearer tokens are modeled as data extensions (`mcp.model.yml`, `fastmcp.model.yml`).
+ *
+ * QL decorator matching on `getADecorator()` covers handlers whose MCP registration is hidden
+ * behind inner custom project wrappers that the API-graph baseline does not reach.
  */
 module Mcp {
   /** Gets a reference to a server class whose instances register tool, resource and prompt handlers. */
@@ -119,6 +122,23 @@ module Mcp {
       result = decorator.getKeywordParameter("name_or_fn")
       or
       result = decorator.getReturn().getParameter(0)
+    )
+  }
+
+  /** Holds if `handler` has an MCP `@tool`, `@prompt` or `@resource` decorator. */
+  private predicate hasMcpRegistrationDecorator(Function handler) {
+    exists(Expr dec | dec = handler.getADecorator() |
+      exists(API::Node server | server = serverClass().getAnInstance() |
+        dec = server.getMember(["tool", "prompt", "resource"]).getACall().asExpr()
+        or
+        dec = server.getMember(["tool", "prompt"]).getAValueReachableFromSource().asExpr()
+      )
+      or
+      exists(API::Node decorator | decorator = standaloneDecorator() |
+        dec = decorator.getACall().asExpr()
+        or
+        dec = decorator.getAValueReachableFromSource().asExpr()
+      )
     )
   }
 
@@ -278,7 +298,11 @@ module Mcp {
    * parameter as well.
    */
   private predicate isClientParameter(Function handler, Parameter p) {
-    handler = handlerNode().getAValueReachingSink().asExpr().(CallableExpr).getInnerScope() and
+    (
+      handler = handlerNode().getAValueReachingSink().asExpr().(CallableExpr).getInnerScope()
+      or
+      hasMcpRegistrationDecorator(handler)
+    ) and
     (
       p = handler.getAnArg()
       or

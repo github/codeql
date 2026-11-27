@@ -38,7 +38,7 @@ function if the desired assignment operator differs significantly from the defau
   S. Meyers. <em>Effective C++ 3d ed.</em> pp 52-53. Addison-Wesley Professional, 2005.
 </li>
 <li>
-  <a href="http://courses.cms.caltech.edu/cs11/material/cpp/donnie/cpp-ops.html">C++ Operator Overloading Guidelines</a>
+  <a href="https://courses.cms.caltech.edu/cs11/material/cpp/donnie/cpp-ops.html">C++ Operator Overloading Guidelines</a>
 </li>
 
 

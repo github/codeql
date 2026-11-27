@@ -49,7 +49,7 @@ To fix this, correct the name of the local variable:
 
 <li>D. Crockford, <i>JavaScript: The Good Parts</i>, Appendix A. O'Reilly, 2008.</li>
 <li>Google Closure Tools: <a href="https://developers.google.com/closure/compiler/docs/api-tutorial3?csw=1#externs">Declaring externs</a>.</li>
-<li>JSLint: <a href="http://www.jslint.com/help.html#global">Global Variables</a>.</li>
+<li>JSLint: <a href="https://www.jslint.com/help.html#global">Global Variables</a>.</li>
 
 
 

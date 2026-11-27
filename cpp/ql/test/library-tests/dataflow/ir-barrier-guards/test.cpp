@@ -47,3 +47,24 @@ void test_mad(int x, int* p) {
 		}
 	}
 }
+
+bool is_clean_long(long);
+bool is_clean_void_value(const void*);
+
+void test_mad_converted_arguments(int x, int& r, int* p, int*& rp) {
+    if(is_clean_long(x)) {
+      sink(x); // $ external=int
+    }
+
+    if(is_clean_long(r)) {
+      sink(r); // $ external=int
+    }
+
+    if(is_clean_void_value(p)) {
+      sink(*p); // $ external=int
+    }
+
+    if(is_clean_void_value(rp)) {
+      sink(*rp); // $ external=int
+    }
+}

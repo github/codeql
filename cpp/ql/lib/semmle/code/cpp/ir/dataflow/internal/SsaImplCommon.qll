@@ -770,17 +770,13 @@ private module Cached {
     boolean certain, Node0Impl value, Operand address, BaseSourceVariableInstruction base, int ind,
     int indirectionIndex
   ) {
-    exists(
-      Certainty writeIsCertain, boolean addressIsCertain, int ind0, CppType type, int lower,
-      int upper
-    |
+    exists(Certainty writeIsCertain, boolean addressIsCertain, int ind0, CppType type, int upper |
       isWrite(value, address, writeIsCertain) and
       isDefImpl(address, base, ind0, addressIsCertain) and
       type = getLanguageType(address) and
       upper = countIndirectionsForCppType(type) and
-      ind = ind0 + [lower .. upper] and
-      indirectionIndex = ind - (ind0 + lower) and
-      lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _)))
+      ind = ind0 + [1 .. upper] and
+      indirectionIndex = ind - (ind0 + 1)
     |
       if writeIsCertain.isCertain(addressIsCertain) then certain = true else certain = false
     )

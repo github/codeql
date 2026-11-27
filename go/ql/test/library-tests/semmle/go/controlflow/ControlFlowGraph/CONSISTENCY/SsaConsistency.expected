@@ -1,0 +1,4 @@
+uselessPhiNode
+| epilogues.go:89:3:91:3 | SSA phi(result) | 1 |
+phiWithoutTwoPriorRefs
+| epilogues.go:89:3:91:3 | SSA phi(result) | epilogues.go:89:3:91:3 | After if statement | epilogues.go:87:30:87:35 | result | 1 |
