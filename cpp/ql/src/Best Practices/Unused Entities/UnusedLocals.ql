@@ -54,6 +54,7 @@ from LocalVariable v, Function f
 where
   f = v.getFunction() and
   not exists(v.getAnAccess()) and
+  not v.isCompilerGenerated() and
   not v.isConst() and // workaround for folded constants
   not exists(DeclStmt ds | ds.getADeclaration() = v and ds.isInMacroExpansion()) and // variable declared in a macro expansion
   not declarationHasSideEffects(v) and
