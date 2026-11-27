@@ -21,6 +21,8 @@ module RegExpInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate observeDiffInformedIncrementalMode() { any() }
+
+  int accessPathLimit() { result = 1 }
 }
 
 /**
