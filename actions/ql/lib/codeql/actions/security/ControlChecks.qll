@@ -5,7 +5,8 @@ string any_category() {
     [
       "untrusted-checkout", "output-clobbering", "envpath-injection", "envvar-injection",
       "command-injection", "argument-injection", "code-injection", "cache-poisoning",
-      "untrusted-checkout-toctou", "artifact-poisoning", "artifact-poisoning-toctou"
+      "untrusted-checkout-toctou", "artifact-poisoning", "artifact-poisoning-toctou",
+      "prompt-injection"
     ]
 }
 

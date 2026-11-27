@@ -1,0 +1,16 @@
+name: AI Command Handler
+on:
+  repository_dispatch:
+    types: [ai-command]
+
+jobs:
+  ai-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call AI model
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Process the following request:
+            Command: ${{ github.event.client_payload.command }}
+            Args: ${{ github.event.client_payload.args }}
