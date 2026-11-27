@@ -1,4 +1,7 @@
 | ConstVirtual.cpp:24:7:24:11 | ... > ... | Comparison is always false because i <= -1. |
+| ConvertedConstants.c:5:25:5:60 | ... >= ... | Comparison is always true because size >= 1024 and the right operand evaluates to -1 after conversion. |
+| ConvertedConstants.c:9:26:9:60 | ... > ... | Comparison is always false because 1024 <= size and the left operand evaluates to -1 after conversion. |
+| ConvertedConstants.c:13:26:13:35 | ... >= ... | Comparison is always true because size >= 1024. |
 | PointlessComparison.c:7:9:7:14 | ... < ... | Comparison is always true because i <= 15. |
 | PointlessComparison.c:8:9:8:15 | ... <= ... | Comparison is always true because i <= 15. |
 | PointlessComparison.c:9:9:9:14 | ... > ... | Comparison is always false because i <= 15. |
