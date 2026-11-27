@@ -16,7 +16,7 @@ import unified
  * A taint configuration for tainted data that reaches a format string.
  */
 module TaintedFormatConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
 
   predicate isSink(DataFlow::Node node) {
     // TODO: the MaD format currently has the varargs argument first in the

@@ -17,7 +17,7 @@ import unified
  * A taint-tracking configuration for predicate injection vulnerabilities.
  */
 module PredicateInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
 
   predicate isSink(DataFlow::Node node) { Models::isSink(node, "predicate-injection") }
 

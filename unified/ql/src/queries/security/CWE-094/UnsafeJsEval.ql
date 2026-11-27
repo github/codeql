@@ -18,7 +18,7 @@ import unified
  * A taint configuration from taint sources to sinks for this query.
  */
 module UnsafeJsEvalConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
 
   predicate isSink(DataFlow::Node node) { Models::isSink(node, "code-injection") }
 

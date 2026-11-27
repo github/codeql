@@ -54,7 +54,7 @@ private predicate heuristicSink(DataFlow::Node node) {
  * A taint configuration for tainted data that reaches a SQL sink.
  */
 module SqlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
 
   predicate isSink(DataFlow::Node node) {
     Models::isSink(node, "sql-injection")
