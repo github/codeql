@@ -1,0 +1,92 @@
+// Types from `@types/aws-lambda` that identify an AWS Lambda event or function.
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/javascript-all",
+        "extensible": "typeModel"
+      },
+      "data": [
+        // API Gateway REST (v1), HTTP (v2), WebSocket, and authorizer events.
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayAuthorizerEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyEventBase].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyEventV2].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyEventV2WithIAMAuthorizer].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyEventV2WithJWTAuthorizer].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyEventV2WithLambdaAuthorizer].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyEventV2WithRequestContext].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyWebsocketEventV2].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyWebsocketEventV2WithRequestContext].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyWithCognitoAuthorizerEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayProxyWithLambdaAuthorizerEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayRequestAuthorizerEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayRequestAuthorizerEventV2].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[APIGatewayTokenAuthorizerEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[CustomAuthorizerEvent].Instance"],
+        // AppSync events.
+        ["aws-lambda.Event", "aws-lambda", "Member[AppSyncAuthorizerEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[AppSyncResolverEvent].Instance"],
+        // Other HTTP-based events.
+        ["aws-lambda.Event", "aws-lambda", "Member[ALBEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[CloudFrontRequestEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[CloudFrontResponseEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[LambdaFunctionURLEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[LambdaFunctionURLEventWithIAMAuthorizer].Instance"],
+        // Non-HTTP events with a payload from an external producer.
+        ["aws-lambda.Event", "aws-lambda", "Member[DynamoDBStreamEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[EventBridgeEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[FirehoseTransformationEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[KinesisStreamEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[KinesisStreamTumblingWindowEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[S3CreateEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[S3Event].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[SESEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[SNSEvent].Instance"],
+        ["aws-lambda.Event", "aws-lambda", "Member[SQSEvent].Instance"],
+        // API Gateway REST (v1), HTTP (v2), WebSocket, and authorizer handlers.
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayAuthorizerHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayAuthorizerWithContextHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyHandlerV2].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyHandlerV2WithIAMAuthorizer].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyHandlerV2WithJWTAuthorizer].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyHandlerV2WithLambdaAuthorizer].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyWebsocketHandlerV2].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyWithCognitoAuthorizerHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayProxyWithLambdaAuthorizerHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayRequestAuthorizerHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayRequestAuthorizerWithContextHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayRequestIAMAuthorizerHandlerV2].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayRequestIAMAuthorizerV2WithContextHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayRequestSimpleAuthorizerHandlerV2].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayRequestSimpleAuthorizerHandlerV2WithContext].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayTokenAuthorizerHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[APIGatewayTokenAuthorizerWithContextHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[CustomAuthorizerHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[ProxyHandler].Instance"],
+        // AppSync handlers.
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[AppSyncAuthorizerHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[AppSyncBatchResolverHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[AppSyncResolverHandler].Instance"],
+        // Other HTTP-based handlers.
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[ALBHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[CloudFrontRequestHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[CloudFrontResponseHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[LambdaFunctionURLHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[LambdaFunctionURLHandlerWithIAMAuthorizer].Instance"],
+        // Non-HTTP handlers.
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[DynamoDBStreamHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[EventBridgeHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[FirehoseTransformationHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[KinesisStreamHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[KinesisStreamTumblingWindowHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[S3Handler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[SESHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[SNSHandler].Instance"],
+        ["aws-lambda.EventFunctionHandler", "aws-lambda", "Member[SQSHandler].Instance"]
+      ]
+    }
+  ]
+}

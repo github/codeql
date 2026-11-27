@@ -73,6 +73,7 @@ import semmle.javascript.frameworks.AngularJS
 import semmle.javascript.frameworks.Anser
 import semmle.javascript.frameworks.AsyncPackage
 import semmle.javascript.frameworks.AWS
+import semmle.javascript.frameworks.AwsLambda
 import semmle.javascript.frameworks.Azure
 import semmle.javascript.frameworks.Babel
 import semmle.javascript.frameworks.Cheerio
