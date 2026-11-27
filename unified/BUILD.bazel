@@ -65,4 +65,5 @@ codeql_pack(
         ":dbscheme-group",
         ":tools",
     ],
+    experimental = True,
 )
