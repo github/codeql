@@ -147,3 +147,54 @@ cp.exec("cmd.sh " + require("optimist").argv.foo); // $ Alert
 
 	cp.execFile(program.opts().pizzaType, ["foo", "bar"]);
 });
+
+(function() {
+	const command = "ls " + process.argv[2]; // $ Source
+	cp.spawn("env", ["sh", "-c", command]); // $ Alert
+	cp.spawn("nice", ["echo", "sh", "-c", command]);
+});
+
+(function() {
+	const command = "ls " + process.argv[2]; // $ Source
+
+	const end = "--";
+	cp.spawn("nice", ["-n", "5", end, "sh", "-c", command]); // $ Alert
+	cp.spawn("env", ["PATH=" + process.env.PATH, "sh", "-c", command]); // $ Alert
+	cp.spawn("env", ["sh", "-e", "-c", command]); // $ Alert
+	cp.spawn("nice", ["bash", "-l", "-c", command]); // $ Alert
+
+	cp.spawn("env", ["--split-string=echo", "sh", "-c", command]);
+	cp.spawn("env", ["-", "--unset=FOO", "sh", "-c", command]);
+
+	const deleted = ["sh", "-c", command];
+	delete deleted[2];
+	cp.spawn("env", deleted);
+
+	const deletedUnknown = ["sh", "-c", command];
+	const index = Number(process.argv[2]);
+	delete deletedUnknown[index];
+	cp.spawn("env", deletedUnknown);
+
+	function runWithLauncher(exe, args) {
+		cp.spawn(exe, args); // $ Alert
+	}
+
+	runWithLauncher("env", ["sh", "-c", command]); // $ Sink
+	const changedBeforeForwarding = ["sh", "-c", command];
+	changedBeforeForwarding[0] = "echo";
+	runWithLauncher("env", changedBeforeForwarding);
+
+	function runWithMutation(exe, args) {
+		args[0] = "echo";
+		cp.spawn(exe, args);
+	}
+
+	runWithMutation("env", ["sh", "-c", command]);
+
+	function runWithSeparateValues(exe, args) {
+		cp.spawn(exe, args);
+	}
+
+	runWithSeparateValues("env", ["echo"]);
+	runWithSeparateValues("echo", ["sh", "-c", command]);
+})();

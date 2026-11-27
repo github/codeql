@@ -759,3 +759,8 @@ module.exports.sanitizerParseFloat = function (name) { // $ Source
 		cp.exec("rm -rf " + parsed);
 	}
 }
+
+module.exports.launcher = function (name) { // $ Source
+	cp.spawn("env", ["sh", "-c", "rm -rf " + name]); // $ Alert
+	cp.spawn("nice", ["echo", "sh", "-c", "rm -rf " + name]);
+}

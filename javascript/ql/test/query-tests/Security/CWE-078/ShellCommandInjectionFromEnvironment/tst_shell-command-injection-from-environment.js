@@ -10,4 +10,7 @@ var cp = require('child_process'),
 
 	const safe = "\"" + path.join(__dirname, "temp") + "\"";
 	execa.shellSync('rm -rf ' + safe);
+
+	cp.spawn("env", ["sh", "-c", "ls " + __dirname]); // $ Alert
+	cp.spawn("env", ["echo", "sh", "-c", "ls " + __dirname]);
 });

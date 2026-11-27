@@ -42,6 +42,12 @@
 | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | command-line-parameter-command-injection.js:145:22:145:35 | program.opts() | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:145:22:145:35 | program.opts() | command-line argument |
 | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | command-line argument |
 | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line argument |
+| command-line-parameter-command-injection.js:153:2:153:39 | cp.spaw ... mmand]) | command-line-parameter-command-injection.js:152:26:152:37 | process.argv | command-line-parameter-command-injection.js:153:31:153:37 | command | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:152:26:152:37 | process.argv | command-line argument |
+| command-line-parameter-command-injection.js:161:2:161:56 | cp.spaw ... mmand]) | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line-parameter-command-injection.js:161:48:161:54 | command | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line argument |
+| command-line-parameter-command-injection.js:162:2:162:67 | cp.spaw ... mmand]) | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line-parameter-command-injection.js:162:59:162:65 | command | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line argument |
+| command-line-parameter-command-injection.js:163:2:163:45 | cp.spaw ... mmand]) | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line-parameter-command-injection.js:163:37:163:43 | command | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line argument |
+| command-line-parameter-command-injection.js:164:2:164:48 | cp.spaw ... mmand]) | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line-parameter-command-injection.js:164:40:164:46 | command | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line argument |
+| command-line-parameter-command-injection.js:179:3:179:21 | cp.spawn(exe, args) | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line-parameter-command-injection.js:182:38:182:44 | command | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line argument |
 edges
 | actions.js:4:6:4:16 | process.env | actions.js:4:6:4:29 | process ... _DATA'] | provenance |  |
 | actions.js:7:15:7:15 | e | actions.js:8:10:8:10 | e | provenance |  |
@@ -179,6 +185,14 @@ edges
 | command-line-parameter-command-injection.js:145:22:145:35 | program.opts() | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | provenance |  |
 | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | command-line-parameter-command-injection.js:145:10:145:45 | "cmd.sh ... zzaType | provenance |  |
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | provenance |  |
+| command-line-parameter-command-injection.js:152:8:152:14 | command | command-line-parameter-command-injection.js:153:31:153:37 | command | provenance |  |
+| command-line-parameter-command-injection.js:152:26:152:37 | process.argv | command-line-parameter-command-injection.js:152:8:152:14 | command | provenance |  |
+| command-line-parameter-command-injection.js:158:8:158:14 | command | command-line-parameter-command-injection.js:161:48:161:54 | command | provenance |  |
+| command-line-parameter-command-injection.js:158:8:158:14 | command | command-line-parameter-command-injection.js:162:59:162:65 | command | provenance |  |
+| command-line-parameter-command-injection.js:158:8:158:14 | command | command-line-parameter-command-injection.js:163:37:163:43 | command | provenance |  |
+| command-line-parameter-command-injection.js:158:8:158:14 | command | command-line-parameter-command-injection.js:164:40:164:46 | command | provenance |  |
+| command-line-parameter-command-injection.js:158:8:158:14 | command | command-line-parameter-command-injection.js:182:38:182:44 | command | provenance |  |
+| command-line-parameter-command-injection.js:158:26:158:37 | process.argv | command-line-parameter-command-injection.js:158:8:158:14 | command | provenance |  |
 nodes
 | actions.js:4:6:4:16 | process.env | semmle.label | process.env |
 | actions.js:4:6:4:29 | process ... _DATA'] | semmle.label | process ... _DATA'] |
@@ -342,4 +356,14 @@ nodes
 | command-line-parameter-command-injection.js:145:22:145:45 | program ... zzaType | semmle.label | program ... zzaType |
 | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType | semmle.label | "cmd.sh ... zzaType |
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | semmle.label | program.pizzaType |
+| command-line-parameter-command-injection.js:152:8:152:14 | command | semmle.label | command |
+| command-line-parameter-command-injection.js:152:26:152:37 | process.argv | semmle.label | process.argv |
+| command-line-parameter-command-injection.js:153:31:153:37 | command | semmle.label | command |
+| command-line-parameter-command-injection.js:158:8:158:14 | command | semmle.label | command |
+| command-line-parameter-command-injection.js:158:26:158:37 | process.argv | semmle.label | process.argv |
+| command-line-parameter-command-injection.js:161:48:161:54 | command | semmle.label | command |
+| command-line-parameter-command-injection.js:162:59:162:65 | command | semmle.label | command |
+| command-line-parameter-command-injection.js:163:37:163:43 | command | semmle.label | command |
+| command-line-parameter-command-injection.js:164:40:164:46 | command | semmle.label | command |
+| command-line-parameter-command-injection.js:182:38:182:44 | command | semmle.label | command |
 subpaths

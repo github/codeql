@@ -87,6 +87,18 @@
 | form-parsers.js:41:10:41:31 | "touch  ... ds.name | form-parsers.js:40:26:40:31 | fields | form-parsers.js:41:10:41:31 | "touch  ... ds.name | This command line depends on a $@. | form-parsers.js:40:26:40:31 | fields | user-provided value |
 | form-parsers.js:53:10:53:31 | "touch  ... ds.name | form-parsers.js:52:34:52:39 | fields | form-parsers.js:53:10:53:31 | "touch  ... ds.name | This command line depends on a $@. | form-parsers.js:52:34:52:39 | fields | user-provided value |
 | form-parsers.js:59:10:59:33 | "touch  ... ilename | form-parsers.js:58:30:58:33 | part | form-parsers.js:59:10:59:33 | "touch  ... ilename | This command line depends on a $@. | form-parsers.js:58:30:58:33 | part | user-provided value |
+| launchers.js:8:3:8:49 | cp.spaw ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:8:41:8:47 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:9:3:9:45 | cp.exec ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:9:37:9:43 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:10:3:10:41 | cp.spaw ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:10:33:10:39 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:11:3:11:72 | cp.spaw ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:11:64:11:70 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:12:3:12:82 | cp.exec ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:12:74:12:80 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:13:3:13:57 | cp.spaw ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:13:49:13:55 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:14:3:14:55 | cp.spaw ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:14:47:14:53 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:15:3:15:65 | cp.spaw ... mmand]) | launchers.js:5:17:5:23 | req.url | launchers.js:15:57:15:63 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:18:3:18:23 | cp.spaw ... , args) | launchers.js:5:17:5:23 | req.url | launchers.js:17:30:17:36 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:44:3:44:30 | cp.spaw ... Change) | launchers.js:5:17:5:23 | req.url | launchers.js:43:36:43:42 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:49:3:49:30 | cp.spaw ... tional) | launchers.js:5:17:5:23 | req.url | launchers.js:47:36:47:42 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
+| launchers.js:53:3:53:23 | cp.spaw ... , args) | launchers.js:5:17:5:23 | req.url | launchers.js:19:32:19:38 | command | This command line depends on a $@. | launchers.js:5:17:5:23 | req.url | user-provided value |
 | other.js:7:33:7:35 | cmd | other.js:5:25:5:31 | req.url | other.js:7:33:7:35 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | other.js:8:28:8:30 | cmd | other.js:5:25:5:31 | req.url | other.js:8:28:8:30 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
 | other.js:9:32:9:34 | cmd | other.js:5:25:5:31 | req.url | other.js:9:32:9:34 | cmd | This command line depends on a $@. | other.js:5:25:5:31 | req.url | user-provided value |
@@ -407,6 +419,21 @@ edges
 | form-parsers.js:53:21:53:26 | fields | form-parsers.js:53:10:53:31 | "touch  ... ds.name | provenance |  |
 | form-parsers.js:58:30:58:33 | part | form-parsers.js:59:21:59:24 | part | provenance |  |
 | form-parsers.js:59:21:59:24 | part | form-parsers.js:59:10:59:33 | "touch  ... ilename | provenance |  |
+| launchers.js:5:9:5:13 | input | launchers.js:6:27:6:31 | input | provenance |  |
+| launchers.js:5:17:5:23 | req.url | launchers.js:5:9:5:13 | input | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:8:41:8:47 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:9:37:9:43 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:10:33:10:39 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:11:64:11:70 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:12:74:12:80 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:13:49:13:55 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:14:47:14:53 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:15:57:15:63 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:17:30:17:36 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:19:32:19:38 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:43:36:43:42 | command | provenance |  |
+| launchers.js:6:9:6:15 | command | launchers.js:47:36:47:42 | command | provenance |  |
+| launchers.js:6:27:6:31 | input | launchers.js:6:9:6:15 | command | provenance |  |
 | other.js:5:9:5:11 | cmd | other.js:7:33:7:35 | cmd | provenance |  |
 | other.js:5:9:5:11 | cmd | other.js:8:28:8:30 | cmd | provenance |  |
 | other.js:5:9:5:11 | cmd | other.js:9:32:9:34 | cmd | provenance |  |
@@ -727,6 +754,22 @@ nodes
 | form-parsers.js:58:30:58:33 | part | semmle.label | part |
 | form-parsers.js:59:10:59:33 | "touch  ... ilename | semmle.label | "touch  ... ilename |
 | form-parsers.js:59:21:59:24 | part | semmle.label | part |
+| launchers.js:5:9:5:13 | input | semmle.label | input |
+| launchers.js:5:17:5:23 | req.url | semmle.label | req.url |
+| launchers.js:6:9:6:15 | command | semmle.label | command |
+| launchers.js:6:27:6:31 | input | semmle.label | input |
+| launchers.js:8:41:8:47 | command | semmle.label | command |
+| launchers.js:9:37:9:43 | command | semmle.label | command |
+| launchers.js:10:33:10:39 | command | semmle.label | command |
+| launchers.js:11:64:11:70 | command | semmle.label | command |
+| launchers.js:12:74:12:80 | command | semmle.label | command |
+| launchers.js:13:49:13:55 | command | semmle.label | command |
+| launchers.js:14:47:14:53 | command | semmle.label | command |
+| launchers.js:15:57:15:63 | command | semmle.label | command |
+| launchers.js:17:30:17:36 | command | semmle.label | command |
+| launchers.js:19:32:19:38 | command | semmle.label | command |
+| launchers.js:43:36:43:42 | command | semmle.label | command |
+| launchers.js:47:36:47:42 | command | semmle.label | command |
 | other.js:5:9:5:11 | cmd | semmle.label | cmd |
 | other.js:5:15:5:38 | url.par ... , true) | semmle.label | url.par ... , true) |
 | other.js:5:25:5:31 | req.url | semmle.label | req.url |
