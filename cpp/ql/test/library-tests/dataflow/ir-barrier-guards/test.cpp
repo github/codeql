@@ -57,7 +57,7 @@ void test_mad_converted_arguments(int x, int& r, int* p, int*& rp) {
     }
 
     if(is_clean_long(r)) {
-      sink(r); // $ SPURIOUS: external=int& MISSING: external=int
+      sink(r); // $ external=int
     }
 
     if(is_clean_void_value(p)) {
@@ -65,6 +65,6 @@ void test_mad_converted_arguments(int x, int& r, int* p, int*& rp) {
     }
 
     if(is_clean_void_value(rp)) {
-      sink(*rp); // $ external=int SPURIOUS: external=int*
+      sink(*rp); // $ external=int
     }
 }
