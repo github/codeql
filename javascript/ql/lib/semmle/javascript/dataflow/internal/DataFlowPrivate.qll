@@ -683,6 +683,8 @@ predicate nodeIsHidden(Node node) {
   node instanceof SsaUseNode
   or
   node instanceof SsaSynthReadNode
+  or
+  node instanceof TSsaPhiInputNode
 }
 
 predicate neverSkipInPathGraph(Node node) {
