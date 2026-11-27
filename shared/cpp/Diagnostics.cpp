@@ -1,7 +1,6 @@
 #include "Diagnostics.h"
 
-#include <fmt/format.h>
-#include <fmt/chrono.h>
+#include <format>
 
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_cat.h"
@@ -41,7 +40,7 @@ nlohmann::json Diagnostic::json(const std::chrono::system_clock::time_point& tim
        }},
       {"severity", severityToString(severity)},
       {"markdownMessage", absl::StrCat(message, "\n\n", action)},
-      {"timestamp", fmt::format("{:%FT%T%z}", timestamp)},
+      {"timestamp", std::format("{:%FT%T%z}", timestamp)},
   };
   if (location) {
     ret["location"] = location->json();

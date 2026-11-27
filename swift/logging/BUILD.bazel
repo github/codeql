@@ -9,7 +9,6 @@ cc_library(
         "//shared/cpp:extractor_shared",
         "@absl//absl/strings",
         "@binlog",
-        "@fmt",
         "@json",
     ],
 )
