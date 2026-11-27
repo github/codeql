@@ -838,7 +838,11 @@ module Public {
     }
   }
 
-  /** A representation of a parameter initialization, defined in source via an SSA node. */
+  /**
+   * A parameter initialization without a live SSA definition.
+   *
+   * This includes unused parameters and parameters whose only reads are inside closures.
+   */
   class UnusedParameterNode extends ParameterNode, InstructionNode {
     override IR::InitParameterInstruction insn;
     Parameter parm;
@@ -871,15 +875,24 @@ module Public {
     }
   }
 
-  /** A representation of a receiver initialization. */
-  class ReceiverNode extends SsaParameterNode {
-    override ReceiverVariable parm;
+  /**
+   * A receiver initialization, represented by either an SSA node or a parameter
+   * initialization instruction.
+   */
+  class ReceiverNode extends ParameterNode {
+    ReceiverVariable parm;
+
+    ReceiverNode() { parm = this.asParameter() }
 
     /** Gets the receiver variable this node initializes. */
     ReceiverVariable asReceiverVariable() { result = parm }
 
     /** Holds if this node initializes the receiver variable of `m`. */
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
+    }
   }
 
   /**

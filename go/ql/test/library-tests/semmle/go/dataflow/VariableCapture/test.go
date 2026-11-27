@@ -94,7 +94,7 @@ func rangeWrite() {
 
 type receiver struct{ value string }
 
-func (r receiver) closure() func() string {
+func (r receiver) closure() func() string { // $ receiver-node,function-receiver,input-receiver,receiver-agreement=1
 	return func() string { return r.value }
 }
 
@@ -391,3 +391,9 @@ func overwrittenInnerClosureEscapeWithLocalCall(cond bool) {
 	set()
 	f()
 }
+
+func (r receiver) directReceiver() string { // $ receiver-node,function-receiver,input-receiver,receiver-agreement=1
+	return r.value
+}
+
+func (r receiver) unusedReceiver() {} // $ receiver-node,function-receiver,input-receiver,receiver-agreement=1

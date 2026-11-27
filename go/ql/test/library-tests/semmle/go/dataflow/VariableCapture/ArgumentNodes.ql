@@ -8,7 +8,8 @@ module ArgumentNodesTest implements TestSig {
     result =
       [
         "closure-args", "callee-post", "closure-post", "argument-post", "syntactic-arg",
-        "receiver-post", "closure-params"
+        "receiver-post", "closure-params", "receiver-node", "function-receiver", "input-receiver",
+        "receiver-agreement"
       ]
   }
 
@@ -62,6 +63,32 @@ module ArgumentNodesTest implements TestSig {
       value =
         count(Nodes::CapturedVariablesParameterNode parameter | parameter.getFunction() = function)
             .toString()
+    )
+    or
+    exists(MethodDecl method, DataFlow::FunctionNode function |
+      method.getName() = ["closure", "directReceiver", "unusedReceiver"] and
+      function.getFunction() = method.getFunction() and
+      location = method.getReceiver().getLocation() and
+      element = method.getReceiver().toString()
+    |
+      tag = "receiver-node" and
+      value = count(DataFlow::receiverNode(method.getReceiver())).toString()
+      or
+      tag = "function-receiver" and
+      value = count(function.getReceiver()).toString()
+      or
+      tag = "input-receiver" and
+      value = count(FunctionInput::receiver().getExitNode(method)).toString()
+      or
+      tag = "receiver-agreement" and
+      value =
+        count(DataFlow::ReceiverNode node |
+          node = DataFlow::receiverNode(method.getReceiver()) and
+          node = DataFlow::parameterNode(method.getReceiver()) and
+          node = function.getReceiver() and
+          node = FunctionInput::receiver().getExitNode(method) and
+          node.isReceiverOf(method)
+        ).toString()
     )
   }
 }
