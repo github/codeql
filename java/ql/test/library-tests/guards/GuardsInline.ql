@@ -15,19 +15,6 @@ string ppGuard(Guard g, Boolean branch) {
       "'" + bin.getLeftOperand() + " " + bin.getOp() + " " + bin.getRightOperand() + ":" + branch +
         "'"
   )
-  or
-  exists(SwitchCase cc, Expr s, string match, string value |
-    cc = g and
-    cc.getSelectorExpr() = s and
-    (
-      cc.(ConstCase).getValue().toString() = value
-      or
-      cc instanceof DefaultCase and value = "default"
-    ) and
-    if branch = true then match = ":match " else match = ":non-match "
-  |
-    result = "'" + s.toString() + match + value + "'"
-  )
 }
 
 query predicate guarded(MethodCall mc, string guard) {

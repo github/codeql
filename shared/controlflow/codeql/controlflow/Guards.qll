@@ -93,19 +93,6 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     ConstantValue asConstantValue();
   }
 
-  /**
-   * Holds if taking the edge from `bb1` to `bb2` establishes whether `left` and `right` are
-   * equal.
-   *
-   * This supports implicit equality tests that do not have a corresponding source expression,
-   * such as comparisons between a switch expression and a case expression.
-   */
-  default predicate equalityBranchEdge(
-    Expr left, Expr right, BasicBlock bb1, BasicBlock bb2, boolean equal
-  ) {
-    none()
-  }
-
   class NonNullExpr extends Expr;
 
   class Case extends AstNode {
@@ -113,12 +100,18 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
 
     predicate isDefaultCase();
 
-    ConstantExpr asConstantCase();
-
-    predicate matchEdge(BasicBlock bb1, BasicBlock bb2);
-
-    predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2);
+    AstNode getAPattern();
   }
+
+  /** Holds if the case `c` has a legacy jump-table CFG with a match edge from `bb1` to `bb2`. */
+  default predicate caseMatchEdge(Case c, BasicBlock bb1, BasicBlock bb2) { none() }
+
+  /**
+   * Holds if `subPattern` is a non-deconstructing sub-pattern of `pattern`,
+   * such that the value being matched against `pattern` is the same as the
+   * value being matched against `subPattern`.
+   */
+  default predicate nonDeconstructingSubPattern(AstNode pattern, AstNode subPattern) { none() }
 
   class AndExpr extends Expr {
     /** Gets an operand of this expression. */
@@ -229,6 +222,7 @@ module Make<
       bound != 2147483647 and
       bound != -2147483648
     } or
+    TMatch(Boolean matches) or
     TException(Boolean throws)
 
   private class AbstractSingleValue extends TAbstractSingleValue {
@@ -253,6 +247,7 @@ module Make<
      * - null vs. not null
      * - true vs. false
      * - evaluating to a specific value vs. evaluating to any other value
+     * - a pattern matching successfully vs. not matching
      * - throwing an exception vs. not throwing an exception
      */
     GuardValue getDualValue() {
@@ -273,6 +268,11 @@ module Make<
       |
         this = TIntRange(bound, pragma[only_bind_into](upper)) and
         result = TIntRange(bound + d, pragma[only_bind_into](upper.booleanNot()))
+      )
+      or
+      exists(boolean matches |
+        this = TMatch(matches) and
+        result = TMatch(matches.booleanNot())
       )
       or
       exists(boolean throws |
@@ -310,6 +310,9 @@ module Make<
      */
     predicate isIntRange(int bound, boolean upper) { this = TIntRange(bound, upper) }
 
+    /** Holds if this value represents a successful pattern match. */
+    predicate isMatch() { this = TMatch(true) }
+
     /** Holds if this value represents throwing an exception (or exiting). */
     predicate isThrowsException() { this = TException(true) }
 
@@ -325,6 +328,12 @@ module Make<
         this = TIntRange(bound, true) and result = "Upper bound " + bound.toString()
         or
         this = TIntRange(bound, false) and result = "Lower bound " + bound.toString()
+      )
+      or
+      exists(boolean matches | this = TMatch(matches) |
+        matches = true and result = "match"
+        or
+        matches = false and result = "no match"
       )
       or
       exists(boolean throws | this = TException(throws) |
@@ -402,6 +411,8 @@ module Make<
       s instanceof NullnessSuccessor and v = TValue(TValueNull(), s.getValue())
       or
       s instanceof BooleanSuccessor and v = TValue(TValueBool(s.getValue()), true)
+      or
+      s instanceof MatchingSuccessor and v = TMatch(s.getValue())
     )
     or
     exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
@@ -411,28 +422,7 @@ module Make<
 
   private predicate caseBranchEdge(BasicBlock bb1, BasicBlock bb2, GuardValue v, Case c) {
     v.asBooleanValue() = true and
-    c.matchEdge(bb1, bb2)
-    or
-    v.asBooleanValue() = false and
-    c.nonMatchEdge(bb1, bb2)
-  }
-
-  private predicate implicitEqualityBranchEdge(
-    Expr guard, BasicBlock bb1, BasicBlock bb2, GuardValue v
-  ) {
-    exists(ConstantExpr constant, boolean equal, GuardValue constantValue |
-      (
-        equalityBranchEdge(guard, constant, bb1, bb2, equal)
-        or
-        equalityBranchEdge(constant, guard, bb1, bb2, equal)
-      ) and
-      constantHasValue(constant, constantValue) and
-      (
-        equal = true and v = constantValue
-        or
-        equal = false and v = constantValue.getDualValue()
-      )
-    )
+    caseMatchEdge(c, bb1, bb2)
   }
 
   private predicate equalityTestSymmetric(Expr eqtest, Expr e1, Expr e2, boolean eqval) {
@@ -441,11 +431,24 @@ module Make<
     equalityTest(eqtest, e2, e1, eqval)
   }
 
+  private predicate exprMatch(Expr e, AstNode pattern) {
+    exists(Case c |
+      e = c.getSwitchExpr() and
+      pattern = c.getAPattern()
+    )
+    or
+    exists(AstNode parent |
+      exprMatch(e, parent) and
+      nonDeconstructingSubPattern(parent, pattern)
+    )
+  }
+
+  // legacy C++ support
   private predicate constcaseEquality(PreGuard g, Expr e1, ConstantExpr e2) {
     exists(Case c |
       g = c and
       e1 = c.getSwitchExpr() and
-      e2 = c.asConstantCase()
+      e2 = c.getAPattern()
     )
   }
 
@@ -467,8 +470,7 @@ module Make<
       bb1.getLastNode() = this.(Expr).getControlFlowNode() and
       branchEdge(bb1, bb2, v)
       or
-      implicitEqualityBranchEdge(this, bb1, bb2, v)
-      or
+      // legacy C++ support
       caseBranchEdge(bb1, bb2, v, this)
     }
 
@@ -510,6 +512,11 @@ module Make<
     predicate isEquality(Expr e1, Expr e2, GuardValue eqval) {
       equalityTestSymmetric(this, e1, e2, eqval.asBooleanValue())
       or
+      exprMatch(e1, this) and this = e2 and eqval.isMatch()
+      or
+      exprMatch(e2, this) and this = e1 and eqval.isMatch()
+      or
+      // legacy C++ support
       constcaseEquality(this, e1, e2) and eqval.asBooleanValue() = true
       or
       constcaseEquality(this, e2, e1) and eqval.asBooleanValue() = true
@@ -547,6 +554,13 @@ module Make<
       v1 = eqval and v2 = cv
       or
       v1 = eqval.getDualValue() and v2 = cv.getDualValue()
+    )
+    or
+    exists(Case c |
+      g1 = c.getAPattern() and
+      not exists(c.getSwitchExpr()) and
+      g2 = g1 and
+      v1 = TMatch(v2.asBooleanValue())
     )
     or
     exists(NonNullExpr nonnull |

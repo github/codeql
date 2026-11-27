@@ -6,5 +6,11 @@ from Guard g, BasicBlock bb, GuardValue gv
 where
   g.valueControls(bb, gv) and
   g.getEnclosingCallable().getDeclaringType().hasName("Logic") and
-  (exists(gv.asBooleanValue()) or gv.isThrowsException() or gv.getDualValue().isThrowsException())
+  (
+    exists(gv.asBooleanValue()) or
+    gv.isThrowsException() or
+    gv.getDualValue().isThrowsException() or
+    gv.isMatch() or
+    gv.getDualValue().isMatch()
+  )
 select g, gv, getFirstAstNode(bb)
