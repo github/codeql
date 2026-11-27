@@ -1,0 +1,13 @@
+name: Self repository dispatch caller
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  call:
+    uses: $/.github/workflows/self_repository_dispatch_reusable.yml
