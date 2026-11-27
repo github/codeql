@@ -648,6 +648,85 @@ namespace Semmle.Autobuild.CSharp.Tests
             TestAutobuilderScript(autobuilder, 0, 2);
         }
 
+        [Theory]
+        [InlineData("cibuild.sh\nmsbuild.sh\nbuild.sh")]
+        [InlineData("build.sh\nmsbuild.sh\ncibuild.sh")]
+        public void TestLinuxBuildScriptSelectionIndependentOfFileOrder(string files)
+        {
+            actions.EnumerateFiles[@"C:\Project"] = files;
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
+            actions.RunProcess[@"/bin/chmod u+x C:\Project/build.sh"] = 0;
+            actions.RunProcess[@"C:\Project/build.sh"] = 0;
+            actions.RunProcessWorkingDirectory[@"C:\Project/build.sh"] = @"C:\Project";
+            actions.FileExists["csharp.log"] = true;
+
+            var autobuilder = CreateAutoBuilder(false);
+            TestAutobuilderScript(autobuilder, 0, 2);
+        }
+
+        [Theory]
+        [InlineData("z\na")]
+        [InlineData("a\nz")]
+        public void TestBuildScriptSelectionUsesDepthThenPath(string directories)
+        {
+            actions.EnumerateFiles[@"C:\Project"] = "foo.cs";
+            actions.EnumerateDirectories[@"C:\Project"] = directories;
+            actions.EnumerateFiles[@"C:\Project/a"] = "zbuild.sh";
+            actions.EnumerateDirectories[@"C:\Project/a"] = "a";
+            actions.EnumerateFiles[@"C:\Project/a/a"] = "build.sh";
+            actions.EnumerateDirectories[@"C:\Project/a/a"] = "";
+            actions.EnumerateFiles[@"C:\Project/z"] = "abuild.sh";
+            actions.EnumerateDirectories[@"C:\Project/z"] = "";
+
+            var autobuilder = CreateAutoBuilder(false);
+            var rule = new BuildCommandAutoRule((_, build) => build(null));
+            rule.Analyse(autobuilder, true);
+
+            Assert.Equal(@"C:\Project/a/zbuild.sh", rule.ScriptPath);
+            Assert.Equal(new[]
+            {
+                @"C:\Project/a/zbuild.sh",
+                @"C:\Project/z/abuild.sh",
+                @"C:\Project/a/a/build.sh"
+            }.OrderBy(p => p, StringComparer.Ordinal), rule.CandidatePaths.OrderBy(p => p, StringComparer.Ordinal));
+        }
+
+        [Theory]
+        [InlineData("build.bat\nBUILD.cmd\nbuild.sh")]
+        [InlineData("BUILD.cmd\nbuild.bat\nbuild.sh")]
+        public void TestWindowsBuildScriptSelectionUsesOrdinalPathOrder(string files)
+        {
+            actions.EnumerateFiles[@"C:\Project"] = files;
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+
+            var autobuilder = CreateAutoBuilder(true);
+            var rule = new BuildCommandAutoRule((_, build) => build(null));
+            rule.Analyse(autobuilder, true);
+
+            Assert.Equal(@"C:\Project\BUILD.cmd", rule.ScriptPath);
+            Assert.Equal(new[]
+            {
+                @"C:\Project\BUILD.cmd",
+                @"C:\Project\build.bat"
+            }.OrderBy(p => p, StringComparer.Ordinal), rule.CandidatePaths.OrderBy(p => p, StringComparer.Ordinal));
+        }
+
+        [Fact]
+        public void TestBuildScriptSelectionWithNoCandidates()
+        {
+            actions.EnumerateFiles[@"C:\Project"] = "foo.cs";
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+
+            var autobuilder = CreateAutoBuilder(false);
+            var rule = new BuildCommandAutoRule((_, build) => build(null));
+            var script = rule.Analyse(autobuilder, true);
+
+            Assert.Null(rule.ScriptPath);
+            Assert.Empty(rule.CandidatePaths);
+            Assert.NotEqual(0, script.Run(actions, StartCallback, EndCallback));
+        }
+
         [Fact]
         public void TestLinuxBuildShCSharpLogMissing()
         {

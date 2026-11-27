@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Semmle.Util;
@@ -12,11 +13,12 @@ namespace Semmle.Autobuild.Shared
     public class BuildCommandAutoRule : IBuildRule<AutobuildOptionsShared>
     {
         private readonly WithDotNet<AutobuildOptionsShared> withDotNet;
+        private (string path, int depth)[] candidates = Array.Empty<(string, int)>();
 
         /// <summary>
-        /// A list of paths to files in the project directory which we classified as scripts.
+        /// Paths to files in the project directory which we classified as scripts, in no guaranteed order.
         /// </summary>
-        public IEnumerable<string> CandidatePaths { get; private set; }
+        public IEnumerable<string> CandidatePaths => this.candidates.Select(p => p.path);
 
         /// <summary>
         /// The path of the script we decided to run, if any.
@@ -26,7 +28,6 @@ namespace Semmle.Autobuild.Shared
         public BuildCommandAutoRule(WithDotNet<AutobuildOptionsShared> withDotNet)
         {
             this.withDotNet = withDotNet;
-            this.CandidatePaths = new List<string>();
         }
 
         /// <summary>
@@ -63,10 +64,17 @@ namespace Semmle.Autobuild.Shared
             // e.g. for Linux: build, build.sh
             var scripts = buildScripts.SelectMany(s => extensions.Select(e => s + e));
             // search through the files in the project directory for paths which end in one of
-            // the names given by `scripts`, then order them by their distance from the root
-            this.CandidatePaths = builder.Paths.Where(p => scripts.Any(p.Item1.ToLower().EndsWith)).OrderBy(p => p.Item2).Select(p => p.Item1);
-            // pick the first matching path, if there is one
-            this.ScriptPath = this.CandidatePaths.FirstOrDefault();
+            // the names given by `scripts`
+            this.candidates = builder.Paths
+                .Where(p => scripts.Any(p.Item1.ToLower().EndsWith))
+                .ToArray();
+
+            // .NET optimizes FirstOrDefault on an ordered sequence to a linear-time minimum scan without sorting.
+            this.ScriptPath = this.candidates
+                .OrderBy(p => p.depth)
+                .ThenBy(p => p.path, StringComparer.Ordinal)
+                .Select(p => p.path)
+                .FirstOrDefault();
 
             if (this.ScriptPath is null)
                 return BuildScript.Failure;
