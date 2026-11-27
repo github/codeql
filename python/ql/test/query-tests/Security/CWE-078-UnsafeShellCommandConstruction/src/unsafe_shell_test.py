@@ -45,8 +45,21 @@ def subprocess_flag (name): # $ Source
 
     subprocess.Popen("ping " + name, shell=unknownValue) # OK - shell assumed to be False
 
+def explicit_shell_interpreter(name): # $ Source
+    subprocess.run(["sh", "-c", "ping " + name]) # $ Alert result=BAD
+    # With `shell=True`, only the first sequence element is the outer shell's command.
+    subprocess.run(["sh", "-c", "ping " + name], shell=True)
+
+    if unknownValue:
+        os.execl("/bin/sh", "sh", "-c", "ping " + name) # $ Alert result=BAD
+        os.spawnl(os.P_WAIT, "/bin/sh", "sh", "-c", "ping " + name) # $ Alert result=BAD
+        os.posix_spawn("/bin/sh", ["sh", "-c", "ping " + name], {}) # $ Alert result=BAD
+
 def intentional(command):
     os.system("fish -ic " + command) # $ result=OK - intentional
+
+def legacy_shell_helper(name):
+    subprocess.getstatusoutput(["sh", "-c", "ping " + name])
 
 import shlex
 def unsafe_shell_sanitized(name):
