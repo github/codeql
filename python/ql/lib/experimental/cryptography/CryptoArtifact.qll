@@ -20,7 +20,7 @@ abstract class CryptographicArtifact extends DataFlow::Node { }
 abstract class SymmetricCipher extends CryptographicArtifact {
   abstract SymmetricEncryptionAlgorithm getEncryptionAlgorithm();
 
-  abstract BlockMode getBlockMode();
+  abstract BlockModeInstance getBlockMode();
 
   final predicate hasBlockMode() { exists(this.getBlockMode()) }
 }
@@ -55,9 +55,14 @@ abstract class CryptographicOperation extends CryptographicArtifact, API::CallNo
     not this.hasAlgorithm()
   }
 
+  /** Gets the data flow node where the cryptographic algorithm used in this operation is configured. */
+  abstract DataFlow::Node getInitialisation();
   // TODO: this might have to be parameterized by a configuration source for
   //       situations where an operation is passed an algorithm
+  /** Gets the algorithm used, if it matches a known `CryptographicAlgorithm`. */
   abstract CryptographicAlgorithm getAlgorithm();
+  /** Gets an input the algorithm is used on, for example the plain text input to be encrypted. */
+  abstract DataFlow::Node getAnInput();
 }
 
 /** A key generation operation for asymmetric keys */
@@ -129,11 +134,16 @@ abstract class KeyDerivationAlgorithm extends CryptographicAlgorithm {
 }
 
 abstract class KeyDerivationOperation extends CryptographicOperation {
-  DataFlow::Node getIterationSizeSrc() { none() }
-
+  DataFlow::Node getSaltConfigSink() { none() }
   DataFlow::Node getSaltConfigSrc() { none() }
 
+  DataFlow::Node getIterationSizeSrc() { none() }
+
   DataFlow::Node getHashConfigSrc() { none() }
+
+  DataFlow::Node getLanesConfigSrc() { none() }
+
+  DataFlow::Node getMemoryCostConfigSrc() { none() }
 
   // TODO: get encryption algorithm for CBC-based KDF?
   DataFlow::Node getDerivedKeySizeSrc() { none() }
@@ -146,6 +156,10 @@ abstract class KeyDerivationOperation extends CryptographicOperation {
   abstract predicate requiresSalt();
 
   abstract predicate requiresHash();
+
+  abstract predicate requiresLanes();
+
+  abstract predicate requiresMemoryCost();
 
   //abstract predicate requiresKeySize(); // Going to assume all requires a size
   abstract predicate requiresMode();
@@ -166,6 +180,8 @@ abstract class EncryptionAlgorithm extends CryptographicAlgorithm {
   // NOTE: DO_NOT add getEncryptionName here, we rely on the fact the parent
   //       class does not have this common predicate.
 }
+
+abstract class EncryptionOperation extends CryptographicOperation { }
 
 /**
  * Algorithms directly or indirectly related to asymmetric encryption,
@@ -191,6 +207,8 @@ abstract class SymmetricEncryptionAlgorithm extends EncryptionAlgorithm {
   }
   // TODO: add a stream cipher predicate?
 }
+
+abstract class SymmetricEncryptionOperation extends EncryptionOperation { }
 
 // Used only to categorize all padding into a single object,
 // DO_NOT add predicates here. Only for categorization purposes.
@@ -222,7 +240,7 @@ abstract class EllipticCurveAlgorithm extends AsymmetricAlgorithm {
   final int getCurveBitSize() { isEllipticCurveAlgorithm(this.getCurveName(), result) }
 }
 
-abstract class BlockMode extends CryptographicAlgorithm {
+abstract class BlockModeInstance extends CryptographicAlgorithm {
   final string getBlockModeName() {
     if exists(string n | n = this.getName() and isCipherBlockModeAlgorithm(n))
     then isCipherBlockModeAlgorithm(result) and result = this.getName()
@@ -232,19 +250,36 @@ abstract class BlockMode extends CryptographicAlgorithm {
   /**
    * Gets the source of the IV configuration.
    */
-  abstract DataFlow::Node getIVorNonce();
+  abstract DataFlow::Node getIVOrNonceSrc();
 
-  final predicate hasIVorNonce() { exists(this.getIVorNonce()) }
+  /**
+   * Gets the sink of the IV configuration.
+   */
+  abstract DataFlow::Node getIVOrNonceSink();
+
+  final predicate hasIVorNonce() { exists(this.getIVOrNonceSrc()) }
 }
 
 abstract class KeyWrapOperation extends CryptographicOperation { }
 
 abstract class AuthenticatedEncryptionAlgorithm extends SymmetricEncryptionAlgorithm {
-  final string getAuthticatedEncryptionName() {
+  final string getAuthenticatedEncryptionName() {
     if exists(string n | n = this.getName() and isSymmetricEncryptionAlgorithm(n))
     then isSymmetricEncryptionAlgorithm(result) and result = this.getName()
     else result = unknownAlgorithm()
   }
+}
+
+abstract class AuthenticatedEncryptionOperation extends SymmetricEncryptionOperation {
+  /**
+   * Gets the source of the IV configuration.
+   */
+  abstract DataFlow::Node getIVOrNonceSrc();
+
+  /**
+   * Gets the sink of the IV configuration.
+   */
+  abstract DataFlow::Node getIVOrNonceSink();
 }
 
 abstract class KeyExchangeAlgorithm extends AsymmetricAlgorithm {
