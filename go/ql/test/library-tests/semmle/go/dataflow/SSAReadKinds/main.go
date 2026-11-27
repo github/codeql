@@ -16,7 +16,7 @@ func explicitAndImplicitResult() (result int) { // $ explicit=1 $ implicit=1 $ f
 	return
 }
 
-func capture(value int) func() int { // $ explicit=1 $ implicit=1 $ flow=1 $ access-path=1
+func capture(value int) func() int { // $ explicit=1 $ implicit=0 $ flow=1 $ access-path=1
 	return func() int {
 		return value
 	}

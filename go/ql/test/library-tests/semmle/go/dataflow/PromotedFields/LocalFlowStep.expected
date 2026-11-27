@@ -6,11 +6,8 @@
 | main.go:30:2:32:2 | SSA def(outerp) | main.go:33:7:33:12 | outerp |
 | main.go:30:12:32:2 | &... | main.go:30:2:32:2 | SSA def(outerp) |
 | main.go:33:7:33:12 | outerp | main.go:34:7:34:12 | outerp |
-| main.go:33:7:33:12 | outerp [postupdate] | main.go:34:7:34:12 | outerp |
 | main.go:34:7:34:12 | outerp | main.go:35:7:35:12 | outerp |
-| main.go:34:7:34:12 | outerp [postupdate] | main.go:35:7:35:12 | outerp |
 | main.go:35:7:35:12 | outerp | main.go:36:7:36:12 | outerp |
-| main.go:35:7:35:12 | outerp [postupdate] | main.go:36:7:36:12 | outerp |
 | main.go:40:2:40:40 | SSA def(outer) | main.go:41:7:41:11 | outer |
 | main.go:40:11:40:40 | struct literal | main.go:40:2:40:40 | SSA def(outer) |
 | main.go:41:7:41:11 | outer | main.go:42:7:42:11 | outer |
@@ -19,11 +16,8 @@
 | main.go:46:2:46:42 | SSA def(outerp) | main.go:47:7:47:12 | outerp |
 | main.go:46:12:46:42 | &... | main.go:46:2:46:42 | SSA def(outerp) |
 | main.go:47:7:47:12 | outerp | main.go:48:7:48:12 | outerp |
-| main.go:47:7:47:12 | outerp [postupdate] | main.go:48:7:48:12 | outerp |
 | main.go:48:7:48:12 | outerp | main.go:49:7:49:12 | outerp |
-| main.go:48:7:48:12 | outerp [postupdate] | main.go:49:7:49:12 | outerp |
 | main.go:49:7:49:12 | outerp | main.go:50:7:50:12 | outerp |
-| main.go:49:7:49:12 | outerp [postupdate] | main.go:50:7:50:12 | outerp |
 | main.go:54:2:54:25 | SSA def(inner) | main.go:55:19:55:23 | inner |
 | main.go:54:11:54:25 | struct literal | main.go:54:2:54:25 | SSA def(inner) |
 | main.go:55:2:55:24 | SSA def(middle) | main.go:56:17:56:22 | middle |

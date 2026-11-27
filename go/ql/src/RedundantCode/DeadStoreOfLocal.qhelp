@@ -9,6 +9,10 @@ A value is assigned to a variable, but either it is never read, or its value is
 always overwritten before being read. This means that the original assignment
 has no effect, and could indicate a logic error or incomplete code.
 </p>
+<p>
+Variables captured by closures are excluded because escaped closures may read
+values assigned after the closure was created.
+</p>
 </overview>
 
 <recommendation>

@@ -8,6 +8,7 @@ private import semmle.go.dataflow.SsaImpl as SsaImpl
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
+private import VariableCapture as VariableCapture
 
 private module SsaFlow = SsaImpl::DataFlowIntegration;
 
@@ -23,7 +24,14 @@ private newtype TNode =
   } or
   MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
+  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) } or
+  MkCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode capture) or
+  MkCapturedVariablesParameterNode(FuncLit function) {
+    exists(VariableCapture::Flow::ThisParameterNode parameter | parameter.getCallable() = function)
+  } or
+  MkDeferredArgumentNode(VariableCapture::DeferredArgument argument, boolean postUpdate) {
+    postUpdate = [true, false]
+  }
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -152,6 +160,106 @@ module Private {
       // We do not currently have support for callback-based library models.
       none()
     }
+  }
+
+  /** A synthesized access to captured storage. */
+  class CaptureNode extends Node, MkCaptureNode {
+    VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() {
+      this = MkCaptureNode(result)
+    }
+
+    override ControlFlow::Root getRoot() {
+      result = this.getSynthesizedCaptureNode().getEnclosingCallable()
+    }
+
+    override BasicBlock getBasicBlock() {
+      result = this.getSynthesizedCaptureNode().getBasicBlock()
+    }
+
+    override Type getType() {
+      exists(VariableCapture::CapturedVariable v |
+        this.getSynthesizedCaptureNode().isVariableAccess(v) and
+        result = v.getType()
+      )
+      or
+      this.getSynthesizedCaptureNode().isInstanceAccess() and
+      result = this.getRoot().(FuncLit).getType()
+    }
+
+    override string getNodeKind() { result = "captured variable" }
+
+    override string toString() { result = this.getSynthesizedCaptureNode().toString() }
+
+    override Location getLocation() { result = this.getSynthesizedCaptureNode().getLocation() }
+  }
+
+  /** The closure object passed implicitly when invoking a function literal that captures variables. */
+  class CapturedVariablesParameterNode extends ParameterNode, MkCapturedVariablesParameterNode {
+    FuncLit getFunction() { this = MkCapturedVariablesParameterNode(result) }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      c.asCallable().getFuncDef() = this.getFunction() and i = -2
+    }
+
+    override ControlFlow::Root getRoot() { result = this.getFunction() }
+
+    override Type getType() { result = this.getFunction().getType() }
+
+    override string getNodeKind() { result = "captured variables parameter" }
+
+    override string toString() { result = "captured variables" }
+
+    override Location getLocation() { result = this.getFunction().getLocation() }
+  }
+
+  private class CapturePostUpdateNode extends CaptureNode, PostUpdateNode {
+    CaptureNode pre;
+
+    CapturePostUpdateNode() {
+      VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+        pre.getSynthesizedCaptureNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
+
+    override string toString() { result = pre.toString() + " [postupdate]" }
+  }
+
+  /** A saved deferred argument at invocation rather than registration, including the callee. */
+  class DeferredArgumentNode extends Node, MkDeferredArgumentNode {
+    VariableCapture::DeferredArgument argument;
+    boolean postUpdate;
+
+    DeferredArgumentNode() { this = MkDeferredArgumentNode(argument, postUpdate) }
+
+    VariableCapture::DeferredArgument getDeferredArgument() { result = argument }
+
+    override ControlFlow::Root getRoot() { result = argument.getCallInstruction().getRoot() }
+
+    override BasicBlock getBasicBlock() { result = argument.getCallInstruction().getBasicBlock() }
+
+    override Type getType() { result = argument.getArgumentInstruction().getResultType() }
+
+    override string getNodeKind() { result = "deferred argument" }
+
+    override string toString() {
+      if postUpdate = true
+      then result = argument.toString() + " [postupdate]"
+      else result = argument.toString()
+    }
+
+    override Location getLocation() { result = argument.getArgumentInstruction().getLocation() }
+  }
+
+  private class DeferredArgumentPostUpdateNode extends DeferredArgumentNode, PostUpdateNode {
+    DeferredArgumentPostUpdateNode() { postUpdate = true }
+
+    override Node getPreUpdateNode() { result = getDeferredArgumentNode(argument) }
+  }
+
+  /** Gets the node accessing a saved deferred argument at invocation. */
+  DeferredArgumentNode getDeferredArgumentNode(VariableCapture::DeferredArgument argument) {
+    result = MkDeferredArgumentNode(argument, false)
   }
 }
 
@@ -505,10 +613,13 @@ module Public {
    * pointless recomputation of `getACallee()` each recursive iteration.
    */
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
-    result = cn.getCalleeNode() or
-    basicLocalFlowStep(result, getACalleeSource(cn)) or
-    jumpStep(result, getACalleeSource(cn)) or
-    result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
+    result = cn.getCalleeNode()
+    or
+    basicLocalFlowStep(result, getACalleeSource(cn))
+    or
+    jumpStep(result, getACalleeSource(cn))
+    or
+    additionalLambdaFlowStep(result, getACalleeSource(cn), _)
   }
 
   /** A data flow node that represents a call. */
@@ -767,7 +878,11 @@ module Public {
     }
   }
 
-  /** A representation of a parameter initialization, defined in source via an SSA node. */
+  /**
+   * A parameter initialization without a live SSA definition.
+   *
+   * This includes unused parameters and parameters whose only reads are inside closures.
+   */
   class UnusedParameterNode extends ParameterNode, InstructionNode {
     override IR::InitParameterInstruction insn;
     Parameter parm;
@@ -800,55 +915,44 @@ module Public {
     }
   }
 
-  /** A representation of a receiver initialization. */
-  class ReceiverNode extends SsaParameterNode {
-    override ReceiverVariable parm;
+  /**
+   * A receiver initialization, represented by either an SSA node or a parameter
+   * initialization instruction.
+   */
+  class ReceiverNode extends ParameterNode {
+    ReceiverVariable parm;
+
+    ReceiverNode() { parm = this.asParameter() }
 
     /** Gets the receiver variable this node initializes. */
     ReceiverVariable asReceiverVariable() { result = parm }
 
     /** Holds if this node initializes the receiver variable of `m`. */
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
+    }
   }
 
-  private IR::Instruction getADirectlyWrittenInsn() {
-    exists(Write w | w.writesComponentInstruction(result, _))
-    or
-    result = any(Write w).getLhs().(IR::PointerTarget).getBase()
-    or
-    result = IR::evalExprInstruction(any(SendStmt s).getChannel())
-  }
-
+  /**
+   * Gets an instruction from which `insn` is read in a single `readStep`
+   * (pointer dereference, field or element read, or channel receive).
+   */
   private IR::Instruction getAccessPathPredecessorInsn(IR::Instruction insn) {
     exists(Expr e1, Expr e2 |
-      insn = IR::evalExprInstruction(e1) and result = IR::evalExprInstruction(e2)
+      insn = IR::evalExprInstruction(e1) and result = IR::evalExprInstruction(e2.stripParens())
     |
-      e2 = e1.(DerefExpr).getOperand() or e2 = e1.(StarExpr).getBase()
+      e2 = e1.(DerefExpr).getOperand() or
+      e2 = e1.(StarExpr).getBase() or
+      e2 = e1.(RecvExpr).getOperand()
     )
     or
-    exists(Expr e | insn = IR::implicitDerefInstruction(e) and result = IR::evalExprInstruction(e))
+    exists(Expr e |
+      insn = IR::implicitDerefInstruction(e) and result = IR::evalExprInstruction(e.stripParens())
+    )
     or
     result = insn.(IR::ComponentReadInstruction).getBase()
-  }
-
-  private IR::Instruction getAWrittenInsn() {
-    result = getADirectlyWrittenInsn()
-    or
-    result = getAccessPathPredecessorInsn(getAWrittenInsn())
-  }
-
-  private IR::Instruction getAMethodReceiverInsn() {
-    exists(CallExpr call, IR::MethodReadInstruction methodRead |
-      call.getTarget() instanceof Method and
-      methodRead = IR::evalExprInstruction(call.getCalleeExpr()) and
-      result = methodRead.getReceiver()
-    )
-    or
-    // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
-    // then methodRead.getReceiver() will give us the implicit field read a.b.c
-    // and we want to have post-update nodes for a, the implicit field
-    // read a.b and the implicit field read a.b.c.
-    result = IR::lookThroughImplicitFieldRead(getAMethodReceiverInsn())
   }
 
   /**
@@ -885,31 +989,53 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
-  /** Holds if the node corresponding to `insn` has a post-update node. */
-  predicate insnHasPostUpdateNode(IR::Instruction insn) {
-    exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
-      e instanceof AddressExpr or
-      e = any(AddressExpr ae).getOperand() or
-      e = any(StarExpr ae).getBase() or
-      e = any(DerefExpr ae).getOperand() or
-      e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
-    )
-    or
+  private predicate insnDirectlyHasPostUpdateNode(IR::Instruction insn) {
     (
-      exists(CallExpr ce |
-        ce.getArgument(0).getType() instanceof TupleType and
-        insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
-        or
-        not ce.getArgument(0).getType() instanceof TupleType and
-        insn = IR::evalExprInstruction(ce.getAnArgument())
+      exists(CallExpr call |
+        isLambdaCall(call) and
+        insn = IR::evalExprInstruction(call.getCalleeExpr().stripParens())
       )
       or
-      // Receiver of a method call
-      insn = getAMethodReceiverInsn()
+      (
+        exists(CallExpr ce |
+          ce.getArgument(0).stripParens().getType() instanceof TupleType and
+          insn =
+            IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0).stripParens()), _)
+          or
+          not ce.getArgument(0).stripParens().getType() instanceof TupleType and
+          insn = IR::evalExprInstruction(ce.getAnArgument().stripParens())
+        )
+        or
+        // Receiver of a method call
+        exists(CallExpr call, IR::MethodReadInstruction methodRead |
+          methodRead = IR::evalExprInstruction(call.getCalleeExpr().stripParens()) and
+          insn = methodRead.getReceiver()
+        )
+      ) and
+      mutableType(insn.getResultType())
     ) and
-    mutableType(insn.getResultType())
+    not exists(VariableCapture::getDeferredArgument(_, insn))
     or
-    insn = getAWrittenInsn()
+    exists(Expr e | insn = IR::evalExprInstruction(e.stripParens()) |
+      e instanceof AddressExpr or
+      e = any(AddressExpr ae).getOperand()
+    )
+    or
+    exists(Write w | w.writesComponentInstruction(insn, _))
+    or
+    insn = any(Write w).getLhs().(IR::PointerTarget).getBase()
+    or
+    insn = IR::evalExprInstruction(any(SendStmt s).getChannel().stripParens())
+  }
+
+  /** Holds if the node corresponding to `insn` has a post-update node. */
+  predicate insnHasPostUpdateNode(IR::Instruction insn) {
+    insnDirectlyHasPostUpdateNode(insn)
+    or
+    exists(IR::Instruction succ |
+      insnHasPostUpdateNode(succ) and
+      insn = getAccessPathPredecessorInsn(succ)
+    )
   }
 
   private class DefaultPostUpdateNode extends PostUpdateNode, MkDefaultPostUpdateNode {
@@ -931,7 +1057,7 @@ module Public {
   }
 
   /**
-   * A data-flow node that occurs as an argument in a call, including receiver arguments.
+   * A data-flow node that occurs as an argument in a call, including receiver and closure arguments.
    */
   class ArgumentNode extends Node {
     CallNode c;
@@ -942,7 +1068,8 @@ module Public {
     /**
      * Holds if this argument occurs at the given position in the given call.
      *
-     * The receiver argument is considered to have index `-1`.
+     * The receiver argument has index `-1`. The closure object of a call through
+     * a function value has index `-2`.
      *
      * Note that we currently do not track receiver arguments into calls to interface methods.
      */
@@ -963,17 +1090,22 @@ module Public {
 
     /**
      * Gets a data-flow node for a syntactic argument corresponding to this
-     * argument. If this argument is not an implicit varargs slice then this
-     * will just be the argument itself. If this argument is an implicit
-     * varargs slice then this will be a data-flow node that for an argument
-     * that is stored in the implicit varargs slice.
+     * argument. If this argument is not an implicit varargs slice or saved
+     * deferred argument then this will just be the argument itself; otherwise
+     * this will be a data-flow node for the underlying syntactic argument.
      */
     Node getACorrespondingSyntacticArgument() {
       not this instanceof DataFlow::ImplicitVarargsSlice and
+      not this instanceof Private::DeferredArgumentNode and
       result = this
       or
       this instanceof DataFlow::ImplicitVarargsSlice and
       result = c.getAnImplicitVarargsArgument()
+      or
+      result =
+        DataFlow::instructionNode(this.(Private::DeferredArgumentNode)
+              .getDeferredArgument()
+              .getArgumentInstruction())
     }
   }
 

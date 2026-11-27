@@ -11,6 +11,7 @@ private import semmle.go.dataflow.ExternalFlow
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.util.Unit
+private import VariableCapture as VariableCapture
 import DataFlowNodes::Public
 
 /**
@@ -117,14 +118,20 @@ predicate isReturnedWithError(Node node) {
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step.
+ * (intra-procedural) step, excluding internal capture-storage nodes.
  */
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  simpleLocalFlowStep(nodeFrom, nodeTo, _)
-  or
-  // Simple flow through library code is included in the exposed local
-  // step relation, even though flow is technically inter-procedural
-  FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+  not isInternalCaptureNode(nodeFrom) and
+  not isInternalCaptureNode(nodeTo) and
+  (
+    simpleLocalFlowStep(nodeFrom, nodeTo, _)
+    or
+    exists(VariableCapture::CapturedVariable v | ssaLocalFlowStep(v, nodeFrom, nodeTo))
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+  )
 }
 
 /**
@@ -160,7 +167,8 @@ private newtype TContent =
   TPointerContent(PointerType p) or
   TMapKeyContent() or
   TMapValueContent() or
-  TSyntheticFieldContent(SyntheticField s)
+  TSyntheticFieldContent(SyntheticField s) or
+  TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
 /**
  * A reference contained in an object. Examples include instance fields, the
@@ -243,6 +251,20 @@ class SyntheticFieldContent extends Content, TSyntheticFieldContent {
   override DataFlowType getType() { any() }
 
   override string toString() { result = s.toString() }
+}
+
+/** A variable stored in a closure object. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  VariableCapture::CapturedVariable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v.getName() }
+
+  override Location getLocation() { result = v.getLocation() }
 }
 
 private newtype TContentSet =

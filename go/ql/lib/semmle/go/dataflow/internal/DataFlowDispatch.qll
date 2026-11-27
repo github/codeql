@@ -40,9 +40,6 @@ private predicate hasUnknownSource(DataFlow::Node nd) {
   (
     not basicLocalFlowStep(_, nd)
     or
-    // Uncertain writes may also receive values through non-local capture flow.
-    nd.(DataFlow::SsaNode).getDefinition() instanceof SsaUncertainWrite
-    or
     exists(DataFlow::Node pred | basicLocalFlowStep(pred, nd) and hasUnknownSource(pred))
   )
 }
@@ -124,7 +121,7 @@ DataFlowCallable viableCallable(DataFlowCall ma) {
 }
 
 private int parameterPosition() {
-  result = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
+  result = [-2 .. any(DataFlowCallable c).getType().getNumParameter()]
 }
 
 /** A parameter position represented by an integer. */
