@@ -577,7 +577,7 @@ class Setter extends Accessor, @setter {
 /**
  * Gets an access to the special `value` parameter available in setters.
  */
-private ParameterAccess accessToValue() {
+ParameterAccess accessToValue() {
   result.getTarget().hasName("value") and
   result.getEnclosingCallable() instanceof Setter
 }
