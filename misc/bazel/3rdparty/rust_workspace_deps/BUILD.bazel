@@ -560,8 +560,8 @@ alias(
 )
 
 alias(
-    name = "serde_with-3.24.0",
-    actual = "@vendor_rs__serde_with-3.24.0//:serde_with",
+    name = "serde_with",
+    actual = "@vendor_rs__serde_with-1.14.0//:serde_with",
     tags = ["manual"],
 )
 
