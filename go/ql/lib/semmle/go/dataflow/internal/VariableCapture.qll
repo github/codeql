@@ -28,6 +28,15 @@ predicate flowInsensitiveStep(Node nodeFrom, Node nodeTo) {
     nodeTo.asInstruction())
 }
 
+/** A deferred call at its invocation point, as the enclosing function exits. */
+class DeferredCall extends IR::EvalInstruction {
+  DeferredCall() { this.isAdditional(_, "defer-invoke") }
+}
+
+bindingset[a, b]
+pragma[inline_late]
+private predicate differentRoot(IR::Instruction a, IR::Instruction b) { a.getRoot() != b.getRoot() }
+
 bindingset[outer, inner]
 pragma[inline_late]
 private predicate strictlyEnclosesFunction(ControlFlow::Root outer, ControlFlow::Root inner) {
@@ -35,7 +44,7 @@ private predicate strictlyEnclosesFunction(ControlFlow::Root outer, ControlFlow:
 }
 
 private predicate closureSsaDef(SsaExplicitWrite write, SsaDefinition def) {
-  reachesClosureInstruction(write.getDefinition().getRhs()) and
+  reachesDeferredClosureInstruction(write.getDefinition().getRhs()) and
   def = write
   or
   exists(SsaDefinition prev | closureSsaDef(write, prev) |
@@ -62,7 +71,7 @@ private predicate closureDirectInstructionStep(IR::Instruction nodeFrom, IR::Ins
     ssaDefReachesReadNode(def, nodeTo)
   )
   or
-  reachesClosureInstruction(nodeFrom) and
+  reachesDeferredClosureInstruction(nodeFrom) and
   (
     typeAssertionFlowStep(nodeFrom, nodeTo)
     or
@@ -74,18 +83,54 @@ private predicate closureDirectInstructionStep(IR::Instruction nodeFrom, IR::Ins
 }
 
 private predicate closureCapturedInstructionStep(IR::Instruction nodeFrom, IR::Instruction nodeTo) {
-  reachesClosureInstruction(nodeFrom) and
+  reachesDeferredClosureInstruction(nodeFrom) and
   flowInsensitiveInstructionStep(nodeFrom, nodeTo) and
-  strictlyEnclosesFunction(nodeFrom.getRoot(), nodeTo.getRoot())
+  differentRoot(nodeFrom, nodeTo)
 }
 
-private predicate reachesClosureInstruction(IR::Instruction insn) {
+private predicate reachesDeferredClosureInstruction(IR::Instruction insn) {
   insn.(IR::EvalInstruction).getExpr() instanceof FuncLit
   or
   closureDirectInstructionStep(_, insn)
   or
   closureCapturedInstructionStep(_, insn)
 }
+
+private newtype TCaptureExpr =
+  MkInstructionExpr(IR::Instruction insn) {
+    exists(SsaSourceVariable v | v.isCaptured() and insn.reads(v))
+    or
+    reachesDeferredClosureInstruction(insn)
+  } or
+  MkDeferredArgument(DeferredCall call, IR::Instruction argument) {
+    reachesDeferredClosureInstruction(argument) and
+    exists(CallExpr ce | ce = call.getExpr() |
+      isLambdaCall(ce) and
+      argument = IR::evalExprInstruction(ce.getCalleeExpr().stripParens())
+      or
+      (
+        ce.getArgument(0).stripParens().getType() instanceof TupleType and
+        argument =
+          IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0).stripParens()), _)
+        or
+        not ce.getArgument(0).stripParens().getType() instanceof TupleType and
+        argument = IR::evalExprInstruction(ce.getAnArgument().stripParens())
+        or
+        exists(Method m |
+          m = ce.getTarget() and
+          not m.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType and
+          argument =
+            IR::evalExprInstruction(ce.getCalleeExpr().stripParens())
+                .(IR::MethodReadInstruction)
+                .getReceiver()
+        )
+      ) and
+      (
+        argument.getResultType().getUnderlyingType() instanceof SignatureType or
+        argument.getResultType().getUnderlyingType() instanceof InterfaceType
+      )
+    )
+  }
 
 private module CaptureInput implements Shared::InputSig<Location, BasicBlock> {
   class Callable extends ControlFlow::Root {
@@ -102,8 +147,26 @@ private module CaptureInput implements Shared::InputSig<Location, BasicBlock> {
 
   class CapturedParameter extends CapturedVariable instanceof Parameter { }
 
-  class Expr extends IR::Instruction {
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
+  class Expr extends TCaptureExpr {
+    IR::Instruction getInstruction() { this = MkInstructionExpr(result) }
+
+    predicate hasCfgNode(BasicBlock bb, int i) {
+      this.getInstruction() = bb.getNode(i)
+      or
+      this.(DeferredArgument).getCallInstruction() = bb.getNode(i)
+    }
+
+    string toString() {
+      result = this.getInstruction().toString()
+      or
+      result = "deferred " + this.(DeferredArgument).getArgumentInstruction().toString()
+    }
+
+    Location getLocation() {
+      result = this.getInstruction().getLocation()
+      or
+      result = this.(DeferredArgument).getCallInstruction().getLocation()
+    }
   }
 
   class VariableWrite extends IR::WriteInstruction {
@@ -122,15 +185,22 @@ private module CaptureInput implements Shared::InputSig<Location, BasicBlock> {
   class VariableRead extends Expr {
     CapturedVariable v;
 
-    VariableRead() { this.reads(v) }
+    VariableRead() { this.getInstruction().reads(v) }
 
     CapturedVariable getVariable() { result = v }
   }
 
-  private predicate closureFlowStep(IR::Instruction nodeFrom, IR::Instruction nodeTo) {
+  private predicate closureInstructionStep(IR::Instruction nodeFrom, IR::Instruction nodeTo) {
     closureDirectInstructionStep(nodeFrom, nodeTo)
     or
-    closureCapturedInstructionStep(nodeFrom, nodeTo)
+    closureCapturedInstructionStep(nodeFrom, nodeTo) and
+    strictlyEnclosesFunction(nodeFrom.getRoot(), nodeTo.getRoot())
+  }
+
+  private predicate closureFlowStep(Expr nodeFrom, Expr nodeTo) {
+    closureInstructionStep(nodeFrom.getInstruction(), nodeTo.getInstruction())
+    or
+    nodeTo.(DeferredArgument).getArgumentInstruction() = nodeFrom.getInstruction()
   }
 
   private predicate closureFlowReaches(ClosureExpr ce, Expr e) {
@@ -143,7 +213,7 @@ private module CaptureInput implements Shared::InputSig<Location, BasicBlock> {
   }
 
   private predicate escapesCurrentCallable(IR::Instruction insn) {
-    reachesClosureInstruction(insn) and
+    reachesDeferredClosureInstruction(insn) and
     exists(CapturedVariable v, IR::WriteInstruction write |
       write.writes(v, insn) and
       v.getDeclaringFunction() != insn.getRoot()
@@ -151,32 +221,55 @@ private module CaptureInput implements Shared::InputSig<Location, BasicBlock> {
   }
 
   class ClosureExpr extends Expr {
-    ClosureExpr() { this.(IR::EvalInstruction).getExpr() instanceof FuncLit }
+    ClosureExpr() { this.getInstruction().(IR::EvalInstruction).getExpr() instanceof FuncLit }
 
-    predicate hasBody(Callable body) { body = this.(IR::EvalInstruction).getExpr() }
+    predicate hasBody(Callable body) {
+      body = this.getInstruction().(IR::EvalInstruction).getExpr()
+    }
 
     predicate hasAliasedAccess(Expr e) {
       closureFlowReaches(this, e) and
       (
         not closureFlowStep(e, _)
         or
-        escapesCurrentCallable(e)
+        escapesCurrentCallable(e.getInstruction())
       )
     }
   }
+}
+
+/** A saved closure callee, argument, or receiver accessed when a deferred call runs. */
+class DeferredArgument extends CaptureInput::Expr, MkDeferredArgument {
+  /** Gets the deferred invocation. */
+  DeferredCall getCallInstruction() { this = MkDeferredArgument(result, _) }
+
+  /** Gets the instruction evaluating the saved value at registration. */
+  IR::Instruction getArgumentInstruction() { this = MkDeferredArgument(_, result) }
+}
+
+/** Gets the invocation-time access of `argument` in `call`, if needed for capture flow. */
+DeferredArgument getDeferredArgument(DeferredCall call, IR::Instruction argument) {
+  result = MkDeferredArgument(call, argument)
 }
 
 class CapturedVariable = CaptureInput::CapturedVariable;
 
 module Flow = Shared::Flow<Location, CfgImpl::Cfg, CaptureInput>;
 
+pragma[inline]
+private CaptureInput::Expr asCaptureExpr(Node n) {
+  result.getInstruction() = n.asInstruction()
+  or
+  result = n.(DeferredArgumentNode).getDeferredArgument() and
+  not n instanceof PostUpdateNode
+}
+
 private Flow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()
   or
-  result.(Flow::ExprNode).getExpr() = n.asInstruction()
+  result.(Flow::ExprNode).getExpr() = asCaptureExpr(n)
   or
-  result.(Flow::ExprPostUpdateNode).getExpr() =
-    n.(PostUpdateNode).getPreUpdateNode().asInstruction()
+  result.(Flow::ExprPostUpdateNode).getExpr() = asCaptureExpr(n.(PostUpdateNode).getPreUpdateNode())
   or
   result.(Flow::ParameterNode).getParameter() = n.asParameter()
   or
@@ -202,4 +295,9 @@ predicate clearsContent(Node n, CapturedVariableContent c) {
 
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   Flow::localFlowStep(asClosureNode(nodeFrom), asClosureNode(nodeTo))
+  or
+  exists(DeferredArgument argument |
+    nodeFrom.asInstruction() = argument.getArgumentInstruction() and
+    nodeTo = getDeferredArgumentNode(argument)
+  )
 }

@@ -166,6 +166,114 @@ func sharedEscapedStorage() {
 	sink(get()) // $ MISSING: hasValueFlow="call to get"
 }
 
+func deferredReadAfterRegistration() {
+	x := "safe"
+	defer func() { sink(x) }() // $ hasValueFlow="x"
+	x = source()
+}
+
+func deferredOverwriteAfterRegistration() {
+	x := source()
+	defer func() { sink(x) }()
+	x = "safe"
+}
+
+func deferredResult() (x string) {
+	defer func() { x = source() }()
+	return "safe"
+}
+
+func deferredNamedResult() {
+	sink(deferredResult()) // $ hasValueFlow="call to deferredResult"
+}
+
+func deferredCallsRunInReverseOrder() {
+	x := "safe"
+	defer func() { sink(x) }() // $ hasValueFlow="x"
+	defer func() { x = source() }()
+}
+
+func deferredArgumentsEvaluatedEarly() {
+	x := source()
+	defer func(arg string) {
+		sink(arg) // $ hasValueFlow="arg"
+		sink(x)
+	}(x)
+	x = "safe"
+}
+
+func deferredCapturesReadLate() {
+	x := "safe"
+	defer func(arg string) {
+		sink(arg)
+		sink(x) // $ hasValueFlow="x"
+	}(x)
+	x = source()
+}
+
+func deferredCalleeEvaluatedEarly() {
+	x := "safe"
+	f := func() { sink(x) } // $ hasValueFlow="x"
+	defer f()
+	f = func() {}
+	x = source()
+}
+
+func deferredCalleeIsNotReevaluated() {
+	x := source()
+	f := func() {}
+	defer f()
+	f = func() { sink(x) }
+}
+
+func deferredCallback() {
+	x := "safe"
+	defer callback(func() { sink(x) }) // $ hasValueFlow="x"
+	x = source()
+}
+
+func runBoth(f, g func()) {
+	f()
+	g()
+}
+
+func deferredMultipleCallbacks() {
+	x := "safe"
+	defer runBoth(
+		func() { sink(x) }, // $ hasValueFlow="x"
+		func() { sink(x) }, // $ hasValueFlow="x"
+	)
+	x = source()
+}
+
+func deferredHigherOrderClosure() {
+	x := "safe"
+	run := func(f func()) {
+		sink(x) // $ hasValueFlow="x"
+		f()
+	}
+	defer run(func() { sink(x) }) // $ hasValueFlow="x"
+	x = source()
+}
+
+type runnableFunc func()
+
+func (f runnableFunc) run() { f() }
+
+func deferredMethodReceiver() {
+	x := "safe"
+	h := runnableFunc(func() { sink(x) }) // $ hasValueFlow="x"
+	defer h.run()
+	x = source()
+}
+
+func deferredMethodReceiverOverwrite() {
+	x := source()
+	h := runnableFunc(func() { sink(x) })
+	defer h.run()
+	x = "safe"
+}
+
 func apply(f func(string) string, s string) string { return f(s) }
 
 func identity(s string) string { return s }
@@ -310,7 +418,9 @@ func closureArgumentNodes() {
 	constant("safe")                // $ closure-args,callee-post,closure-post=0
 	genericIdentity[string]("safe") // $ closure-args,callee-post,closure-post=0
 	r := receiver{}
-	r.identity("safe") // $ closure-args,callee-post,closure-post=0 receiver-post=1
+	r.identity("safe") // $ closure-args,callee-post,closure-post=0 receiver-post,effective-receiver-post=1
+	var im identityMethod = r
+	defer im.identity("safe") // $ closure-args,callee-post,closure-post=0 receiver-post,effective-receiver-post=1
 
 	f := func() {} // $ closure-params=0
 	f()            // $ closure-args,callee-post,closure-post=1
@@ -320,9 +430,21 @@ func closureArgumentNodes() {
 	method("safe") // $ closure-args,callee-post,closure-post=1
 
 	x := "safe"
-	g := func() { _ = x } // $ closure-params=1
-	g()                   // $ closure-args,callee-post,closure-post=1
-	callback(g)           // $ closure-args,callee-post,closure-post=0 argument-post,syntactic-arg=1
+	g := func() { _ = x }  // $ closure-params=1
+	g()                    // $ closure-args,callee-post,closure-post=1
+	callback(g)            // $ closure-args,callee-post,closure-post=0 argument-post,syntactic-arg,registration-post=1
+	defer constant("safe") // $ closure-args,callee-post,closure-post=0
+	defer f()              // $ closure-args,closure-post=1 callee-post=0
+	defer (f)()            // $ closure-args,closure-post=1 callee-post=0
+	defer callback(g)      // $ closure-args,callee-post,closure-post,registration-post=0 argument-post,syntactic-arg=1
+	defer callback((g))    // $ closure-args,callee-post,closure-post,registration-post=0 argument-post,syntactic-arg=1
+	callbackAny(g)         // $ closure-args,callee-post,closure-post=0 argument-post,syntactic-arg,registration-post=1
+	defer callbackAny(g)   // $ closure-args,callee-post,closure-post,registration-post=0 argument-post,syntactic-arg=1
+	var nonClosure any = &receiver{}
+	defer callbackAny(nonClosure) // $ closure-args,callee-post,closure-post=0 argument-post,syntactic-arg,registration-post=1
+	h := runnableFunc(g)
+	h.run()       // $ closure-args,callee-post,closure-post=0 receiver-post,effective-receiver-post=1
+	defer h.run() // $ closure-args,callee-post,closure-post,receiver-post=0 effective-receiver-post=1
 }
 
 func localCapturedFlow() {
@@ -397,3 +519,69 @@ func (r receiver) directReceiver() string { // $ receiver-node,function-receiver
 }
 
 func (r receiver) unusedReceiver() {} // $ receiver-node,function-receiver,input-receiver,receiver-agreement=1
+
+func callbackAny(f any) {
+	if fn, ok := f.(func()); ok {
+		fn()
+	}
+}
+
+func deferredInterfaceReadAfterRegistration() {
+	x := "safe"
+	var f any = func() { sink(x) } // $ hasValueFlow="x"
+	defer callbackAny(f)
+	x = source()
+}
+
+func deferredInterfaceOverwriteAfterRegistration() {
+	x := source()
+	var f any = func() { sink(x) }
+	defer callbackAny(f)
+	x = "safe"
+}
+
+func deferredInterfaceArgumentEvaluatedEarly() {
+	x := "safe"
+	var f any = func() { sink(x) } // $ hasValueFlow="x"
+	defer callbackAny(f)
+	f = func() {}
+	x = source()
+}
+
+func deferredInterfaceArgumentIsNotReevaluated() {
+	x := source()
+	var f any = func() {}
+	defer callbackAny(f)
+	f = func() { sink(x) }
+}
+
+func setViaAny(dst any, s string) {
+	dst.(*receiver).value = s
+}
+
+func deferredNonClosureInterfacePostUpdate() {
+	var dst any = &receiver{}
+	defer func() { sink(dst.(*receiver).value) }() // $ hasValueFlow="selection of value"
+	defer setViaAny(dst, source())
+}
+
+func deferredParenthesizedClosure() {
+	x := "safe"
+	f := func() { sink(x) } // $ hasValueFlow="x"
+	defer (f)()
+	x = source()
+}
+
+func deferredParenthesizedCallback() {
+	x := "safe"
+	g := func() { sink(x) } // $ hasValueFlow="x"
+	defer callback((g))
+	x = source()
+}
+
+func deferredParenthesizedReceiver() {
+	x := "safe"
+	h := runnableFunc((func() { sink(x) })) // $ hasValueFlow="x"
+	defer (h).run()
+	x = source()
+}

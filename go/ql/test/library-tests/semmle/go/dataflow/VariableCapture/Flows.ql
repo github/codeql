@@ -16,7 +16,8 @@ query predicate spuriousConstructionClearing(DataFlow::Node construction, string
 query predicate exposedCaptureNode(string relation, DataFlow::Node node) {
   (
     node instanceof Nodes::CaptureNode or
-    node instanceof Nodes::CapturedVariablesParameterNode
+    node instanceof Nodes::CapturedVariablesParameterNode or
+    node instanceof Nodes::DeferredArgumentNode
   ) and
   (
     relation = "flow" and

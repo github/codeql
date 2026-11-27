@@ -28,6 +28,9 @@ private newtype TNode =
   MkCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode capture) or
   MkCapturedVariablesParameterNode(FuncLit function) {
     exists(VariableCapture::Flow::ThisParameterNode parameter | parameter.getCallable() = function)
+  } or
+  MkDeferredArgumentNode(VariableCapture::DeferredArgument argument, boolean postUpdate) {
+    postUpdate = [true, false]
   }
 
 /** Nodes intended for only use inside the data-flow libraries. */
@@ -220,6 +223,43 @@ module Private {
     override Node getPreUpdateNode() { result = pre }
 
     override string toString() { result = pre.toString() + " [postupdate]" }
+  }
+
+  /** A saved deferred argument at invocation rather than registration, including the callee. */
+  class DeferredArgumentNode extends Node, MkDeferredArgumentNode {
+    VariableCapture::DeferredArgument argument;
+    boolean postUpdate;
+
+    DeferredArgumentNode() { this = MkDeferredArgumentNode(argument, postUpdate) }
+
+    VariableCapture::DeferredArgument getDeferredArgument() { result = argument }
+
+    override ControlFlow::Root getRoot() { result = argument.getCallInstruction().getRoot() }
+
+    override BasicBlock getBasicBlock() { result = argument.getCallInstruction().getBasicBlock() }
+
+    override Type getType() { result = argument.getArgumentInstruction().getResultType() }
+
+    override string getNodeKind() { result = "deferred argument" }
+
+    override string toString() {
+      if postUpdate = true
+      then result = argument.toString() + " [postupdate]"
+      else result = argument.toString()
+    }
+
+    override Location getLocation() { result = argument.getArgumentInstruction().getLocation() }
+  }
+
+  private class DeferredArgumentPostUpdateNode extends DeferredArgumentNode, PostUpdateNode {
+    DeferredArgumentPostUpdateNode() { postUpdate = true }
+
+    override Node getPreUpdateNode() { result = getDeferredArgumentNode(argument) }
+  }
+
+  /** Gets the node accessing a saved deferred argument at invocation. */
+  DeferredArgumentNode getDeferredArgumentNode(VariableCapture::DeferredArgument argument) {
+    result = MkDeferredArgumentNode(argument, false)
   }
 }
 
@@ -950,32 +990,36 @@ module Public {
   }
 
   private predicate insnDirectlyHasPostUpdateNode(IR::Instruction insn) {
-    exists(CallExpr call |
-      isLambdaCall(call) and
-      insn = IR::evalExprInstruction(call.getCalleeExpr().stripParens())
-    )
+    (
+      exists(CallExpr call |
+        isLambdaCall(call) and
+        insn = IR::evalExprInstruction(call.getCalleeExpr().stripParens())
+      )
+      or
+      (
+        exists(CallExpr ce |
+          ce.getArgument(0).stripParens().getType() instanceof TupleType and
+          insn =
+            IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0).stripParens()), _)
+          or
+          not ce.getArgument(0).stripParens().getType() instanceof TupleType and
+          insn = IR::evalExprInstruction(ce.getAnArgument().stripParens())
+        )
+        or
+        // Receiver of a method call
+        exists(CallExpr call, IR::MethodReadInstruction methodRead |
+          methodRead = IR::evalExprInstruction(call.getCalleeExpr().stripParens()) and
+          insn = methodRead.getReceiver()
+        )
+      ) and
+      mutableType(insn.getResultType())
+    ) and
+    not exists(VariableCapture::getDeferredArgument(_, insn))
     or
     exists(Expr e | insn = IR::evalExprInstruction(e.stripParens()) |
       e instanceof AddressExpr or
       e = any(AddressExpr ae).getOperand()
     )
-    or
-    (
-      exists(CallExpr ce |
-        ce.getArgument(0).stripParens().getType() instanceof TupleType and
-        insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0).stripParens()), _)
-        or
-        not ce.getArgument(0).stripParens().getType() instanceof TupleType and
-        insn = IR::evalExprInstruction(ce.getAnArgument().stripParens())
-      )
-      or
-      // Receiver of a method call
-      exists(CallExpr call, IR::MethodReadInstruction methodRead |
-        methodRead = IR::evalExprInstruction(call.getCalleeExpr().stripParens()) and
-        insn = methodRead.getReceiver()
-      )
-    ) and
-    mutableType(insn.getResultType())
     or
     exists(Write w | w.writesComponentInstruction(insn, _))
     or
@@ -1046,17 +1090,22 @@ module Public {
 
     /**
      * Gets a data-flow node for a syntactic argument corresponding to this
-     * argument. If this argument is not an implicit varargs slice then this
-     * will just be the argument itself. If this argument is an implicit
-     * varargs slice then this will be a data-flow node that for an argument
-     * that is stored in the implicit varargs slice.
+     * argument. If this argument is not an implicit varargs slice or saved
+     * deferred argument then this will just be the argument itself; otherwise
+     * this will be a data-flow node for the underlying syntactic argument.
      */
     Node getACorrespondingSyntacticArgument() {
       not this instanceof DataFlow::ImplicitVarargsSlice and
+      not this instanceof Private::DeferredArgumentNode and
       result = this
       or
       this instanceof DataFlow::ImplicitVarargsSlice and
       result = c.getAnImplicitVarargsArgument()
+      or
+      result =
+        DataFlow::instructionNode(this.(Private::DeferredArgumentNode)
+              .getDeferredArgument()
+              .getArgumentInstruction())
     }
   }
 

@@ -399,25 +399,39 @@ predicate forceHighPrecision(Content c) {
 /** Holds if `call` invokes a function value rather than a named function or method. */
 predicate isLambdaCall(CallExpr call) { not exists(call.getTarget()) }
 
+/** Gets `evaluated`, or its invocation-time node if `c` is a deferred call. */
+Node getEffectiveArgument(CallNode c, Node evaluated) {
+  if exists(VariableCapture::getDeferredArgument(c.asInstruction(), evaluated.asInstruction()))
+  then
+    result =
+      getDeferredArgumentNode(VariableCapture::getDeferredArgument(c.asInstruction(),
+          evaluated.asInstruction()))
+  else result = evaluated
+}
+
 /**
  * Gets the `i`th argument of call `c`, where the receiver of a method call
  * counts as argument -1 and the closure object of a lambda call counts as argument -2.
  */
 Node getArgument(CallNode c, int i) {
-  result = c.getArgument(i)
-  or
-  result = c.(MethodCallNode).getReceiver() and
-  i = -1
-  or
-  isLambdaCall(c.getCall()) and
-  result = c.getCalleeNode() and
-  i = -2
+  exists(Node evaluated |
+    evaluated = c.getArgument(i)
+    or
+    evaluated = c.(MethodCallNode).getReceiver() and i = -1
+    or
+    isLambdaCall(c.getCall()) and
+    evaluated = c.getCalleeNode() and
+    i = -2
+  |
+    result = getEffectiveArgument(c, evaluated)
+  )
 }
 
 /** Holds if `n` is an implementation node used only for inter-procedural capture flow. */
 predicate isInternalCaptureNode(Node n) {
   n instanceof CaptureNode or
-  n instanceof CapturedVariablesParameterNode
+  n instanceof CapturedVariablesParameterNode or
+  n instanceof DeferredArgumentNode
 }
 
 /** Holds if `n` should be hidden from path explanations. */

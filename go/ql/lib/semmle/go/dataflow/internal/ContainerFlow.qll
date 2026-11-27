@@ -26,7 +26,10 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
       (
         exists(Write w | w.writesElement(node2, _, node1))
         or
-        node1 = node2.(ImplicitVarargsSlice).getCallNode().getAnImplicitVarargsArgument()
+        exists(CallNode call |
+          call = node2.(ImplicitVarargsSlice).getCallNode() and
+          node1 = getEffectiveArgument(call, call.getAnImplicitVarargsArgument())
+        )
         or
         // To model data flow from array elements of the base of a `SliceNode` to
         // the `SliceNode` itself, we consider there to be a read step with array

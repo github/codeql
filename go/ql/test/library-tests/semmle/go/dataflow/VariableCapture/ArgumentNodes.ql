@@ -8,8 +8,8 @@ module ArgumentNodesTest implements TestSig {
     result =
       [
         "closure-args", "callee-post", "closure-post", "argument-post", "syntactic-arg",
-        "receiver-post", "closure-params", "receiver-node", "function-receiver", "input-receiver",
-        "receiver-agreement"
+        "registration-post", "receiver-post", "effective-receiver-post", "closure-params",
+        "receiver-node", "function-receiver", "input-receiver", "receiver-agreement"
       ]
   }
 
@@ -34,18 +34,24 @@ module ArgumentNodesTest implements TestSig {
             .toString()
       or
       tag = "argument-post" and
-      call.getTarget().getName() = "callback" and
+      call.getTarget().getName() = ["callback", "callbackAny"] and
       value =
         count(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = Impl::getArgument(call, 0))
             .toString()
       or
       tag = "syntactic-arg" and
-      call.getTarget().getName() = "callback" and
+      call.getTarget().getName() = ["callback", "callbackAny"] and
       value =
         count(DataFlow::ArgumentNode argument |
           argument.argumentOf(call.asExpr(), 0) and
           argument.getACorrespondingSyntacticArgument() = call.getSyntacticArgument(0)
         ).toString()
+      or
+      tag = "registration-post" and
+      call.getTarget().getName() = ["callback", "callbackAny"] and
+      value =
+        count(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = call.getArgument(0))
+            .toString()
       or
       tag = "receiver-post" and
       call instanceof DataFlow::MethodCallNode and
@@ -53,6 +59,12 @@ module ArgumentNodesTest implements TestSig {
         count(DataFlow::PostUpdateNode post |
           post.getPreUpdateNode() = call.(DataFlow::MethodCallNode).getReceiver()
         ).toString()
+      or
+      tag = "effective-receiver-post" and
+      call instanceof DataFlow::MethodCallNode and
+      value =
+        count(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = Impl::getArgument(call, -1))
+            .toString()
     )
     or
     exists(FuncLit function |
