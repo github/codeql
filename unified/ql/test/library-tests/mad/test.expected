@@ -43,6 +43,10 @@ isSink
 | test.swift:276:15:276:20 | string | optional-mixed-sink |
 | test.swift:279:29:279:34 | string | optional-init-sink |
 | test.swift:280:29:280:34 | string | optional-init-sink |
+| test.swift:286:22:286:27 | string | instance-sink |
+| test.swift:287:27:287:32 | string | static-sink |
+| test.swift:290:29:290:34 | string | instance-sink |
+| test.swift:291:20:291:25 | string | static-sink |
 isSource
 | test.swift:4:5:4:27 | String(...) | remote |
 | test.swift:5:5:5:44 | String(...) | remote |
@@ -61,3 +65,13 @@ isSource
 | test.swift:210:11:210:11 | x | shorthand-source |
 | test.swift:232:13:232:13 | v | subscript-setter-source |
 | test.swift:253:11:253:11 | x | optional-source |
+| test.swift:295:9:295:24 | ... .instanceProp | instance-prop-source |
+| test.swift:296:9:296:29 | ... .staticProp | static-prop-source |
+| test.swift:304:13:304:24 | instanceProp | instance-prop-source |
+| test.swift:308:13:308:22 | staticProp | static-prop-source |
+| test.swift:309:13:309:27 | ... .staticProp | static-prop-source |
+| test.swift:317:13:317:24 | instanceProp | instance-prop-source |
+| test.swift:321:13:321:22 | staticProp | static-prop-source |
+| test.swift:322:13:322:27 | ... .staticProp | static-prop-source |
+| test.swift:328:9:328:32 | ... .staticProp | static-prop-source |
+| test.swift:329:9:329:24 | ... .instanceProp | instance-prop-source |

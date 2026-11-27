@@ -44,7 +44,8 @@ predicate associatedTypeParameterInherited(
 private predicate isNestedType(Member m, Identifier nested, ClassLikeDeclaration parent) {
   exists(parent.getNameNode()) and
   nested = m.getNameNode() and
-  m = parent.getAMemberIncludingExtensions() and
+  parent = parent.getClassLikeElement().asClassLikeDeclaration() and
+  m = parent.getClassLikeElement().getAMember() and
   (
     exists(m.(ClassLikeDeclaration).getNameNode())
     or
@@ -54,11 +55,16 @@ private predicate isNestedType(Member m, Identifier nested, ClassLikeDeclaration
 
 cached
 newtype TType =
-  TClassLikeDeclarationType(ClassLikeDeclaration c) {
+  TClassLikeType(ClassLikeElement e) {
     CachedStage::ref() and
-    exists(c.getNameNode())
+    (
+      exists(e.asClassLikeDeclaration().getNameNode())
+      or
+      exists(e.asTypeSelector())
+    )
   } or
   TAliasType(TypeAliasDeclaration alias) or
+  TMetaType(ClassLikeElement e) { exists(TClassLikeType(e)) } or
   TClosureParameterPseudoType(ParameterEx p) {
     p.isFunctionExprParameter(_, _) and
     not exists(p.getType())
@@ -70,7 +76,6 @@ newtype TType =
     associatedTypeParameter(c, a, inherited)
   } or
   TParentTypeParameterType(Member m) { isNestedType(m, _, _) } or
-  TModelType(MaD::TypeSelector selector) { not exists(selector.getDeclaration()) } or
   TUnknownType() or
   TUnknownTypeTypeParameter(int i) { i in [0 .. 20] }
 
@@ -103,7 +108,7 @@ abstract private class TypeImpl extends TType {
   }
 
   /** Gets the parent type of this nested type, if any. */
-  ClassLikeDeclarationType getParentType() {
+  ClassLikeType getParentType() {
     result.getClassLikeDeclaration() =
       this.getATypeParameter().(ParentTypeParameterType).getParent()
   }
@@ -118,36 +123,70 @@ abstract private class TypeImpl extends TType {
   abstract Location getLocation();
 
   /** Gets the class whose instances are described by this type. */
-  ClassLikeDeclaration asClass() { this = TClassLikeDeclarationType(result) }
+  ClassLikeDeclaration asClass() { result = this.(ClassLikeType).getClassLikeDeclaration() }
 }
 
 /**
- * A type representing a class-like declaration.
+ * A type representing a class-like element, that is, either a class-like declaration
+ * or a type that is only known from a models-as-data row.
  */
-class ClassLikeDeclarationType extends TypeImpl, TClassLikeDeclarationType {
-  ClassLikeDeclaration c;
+class ClassLikeType extends TypeImpl, TClassLikeType {
+  private ClassLikeElement e;
 
-  ClassLikeDeclarationType() { this = TClassLikeDeclarationType(c) }
+  ClassLikeType() { this = TClassLikeType(e) }
 
-  ClassLikeDeclaration getClassLikeDeclaration() { result = c }
+  /** Gets the class-like element represented by this type. */
+  ClassLikeElement getClassLikeElement() { result = e }
 
-  string getName() { result = c.getName() }
+  /** Gets the primary declaration of this type, if any. */
+  ClassLikeDeclaration getClassLikeDeclaration() { result = e.asClassLikeDeclaration() }
 
-  override Identifier getNameNode() { result = c.getNameNode() }
+  /** Gets the type selector describing this type, if it is only known from a model. */
+  MaD::TypeSelector getTypeSelector() { result = e.asTypeSelector() }
+
+  string getName() { result = e.getName() }
+
+  override Identifier getNameNode() { result = this.getClassLikeDeclaration().getNameNode() }
 
   override TypeParameter getPositionalTypeParameter(int i) {
-    result = TTypeParameterType(c.getTypeParameter(i))
+    result = TTypeParameterType(this.getClassLikeDeclaration().getTypeParameter(i))
   }
 
   override TypeParameter getATypeParameter() {
     result = super.getATypeParameter()
     or
-    result = TAssociatedTypeParameterType(c, _, _)
+    result = TAssociatedTypeParameterType(this.getClassLikeDeclaration(), _, _)
   }
 
-  override string toString() { result = c.getQualifiedName() }
+  override string toString() { result = e.getQualifiedName() }
 
-  override Location getLocation() { result = c.getLocation() }
+  override Location getLocation() { result = e.getLocation() }
+}
+
+/**
+ * A type representing a class-like element itself, as opposed to instances of it.
+ *
+ * For example, in `Foo.bar`, the base `Foo` has the meta type of `Foo`. In Swift, this
+ * corresponds to the type `Foo.Type`.
+ */
+class MetaType extends TypeImpl, TMetaType {
+  private ClassLikeElement e;
+
+  MetaType() { this = TMetaType(e) }
+
+  /** Gets the class-like element whose meta type this is. */
+  ClassLikeElement getClassLikeElement() { result = e }
+
+  /** Gets the type of instances of the class-like element, as opposed to the element itself. */
+  ClassLikeType getInstanceType() { result.getClassLikeElement() = e }
+
+  override Identifier getNameNode() { none() }
+
+  override TypeParameter getPositionalTypeParameter(int i) { none() }
+
+  override string toString() { result = e.getQualifiedName() + ".Type" }
+
+  override Location getLocation() { result = e.getLocation() }
 }
 
 /**
@@ -172,26 +211,6 @@ class AliasType extends TypeImpl, TAliasType {
   override string toString() { result = alias.getQualifiedName() }
 
   override Location getLocation() { result = alias.getLocation() }
-}
-
-/**
- * A type described by a type selector in a models-as-data row.
- */
-class ModelType extends TypeImpl, TModelType {
-  private MaD::TypeSelector selector;
-
-  ModelType() { this = TModelType(selector) }
-
-  /** Gets the type selector describing this type. */
-  MaD::TypeSelector getTypeSelector() { result = selector }
-
-  override TypeParameter getPositionalTypeParameter(int i) { none() }
-
-  override Identifier getNameNode() { none() }
-
-  override string toString() { result = selector }
-
-  override Location getLocation() { result instanceof EmptyLocation }
 }
 
 /**

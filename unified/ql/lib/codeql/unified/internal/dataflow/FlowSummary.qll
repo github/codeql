@@ -6,7 +6,7 @@ private import codeql.unified.internal.mad.LegacyMaD as LegacyMaD
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
 module FlowSummaryInput implements InputSig<Location, DataFlowInput> {
-  class SummarizedCallableBase extends LegacyMaD::Selector {
+  class SummarizedCallableBase extends LegacyMaD::MemberSelector {
     SummarizedCallableBase() { LegacyMaD::normalizedSummaryModel(this, _, _, _, _) }
 
     Location getLocation() { none() }

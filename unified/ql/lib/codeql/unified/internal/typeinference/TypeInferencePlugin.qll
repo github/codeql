@@ -92,6 +92,11 @@ class TypeInferencePlugin extends Unit {
 
   /** Gets the inferred type for the given AST node and type path. */
   Type inferType(AstNode n, TypePath path) { none() }
+
+  /**
+   * Gets the operand of `e` if `e` is a mention of a meta type, such as `X` in `X.Type`.
+   */
+  Expr getMetaTypeOperand(Expr e) { none() }
 }
 
 class BoolType extends Type {
@@ -127,6 +132,9 @@ TypePath getFunctionExprParameterTypePath(Type t, int arity, int i) {
 TypePath getFunctionExprReturnTypePath(Type t) {
   result = any(TypeInferencePlugin pl).getFunctionExprReturnTypePath(t)
 }
+
+/** Gets the operand of `e` if `e` is a mention of a meta type, such as `X` in `X.Type`. */
+Expr getMetaTypeOperand(Expr e) { result = any(TypeInferencePlugin p).getMetaTypeOperand(e) }
 
 class TupleType extends Type {
   int arity;

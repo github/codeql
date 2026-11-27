@@ -280,3 +280,53 @@ func testOptionalParameters(obj: OptionalTest, string: String) {
     _ = OptionalInit(value: string, flag: true)  // $ isSink=optional-init-sink
     _ = OptionalInit(flag: true)  // not a sink: missing required argument
 }
+
+// `StaticTest` is not declared in the test codebase; it is only known from the models.
+func testStaticAndInstanceMethods(obj: StaticTest, string: String) {
+    obj.instanceSink(string)  // $ isSink=instance-sink
+    StaticTest.staticSink(string)  // $ isSink=static-sink
+
+    // Models for the meta type (`StaticTest.Type`) are not yet distinguished from instance members for method calls
+    StaticTest.instanceSink(string)  // $ SPURIOUS: isSink=instance-sink
+    obj.staticSink(string)  // $ SPURIOUS: isSink=static-sink
+}
+
+func testStaticAndInstanceProperties(obj: StaticTest) {
+    _ = obj.instanceProp  // $ isSource=instance-prop-source
+    _ = StaticTest.staticProp  // $ isSource=static-prop-source
+
+    _ = StaticTest.instanceProp  // not a source: instance property accessed on the type
+    _ = obj.staticProp  // not a source: static property accessed on an instance
+}
+
+class StaticTestSub: StaticTest {
+    func testInstanceContext() {
+        _ = instanceProp  // $ isSource=instance-prop-source
+    }
+
+    static func testStaticContext() {
+        _ = staticProp  // $ isSource=static-prop-source
+        _ = self.staticProp  // $ isSource=static-prop-source
+        _ = instanceProp  // not a source: instance property accessed in a static context
+        _ = self.instanceProp  // not a source: instance property accessed in a static context
+    }
+}
+
+extension StaticTest {
+    func testInstanceContextInExtension() {
+        _ = instanceProp  // $ isSource=instance-prop-source
+    }
+
+    static func testStaticContextInExtension() {
+        _ = staticProp  // $ isSource=static-prop-source
+        _ = self.staticProp  // $ isSource=static-prop-source
+        _ = instanceProp  // not a source: instance property accessed in a static context
+    }
+}
+
+func testStaticPropertiesOnSubclass(obj: StaticTestSub) {
+    _ = StaticTestSub.staticProp  // $ isSource=static-prop-source
+    _ = obj.instanceProp  // $ isSource=instance-prop-source
+    _ = StaticTestSub.instanceProp  // not a source: instance property accessed on the type
+    _ = obj.staticProp  // not a source: static property accessed on an instance
+}

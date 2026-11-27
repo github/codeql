@@ -21,6 +21,7 @@ private import codeql.typeinference.internal.TypeInference
 private import codeql.unified.internal.ParameterEx
 private import codeql.unified.internal.ExprPositions
 private import codeql.unified.internal.NameBinding
+private import codeql.unified.internal.NameBindingPlugin as NameBindingPlugin
 private import utils.test.InlineExpectationsTest
 private import Type
 private import Type as T
@@ -217,6 +218,15 @@ module Input3 implements InputSig3 {
       )
     }
 
+    pragma[nomagic]
+    predicate isStaticMemberOf(ClassLikeDeclaration cls, string name) {
+      exists(NamespaceNode ns, Identifier i |
+        ns.isStaticMemberNamespace(cls) and
+        ns.getMember(name).isIdentifier(i) and
+        i = this.getNameNode()
+      )
+    }
+
     Unified::Callable asCallable() { this = TCallableDeclaration(result) }
   }
 
@@ -306,10 +316,26 @@ module Input3 implements InputSig3 {
   }
 
   pragma[nomagic]
-  private Declaration lookupInstanceMember(MemberAccessExpr mae) {
+  private predicate lookupStaticMember0(MemberAccessExpr mae, ClassLikeDeclaration cls, string name) {
+    not exists(getStaticBindingTargetFromRef(mae)) and // if a static member can be resolved, use it
+    cls = inferType(mae.getBase()).(MetaType).getInstanceType().getClassLikeDeclaration() and
+    name = mae.getMemberName()
+  }
+
+  /**
+   * Gets the member accessed by `mae`, based on the inferred type of its base.
+   *
+   * If the base is an instance of a class, this is an instance member of that class. If the base
+   * has a meta type, such as `X.Type`, this is a static member of `X`.
+   */
+  pragma[nomagic]
+  private Declaration lookupMember(MemberAccessExpr mae) {
     exists(ClassLikeDeclaration cls, string name |
       lookupMember0(mae, cls, name) and
       result.isInstanceMemberOf(cls, name)
+      or
+      lookupStaticMember0(mae, cls, name) and
+      result.isStaticMemberOf(cls, name)
     )
   }
 
@@ -324,7 +350,7 @@ module Input3 implements InputSig3 {
 
     override Field getField() {
       // mutual recursion; resolving qualified fields requires resolving types and vice versa
-      result = lookupInstanceMember(this)
+      result = lookupMember(this)
       or
       // also mutual recursion
       exists(TupleType tuple, string name |
@@ -339,6 +365,9 @@ module Input3 implements InputSig3 {
 
   additional Type inferTypeFromVariable(LocalVariable v, TypePath path) {
     result = inferType(v.getABinding(), path)
+    or
+    result = getStaticReceiverType(v) and
+    path.isEmpty()
     or
     exists(Parameter param |
       implicitParameterDecl(param, v) and
@@ -411,7 +440,8 @@ module Input3 implements InputSig3 {
       result = p.getType()
       or
       exists(Callable c |
-        p.isImplicitReceiverParameter(_) and
+        p.isImplicitReceiverParameter(c.getCallable()) and
+        not isStaticCallable(c.getCallable()) and
         this = c.getParameter(_) and
         result = c.getDeclaringType()
       )
@@ -422,6 +452,28 @@ module Input3 implements InputSig3 {
     override string toString() { result = p.toString() }
 
     override Location getLocation() { result = p.getLocation() }
+  }
+
+  /**
+   * Holds if `c` is a static member of a class, such as a `static` or `class` function in Swift,
+   * whose implicit receiver is the type itself rather than an instance.
+   */
+  private predicate isStaticCallable(Unified::Callable c) {
+    c = any(ClassLikeDeclaration cls).getAMember() and
+    not NameBindingPlugin::isInstanceMember(c)
+  }
+
+  /**
+   * Gets the meta type of the implicit receiver `v` of a static member, as `self` refers to the
+   * enclosing type itself in a static context.
+   */
+  private MetaType getStaticReceiverType(LocalVariable v) {
+    exists(Unified::Callable c, ClassLikeDeclaration cls |
+      v.isImplicitReceiverParameter(c) and
+      isStaticCallable(c) and
+      c = cls.getAMember() and
+      result.getClassLikeElement() = cls.getClassLikeElement()
+    )
   }
 
   predicate implicitParameterDecl(Parameter p, Variable v) {
@@ -591,12 +643,7 @@ module Input3 implements InputSig3 {
     Callable getTargetViaStaticNameBinding() {
       // object creation (including enum constructors): `String(42)`, `Optional.Some(42)`
       exists(ClassLikeDeclaration cls |
-        cls =
-          this.getCallee()
-              .(TypeMention)
-              .getType()
-              .(ClassLikeDeclarationType)
-              .getClassLikeDeclaration() and
+        cls = this.getCallee().(TypeMention).getType().(ClassLikeType).getClassLikeDeclaration() and
         result.isInstanceMemberOf(cls, _) and
         result.asCallable() instanceof ConstructorDeclaration
       )
@@ -611,7 +658,7 @@ module Input3 implements InputSig3 {
     Callable getTarget() {
       (
         // mutual recursion; call with explicit receiver: `obj.foo(42)`
-        result = lookupInstanceMember(this.getCallee())
+        result = lookupMember(this.getCallee())
         or
         // mutual recursion; call to a function expression: `callback(42)`
         result.asCallable() = this.getInvokeTarget(_)
@@ -635,7 +682,7 @@ module Input3 implements InputSig3 {
      * otherwise updated in place.
      */
     Callable getSetterTarget() {
-      result = [lookupInstanceMember(this.getCallee()), this.getTargetViaStaticNameBinding()] and
+      result = [lookupMember(this.getCallee()), this.getTargetViaStaticNameBinding()] and
       result.asCallable() instanceof SetterMethodDeclaration
     }
 
@@ -845,7 +892,7 @@ module Input3 implements InputSig3 {
     private predicate needsContextualTyping(Invocation i, TypePath path) {
       exists(
         Callable constructor, Argument receiver, TypePath enumPrefixPath,
-        ClassLikeDeclarationType receiverType, TypePath path0
+        ClassLikeType receiverType, TypePath path0
       |
         constructionReceiver(i, constructor, receiver, enumPrefixPath) and
         receiverType = inferType(receiver) and
@@ -856,8 +903,7 @@ module Input3 implements InputSig3 {
         or
         // inherited constructor
         exists(
-          ClassLikeDeclarationType declType, TypeAbstraction abs, TypeMention constraint,
-          TypeParameter tp
+          ClassLikeType declType, TypeAbstraction abs, TypeMention constraint, TypeParameter tp
         |
           declType = constructor.getDeclaringType().getType() and
           BaseTypes::rootTypesSatisfaction(receiverType, declType, abs, _, constraint) and
@@ -901,7 +947,7 @@ module Input3 implements InputSig3 {
       result instanceof UnknownType
       or
       path.isEmpty() and
-      n = result.(ModelType).getTypeSelector().getAConstructorCall()
+      n = result.(ClassLikeType).getTypeSelector().getAConstructorCall()
     }
 
     predicate allowContextualInference(TypeMention tm, TypePath path) {
@@ -918,8 +964,50 @@ module Input3 implements InputSig3 {
     }
   }
 
+  /**
+   * Provides type inference for leading-dot accesses, such as `.foo()` in `let x: T = .foo()`,
+   * which is short-hand for `T.foo()`.
+   *
+   * The type `T` is the contextual type of the outermost access in the chain of member accesses
+   * starting with the leading-dot access. For example, in `let x: T = .foo().bar`, the type `T`
+   * is the contextual type of `.foo().bar`.
+   */
+  private module LeadingDot {
+    /** Gets an access chain whose innermost base is an inferred type, as in `.foo().bar`. */
+    private AccessChain getALeadingDotChain() {
+      result.getInnermostBase() instanceof InferredTypeExpr
+    }
+
+    Type inferLeadingDotType(AstNode n, TypePath path) {
+      // The type of the chain must be inferred from the context. We use `UnknownType` rather
+      // than `allowContextualInference`, as the contextual type may have to flow in through
+      // enclosing nodes, such as arguments and returns.
+      n = getALeadingDotChain().getOutermostAccess() and
+      path.isEmpty() and
+      result instanceof UnknownType
+      or
+      exists(AccessChain chain | chain = getALeadingDotChain() and n = chain.getInnermostBase() |
+        // `.init(...)` is short-hand for `T.init(...)`, where the receiver of the construction
+        // has the instance type, as for an explicit type qualifier
+        chain.getInnermostAccess().getMemberName() = "init" and
+        result = inferType(chain.getOutermostAccess(), path)
+        or
+        // `.foo` refers to the static member `foo` of `T`, so the base has the meta type `T.Type`
+        not chain.getInnermostAccess().getMemberName() = "init" and
+        result.(MetaType).getInstanceType() = inferType(chain.getOutermostAccess()) and
+        path.isEmpty()
+      )
+    }
+  }
+
   Type inferTypeLanguageSpecific(AstNode n, TypePath path) {
     result = Plugin::inferType(n, path)
+    or
+    result = LeadingDot::inferLeadingDotType(n, path)
+    or
+    // `self` in a static context refers to the type itself
+    result = getStaticReceiverType(n.(LocalVariableAccess).getLocalVariable()) and
+    path.isEmpty()
     or
     n instanceof BooleanLiteral and
     result instanceof BoolType and
@@ -938,7 +1026,7 @@ module Input3 implements InputSig3 {
     path.isEmpty()
     or
     exists(ClassLikeDeclaration c |
-      c = n.(SuperExpr).getEnclosingClass().resolve() and
+      c = n.(SuperExpr).getEnclosingClass().getClassLikeElement().asClassLikeDeclaration() and
       result = c.getBaseType(0).getType().(TypeMention).getTypeAt(path)
     )
     or
@@ -985,11 +1073,26 @@ Type inferVariableType(LocalVariable variable) {
   result = Input3::inferTypeFromVariable(variable, _)
 }
 
-/** Gets the type of the given base of `access`. */
+/**
+ * Gets the type of the given base of `access`.
+ *
+ * If the base is a reference to a class-like type, as in `Foo.bar`, or is an implicit
+ * reference to the enclosing type in a static context, the result is a `MetaType`.
+ */
 Type inferBaseType(MemberAccess access) {
   result = inferType(access.(MemberAccessExpr).getBase())
   or
-  result = inferVariableType(access.(UnqualifiedMemberAccess).getImplicitQualifierVariable())
+  result.(MetaType).getInstanceType() = access.(MemberAccessExpr).getBase().(TypeMention).getType()
+  or
+  exists(UnqualifiedMemberAccess uma | uma = access |
+    uma.isInstanceAccess() and
+    result = inferVariableType(uma.getImplicitQualifierVariable())
+  )
+  or
+  exists(UnqualifiedMemberAccess uma | uma = access |
+    not uma.isInstanceAccess() and
+    result.(MetaType).getClassLikeElement() = uma.getAccessingClass().getClassLikeElement()
+  )
 }
 
 module Consistency = M3::Consistency;

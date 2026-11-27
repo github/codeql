@@ -23,7 +23,8 @@ private newtype TNameBindingNode =
   TModuleScope(ModuleScopeRepr repr) or
   TFolderScope(Folder folder) or
   TModuleRoot() or
-  TTypeSelector(MaD::TypeSelector type)
+  TTypeSelector(MaD::TypeSelector type) or
+  TMemberSelector(MaD::MemberSelector member)
 
 /**
  * A node in a graph, in which name-binding rules are represented as edges between nodes.
@@ -63,7 +64,16 @@ class NameBindingNode extends TNameBindingNode {
   /** Holds if this represents the root namespace in which all named modules are members. */
   predicate isModuleRoot() { this = TModuleRoot() }
 
+  /**
+   * Holds if this represents the members of the given type from a model.
+   *
+   * Static members are members of the meta type, such as `Foo.Type`, whose node also
+   * represents references to the type `Foo` itself.
+   */
   predicate isTypeSelector(MaD::TypeSelector type) { this = TTypeSelector(type) }
+
+  /** Holds if this represents the member identified by `member` from a model. */
+  predicate isMemberSelector(MaD::MemberSelector member) { this = TMemberSelector(member) }
 
   /**
    * Gets an AST node wrapped by this name-binding node, if such a node exists.
@@ -111,6 +121,10 @@ class NameBindingNode extends TNameBindingNode {
     or
     exists(MaD::TypeSelector type |
       this.isTypeSelector(type) and result = "TypeSelector(" + type + ")"
+    )
+    or
+    exists(MaD::MemberSelector member |
+      this.isMemberSelector(member) and result = "MemberSelector(" + member + ")"
     )
   }
 
@@ -233,10 +247,67 @@ predicate storeStep(NameBindingNode node1, string name, NameBindingNode node2) {
   or
   FolderHeuristic::storeStep(node1, name, node2)
   or
-  exists(MaD::TypeSelector type |
-    node1.isTypeSelector(type.append(name)) and
-    node2.isTypeSelector(type)
+  // A nested type is a static member of its enclosing type, and a reference to it is a value
+  // of its meta type
+  exists(MaD::TypeSelector type, MaD::TypeSelector nested |
+    nested = type.append(name) and
+    not nested.isMetaType() and
+    node1.isTypeSelector(nested.getMetaType()) and
+    node2.isTypeSelector(getMetaTypeOrRoot(type))
   )
+  or
+  exists(MaD::MemberSelector member |
+    node1.isMemberSelector(member) and
+    name = member.getName()
+  |
+    node2.isTypeSelector(member.getTypeString())
+    or
+    // If the type is also declared in the database, such as a builtin type, expose the
+    // members from the model in the namespaces of the declaration as well
+    exists(MaD::TypeSelector type, ClassLikeDeclaration cls |
+      isDeclarationOfTypeSelector(cls, type)
+    |
+      member.getTypeString() = type and
+      node2.isInstanceMemberNamespace(cls)
+      or
+      member.getTypeString() = type.getMetaType() and
+      node2.isStaticMemberNamespace(cls)
+    )
+  )
+}
+
+/**
+ * Gets the qualified name of `cls` based on its syntactic nesting, provided that `cls` is not an
+ * extension and is only nested in other non-extension declarations.
+ *
+ * Unlike `getQualifiedName()`, this does not depend on name binding.
+ */
+private string getSyntacticQualifiedName(ClassLikeDeclaration cls) {
+  not exists(cls.getExtensionTarget()) and
+  (
+    not cls = any(ClassLikeDeclaration parent).getAMember() and
+    result = cls.getName()
+    or
+    exists(ClassLikeDeclaration parent | cls = parent.getAMember() |
+      result = getSyntacticQualifiedName(parent) + "." + cls.getName()
+    )
+  )
+}
+
+/** Holds if `cls` is a declaration of the type named by `type` in a model. */
+pragma[nomagic]
+private predicate isDeclarationOfTypeSelector(ClassLikeDeclaration cls, MaD::TypeSelector type) {
+  getSyntacticQualifiedName(cls) = type
+}
+
+/**
+ * Gets the meta type of `type`, whose members are accessible through a reference to `type`,
+ * or the root type selector itself if `type` is the root.
+ */
+private MaD::TypeSelector getMetaTypeOrRoot(MaD::TypeSelector type) {
+  result = type.getMetaType()
+  or
+  type = "" and result = ""
 }
 
 predicate valueStep(NameBindingNode node1, NameBindingNode node2) {
@@ -394,6 +465,12 @@ private predicate isInheritableMemberNode(NameBindingNode node) {
     node.isIdentifier(decl) and
     isInheritableMember(decl.getDeclaration())
   )
+  or
+  // Members from a model are inherited if the model applies to subtypes
+  exists(MaD::MemberSelector member |
+    node.isMemberSelector(member) and
+    member.getSubtypesFlag() = true
+  )
 }
 
 /** A name-binding node that can have members. */
@@ -408,6 +485,8 @@ class NamespaceNode extends NameBindingNode {
     this.isInstanceMemberNamespace(_)
     or
     this.isStaticMemberNamespace(_)
+    or
+    this.isTypeSelector(_)
   }
 
   /** Gets a name-binding node that may refer to this namespace. */
@@ -422,15 +501,20 @@ class NamespaceNode extends NameBindingNode {
   /** Gets an own (non-inherited) member of this namespace of the given name. */
   NameBindingNode getOwnMember(string name) { result = this.getOwnMember(name, _) }
 
-  /** If this is the static namespace for a class, gets the corresponding instance namespace. */
+  /** If this is the static namespace for a class or model type, gets the corresponding instance namespace. */
   NamespaceNode toInstanceNamespace() {
     exists(ClassLikeDeclaration cls |
       this.isStaticMemberNamespace(cls) and
       result.isInstanceMemberNamespace(cls)
     )
+    or
+    exists(MaD::TypeSelector type |
+      this.isTypeSelector(type.getMetaType()) and
+      result.isTypeSelector(type)
+    )
   }
 
-  /** If this is the instance namespace for a class, gets the corresponding static namespace. */
+  /** If this is the instance namespace for a class or model type, gets the corresponding static namespace. */
   NamespaceNode toStaticNamespace() { result.toInstanceNamespace() = this }
 
   private NamespaceNode getAnExtension1() { extensionStep(result, this.ref()) }
@@ -549,6 +633,8 @@ private module TrackNameBindingInput implements TrackInputSig {
     )
     or
     node.isTypeSelector(_)
+    or
+    node.isMemberSelector(_)
   }
 }
 
@@ -562,10 +648,33 @@ private NameBindingNode trackNameBinding(NameBinding decl) {
   )
 }
 
-/** Gets a name-binding node that may refer to the given type from a model. */
+/**
+ * Gets a name-binding node that may refer to the given type from a model.
+ *
+ * A reference to a type is a value of its meta type, so this tracks the node of the meta type.
+ */
 NameBindingNode trackTypeSelector(MaD::TypeSelector type) {
   exists(NameBindingNode start |
-    start.isTypeSelector(type) and
+    start.isTypeSelector(getMetaTypeOrRoot(type)) and
+    result = TrackNameBinding::track(start)
+  )
+}
+
+/**
+ * Gets a name-binding node that may refer to the given type from a model, possibly through
+ * type aliases.
+ */
+NameBindingNode trackTypeSelectorThroughAliases(MaD::TypeSelector type) {
+  exists(NamespaceNode ns |
+    ns.isTypeSelector(getMetaTypeOrRoot(type)) and
+    result = ns.ref()
+  )
+}
+
+/** Gets a name-binding node that may refer to the given member from a model. */
+NameBindingNode trackMemberSelector(MaD::MemberSelector member) {
+  exists(NameBindingNode start |
+    start.isMemberSelector(member) and
     result = TrackNameBinding::track(start)
   )
 }
@@ -709,15 +818,71 @@ private module FolderHeuristic {
   }
 }
 
-private ClassLikeDeclaration resolveExtensionTarget(ClassLikeDeclaration cls) {
-  trackNameBinding(result.getNameNode()) = getNodeFromRef(cls.getExtensionTarget())
+/**
+ * Gets the non-extension class-like declaration extended by the extension `ext`.
+ *
+ * Consider using `ClassLikeElement` instead of this predicate.
+ */
+cached
+ClassLikeDeclaration getExtendedDeclaration(ClassLikeDeclaration ext) {
+  CachedStage::ref() and
+  not exists(result.getExtensionTarget()) and
+  exists(NamespaceNode ns |
+    ns.isStaticMemberNamespace(result) and
+    ns.getAnExtension().isStaticMemberNamespace(ext)
+  )
 }
 
-private ClassLikeDeclaration tryResolveExtensionTarget(ClassLikeDeclaration cls) {
-  result = resolveExtensionTarget(cls)
+/**
+ * Gets the class in whose namespace unqualified member accesses in `scope` should be resolved:
+ * the extended declaration if `scope` is a resolvable extension, otherwise `scope` itself.
+ */
+private ClassLikeDeclaration getMemberLookupClass(ClassLikeDeclaration scope) {
+  result = getExtendedDeclaration(scope)
   or
-  not exists(resolveExtensionTarget(cls)) and
-  result = cls
+  not exists(getExtendedDeclaration(scope)) and
+  result = scope
+}
+
+/**
+ * A name-binding node that can be the target of an unqualified member access, that is,
+ * a member declaration, or a type or member from a model.
+ */
+final class MemberTargetNode extends NameBindingNode {
+  MemberTargetNode() {
+    this.asIdentifier() instanceof NameBinding
+    or
+    this.isTypeSelector(_)
+    or
+    this.isMemberSelector(_)
+  }
+}
+
+/**
+ * Gets a namespace in which unqualified member accesses in `scope` should be looked up.
+ *
+ * `instanceAccess` indicates whether this is the namespace of instance members or static members.
+ */
+private NamespaceNode getMemberLookupNamespace(ClassLikeDeclaration scope, boolean instanceAccess) {
+  exists(ClassLikeDeclaration cls | cls = getMemberLookupClass(scope) |
+    instanceAccess = true and
+    result.isInstanceMemberNamespace(cls)
+    or
+    instanceAccess = false and
+    result.isStaticMemberNamespace(cls)
+  )
+  or
+  // An extension of a type that is only known from a model
+  exists(MaD::TypeSelector type |
+    not exists(getExtendedDeclaration(scope)) and
+    trackTypeSelectorThroughAliases(type) = getNodeFromRef(scope.getExtensionTarget())
+  |
+    instanceAccess = true and
+    result.isTypeSelector(type)
+    or
+    instanceAccess = false and
+    result.isTypeSelector(type.getMetaType())
+  )
 }
 
 /**
@@ -727,37 +892,31 @@ private ClassLikeDeclaration tryResolveExtensionTarget(ClassLikeDeclaration cls)
  * or as a static member.
  */
 private predicate unqualifiedMemberAccessCand(
-  PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
+  PotentialLocalNameAccess access, boolean instanceAccess, MemberTargetNode target,
   ClassLikeDeclaration accessingClass
 ) {
   not access instanceof NameBinding and
   (
     // Resolved by local scoping
-    exists(LocalName local |
-      target.getLocalName() = local and
+    exists(LocalName local, NameBinding binding |
+      target.isIdentifier(binding) and
+      binding.getLocalName() = local and
       access.getLocalName() = local and
-      target.getDeclaration() = accessingClass.getAMember()
+      binding.getDeclaration() = accessingClass.getAMember()
     |
       instanceAccess = true and
-      isInstanceMember(target.getDeclaration())
+      isInstanceMember(binding.getDeclaration())
       or
       instanceAccess = false and
-      isStaticMember(target.getDeclaration())
+      isStaticMember(binding.getDeclaration())
     )
     or
     // Resolved in an uncertain scope
-    exists(NamespaceNode namespace, string name |
+    exists(string name, ClassLikeDeclaration scope |
       name = access.getName() and
-      accessingClass =
-        tryResolveExtensionTarget(LocalNameBindingOutput::getAnUncertainScope(access, name))
-    |
-      instanceAccess = true and
-      namespace.isInstanceMemberNamespace(accessingClass) and
-      namespace.getMember(name).isIdentifier(target)
-      or
-      instanceAccess = false and
-      namespace.isStaticMemberNamespace(accessingClass) and
-      namespace.getMember(name).isIdentifier(target)
+      scope = LocalNameBindingOutput::getAnUncertainScope(access, name) and
+      accessingClass = getMemberLookupClass(scope) and
+      getMemberLookupNamespace(scope, instanceAccess).getMember(name) = target
     )
   )
 }
@@ -774,7 +933,7 @@ private int unqualifiedMemberAccessDepth(PotentialLocalNameAccess access) {
  */
 cached
 predicate unqualifiedMemberAccess(
-  PotentialLocalNameAccess access, boolean instanceAccess, NameBinding target,
+  PotentialLocalNameAccess access, boolean instanceAccess, MemberTargetNode target,
   ClassLikeDeclaration accessingClass
 ) {
   CachedStage::ref() and
@@ -804,15 +963,12 @@ module Public {
    */
   class UnqualifiedMemberAccess extends Identifier, MemberAccessImpl {
     private boolean instanceAccess;
-    private NameBinding target;
     private ClassLikeDeclaration accessingClass;
 
-    UnqualifiedMemberAccess() {
-      unqualifiedMemberAccess(this, instanceAccess, target, accessingClass)
-    }
+    UnqualifiedMemberAccess() { unqualifiedMemberAccess(this, instanceAccess, _, accessingClass) }
 
-    /** Gets the name binding of the member being accessed. */
-    NameBinding getTarget() { result = target }
+    /** Gets the name binding of the member being accessed, if it is declared in the database. */
+    NameBinding getTarget() { getUnqualifiedMemberAccessTarget(this).isIdentifier(result) }
 
     /** Gets the enclosing class whose (possibly inherited) member is being accessed. */
     ClassLikeDeclaration getAccessingClass() { result = accessingClass }
@@ -829,6 +985,14 @@ module Public {
     /** Gets the simple name of this identifier, that is, the name of the member being accessed. */
     override string getMemberName() { result = this.getValue() }
   }
+}
+
+/**
+ * Gets the name-binding node of the member accessed by the unqualified member access `access`,
+ * which is either a member declaration, or a type or member from a model.
+ */
+MemberTargetNode getUnqualifiedMemberAccessTarget(UnqualifiedMemberAccess access) {
+  unqualifiedMemberAccess(access, _, result, _)
 }
 
 /** Gets the declaration being accessed by identifier `i`, as determined by static name binding. */
@@ -940,5 +1104,7 @@ private module CachedStage {
     (exists(any(UnqualifiedMemberAccess u).getImplicitQualifierVariable()) implies any())
     or
     (exists(getStaticBindingTargetFromIdentifier(_)) implies any())
+    or
+    (exists(getExtendedDeclaration(_)) implies any())
   }
 }

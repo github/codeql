@@ -1,0 +1,130 @@
+func f(a: Foo.Type, b: Outer.Inner.Type, c: [Int].Type, d: P.Protocol) {}
+
+---
+
+sourceFile
+  endOfFileToken: endOfFile
+  statements:
+    codeBlockItem
+      item:
+        functionDecl
+          attributes:
+          body:
+            codeBlock
+              leftBrace: {
+              rightBrace: }
+              statements:
+          modifiers:
+          name: identifier "f"
+          signature:
+            functionSignature
+              parameterClause:
+                functionParameterClause
+                  leftParen: (
+                  rightParen: )
+                  parameters:
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        metatypeType
+                          baseType:
+                            identifierType
+                              name: identifier "Foo"
+                          period: .
+                          metatypeSpecifier: Type
+                      firstName: identifier "a"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        metatypeType
+                          baseType:
+                            memberType
+                              name: identifier "Inner"
+                              baseType:
+                                identifierType
+                                  name: identifier "Outer"
+                              period: .
+                          period: .
+                          metatypeSpecifier: Type
+                      firstName: identifier "b"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      trailingComma: ,
+                      type:
+                        metatypeType
+                          baseType:
+                            arrayType
+                              leftSquare: [
+                              rightSquare: ]
+                              element:
+                                identifierType
+                                  name: identifier "Int"
+                          period: .
+                          metatypeSpecifier: Type
+                      firstName: identifier "c"
+                    functionParameter
+                      colon: :
+                      attributes:
+                      modifiers:
+                      type:
+                        metatypeType
+                          baseType:
+                            identifierType
+                              name: identifier "P"
+                          period: .
+                          metatypeSpecifier: Protocol
+                      firstName: identifier "d"
+          funcKeyword: func
+
+---
+
+top_level source="⟨body⟩"
+  body:
+    block source="⟨stmt⟩"
+      stmt:
+        function_declaration source="func ⟨name_node⟩(⟨parameter⟩, ⟨parameter⟩, ⟨parameter⟩, ⟨parameter⟩) ⟨body⟩"
+          name_node: identifier "f" source="f"
+          parameter:
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "a" source="a"
+              type:
+                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                  base: identifier "Foo" source="Foo"
+                  member_name_node: identifier "Type" source="Type"
+              pattern: identifier "a" source="a"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "b" source="b"
+              type:
+                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                  base:
+                    member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                      base: identifier "Outer" source="Outer"
+                      member_name_node: identifier "Inner" source="Inner"
+                  member_name_node: identifier "Type" source="Type"
+              pattern: identifier "b" source="b"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "c" source="c"
+              type:
+                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                  base:
+                    generic_type_expr source="[⟨type_argument⟩]"
+                      base: identifier "Array" source=""
+                      type_argument: identifier "Int" source="Int"
+                  member_name_node: identifier "Type" source="Type"
+              pattern: identifier "c" source="c"
+            parameter source="⟨external_name_node⟩⟨pattern⟩: ⟨type⟩"
+              external_name_node: identifier "d" source="d"
+              type:
+                member_access_expr source="⟨base⟩.⟨member_name_node⟩"
+                  base: identifier "P" source="P"
+                  member_name_node: identifier "Protocol" source="Protocol"
+              pattern: identifier "d" source="d"
+          body: block "{}" source="{}"

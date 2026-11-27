@@ -7,17 +7,18 @@ module;
 private import Type
 private import TypeInference
 private import TypeInferencePlugin as Plugin
+private import TypeMention
 private import codeql.unified.internal.Builtins
 
-private class StructType extends ClassLikeDeclarationType {
-  StructType() { c.getAModifier().getValue() = "struct" }
+private class StructType extends ClassLikeType {
+  StructType() { this.getClassLikeDeclaration().getAModifier().getValue() = "struct" }
 }
 
-private class EnumType extends ClassLikeDeclarationType {
-  EnumType() { c.getAModifier().getValue() = "enum" }
+private class EnumType extends ClassLikeType {
+  EnumType() { this.getClassLikeDeclaration().getAModifier().getValue() = "enum" }
 }
 
-private class BuiltinType extends ClassLikeDeclarationType {
+private class BuiltinType extends ClassLikeType {
   BuiltinType() { this.getClassLikeDeclaration() instanceof BuiltinClassLikeDeclaration }
 }
 
@@ -159,5 +160,17 @@ private class SwiftTypeInferencePlugin extends Plugin::TypeInferencePlugin {
     n instanceof BinaryExpr and
     result = inferTypeAlias(n.(BinaryExpr).getLeft(), path) and
     result = inferTypeAlias(n.(BinaryExpr).getRight(), path)
+    or
+    // `X.self` evaluates to the type `X` itself, whose type is the meta type `X.Type`
+    exists(MemberAccessExpr mae | n = mae |
+      mae.getMemberName() = "self" and
+      result.(MetaType).getInstanceType() = mae.getBase().(TypeMention).getType() and
+      path.isEmpty()
+    )
+  }
+
+  override Expr getMetaTypeOperand(Expr e) {
+    e.(MemberAccessExpr).getMemberName() = "Type" and
+    result = e.(MemberAccessExpr).getBase()
   }
 }

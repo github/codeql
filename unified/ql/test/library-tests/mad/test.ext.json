@@ -9,7 +9,9 @@
         // namespace, type, subtypes, name, signature, ext, output, kind, provenance
         ["", "ShorthandTest", true, "sourceParams(_:)", "", "", "Parameter[self,0]", "shorthand-source", "manual"],
         ["", "SubscriptTest", true, "subscript(_:#newValue:)", "", "", "Parameter[#newValue:]", "subscript-setter-source", "manual"],
-        ["", "OptionalTest", true, "source(_:y?:)", "", "", "Parameter[0]", "optional-source", "manual"]
+        ["", "OptionalTest", true, "source(_:y?:)", "", "", "Parameter[0]", "optional-source", "manual"],
+        ["", "StaticTest", true, "instanceProp", "", "", "", "instance-prop-source", "manual"],
+        ["", "StaticTest.Type", true, "staticProp", "", "", "", "static-prop-source", "manual"]
       ]
     },
     {
@@ -26,7 +28,9 @@
         ["", "OptionalTest", true, "named(x:b:)", "", "", "Argument[x:]", "required-named-sink", "manual"],
         ["", "OptionalTest", true, "positional(_:_?:)", "", "", "Argument[0]", "optional-positional-sink", "manual"],
         ["", "OptionalTest", true, "mixed(_:x?:)", "", "", "Argument[0]", "optional-mixed-sink", "manual"],
-        ["", "OptionalInit", true, "init(value:flag?:)", "", "", "Argument[value:]", "optional-init-sink", "manual"]
+        ["", "OptionalInit", true, "init(value:flag?:)", "", "", "Argument[value:]", "optional-init-sink", "manual"],
+        ["", "StaticTest", true, "instanceSink(_:)", "", "", "Argument[0]", "instance-sink", "manual"],
+        ["", "StaticTest.Type", true, "staticSink(_:)", "", "", "Argument[0]", "static-sink", "manual"]
       ]
     }
   ]

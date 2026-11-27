@@ -1,0 +1,19 @@
+{
+  "extensions": [
+    {
+      "addsTo": {
+        "pack": "codeql/unified-all",
+        "extensible": "legacySourceModel"
+      },
+      "data": [
+        // namespace, type, subtypes, name, signature, ext, output, kind, provenance
+        ["", "StaticTest", true, "init(x:)", "", "", "ReturnValue", "test", "manual"],
+        ["", "StaticTest.Type", true, "staticMethod(_:)", "", "", "ReturnValue", "test", "manual"],
+        ["", "StaticTest", true, "instanceMethod(_:)", "", "", "ReturnValue", "test", "manual"],
+        ["", "StaticTest.Type", true, "staticProp", "", "", "", "test", "manual"],
+        ["", "StaticTest", true, "instanceProp", "", "", "", "test", "manual"],
+        ["", "StaticTest.Nested.Type", true, "nestedStaticProp", "", "", "", "test", "manual"]
+      ]
+    }
+  ]
+}

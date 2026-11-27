@@ -505,6 +505,35 @@ edges
 | implicit-self.swift:85:9:85:14 | [incoming] ... .x | implicit-self.swift:85:9:85:12 | [post] self [x] | provenance |  |
 | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:85:9:85:14 | [incoming] ... .x | provenance |  |
 | implicit-self.swift:87:14:87:17 | self [x] | implicit-self.swift:87:14:87:19 | ... .x | provenance |  |
+| leading-dot.swift:2:12:2:12 | x | leading-dot.swift:3:14:3:14 | x | provenance |  |
+| leading-dot.swift:6:24:6:24 | x | leading-dot.swift:7:14:7:14 | x | provenance |  |
+| leading-dot.swift:15:17:15:17 | x | leading-dot.swift:16:14:16:14 | x | provenance |  |
+| leading-dot.swift:28:28:28:46 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:32:24:32:41 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:36:18:36:38 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:41:15:41:35 | source(...) | leading-dot.swift:6:24:6:24 | x | provenance |  |
+| leading-dot.swift:45:53:45:72 | source(...) | leading-dot.swift:15:17:15:17 | x | provenance |  |
+| leading-dot.swift:49:28:49:46 | source(...) | leading-dot.swift:2:12:2:12 | x | provenance |  |
+| metatypes.swift:2:28:2:28 | x | metatypes.swift:2:58:2:58 | x | provenance |  |
+| metatypes.swift:4:26:4:26 | x | metatypes.swift:4:56:4:56 | x | provenance |  |
+| metatypes.swift:6:30:6:30 | x | metatypes.swift:7:14:7:14 | x | provenance |  |
+| metatypes.swift:18:21:18:36 | source(...) | metatypes.swift:2:28:2:28 | x | provenance |  |
+| metatypes.swift:18:21:18:36 | source(...) | metatypes.swift:18:10:18:37 | ... .staticId(...) | provenance |  |
+| metatypes.swift:19:20:19:35 | source(...) | metatypes.swift:4:26:4:26 | x | provenance |  |
+| metatypes.swift:19:20:19:35 | source(...) | metatypes.swift:19:10:19:36 | ... .classId(...) | provenance |  |
+| metatypes.swift:20:18:20:43 | source(...) | metatypes.swift:6:30:6:30 | x | provenance |  |
+| metatypes.swift:25:21:25:36 | source(...) | metatypes.swift:2:28:2:28 | x | provenance |  |
+| metatypes.swift:25:21:25:36 | source(...) | metatypes.swift:25:10:25:37 | ... .staticId(...) | provenance |  |
+| metatypes.swift:30:21:30:36 | source(...) | metatypes.swift:2:28:2:28 | x | provenance |  |
+| metatypes.swift:30:21:30:36 | source(...) | metatypes.swift:30:10:30:37 | ... .staticId(...) | provenance |  |
+| metatypes.swift:34:21:34:36 | source(...) | metatypes.swift:2:28:2:28 | x | provenance |  |
+| metatypes.swift:34:21:34:36 | source(...) | metatypes.swift:34:10:34:37 | ... .staticId(...) | provenance |  |
+| metatypes.swift:38:28:38:43 | source(...) | metatypes.swift:2:28:2:28 | x | provenance |  |
+| metatypes.swift:38:28:38:43 | source(...) | metatypes.swift:38:10:38:44 | ... .staticId(...) | provenance |  |
+| metatypes.swift:39:27:39:42 | source(...) | metatypes.swift:4:26:4:26 | x | provenance |  |
+| metatypes.swift:39:27:39:42 | source(...) | metatypes.swift:39:10:39:43 | ... .classId(...) | provenance |  |
+| metatypes.swift:47:37:47:37 | x | metatypes.swift:48:14:48:14 | x | provenance |  |
+| metatypes.swift:53:17:53:41 | source(...) | metatypes.swift:47:37:47:37 | x | provenance |  |
 | modified-expressions.swift:2:9:2:16 | original | modified-expressions.swift:3:27:3:34 | original | provenance |  |
 | modified-expressions.swift:2:20:2:35 | source(...) | modified-expressions.swift:2:9:2:16 | original | provenance |  |
 | modified-expressions.swift:3:9:3:16 | borrowed | modified-expressions.swift:4:10:4:17 | borrowed | provenance |  |
@@ -1367,6 +1396,42 @@ nodes
 | implicit-self.swift:86:14:86:14 | x | semmle.label | x |
 | implicit-self.swift:87:14:87:17 | self [x] | semmle.label | self [x] |
 | implicit-self.swift:87:14:87:19 | ... .x | semmle.label | ... .x |
+| leading-dot.swift:2:12:2:12 | x | semmle.label | x |
+| leading-dot.swift:3:14:3:14 | x | semmle.label | x |
+| leading-dot.swift:6:24:6:24 | x | semmle.label | x |
+| leading-dot.swift:7:14:7:14 | x | semmle.label | x |
+| leading-dot.swift:15:17:15:17 | x | semmle.label | x |
+| leading-dot.swift:16:14:16:14 | x | semmle.label | x |
+| leading-dot.swift:28:28:28:46 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:32:24:32:41 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:36:18:36:38 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:41:15:41:35 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:45:53:45:72 | source(...) | semmle.label | source(...) |
+| leading-dot.swift:49:28:49:46 | source(...) | semmle.label | source(...) |
+| metatypes.swift:2:28:2:28 | x | semmle.label | x |
+| metatypes.swift:2:58:2:58 | x | semmle.label | x |
+| metatypes.swift:4:26:4:26 | x | semmle.label | x |
+| metatypes.swift:4:56:4:56 | x | semmle.label | x |
+| metatypes.swift:6:30:6:30 | x | semmle.label | x |
+| metatypes.swift:7:14:7:14 | x | semmle.label | x |
+| metatypes.swift:18:10:18:37 | ... .staticId(...) | semmle.label | ... .staticId(...) |
+| metatypes.swift:18:21:18:36 | source(...) | semmle.label | source(...) |
+| metatypes.swift:19:10:19:36 | ... .classId(...) | semmle.label | ... .classId(...) |
+| metatypes.swift:19:20:19:35 | source(...) | semmle.label | source(...) |
+| metatypes.swift:20:18:20:43 | source(...) | semmle.label | source(...) |
+| metatypes.swift:25:10:25:37 | ... .staticId(...) | semmle.label | ... .staticId(...) |
+| metatypes.swift:25:21:25:36 | source(...) | semmle.label | source(...) |
+| metatypes.swift:30:10:30:37 | ... .staticId(...) | semmle.label | ... .staticId(...) |
+| metatypes.swift:30:21:30:36 | source(...) | semmle.label | source(...) |
+| metatypes.swift:34:10:34:37 | ... .staticId(...) | semmle.label | ... .staticId(...) |
+| metatypes.swift:34:21:34:36 | source(...) | semmle.label | source(...) |
+| metatypes.swift:38:10:38:44 | ... .staticId(...) | semmle.label | ... .staticId(...) |
+| metatypes.swift:38:28:38:43 | source(...) | semmle.label | source(...) |
+| metatypes.swift:39:10:39:43 | ... .classId(...) | semmle.label | ... .classId(...) |
+| metatypes.swift:39:27:39:42 | source(...) | semmle.label | source(...) |
+| metatypes.swift:47:37:47:37 | x | semmle.label | x |
+| metatypes.swift:48:14:48:14 | x | semmle.label | x |
+| metatypes.swift:53:17:53:41 | source(...) | semmle.label | source(...) |
 | modified-expressions.swift:2:9:2:16 | original | semmle.label | original |
 | modified-expressions.swift:2:20:2:35 | source(...) | semmle.label | source(...) |
 | modified-expressions.swift:3:9:3:16 | borrowed | semmle.label | borrowed |
@@ -1724,6 +1789,13 @@ subpaths
 | fields.swift:176:28:176:63 | source(...) | fields.swift:113:22:113:26 | value | fields.swift:116:16:116:18 | box [field] | fields.swift:176:17:176:64 | ... .withField(...) [field] |
 | flow-summaries.swift:54:35:54:48 | source(...) | flow-summaries.swift:54:53:54:53 | y | flow-summaries.swift:54:65:54:65 | y | flow-summaries.swift:54:10:54:67 | ... .throughCallback(...) |
 | flow-summaries.swift:55:35:55:48 | source(...) | flow-summaries.swift:55:53:55:53 | y | flow-summaries.swift:55:65:55:71 | ... + ... | flow-summaries.swift:55:10:55:73 | ... .throughCallback(...) |
+| metatypes.swift:18:21:18:36 | source(...) | metatypes.swift:2:28:2:28 | x | metatypes.swift:2:58:2:58 | x | metatypes.swift:18:10:18:37 | ... .staticId(...) |
+| metatypes.swift:19:20:19:35 | source(...) | metatypes.swift:4:26:4:26 | x | metatypes.swift:4:56:4:56 | x | metatypes.swift:19:10:19:36 | ... .classId(...) |
+| metatypes.swift:25:21:25:36 | source(...) | metatypes.swift:2:28:2:28 | x | metatypes.swift:2:58:2:58 | x | metatypes.swift:25:10:25:37 | ... .staticId(...) |
+| metatypes.swift:30:21:30:36 | source(...) | metatypes.swift:2:28:2:28 | x | metatypes.swift:2:58:2:58 | x | metatypes.swift:30:10:30:37 | ... .staticId(...) |
+| metatypes.swift:34:21:34:36 | source(...) | metatypes.swift:2:28:2:28 | x | metatypes.swift:2:58:2:58 | x | metatypes.swift:34:10:34:37 | ... .staticId(...) |
+| metatypes.swift:38:28:38:43 | source(...) | metatypes.swift:2:28:2:28 | x | metatypes.swift:2:58:2:58 | x | metatypes.swift:38:10:38:44 | ... .staticId(...) |
+| metatypes.swift:39:27:39:42 | source(...) | metatypes.swift:4:26:4:26 | x | metatypes.swift:4:56:4:56 | x | metatypes.swift:39:10:39:43 | ... .classId(...) |
 | subscripts.swift:21:12:21:25 | source(...) | subscripts.swift:15:19:15:21 | key | subscripts.swift:16:19:16:21 | key | subscripts.swift:21:10:21:26 | ... .subscript(...) |
 | subscripts.swift:45:5:45:15 | ... .subscript(...) | subscripts.swift:41:27:41:34 | newValue | subscripts.swift:41:19:41:23 | field | subscripts.swift:46:10:46:10 | c [field] |
 | subscripts.swift:45:5:45:15 | ... .subscript(...) | subscripts.swift:41:27:41:34 | newValue | subscripts.swift:41:19:41:23 | field | subscripts.swift:47:10:47:10 | c [field] |
@@ -1892,6 +1964,21 @@ testFailures
 | implicit-self.swift:80:14:80:19 | ... .x | implicit-self.swift:78:24:78:38 | source(...) | implicit-self.swift:80:14:80:19 | ... .x | $@ | implicit-self.swift:78:24:78:38 | source(...) | source(...) |
 | implicit-self.swift:86:14:86:14 | x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:86:14:86:14 | x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
 | implicit-self.swift:87:14:87:19 | ... .x | implicit-self.swift:85:29:85:43 | source(...) | implicit-self.swift:87:14:87:19 | ... .x | $@ | implicit-self.swift:85:29:85:43 | source(...) | source(...) |
+| leading-dot.swift:3:14:3:14 | x | leading-dot.swift:49:28:49:46 | source(...) | leading-dot.swift:3:14:3:14 | x | $@ | leading-dot.swift:49:28:49:46 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:28:28:28:46 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:28:28:28:46 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:32:24:32:41 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:32:24:32:41 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:36:18:36:38 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:36:18:36:38 | source(...) | source(...) |
+| leading-dot.swift:7:14:7:14 | x | leading-dot.swift:41:15:41:35 | source(...) | leading-dot.swift:7:14:7:14 | x | $@ | leading-dot.swift:41:15:41:35 | source(...) | source(...) |
+| leading-dot.swift:16:14:16:14 | x | leading-dot.swift:45:53:45:72 | source(...) | leading-dot.swift:16:14:16:14 | x | $@ | leading-dot.swift:45:53:45:72 | source(...) | source(...) |
+| metatypes.swift:7:14:7:14 | x | metatypes.swift:20:18:20:43 | source(...) | metatypes.swift:7:14:7:14 | x | $@ | metatypes.swift:20:18:20:43 | source(...) | source(...) |
+| metatypes.swift:18:10:18:37 | ... .staticId(...) | metatypes.swift:18:21:18:36 | source(...) | metatypes.swift:18:10:18:37 | ... .staticId(...) | $@ | metatypes.swift:18:21:18:36 | source(...) | source(...) |
+| metatypes.swift:19:10:19:36 | ... .classId(...) | metatypes.swift:19:20:19:35 | source(...) | metatypes.swift:19:10:19:36 | ... .classId(...) | $@ | metatypes.swift:19:20:19:35 | source(...) | source(...) |
+| metatypes.swift:25:10:25:37 | ... .staticId(...) | metatypes.swift:25:21:25:36 | source(...) | metatypes.swift:25:10:25:37 | ... .staticId(...) | $@ | metatypes.swift:25:21:25:36 | source(...) | source(...) |
+| metatypes.swift:30:10:30:37 | ... .staticId(...) | metatypes.swift:30:21:30:36 | source(...) | metatypes.swift:30:10:30:37 | ... .staticId(...) | $@ | metatypes.swift:30:21:30:36 | source(...) | source(...) |
+| metatypes.swift:34:10:34:37 | ... .staticId(...) | metatypes.swift:34:21:34:36 | source(...) | metatypes.swift:34:10:34:37 | ... .staticId(...) | $@ | metatypes.swift:34:21:34:36 | source(...) | source(...) |
+| metatypes.swift:38:10:38:44 | ... .staticId(...) | metatypes.swift:38:28:38:43 | source(...) | metatypes.swift:38:10:38:44 | ... .staticId(...) | $@ | metatypes.swift:38:28:38:43 | source(...) | source(...) |
+| metatypes.swift:39:10:39:43 | ... .classId(...) | metatypes.swift:39:27:39:42 | source(...) | metatypes.swift:39:10:39:43 | ... .classId(...) | $@ | metatypes.swift:39:27:39:42 | source(...) | source(...) |
+| metatypes.swift:48:14:48:14 | x | metatypes.swift:53:17:53:41 | source(...) | metatypes.swift:48:14:48:14 | x | $@ | metatypes.swift:53:17:53:41 | source(...) | source(...) |
 | modified-expressions.swift:4:10:4:17 | borrowed | modified-expressions.swift:2:20:2:35 | source(...) | modified-expressions.swift:4:10:4:17 | borrowed | $@ | modified-expressions.swift:2:20:2:35 | source(...) | source(...) |
 | modified-expressions.swift:10:10:10:17 | consumed | modified-expressions.swift:8:20:8:36 | source(...) | modified-expressions.swift:10:10:10:17 | consumed | $@ | modified-expressions.swift:8:20:8:36 | source(...) | source(...) |
 | modified-expressions.swift:16:10:16:15 | copied | modified-expressions.swift:14:20:14:33 | source(...) | modified-expressions.swift:16:10:16:15 | copied | $@ | modified-expressions.swift:14:20:14:33 | source(...) | source(...) |

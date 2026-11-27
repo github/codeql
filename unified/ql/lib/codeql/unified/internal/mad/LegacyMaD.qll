@@ -7,6 +7,7 @@ private import codeql.dataflow.internal.AccessPathSyntax
 private import codeql.unified.internal.typeinference.TypeInference as T
 private import codeql.unified.internal.typeinference.Type as Types
 private import codeql.unified.internal.StaticNameBinding as N
+private import codeql.unified.internal.NameBindingPlugin as NameBindingPlugin
 private import codeql.unified.internal.dataflow.DataFlowCall
 private import codeql.unified.internal.dataflow.DataFlowNode
 
@@ -107,7 +108,7 @@ private predicate methodCallSelector(
   exists(CallExpr e, string suffix |
     e = call.getCallExpr() and
     name = getSimpleNameFromExpr(e.getCallee()) and
-    name = any(Selector s).getName() and
+    name = any(MemberSelector s).getName() and
     (if e = call.asSetterCall() then suffix = "#newValue:" else suffix = "") and
     joinLabels = getJoinLabelsFromCall(e, name) + suffix and
     argLabels = getArgLabelsFromCall(e) + suffix
@@ -127,13 +128,10 @@ private predicate constructorCallSelector(
   argLabels = getArgLabelsFromCall(call)
 }
 
-private predicate isSubclassOfType(ClassLikeDeclaration cls, string typeName) {
-  typeName = any(Selector s).getTypeString() and
-  (
-    getQualifiedNameFromExpr(cls.getABaseType().getType()) = typeName
-    or
-    isSubclassOfType(cls.getABaseClass(), typeName)
-  )
+private predicate isSubclassOfType(ClassLikeDeclaration cls, TypeSelector typeName) {
+  getQualifiedNameFromExpr(cls.getABaseType().getType()) = typeName
+  or
+  isSubclassOfType(cls.getABaseClass(), typeName)
 }
 
 private string getArgLabelsFromCallable(Callable callable) {
@@ -157,9 +155,14 @@ private predicate callableSelector(
 ) {
   name = callable.getName() and
   argLabels = getArgLabelsFromCallable(callable) and
-  exists(ClassLikeDeclaration cls |
-    callable = cls.getAMemberIncludingExtensions() and
-    isSubclassOfType(cls, type)
+  exists(ClassLikeElement cls, TypeSelector baseType |
+    callable = cls.getAMember() and
+    isSubclassOfType(cls.asClassLikeDeclaration(), baseType)
+  |
+    // Static members are members of the meta type
+    if NameBindingPlugin::isStaticMember(callable)
+    then type = baseType.getMetaType()
+    else type = baseType
   )
 }
 
@@ -176,12 +179,12 @@ private predicate isRawPropertyName(string name) {
 pragma[nomagic]
 private predicate propertyAccessSelector(MemberAccess access, T::Type baseType, string name) {
   name = access.getMemberName() and
-  name = any(Selector s).getPropertyName() and
+  name = any(MemberSelector s).getPropertyName() and
   not access = any(CallExpr call).getCallee() and
   baseType = T::inferBaseType(access)
 }
 
-private newtype TSelector =
+private newtype TMemberSelector =
   MkCallSelector(string type, boolean subtypes, string name, string argLabels, string argTypes) {
     exists(string rawName |
       legacySourceModel(_, type, subtypes, rawName, argTypes, _, _, _, _)
@@ -209,7 +212,7 @@ private newtype TSelector =
  * For example, `init(contentsOf:encoding?:)` has the labels `contentsOf` and `encoding`,
  * where the latter is optional.
  */
-private predicate selectorLabel(Selector selector, int n, string label, boolean optional) {
+private predicate selectorLabel(MemberSelector selector, int n, string label, boolean optional) {
   exists(string rawLabel |
     rawLabel = selector.getArgLabels().splitAt(":", n) and
     rawLabel != ""
@@ -224,7 +227,7 @@ private predicate selectorLabel(Selector selector, int n, string label, boolean 
 
 /** Holds if `label` is an optional named parameter of some selector with the method name `name`. */
 private predicate optionalArgLabel(string name, string label) {
-  exists(Selector selector |
+  exists(MemberSelector selector |
     name = selector.getName() and
     selectorLabel(selector, _, label, true) and
     label != "_"
@@ -235,7 +238,7 @@ private predicate optionalArgLabel(string name, string label) {
  * Gets the named labels of `selector` that are not optional for any selector with the same
  * method name. This is used to join with `getJoinLabelsFromCall`.
  */
-private string getNamedJoinLabels(Selector selector) {
+private string getNamedJoinLabels(MemberSelector selector) {
   exists(string name |
     name = selector.getName() and
     result =
@@ -251,8 +254,11 @@ private string getNamedJoinLabels(Selector selector) {
 
 /**
  * A tuple from a model that identifies call sites, callables, or property accesses.
+ *
+ * Static members are members of the meta type, so their type is written as, for example,
+ * `String.Type`.
  */
-class Selector extends TSelector {
+class MemberSelector extends TMemberSelector {
   string getTypeString() {
     this = MkCallSelector(result, _, _, _, _) or this = MkPropertySelector(result, _, _)
   }
@@ -361,6 +367,9 @@ class Selector extends TSelector {
   /**
    * Holds if `access` is an access to the property identified by this selector, as determined
    * by the inferred type of its base.
+   *
+   * For a static property, the type is a meta type such as `Foo.Type`, so the base must be a
+   * reference to the type `Foo` itself.
    */
   predicate matchesPropertyAccess(MemberAccess access) {
     exists(TypeSelector type, boolean subtypes, string name |
@@ -377,7 +386,7 @@ class Selector extends TSelector {
 /** Gets the `n`th `.`-separated component in the given `type` string. */
 pragma[nomagic]
 private string getTypeComponent(string type, int n) {
-  type = any(Selector s).getTypeString() and
+  type = any(MemberSelector s).getTypeString() and
   result = type.splitAt(".", n)
 }
 
@@ -399,15 +408,33 @@ private string typeSelectorCons(string qualifier, string component) {
   splitTypeString(_, _, qualifier, component, result)
 }
 
-/** A type, or prefix thereof, mentioned in a model. */
+/** Holds if `meta` names the meta type of `type`, as in `Foo.Type` for `Foo`. */
+private predicate isMetaTypeOf(string meta, string type) {
+  splitTypeString(_, _, _, _, type) and
+  type != "" and
+  meta = type + ".Type"
+}
+
+/**
+ * A type, or prefix thereof, mentioned in a model, or the meta type of such a type.
+ *
+ * The meta type of `Foo` is named `Foo.Type`. Its instances are references to the type `Foo`
+ * itself, and its members are the static members of `Foo`.
+ */
 class TypeSelector extends string {
-  TypeSelector() { splitTypeString(_, _, _, _, this) }
+  TypeSelector() { splitTypeString(_, _, _, _, this) or isMetaTypeOf(this, _) }
 
   TypeSelector append(string component) { result = typeSelectorCons(this, component) }
 
   TypeSelector getQualifier() { this = result.append(_) }
 
   string getHead() { this = typeSelectorCons(_, result) }
+
+  /** Gets the meta type of this type, as in `Foo.Type` for `Foo`. */
+  TypeSelector getMetaType() { isMetaTypeOf(result, this) }
+
+  /** Holds if this is the meta type of some type. */
+  predicate isMetaType() { isMetaTypeOf(this, _) }
 
   /** Gets a static reference to this type. */
   AstNode getAStaticRef() {
@@ -423,22 +450,34 @@ class TypeSelector extends string {
     result.getQualifiedName() = this and not exists(result.getExtensionTarget())
   }
 
+  /** Gets the class-like element corresponding to this type. */
+  ClassLikeElement getClassLikeElement() {
+    result.asTypeSelector() = this
+    or
+    result.asClassLikeDeclaration() = this.getDeclaration()
+  }
+
   /** Gets the declaration of a proper subtype of this type (not the type itself). */
   ClassLikeDeclaration getASubtypeDeclaration() {
     result.getABaseClass*().getABaseType().getType() = this.getAStaticRef()
   }
 
-  /** Gets a `Type` corresponding to instances of this type. */
+  /**
+   * Gets a `Type` corresponding to instances of this type.
+   *
+   * The instances of a meta type `Foo.Type` are references to the type `Foo`, whose type is
+   * the `MetaType` of `Foo`.
+   */
   T::Type getAnInstanceType(boolean subtype) {
     subtype = false and
-    (
-      result.(Types::ModelType).getTypeSelector() = this
-      or
-      result.asClass() = this.getDeclaration()
-    )
+    result.(Types::ClassLikeType).getClassLikeElement() = this.getClassLikeElement()
     or
     subtype = true and
     result.asClass() = this.getASubtypeDeclaration()
+    or
+    exists(TypeSelector type | this = type.getMetaType() |
+      result.(Types::MetaType).getInstanceType() = type.getAnInstanceType(subtype)
+    )
   }
 
   /**
@@ -553,7 +592,7 @@ private DataFlow::Node getSinkFromPropertyAccess(MemberAccess access, AccessPath
 }
 
 private predicate normalizedSourceModel(
-  Selector selector, AccessPath output, string kind, string provenance
+  MemberSelector selector, AccessPath output, string kind, string provenance
 ) {
   exists(string type, boolean subtypes, string rawName, string argTypes |
     legacySourceModel(_, type, subtypes, rawName, argTypes, _, output, kind, provenance)
@@ -568,7 +607,7 @@ private predicate normalizedSourceModel(
 }
 
 private predicate normalizedSinkModel(
-  Selector selector, AccessPath output, string kind, string provenance
+  MemberSelector selector, AccessPath output, string kind, string provenance
 ) {
   exists(string type, boolean subtypes, string rawName, string argTypes |
     legacySinkModel(_, type, subtypes, rawName, argTypes, _, output, kind, provenance)
@@ -583,7 +622,7 @@ private predicate normalizedSinkModel(
 }
 
 predicate normalizedSummaryModel(
-  Selector selector, string input, string output, string kind, string provenance
+  MemberSelector selector, string input, string output, string kind, string provenance
 ) {
   exists(
     string type, boolean subtypes, string rawName, string name, string argLabels, string argTypes
@@ -598,7 +637,7 @@ predicate normalizedSummaryModel(
  * Gets a flow source with the given `kind` and `provenance`.
  */
 DataFlow::Node getASource(string kind, string provenance) {
-  exists(Selector selector, AccessPath output |
+  exists(MemberSelector selector, AccessPath output |
     normalizedSourceModel(selector, output, kind, provenance)
   |
     exists(DataFlowCall call |
@@ -622,7 +661,7 @@ DataFlow::Node getASource(string kind, string provenance) {
  * Gets a sink with the given `kind` and `provenance`.
  */
 DataFlow::Node getASink(string kind, string provenance) {
-  exists(Selector selector, AccessPath input |
+  exists(MemberSelector selector, AccessPath input |
     normalizedSinkModel(selector, input, kind, provenance)
   |
     exists(DataFlowCall call |
@@ -654,7 +693,7 @@ module Public {
 }
 
 private module Debug {
-  query predicate invalidAccessPath(Selector selector, AccessPathToken ap) {
+  query predicate invalidAccessPath(MemberSelector selector, AccessPathToken ap) {
     (
       normalizedSourceModel(selector, ap, _, _)
       or
