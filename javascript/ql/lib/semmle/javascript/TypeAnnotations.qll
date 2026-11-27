@@ -89,26 +89,6 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
   TypeAnnotation getAnUnderlyingType() { result = this }
 
   /**
-   * DEPRECATED. Use `hasUnderlyingType` instead.
-   *
-   * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope.
-   */
-  overlay[global]
-  deprecated predicate hasQualifiedName(string globalName) {
-    UnderlyingTypes::nodeHasUnderlyingType(this, globalName)
-  }
-
-  /**
-   * DEPRECATED. Use `hasUnderlyingType` instead.
-   *
-   * Holds if this is a reference to the type exported from `moduleName` under the name `exportedName`.
-   */
-  overlay[global]
-  deprecated predicate hasQualifiedName(string moduleName, string exportedName) {
-    UnderlyingTypes::nodeHasUnderlyingType(this, moduleName, exportedName)
-  }
-
-  /**
    * Holds if this is a reference to the type with qualified name `globalName` relative to the global scope,
    * or is declared as a subtype thereof, or is a union or intersection containing such a type.
    */
@@ -136,14 +116,6 @@ class TypeAnnotation extends @type_annotation, NodeInStmtContainer {
    * Gets the top-level containing this type annotation.
    */
   TopLevel getTopLevel() { none() }
-
-  /**
-   * Gets the static type denoted by this type annotation, if one is provided by the extractor.
-   *
-   * Note that this has no result for JSDoc type annotations.
-   */
-  overlay[global]
-  deprecated Type getType() { none() }
 
   /**
    * Gets the class referenced by this type annotation, if any.

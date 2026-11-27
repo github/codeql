@@ -1440,8 +1440,6 @@ module ClassNode {
     cached
     DataFlow::Node getADecorator() { none() }
   }
-
-  deprecated class FunctionStyleClass = ClassNode;
 }
 
 /**

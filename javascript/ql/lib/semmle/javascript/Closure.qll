@@ -39,123 +39,6 @@ module Closure {
     string getModuleKind() { result = kind }
   }
 
-  /**
-   * A reference to a Closure namespace.
-   */
-  overlay[global]
-  deprecated class ClosureNamespaceRef extends DataFlow::Node instanceof ClosureNamespaceRef::Range {
-    /**
-     * Gets the namespace being referenced.
-     */
-    string getClosureNamespace() { result = super.getClosureNamespace() }
-  }
-
-  overlay[global]
-  deprecated module ClosureNamespaceRef {
-    /**
-     * A reference to a Closure namespace.
-     *
-     * Can be subclassed to classify additional nodes as namespace references.
-     */
-    abstract class Range extends DataFlow::Node {
-      /**
-       * Gets the namespace being referenced.
-       */
-      abstract string getClosureNamespace();
-    }
-  }
-
-  /**
-   * A data flow node that returns the value of a closure namespace.
-   */
-  overlay[global]
-  deprecated class ClosureNamespaceAccess extends ClosureNamespaceRef instanceof ClosureNamespaceAccess::Range
-  { }
-
-  overlay[global]
-  deprecated module ClosureNamespaceAccess {
-    /**
-     * A data flow node that returns the value of a closure namespace.
-     *
-     * Can be subclassed to classify additional nodes as namespace accesses.
-     */
-    abstract class Range extends ClosureNamespaceRef::Range { }
-  }
-
-  /**
-   * A call to a method on the `goog.` namespace, as a closure reference.
-   */
-  overlay[global]
-  abstract deprecated private class DefaultNamespaceRef extends DataFlow::MethodCallNode,
-    ClosureNamespaceRef::Range
-  {
-    DefaultNamespaceRef() { this = DataFlow::globalVarRef("goog").getAMethodCall() }
-
-    override string getClosureNamespace() { result = this.getArgument(0).getStringValue() }
-  }
-
-  /**
-   * Holds if `node` is the data flow node corresponding to the expression in
-   * a top-level expression statement.
-   */
-  overlay[global]
-  deprecated private predicate isTopLevelExpr(DataFlow::Node node) {
-    any(TopLevel tl).getAChildStmt().(ExprStmt).getExpr().flow() = node
-  }
-
-  /**
-   * A top-level call to `goog.provide`.
-   */
-  overlay[global]
-  deprecated private class DefaultClosureProvideCall extends DefaultNamespaceRef {
-    DefaultClosureProvideCall() {
-      this.getMethodName() = "provide" and
-      isTopLevelExpr(this)
-    }
-  }
-
-  /**
-   * A top-level call to `goog.provide`.
-   */
-  overlay[global]
-  deprecated class ClosureProvideCall extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureProvideCall
-  { }
-
-  /**
-   * A call to `goog.require`.
-   */
-  overlay[global]
-  deprecated private class DefaultClosureRequireCall extends DefaultNamespaceRef,
-    ClosureNamespaceAccess::Range
-  {
-    DefaultClosureRequireCall() { this.getMethodName() = "require" }
-  }
-
-  /**
-   * A call to `goog.require`.
-   */
-  overlay[global]
-  deprecated class ClosureRequireCall extends ClosureNamespaceAccess, DataFlow::MethodCallNode instanceof DefaultClosureRequireCall
-  { }
-
-  /**
-   * A top-level call to `goog.module` or `goog.declareModuleId`.
-   */
-  overlay[global]
-  deprecated private class DefaultClosureModuleDeclaration extends DefaultNamespaceRef {
-    DefaultClosureModuleDeclaration() {
-      (this.getMethodName() = "module" or this.getMethodName() = "declareModuleId") and
-      isTopLevelExpr(this)
-    }
-  }
-
-  /**
-   * A top-level call to `goog.module` or `goog.declareModuleId`.
-   */
-  overlay[global]
-  deprecated class ClosureModuleDeclaration extends ClosureNamespaceRef, DataFlow::MethodCallNode instanceof DefaultClosureModuleDeclaration
-  { }
-
   pragma[noinline]
   private RequireCallExpr getARequireInTopLevel(ClosureModule m) { result.getTopLevel() = m }
 
@@ -166,12 +49,6 @@ module Closure {
     private ModuleDeclarationCall decl;
 
     ClosureModule() { decl.getTopLevel() = this }
-
-    /**
-     * Gets the call to `goog.module` or `goog.declareModuleId` in this module.
-     */
-    overlay[global]
-    deprecated ClosureModuleDeclaration getModuleDeclaration() { result.getTopLevel() = this }
 
     /**
      * Gets the namespace of this module.

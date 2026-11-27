@@ -65,63 +65,6 @@ abstract class Module extends TopLevel {
   DataFlow::Node getDefaultOrBulkExport() {
     result = [this.getAnExportedValue("default"), this.getABulkExportedNode()]
   }
-
-  /**
-   * Gets the root folder relative to which the given import path (which must
-   * appear in this module) is resolved.
-   *
-   * Each root has an associated priority, and roots with numerically smaller
-   * priority are preferred during import resolution.
-   *
-   * This predicate is not part of the public API, it is only exposed to allow
-   * overriding by subclasses.
-   */
-  overlay[global]
-  deprecated predicate searchRoot(PathExpr path, Folder searchRoot, int priority) {
-    path.getEnclosingModule() = this and
-    priority = 0 and
-    exists(string v | v = path.getValue() |
-      // paths starting with a dot are resolved relative to the module's directory
-      if v.startsWith(".")
-      then searchRoot = this.getFile().getParentContainer()
-      else
-        // all other paths are resolved relative to the file system root
-        searchRoot.getBaseName() = ""
-    )
-  }
-
-  /**
-   * Gets the file to which the import path `path`, which must appear in this
-   * module, resolves.
-   *
-   * If the path resolves to a file directly, this is the result. If the path
-   * resolves to a folder containing a main module (such as `index.js`), then
-   * that file is the result.
-   */
-  overlay[global]
-  deprecated File resolve(PathExpr path) {
-    path.getEnclosingModule() = this and
-    (
-      // handle the case where the import path is complete
-      exists(Container c | c = path.resolve() |
-        // import may refer to a file...
-        result = c
-        or
-        // ...or to a directory, in which case we import index.js in that directory
-        result = c.(Folder).getJavaScriptFile("index")
-      )
-      or
-      // handle the case where the import path is missing the extension
-      exists(Folder f | f = path.resolveUpTo(path.getNumComponent() - 1) |
-        result = f.getJavaScriptFile(path.getBaseName())
-        or
-        // If a js file was not found look for a file that compiles to js
-        path.getExtension() = ".js" and
-        not exists(f.getJavaScriptFile(path.getBaseName())) and
-        result = f.getJavaScriptFile(path.getStem())
-      )
-    )
-  }
 }
 
 /**
@@ -131,10 +74,6 @@ abstract class Module extends TopLevel {
 abstract class Import extends AstNode {
   /** Gets the module in which this import appears. */
   abstract Module getEnclosingModule();
-
-  /** DEPRECATED. Use `getImportedPathExpr` instead. */
-  overlay[global]
-  deprecated PathExpr getImportedPath() { result = this.getImportedPathExpr() }
 
   /** Gets the (unresolved) path that this import refers to. */
   abstract Expr getImportedPathExpr();
@@ -164,17 +103,6 @@ abstract class Import extends AstNode {
    */
   overlay[global]
   File getImportedFile() { result = ImportPathResolver::resolveExpr(this.getImportedPathExpr()) }
-
-  /**
-   * DEPRECATED. Use `getImportedModule()` instead.
-   */
-  overlay[global]
-  deprecated Module resolveFromTypeScriptSymbol() {
-    exists(CanonicalName symbol |
-      ast_node_symbol(this, symbol) and
-      ast_node_symbol(result, symbol)
-    )
-  }
 
   /**
    * Gets the module this import refers to.

@@ -403,28 +403,6 @@ class JSDocNamedTypeExpr extends JSDocTypeExpr {
    * For example, for `X.Y` this gets the string `"X.Y"`.
    */
   string getRawName() { result = this.toString() }
-
-  /**
-   * DEPRECATED. Use `getRawName()` instead.
-   */
-  deprecated string getName() { result = this.toString() }
-
-  /**
-   * Holds if this name consists of the unqualified name `prefix`
-   * followed by a (possibly empty) `suffix`.
-   *
-   * For example:
-   * - `foo.bar.Baz` has prefix `foo` and suffix `.bar.Baz`.
-   * - `Baz` has prefix `Baz` and an empty suffix.
-   */
-  deprecated predicate hasNameParts(string prefix, string suffix) {
-    not this = any(JSDocQualifiedTypeAccess a).getBase() and // restrict size of predicate
-    exists(string regex, string name | regex = "([^.]+)(.*)" |
-      name = this.getRawName() and
-      prefix = name.regexpCapture(regex, 1) and
-      suffix = name.regexpCapture(regex, 2)
-    )
-  }
 }
 
 /**
@@ -625,62 +603,4 @@ class JSDocError extends @jsdoc_error {
   string toString() { jsdoc_errors(this, _, _, result) }
 }
 
-module JSDoc {
-  /**
-   * A statement container which may declare JSDoc name aliases.
-   */
-  overlay[global]
-  deprecated class Environment extends StmtContainer {
-    /**
-     * Gets the fully qualified name aliased by the given unqualified name
-     * within this container.
-     */
-    string resolveAlias(string alias) {
-      this.getNodeFromAlias(alias) = AccessPath::getAReferenceOrAssignmentTo(result)
-    }
-
-    /**
-     * Gets a data flow node from which the type name `alias` should
-     * be resolved.
-     */
-    DataFlow::Node getNodeFromAlias(string alias) {
-      exists(VarDef def, VarRef ref |
-        def.getContainer() = this and
-        ref = def.getTarget().(BindingPattern).getABindingVarRef() and
-        ref.getName() = alias and
-        isTypenamePrefix(ref.getName()) // restrict size of predicate
-      |
-        exists(PropertyPattern p |
-          ref = p.getValuePattern() and
-          result.getAstNode() = p
-        )
-        or
-        result = DataFlow::valueNode(def.(Stmt))
-        or
-        ref = def.getTarget() and
-        result = def.getSource().flow()
-        or
-        result = DataFlow::parameterNode(def)
-      )
-    }
-
-    /**
-     * Holds if the aliases declared in this environment should be in scope
-     * within the given container.
-     *
-     * Specifically, this holds if this environment declares at least one
-     * alias and is an ancestor of `container`.
-     */
-    final predicate isContainerInScope(StmtContainer container) {
-      exists(this.resolveAlias(_)) and // restrict size of predicate
-      container = this
-      or
-      this.isContainerInScope(container.getEnclosingContainer())
-    }
-  }
-
-  pragma[noinline]
-  deprecated private predicate isTypenamePrefix(string name) {
-    any(JSDocNamedTypeExpr expr).hasNameParts(name, _)
-  }
-}
+module JSDoc { }

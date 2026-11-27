@@ -430,20 +430,6 @@ class Function extends @function, Parameterized, TypeParameterized, StmtContaine
     this.isAsync() and
     kind = "an async function"
   }
-
-  /**
-   * Gets the canonical name for this function, as determined by the TypeScript compiler.
-   *
-   * This predicate is only populated for files extracted with full TypeScript extraction.
-   */
-  overlay[global]
-  deprecated CanonicalFunctionName getCanonicalName() { ast_node_symbol(this, result) }
-
-  /**
-   * Gets the call signature of this function, as determined by the TypeScript compiler, if any.
-   */
-  overlay[global]
-  deprecated CallSignatureType getCallSignature() { declared_function_signature(this, result) }
 }
 
 /**
