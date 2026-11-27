@@ -84,7 +84,7 @@
 | openssl_signature.c:26:9:26:26 | HashOperation | Message | openssl_signature.c:25:34:25:40 | Message |
 | openssl_signature.c:26:36:26:41 | Digest | Source | openssl_signature.c:26:36:26:41 | Digest |
 | openssl_signature.c:63:32:63:38 | Message | Source | openssl_signature.c:651:37:651:61 | Constant |
-| openssl_signature.c:68:28:68:36 | Message | Source | openssl_signature.c:651:37:651:61 | Constant |
+| openssl_signature.c:68:28:68:36 | Message | Source | openssl_signature.c:68:28:68:36 | Message |
 | openssl_signature.c:73:9:73:21 | SignOperation | Algorithm | openssl_signature.c:661:35:661:46 | KeyOperationAlgorithm |
 | openssl_signature.c:73:9:73:21 | SignOperation | HashAlgorithm | openssl_signature.c:652:24:652:33 | HashAlgorithm |
 | openssl_signature.c:73:9:73:21 | SignOperation | Input | openssl_signature.c:63:32:63:38 | Message |
@@ -93,7 +93,7 @@
 | openssl_signature.c:73:9:73:21 | SignOperation | Output | openssl_signature.c:73:31:73:40 | SignatureOutput |
 | openssl_signature.c:73:53:73:56 | Key | Source | openssl_signature.c:666:34:666:37 | Key |
 | openssl_signature.c:98:34:98:40 | Message | Source | openssl_signature.c:651:37:651:61 | Constant |
-| openssl_signature.c:99:34:99:42 | Message | Source | openssl_signature.c:651:37:651:61 | Constant |
+| openssl_signature.c:99:34:99:42 | Message | Source | openssl_signature.c:99:34:99:42 | Message |
 | openssl_signature.c:100:9:100:23 | VerifyOperation | Algorithm | openssl_signature.c:661:35:661:46 | KeyOperationAlgorithm |
 | openssl_signature.c:100:9:100:23 | VerifyOperation | HashAlgorithm | openssl_signature.c:652:24:652:33 | HashAlgorithm |
 | openssl_signature.c:100:9:100:23 | VerifyOperation | Input | openssl_signature.c:98:34:98:40 | Message |
