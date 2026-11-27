@@ -811,44 +811,24 @@ module Public {
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
   }
 
-  private IR::Instruction getADirectlyWrittenInsn() {
-    exists(Write w | w.writesComponentInstruction(result, _))
-    or
-    result = any(Write w).getLhs().(IR::PointerTarget).getBase()
-    or
-    result = IR::evalExprInstruction(any(SendStmt s).getChannel())
-  }
-
+  /**
+   * Gets an instruction from which `insn` is read in a single `readStep`
+   * (pointer dereference, field or element read, or channel receive).
+   */
   private IR::Instruction getAccessPathPredecessorInsn(IR::Instruction insn) {
     exists(Expr e1, Expr e2 |
-      insn = IR::evalExprInstruction(e1) and result = IR::evalExprInstruction(e2)
+      insn = IR::evalExprInstruction(e1) and result = IR::evalExprInstruction(e2.stripParens())
     |
-      e2 = e1.(DerefExpr).getOperand() or e2 = e1.(StarExpr).getBase()
+      e2 = e1.(DerefExpr).getOperand() or
+      e2 = e1.(StarExpr).getBase() or
+      e2 = e1.(RecvExpr).getOperand()
     )
     or
-    exists(Expr e | insn = IR::implicitDerefInstruction(e) and result = IR::evalExprInstruction(e))
+    exists(Expr e |
+      insn = IR::implicitDerefInstruction(e) and result = IR::evalExprInstruction(e.stripParens())
+    )
     or
     result = insn.(IR::ComponentReadInstruction).getBase()
-  }
-
-  private IR::Instruction getAWrittenInsn() {
-    result = getADirectlyWrittenInsn()
-    or
-    result = getAccessPathPredecessorInsn(getAWrittenInsn())
-  }
-
-  private IR::Instruction getAMethodReceiverInsn() {
-    exists(CallExpr call, IR::MethodReadInstruction methodRead |
-      call.getTarget() instanceof Method and
-      methodRead = IR::evalExprInstruction(call.getCalleeExpr()) and
-      result = methodRead.getReceiver()
-    )
-    or
-    // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
-    // then methodRead.getReceiver() will give us the implicit field read a.b.c
-    // and we want to have post-update nodes for a, the implicit field
-    // read a.b and the implicit field read a.b.c.
-    result = IR::lookThroughImplicitFieldRead(getAMethodReceiverInsn())
   }
 
   /**
@@ -885,31 +865,44 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
-  /** Holds if the node corresponding to `insn` has a post-update node. */
-  predicate insnHasPostUpdateNode(IR::Instruction insn) {
-    exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
+  private predicate insnDirectlyHasPostUpdateNode(IR::Instruction insn) {
+    exists(Expr e | insn = IR::evalExprInstruction(e.stripParens()) |
       e instanceof AddressExpr or
-      e = any(AddressExpr ae).getOperand() or
-      e = any(StarExpr ae).getBase() or
-      e = any(DerefExpr ae).getOperand() or
-      e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
+      e = any(AddressExpr ae).getOperand()
     )
     or
     (
       exists(CallExpr ce |
-        ce.getArgument(0).getType() instanceof TupleType and
-        insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
+        ce.getArgument(0).stripParens().getType() instanceof TupleType and
+        insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0).stripParens()), _)
         or
-        not ce.getArgument(0).getType() instanceof TupleType and
-        insn = IR::evalExprInstruction(ce.getAnArgument())
+        not ce.getArgument(0).stripParens().getType() instanceof TupleType and
+        insn = IR::evalExprInstruction(ce.getAnArgument().stripParens())
       )
       or
       // Receiver of a method call
-      insn = getAMethodReceiverInsn()
+      exists(CallExpr call, IR::MethodReadInstruction methodRead |
+        methodRead = IR::evalExprInstruction(call.getCalleeExpr().stripParens()) and
+        insn = methodRead.getReceiver()
+      )
     ) and
     mutableType(insn.getResultType())
     or
-    insn = getAWrittenInsn()
+    exists(Write w | w.writesComponentInstruction(insn, _))
+    or
+    insn = any(Write w).getLhs().(IR::PointerTarget).getBase()
+    or
+    insn = IR::evalExprInstruction(any(SendStmt s).getChannel().stripParens())
+  }
+
+  /** Holds if the node corresponding to `insn` has a post-update node. */
+  predicate insnHasPostUpdateNode(IR::Instruction insn) {
+    insnDirectlyHasPostUpdateNode(insn)
+    or
+    exists(IR::Instruction succ |
+      insnHasPostUpdateNode(succ) and
+      insn = getAccessPathPredecessorInsn(succ)
+    )
   }
 
   private class DefaultPostUpdateNode extends PostUpdateNode, MkDefaultPostUpdateNode {

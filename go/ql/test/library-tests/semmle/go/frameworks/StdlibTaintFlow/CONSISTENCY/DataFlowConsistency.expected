@@ -1,4 +1,0 @@
-reverseRead
-| CryptoTls.go:66:23:66:27 | implicit-deref state | Origin of readStep is missing a PostUpdateNode. |
-| CryptoTls.go:73:23:73:27 | state | Origin of readStep is missing a PostUpdateNode. |
-| CryptoTls.go:119:23:119:27 | implicit-deref state | Origin of readStep is missing a PostUpdateNode. |
