@@ -1,6 +1,6 @@
 ---
 name: bazel
-description: Conventions for editing Bazel files in the github/codeql repository: the shared `misc/bazel` helpers, `codeql_platform_select` and the `{CODEQL_PLATFORM}` packaging placeholder, adding `MODULE.bazel` dependencies, and the `semmle_code` stub that keeps the standalone build working. Use when editing any `BUILD.bazel`, `*.bzl`, `MODULE.bazel` or `.bazelrc` here, and before validating such an edit.
+description: 'Conventions for editing Bazel files in the github/codeql repository: the shared `misc/bazel` helpers, `codeql_platform_select` and the `{CODEQL_PLATFORM}` packaging placeholder, adding `MODULE.bazel` dependencies, and the `semmle_code` stub that keeps the standalone build working. Use when editing any `BUILD.bazel`, `*.bzl`, `MODULE.bazel` or `.bazelrc` here, and before validating such an edit.'
 ---
 
 # Bazel in the codeql repository
