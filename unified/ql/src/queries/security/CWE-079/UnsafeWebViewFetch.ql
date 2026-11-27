@@ -1,0 +1,93 @@
+/**
+ * @name Unsafe WebView fetch
+ * @description Fetching data in a WebView without restricting the base URL may allow an attacker to access sensitive local data, or enable cross-site scripting attack.
+ * @kind path-problem
+ * @problem.severity warning
+ * @security-severity 7.8
+ * @precision high
+ * @id unified/swift/unsafe-webview-fetch
+ * @tags security
+ *       external/cwe/cwe-079
+ *       external/cwe/cwe-095
+ *       external/cwe/cwe-749
+ */
+
+import unified
+
+/**
+ * A modeled WebView fetch.
+ */
+private class UnsafeWebViewFetchSink extends DataFlow::Node {
+  UnsafeWebViewFetchSink() { Models::isSink(this, "webview-fetch") }
+
+  /**
+   * Gets a base URL argument of this WebView fetch.
+   */
+  DataFlow::Node getABaseUrl() {
+    // `result` is a `webview-baseurl` sink that's part of the same
+    // call as this `webview-fetch` sink.
+    exists(CallExpr call |
+      Models::isSink(result, "webview-baseurl") and
+      call.getAnArgument().getValue() = this.asExpr() and
+      call.getAnArgument().getValue() = result.asExpr()
+    )
+  }
+}
+
+/**
+ * A taint configuration from taint sources to sinks for this query.
+ */
+module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
+
+  predicate isSink(DataFlow::Node node) { node = any(UnsafeWebViewFetchSink sink) }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // include the taint source that reaches the base URL, if any
+    BaseUrlFlow::flowTo(sink.(UnsafeWebViewFetchSink).getABaseUrl())
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+module UnsafeWebViewFetchFlow = TaintTracking::Global<UnsafeWebViewFetchConfig>;
+
+import UnsafeWebViewFetchFlow::PathGraph
+
+/**
+ * A taint configuration from taint sources to base URL arguments of WebView fetches.
+ */
+module BaseUrlConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
+
+  predicate isSink(DataFlow::Node node) { node = any(UnsafeWebViewFetchSink sink).getABaseUrl() }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used as secondary configuration
+  }
+}
+
+module BaseUrlFlow = TaintTracking::Global<BaseUrlConfig>;
+
+from
+  UnsafeWebViewFetchFlow::PathNode sourceNode, UnsafeWebViewFetchFlow::PathNode sinkNode,
+  UnsafeWebViewFetchSink sink, string message
+where
+  UnsafeWebViewFetchFlow::flowPath(sourceNode, sinkNode) and
+  sink = sinkNode.getNode() and
+  (
+    // no base URL
+    not exists(sink.getABaseUrl()) and
+    message = "Tainted data is used in a WebView fetch."
+    or
+    // base URL is nil
+    sink.getABaseUrl().asExpr().(BuiltinExpr).getValue() = "nil" and
+    message = "Tainted data is used in a WebView fetch without restricting the base URL."
+    or
+    // base URL is also tainted
+    BaseUrlFlow::flowTo(sink.getABaseUrl()) and
+    message = "Tainted data is used in a WebView fetch with a tainted base URL."
+  )
+select sink, sourceNode, sinkNode, message
