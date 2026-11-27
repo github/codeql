@@ -236,6 +236,25 @@ For Java and Kotlin, you can increase the limit from the default of 5 to a maxim
 
 A higher limit can find more flows, but the analysis takes more time and memory.
 
+.. _aliasing-java:
+
+Aliasing
+~~~~~~~~
+
+The data flow library does not perform a general alias analysis. When data is stored in a field, the analysis tracks it through the reference used for the store, and through references copied from that reference after the store. A reference that was copied before the store does not see the stored data, even though both references point to the same object. A flow that depends on such an alias is not reported, and no warning is given.
+
+In the following example, the flow to ``sink(b.val)`` is reported, but the flow to ``sink(alias.val)`` is not:
+
+.. code-block:: java
+
+   Box b = new Box();
+   Box alias = b;       // copied before the store
+   b.val = source();
+   sink(b.val);         // reported
+   sink(alias.val);     // not reported
+
+The same applies when the copy is stored in a field before the store, and when the data is stored through the copy and read through the original reference. If the copy is made after the store, the flow is reported.
+
 Using global taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
