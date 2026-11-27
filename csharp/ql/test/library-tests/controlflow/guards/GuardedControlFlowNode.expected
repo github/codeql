@@ -149,9 +149,13 @@
 | Guards.cs:139:16:139:16 | access to parameter s | Guards.cs:137:13:137:13 | access to parameter s | Guards.cs:137:13:137:13 | access to parameter s | null |
 | Guards.cs:139:16:139:16 | access to parameter s | Guards.cs:137:13:137:25 | ... is ... | Guards.cs:137:13:137:13 | access to parameter s | false |
 | Guards.cs:144:25:144:25 | access to local variable s | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:25:144:25 | access to local variable s | true |
+| Guards.cs:144:25:144:25 | access to local variable s | Guards.cs:144:18:144:25 | String s | Guards.cs:144:25:144:25 | access to local variable s | match |
 | Guards.cs:145:20:145:20 | access to local variable s | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:25:144:25 | access to local variable s | true |
+| Guards.cs:145:20:145:20 | access to local variable s | Guards.cs:144:18:144:25 | String s | Guards.cs:144:25:144:25 | access to local variable s | match |
 | Guards.cs:146:16:146:16 | access to parameter o | Guards.cs:144:13:144:25 | ... is ... | Guards.cs:144:13:144:13 | access to parameter o | false |
 | Guards.cs:154:24:154:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | not null |
+| Guards.cs:155:33:155:33 | access to local variable a | Guards.cs:155:18:155:33 | Action<String> a | Guards.cs:155:33:155:33 | access to local variable a | match |
+| Guards.cs:156:24:156:24 | access to local variable a | Guards.cs:155:18:155:33 | Action<String> a | Guards.cs:155:33:155:33 | access to local variable a | match |
 | Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o |  |
 | Guards.cs:158:24:158:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | not null |
 | Guards.cs:160:24:160:24 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | Guards.cs:151:17:151:17 | access to parameter o | not  |
@@ -180,6 +184,10 @@
 | Guards.cs:279:17:279:17 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | Guards.cs:276:16:276:16 | access to parameter o | not null |
 | Guards.cs:279:17:279:17 | access to parameter o | Guards.cs:278:13:279:28 | ... => ... | Guards.cs:279:17:279:17 | access to parameter o | true |
 | Guards.cs:279:17:279:28 | call to method ToString | Guards.cs:278:13:279:28 | ... => ... | Guards.cs:279:17:279:28 | call to method ToString | true |
+| Guards.cs:280:28:280:28 | access to local variable a | Guards.cs:280:13:280:28 | Action<String> a | Guards.cs:280:28:280:28 | access to local variable a | match |
+| Guards.cs:280:28:280:28 | access to local variable a | Guards.cs:280:13:281:28 | ... => ... | Guards.cs:280:28:280:28 | access to local variable a | true |
+| Guards.cs:280:28:280:28 | access to local variable a | Guards.cs:280:13:281:28 | ... => ... | Guards.cs:281:17:281:17 | access to local variable a | true |
+| Guards.cs:281:17:281:17 | access to local variable a | Guards.cs:280:13:280:28 | Action<String> a | Guards.cs:280:28:280:28 | access to local variable a | match |
 | Guards.cs:281:17:281:17 | access to local variable a | Guards.cs:280:13:281:28 | ... => ... | Guards.cs:280:28:280:28 | access to local variable a | true |
 | Guards.cs:281:17:281:17 | access to local variable a | Guards.cs:280:13:281:28 | ... => ... | Guards.cs:281:17:281:17 | access to local variable a | true |
 | Guards.cs:281:17:281:28 | call to method ToString | Guards.cs:280:13:281:28 | ... => ... | Guards.cs:281:17:281:28 | call to method ToString | true |

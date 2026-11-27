@@ -5758,18 +5758,18 @@
 | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:23 | After Object o = ... |  |
 | Patterns.cs:7:20:7:23 | null | Patterns.cs:7:16:7:23 | Object o = ... |  |
 | Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:20:9:38:9 | switch (...) {...} |  |
-| Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:8:13:8:23 | Before ... is ... |  |
-| Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:8:13:8:23 | ... is ... |  |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:8:13:8:23 | After ... is ... [false] | false |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:8:13:8:23 | [MatchTrue] ... is ... | true |
+| Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:8:13:8:23 | ... is ... |  |
+| Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:8:18:8:23 | Int32 i1 |  |
+| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:8:13:8:13 | access to local variable o |  |
 | Patterns.cs:8:13:8:23 | After ... is ... [false] | Patterns.cs:12:14:18:9 | if (...) ... |  |
 | Patterns.cs:8:13:8:23 | After ... is ... [true] | Patterns.cs:9:9:11:9 | {...} |  |
-| Patterns.cs:8:13:8:23 | Before ... is ... | Patterns.cs:8:13:8:13 | access to local variable o |  |
-| Patterns.cs:8:13:8:23 | [MatchTrue] ... is ... | Patterns.cs:8:18:8:23 | Before Int32 i1 |  |
-| Patterns.cs:8:18:8:23 | After Int32 i1 | Patterns.cs:8:13:8:23 | After ... is ... [true] | true |
-| Patterns.cs:8:18:8:23 | Before Int32 i1 | Patterns.cs:8:22:8:23 | access to local variable i1 |  |
-| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:18:8:23 | After Int32 i1 |  |
-| Patterns.cs:8:22:8:23 | access to local variable i1 | Patterns.cs:8:18:8:23 | Int32 i1 |  |
+| Patterns.cs:8:18:8:23 | After Int32 i1 [match] | Patterns.cs:8:13:8:23 | After ... is ... [true] | true |
+| Patterns.cs:8:18:8:23 | After Int32 i1 [no-match] | Patterns.cs:8:13:8:23 | After ... is ... [false] | false |
+| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:18:8:23 | After Int32 i1 [no-match] | no-match |
+| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:18:8:23 | [OuterPatternMatch] Int32 i1 | match |
+| Patterns.cs:8:18:8:23 | [OuterPatternMatch] Int32 i1 | Patterns.cs:8:22:8:23 | access to local variable i1 |  |
+| Patterns.cs:8:22:8:23 | After access to local variable i1 [match] | Patterns.cs:8:18:8:23 | After Int32 i1 [match] | match |
+| Patterns.cs:8:22:8:23 | access to local variable i1 | Patterns.cs:8:22:8:23 | After access to local variable i1 [match] | match |
 | Patterns.cs:9:9:11:9 | After {...} | Patterns.cs:8:9:18:9 | After if (...) ... |  |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:10:13:10:43 | ...; |  |
 | Patterns.cs:10:13:10:42 | After call to method WriteLine | Patterns.cs:10:13:10:43 | After ...; |  |
@@ -5786,18 +5786,18 @@
 | Patterns.cs:10:37:10:40 | {...} | Patterns.cs:10:37:10:40 | After {...} |  |
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:10:37:10:40 | {...} |  |
 | Patterns.cs:12:14:18:9 | After if (...) ... | Patterns.cs:8:9:18:9 | After if (...) ... |  |
-| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:18:12:31 | Before ... is ... |  |
-| Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:12:18:12:31 | ... is ... |  |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:12:18:12:31 | After ... is ... [false] | false |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:12:18:12:31 | [MatchTrue] ... is ... | true |
+| Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:18:12:31 | ... is ... |  |
+| Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:12:23:12:31 | String s1 |  |
+| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:12:18:12:18 | access to local variable o |  |
 | Patterns.cs:12:18:12:31 | After ... is ... [false] | Patterns.cs:16:14:18:9 | if (...) ... |  |
 | Patterns.cs:12:18:12:31 | After ... is ... [true] | Patterns.cs:13:9:15:9 | {...} |  |
-| Patterns.cs:12:18:12:31 | Before ... is ... | Patterns.cs:12:18:12:18 | access to local variable o |  |
-| Patterns.cs:12:18:12:31 | [MatchTrue] ... is ... | Patterns.cs:12:23:12:31 | Before String s1 |  |
-| Patterns.cs:12:23:12:31 | After String s1 | Patterns.cs:12:18:12:31 | After ... is ... [true] | true |
-| Patterns.cs:12:23:12:31 | Before String s1 | Patterns.cs:12:30:12:31 | access to local variable s1 |  |
-| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:23:12:31 | After String s1 |  |
-| Patterns.cs:12:30:12:31 | access to local variable s1 | Patterns.cs:12:23:12:31 | String s1 |  |
+| Patterns.cs:12:23:12:31 | After String s1 [match] | Patterns.cs:12:18:12:31 | After ... is ... [true] | true |
+| Patterns.cs:12:23:12:31 | After String s1 [no-match] | Patterns.cs:12:18:12:31 | After ... is ... [false] | false |
+| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:23:12:31 | After String s1 [no-match] | no-match |
+| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:23:12:31 | [OuterPatternMatch] String s1 | match |
+| Patterns.cs:12:23:12:31 | [OuterPatternMatch] String s1 | Patterns.cs:12:30:12:31 | access to local variable s1 |  |
+| Patterns.cs:12:30:12:31 | After access to local variable s1 [match] | Patterns.cs:12:23:12:31 | After String s1 [match] | match |
+| Patterns.cs:12:30:12:31 | access to local variable s1 | Patterns.cs:12:30:12:31 | After access to local variable s1 [match] | match |
 | Patterns.cs:13:9:15:9 | After {...} | Patterns.cs:12:14:18:9 | After if (...) ... |  |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:14:13:14:46 | ...; |  |
 | Patterns.cs:14:13:14:45 | After call to method WriteLine | Patterns.cs:14:13:14:46 | After ...; |  |
@@ -5814,18 +5814,18 @@
 | Patterns.cs:14:40:14:43 | {...} | Patterns.cs:14:40:14:43 | After {...} |  |
 | Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:14:40:14:43 | {...} |  |
 | Patterns.cs:16:14:18:9 | After if (...) ... | Patterns.cs:12:14:18:9 | After if (...) ... |  |
-| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:16:18:16:28 | Before ... is ... |  |
-| Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:16:18:16:28 | ... is ... |  |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:16:18:16:28 | After ... is ... [false] | false |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:16:18:16:28 | [MatchTrue] ... is ... | true |
+| Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:16:18:16:28 | ... is ... |  |
+| Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:16:23:16:28 | Object v1 |  |
+| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:16:18:16:18 | access to local variable o |  |
 | Patterns.cs:16:18:16:28 | After ... is ... [false] | Patterns.cs:16:14:18:9 | After if (...) ... |  |
 | Patterns.cs:16:18:16:28 | After ... is ... [true] | Patterns.cs:17:9:18:9 | {...} |  |
-| Patterns.cs:16:18:16:28 | Before ... is ... | Patterns.cs:16:18:16:18 | access to local variable o |  |
-| Patterns.cs:16:18:16:28 | [MatchTrue] ... is ... | Patterns.cs:16:23:16:28 | Before Object v1 |  |
-| Patterns.cs:16:23:16:28 | After Object v1 | Patterns.cs:16:18:16:28 | After ... is ... [true] | true |
-| Patterns.cs:16:23:16:28 | Before Object v1 | Patterns.cs:16:27:16:28 | access to local variable v1 |  |
-| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:23:16:28 | After Object v1 |  |
-| Patterns.cs:16:27:16:28 | access to local variable v1 | Patterns.cs:16:23:16:28 | Object v1 |  |
+| Patterns.cs:16:23:16:28 | After Object v1 [match] | Patterns.cs:16:18:16:28 | After ... is ... [true] | true |
+| Patterns.cs:16:23:16:28 | After Object v1 [no-match] | Patterns.cs:16:18:16:28 | After ... is ... [false] | false |
+| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:23:16:28 | After Object v1 [no-match] | no-match |
+| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:23:16:28 | [OuterPatternMatch] Object v1 | match |
+| Patterns.cs:16:23:16:28 | [OuterPatternMatch] Object v1 | Patterns.cs:16:27:16:28 | access to local variable v1 |  |
+| Patterns.cs:16:27:16:28 | After access to local variable v1 [match] | Patterns.cs:16:23:16:28 | After Object v1 [match] | match |
+| Patterns.cs:16:27:16:28 | access to local variable v1 | Patterns.cs:16:27:16:28 | After access to local variable v1 [match] | match |
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:16:14:18:9 | After if (...) ... |  |
 | Patterns.cs:20:9:38:9 | After switch (...) {...} | Patterns.cs:40:9:42:9 | switch (...) {...} |  |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:20:17:20:17 | access to local variable o |  |
@@ -5841,13 +5841,14 @@
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
 | Patterns.cs:24:13:24:36 | After case ...: [match] | Patterns.cs:24:30:24:35 | Before ... > ... |  |
 | Patterns.cs:24:13:24:36 | After case ...: [no-match] | Patterns.cs:27:13:27:24 | case ...: |  |
-| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Before Int32 i2 |  |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 |  |
 | Patterns.cs:24:18:24:23 | After Int32 i2 [match] | Patterns.cs:24:13:24:36 | After case ...: [match] | match |
 | Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | Patterns.cs:24:13:24:36 | After case ...: [no-match] | no-match |
-| Patterns.cs:24:18:24:23 | Before Int32 i2 | Patterns.cs:24:22:24:23 | access to local variable i2 |  |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | After Int32 i2 [match] | match |
 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | no-match |
-| Patterns.cs:24:22:24:23 | access to local variable i2 | Patterns.cs:24:18:24:23 | Int32 i2 |  |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | [OuterPatternMatch] Int32 i2 | match |
+| Patterns.cs:24:18:24:23 | [OuterPatternMatch] Int32 i2 | Patterns.cs:24:22:24:23 | access to local variable i2 |  |
+| Patterns.cs:24:22:24:23 | After access to local variable i2 [match] | Patterns.cs:24:18:24:23 | After Int32 i2 [match] | match |
+| Patterns.cs:24:22:24:23 | access to local variable i2 | Patterns.cs:24:22:24:23 | After access to local variable i2 [match] | match |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:35:24:35 | 0 |  |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:35 | After ... > ... [false] | false |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:35 | After ... > ... [true] | true |
@@ -5872,13 +5873,14 @@
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
 | Patterns.cs:27:13:27:24 | After case ...: [match] | Patterns.cs:28:17:28:47 | ...; |  |
 | Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:30:13:30:27 | case ...: |  |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Before Int32 i3 |  |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 |  |
 | Patterns.cs:27:18:27:23 | After Int32 i3 [match] | Patterns.cs:27:13:27:24 | After case ...: [match] | match |
 | Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:27:13:27:24 | After case ...: [no-match] | no-match |
-| Patterns.cs:27:18:27:23 | Before Int32 i3 | Patterns.cs:27:22:27:23 | access to local variable i3 |  |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | After Int32 i3 [match] | match |
 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | no-match |
-| Patterns.cs:27:22:27:23 | access to local variable i3 | Patterns.cs:27:18:27:23 | Int32 i3 |  |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | [OuterPatternMatch] Int32 i3 | match |
+| Patterns.cs:27:18:27:23 | [OuterPatternMatch] Int32 i3 | Patterns.cs:27:22:27:23 | access to local variable i3 |  |
+| Patterns.cs:27:22:27:23 | After access to local variable i3 [match] | Patterns.cs:27:18:27:23 | After Int32 i3 [match] | match |
+| Patterns.cs:27:22:27:23 | access to local variable i3 | Patterns.cs:27:22:27:23 | After access to local variable i3 [match] | match |
 | Patterns.cs:28:17:28:46 | After call to method WriteLine | Patterns.cs:28:17:28:47 | After ...; |  |
 | Patterns.cs:28:17:28:46 | Before call to method WriteLine | Patterns.cs:28:35:28:45 | Before $"..." |  |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:17:28:46 | After call to method WriteLine |  |
@@ -5896,13 +5898,14 @@
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
 | Patterns.cs:30:13:30:27 | After case ...: [match] | Patterns.cs:31:17:31:50 | ...; |  |
 | Patterns.cs:30:13:30:27 | After case ...: [no-match] | Patterns.cs:33:13:33:24 | case ...: |  |
-| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | Before String s2 |  |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 |  |
 | Patterns.cs:30:18:30:26 | After String s2 [match] | Patterns.cs:30:13:30:27 | After case ...: [match] | match |
 | Patterns.cs:30:18:30:26 | After String s2 [no-match] | Patterns.cs:30:13:30:27 | After case ...: [no-match] | no-match |
-| Patterns.cs:30:18:30:26 | Before String s2 | Patterns.cs:30:25:30:26 | access to local variable s2 |  |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | After String s2 [match] | match |
 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | After String s2 [no-match] | no-match |
-| Patterns.cs:30:25:30:26 | access to local variable s2 | Patterns.cs:30:18:30:26 | String s2 |  |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | [OuterPatternMatch] String s2 | match |
+| Patterns.cs:30:18:30:26 | [OuterPatternMatch] String s2 | Patterns.cs:30:25:30:26 | access to local variable s2 |  |
+| Patterns.cs:30:25:30:26 | After access to local variable s2 [match] | Patterns.cs:30:18:30:26 | After String s2 [match] | match |
+| Patterns.cs:30:25:30:26 | access to local variable s2 | Patterns.cs:30:25:30:26 | After access to local variable s2 [match] | match |
 | Patterns.cs:31:17:31:49 | After call to method WriteLine | Patterns.cs:31:17:31:50 | After ...; |  |
 | Patterns.cs:31:17:31:49 | Before call to method WriteLine | Patterns.cs:31:35:31:48 | Before $"..." |  |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:17:31:49 | After call to method WriteLine |  |
@@ -5920,13 +5923,14 @@
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
 | Patterns.cs:33:13:33:24 | After case ...: [match] | Patterns.cs:34:17:34:22 | Before break; |  |
 | Patterns.cs:33:13:33:24 | After case ...: [no-match] | Patterns.cs:35:13:35:20 | default: |  |
-| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Before Object v2 |  |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 |  |
 | Patterns.cs:33:18:33:23 | After Object v2 [match] | Patterns.cs:33:13:33:24 | After case ...: [match] | match |
 | Patterns.cs:33:18:33:23 | After Object v2 [no-match] | Patterns.cs:33:13:33:24 | After case ...: [no-match] | no-match |
-| Patterns.cs:33:18:33:23 | Before Object v2 | Patterns.cs:33:22:33:23 | access to local variable v2 |  |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | After Object v2 [match] | match |
 | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | After Object v2 [no-match] | no-match |
-| Patterns.cs:33:22:33:23 | access to local variable v2 | Patterns.cs:33:18:33:23 | Object v2 |  |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | [OuterPatternMatch] Object v2 | match |
+| Patterns.cs:33:18:33:23 | [OuterPatternMatch] Object v2 | Patterns.cs:33:22:33:23 | access to local variable v2 |  |
+| Patterns.cs:33:22:33:23 | After access to local variable v2 [match] | Patterns.cs:33:18:33:23 | After Object v2 [match] | match |
+| Patterns.cs:33:22:33:23 | access to local variable v2 | Patterns.cs:33:22:33:23 | After access to local variable v2 [match] | match |
 | Patterns.cs:34:17:34:22 | Before break; | Patterns.cs:34:17:34:22 | break; |  |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
 | Patterns.cs:35:13:35:20 | After default: [match] | Patterns.cs:36:17:36:52 | ...; |  |
@@ -5944,71 +5948,75 @@
 | Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:40:9:42:9 | After switch (...) {...} |  |
 | Patterns.cs:47:24:47:25 | Entry | Patterns.cs:47:32:47:32 | c |  |
 | Patterns.cs:47:24:47:25 | Normal Exit | Patterns.cs:47:24:47:25 | Exit |  |
-| Patterns.cs:47:32:47:32 | c | Patterns.cs:48:9:48:20 | Before ... is ... |  |
-| Patterns.cs:48:9:48:9 | access to parameter c | Patterns.cs:48:9:48:20 | ... is ... |  |
-| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:48:9:48:20 | After ... is ... |  |
-| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:48:9:48:20 | [MatchTrue] ... is ... | true |
+| Patterns.cs:47:32:47:32 | c | Patterns.cs:48:9:48:20 | ... is ... |  |
+| Patterns.cs:48:9:48:9 | access to parameter c | Patterns.cs:48:14:48:20 | not ... |  |
+| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:48:9:48:9 | access to parameter c |  |
 | Patterns.cs:48:9:48:20 | After ... is ... | Patterns.cs:47:24:47:25 | Normal Exit |  |
-| Patterns.cs:48:9:48:20 | Before ... is ... | Patterns.cs:48:9:48:9 | access to parameter c |  |
-| Patterns.cs:48:9:48:20 | [MatchTrue] ... is ... | Patterns.cs:48:14:48:20 | Before not ... |  |
-| Patterns.cs:48:14:48:20 | After not ... | Patterns.cs:48:9:48:20 | After ... is ... |  |
-| Patterns.cs:48:14:48:20 | Before not ... | Patterns.cs:48:18:48:20 | a |  |
-| Patterns.cs:48:14:48:20 | not ... | Patterns.cs:48:14:48:20 | After not ... |  |
-| Patterns.cs:48:18:48:20 | a | Patterns.cs:48:14:48:20 | not ... |  |
+| Patterns.cs:48:14:48:20 | After not ... [match] | Patterns.cs:48:9:48:20 | After ... is ... |  |
+| Patterns.cs:48:14:48:20 | After not ... [no-match] | Patterns.cs:48:9:48:20 | After ... is ... |  |
+| Patterns.cs:48:14:48:20 | not ... | Patterns.cs:48:18:48:20 | a |  |
+| Patterns.cs:48:18:48:20 | After a [match] | Patterns.cs:48:14:48:20 | After not ... [no-match] | no-match |
+| Patterns.cs:48:18:48:20 | After a [no-match] | Patterns.cs:48:14:48:20 | After not ... [match] | match |
+| Patterns.cs:48:18:48:20 | a | Patterns.cs:48:18:48:20 | After a [match] | match |
+| Patterns.cs:48:18:48:20 | a | Patterns.cs:48:18:48:20 | After a [no-match] | no-match |
 | Patterns.cs:50:24:50:25 | Entry | Patterns.cs:50:34:50:34 | c |  |
 | Patterns.cs:50:24:50:25 | Normal Exit | Patterns.cs:50:24:50:25 | Exit |  |
 | Patterns.cs:50:34:50:34 | c | Patterns.cs:51:9:51:39 | ... ? ... : ... |  |
-| Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:51:9:51:21 | ... is ... |  |
-| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:9:51:21 | After ... is ... [false] | false |
-| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:9:51:21 | [MatchTrue] ... is ... | true |
-| Patterns.cs:51:9:51:21 | After ... is ... [false] | Patterns.cs:51:34:51:39 | Before ... is ... |  |
-| Patterns.cs:51:9:51:21 | After ... is ... [true] | Patterns.cs:51:25:51:30 | Before ... is ... |  |
-| Patterns.cs:51:9:51:21 | Before ... is ... | Patterns.cs:51:9:51:9 | access to parameter c |  |
-| Patterns.cs:51:9:51:21 | [MatchTrue] ... is ... | Patterns.cs:51:14:51:21 | Before not ... |  |
-| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:51:9:51:21 | Before ... is ... |  |
+| Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:51:14:51:21 | not ... |  |
+| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:9:51:9 | access to parameter c |  |
+| Patterns.cs:51:9:51:21 | After ... is ... [false] | Patterns.cs:51:34:51:39 | ... is ... |  |
+| Patterns.cs:51:9:51:21 | After ... is ... [true] | Patterns.cs:51:25:51:30 | ... is ... |  |
+| Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:51:9:51:21 | ... is ... |  |
 | Patterns.cs:51:9:51:39 | After ... ? ... : ... | Patterns.cs:50:24:50:25 | Normal Exit |  |
-| Patterns.cs:51:14:51:21 | After not ... | Patterns.cs:51:9:51:21 | After ... is ... [true] | true |
-| Patterns.cs:51:14:51:21 | Before not ... | Patterns.cs:51:18:51:21 | null |  |
-| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:51:14:51:21 | After not ... |  |
-| Patterns.cs:51:18:51:21 | null | Patterns.cs:51:14:51:21 | not ... |  |
-| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:51:25:51:30 | ... is ... |  |
-| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:51:25:51:30 | After ... is ... |  |
-| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:51:25:51:30 | [MatchTrue] ... is ... | true |
+| Patterns.cs:51:14:51:21 | After not ... [match] | Patterns.cs:51:9:51:21 | After ... is ... [true] | true |
+| Patterns.cs:51:14:51:21 | After not ... [no-match] | Patterns.cs:51:9:51:21 | After ... is ... [false] | false |
+| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:51:18:51:21 | null |  |
+| Patterns.cs:51:18:51:21 | After null [match] | Patterns.cs:51:14:51:21 | After not ... [no-match] | no-match |
+| Patterns.cs:51:18:51:21 | After null [no-match] | Patterns.cs:51:14:51:21 | After not ... [match] | match |
+| Patterns.cs:51:18:51:21 | null | Patterns.cs:51:18:51:21 | After null [match] | match |
+| Patterns.cs:51:18:51:21 | null | Patterns.cs:51:18:51:21 | After null [no-match] | no-match |
+| Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:51:30:51:30 | 1 |  |
+| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:51:25:51:25 | access to parameter c |  |
 | Patterns.cs:51:25:51:30 | After ... is ... | Patterns.cs:51:9:51:39 | After ... ? ... : ... |  |
-| Patterns.cs:51:25:51:30 | Before ... is ... | Patterns.cs:51:25:51:25 | access to parameter c |  |
-| Patterns.cs:51:25:51:30 | [MatchTrue] ... is ... | Patterns.cs:51:30:51:30 | 1 |  |
-| Patterns.cs:51:30:51:30 | 1 | Patterns.cs:51:25:51:30 | After ... is ... |  |
-| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:51:34:51:39 | ... is ... |  |
-| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:51:34:51:39 | After ... is ... |  |
-| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:51:34:51:39 | [MatchTrue] ... is ... | true |
+| Patterns.cs:51:30:51:30 | 1 | Patterns.cs:51:30:51:30 | After 1 [match] | match |
+| Patterns.cs:51:30:51:30 | 1 | Patterns.cs:51:30:51:30 | After 1 [no-match] | no-match |
+| Patterns.cs:51:30:51:30 | After 1 [match] | Patterns.cs:51:25:51:30 | After ... is ... |  |
+| Patterns.cs:51:30:51:30 | After 1 [no-match] | Patterns.cs:51:25:51:30 | After ... is ... |  |
+| Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:51:39:51:39 | 2 |  |
+| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:51:34:51:34 | access to parameter c |  |
 | Patterns.cs:51:34:51:39 | After ... is ... | Patterns.cs:51:9:51:39 | After ... ? ... : ... |  |
-| Patterns.cs:51:34:51:39 | Before ... is ... | Patterns.cs:51:34:51:34 | access to parameter c |  |
-| Patterns.cs:51:34:51:39 | [MatchTrue] ... is ... | Patterns.cs:51:39:51:39 | 2 |  |
-| Patterns.cs:51:39:51:39 | 2 | Patterns.cs:51:34:51:39 | After ... is ... |  |
+| Patterns.cs:51:39:51:39 | 2 | Patterns.cs:51:39:51:39 | After 2 [match] | match |
+| Patterns.cs:51:39:51:39 | 2 | Patterns.cs:51:39:51:39 | After 2 [no-match] | no-match |
+| Patterns.cs:51:39:51:39 | After 2 [match] | Patterns.cs:51:34:51:39 | After ... is ... |  |
+| Patterns.cs:51:39:51:39 | After 2 [no-match] | Patterns.cs:51:34:51:39 | After ... is ... |  |
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:53:34:53:34 | c |  |
 | Patterns.cs:53:24:53:25 | Normal Exit | Patterns.cs:53:24:53:25 | Exit |  |
-| Patterns.cs:53:34:53:34 | c | Patterns.cs:54:9:54:37 | Before ... is ... |  |
-| Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:9:54:37 | ... is ... |  |
-| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:37 | After ... is ... |  |
-| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:37 | [MatchTrue] ... is ... | true |
+| Patterns.cs:53:34:53:34 | c | Patterns.cs:54:9:54:37 | ... is ... |  |
+| Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:14:54:37 | not ... |  |
+| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:9 | access to parameter c |  |
 | Patterns.cs:54:9:54:37 | After ... is ... | Patterns.cs:53:24:53:25 | Normal Exit |  |
-| Patterns.cs:54:9:54:37 | Before ... is ... | Patterns.cs:54:9:54:9 | access to parameter c |  |
-| Patterns.cs:54:9:54:37 | [MatchTrue] ... is ... | Patterns.cs:54:14:54:37 | Before not ... |  |
-| Patterns.cs:54:14:54:37 | After not ... | Patterns.cs:54:9:54:37 | After ... is ... |  |
-| Patterns.cs:54:14:54:37 | Before not ... | Patterns.cs:54:18:54:37 | Before { ... } |  |
-| Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:14:54:37 | After not ... |  |
-| Patterns.cs:54:18:54:25 | access to type Patterns | Patterns.cs:54:27:54:35 | Before { ... } |  |
-| Patterns.cs:54:18:54:37 | After Patterns u | Patterns.cs:54:18:54:25 | access to type Patterns |  |
-| Patterns.cs:54:18:54:37 | After { ... } | Patterns.cs:54:14:54:37 | not ... |  |
-| Patterns.cs:54:18:54:37 | Before Patterns u | Patterns.cs:54:37:54:37 | access to local variable u |  |
-| Patterns.cs:54:18:54:37 | Before { ... } | Patterns.cs:54:18:54:37 | Before Patterns u |  |
-| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | After Patterns u |  |
-| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | After { ... } |  |
-| Patterns.cs:54:27:54:35 | After { ... } | Patterns.cs:54:18:54:37 | { ... } |  |
-| Patterns.cs:54:27:54:35 | Before { ... } | Patterns.cs:54:33:54:33 | 1 |  |
-| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | After { ... } |  |
-| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:27:54:35 | { ... } |  |
-| Patterns.cs:54:37:54:37 | access to local variable u | Patterns.cs:54:18:54:37 | Patterns u |  |
+| Patterns.cs:54:14:54:37 | After not ... [match] | Patterns.cs:54:9:54:37 | After ... is ... |  |
+| Patterns.cs:54:14:54:37 | After not ... [no-match] | Patterns.cs:54:9:54:37 | After ... is ... |  |
+| Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:18:54:37 | { ... } |  |
+| Patterns.cs:54:18:54:37 | After Patterns u [match] | Patterns.cs:54:27:54:35 | { ... } |  |
+| Patterns.cs:54:18:54:37 | After Patterns u [no-match] | Patterns.cs:54:18:54:37 | After { ... } [no-match] | no-match |
+| Patterns.cs:54:18:54:37 | After { ... } [match] | Patterns.cs:54:14:54:37 | After not ... [no-match] | no-match |
+| Patterns.cs:54:18:54:37 | After { ... } [no-match] | Patterns.cs:54:14:54:37 | After not ... [match] | match |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | After Patterns u [no-match] | no-match |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | match |
+| Patterns.cs:54:18:54:37 | [OuterPatternMatch] Patterns u | Patterns.cs:54:37:54:37 | access to local variable u |  |
+| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | Patterns u |  |
+| Patterns.cs:54:27:54:35 | After { ... } [match] | Patterns.cs:54:18:54:37 | After { ... } [match] | match |
+| Patterns.cs:54:27:54:35 | After { ... } [no-match] | Patterns.cs:54:18:54:37 | After { ... } [no-match] | no-match |
+| Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } | Patterns.cs:54:33:54:33 | 1 |  |
+| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | After { ... } [no-match] | no-match |
+| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | [OuterPatternMatch] { ... } | match |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | After 1 [match] | match |
+| Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | After 1 [no-match] | no-match |
+| Patterns.cs:54:33:54:33 | After 1 [match] | Patterns.cs:54:27:54:35 | After { ... } [match] | match |
+| Patterns.cs:54:33:54:33 | After 1 [no-match] | Patterns.cs:54:27:54:35 | After { ... } [no-match] | no-match |
+| Patterns.cs:54:37:54:37 | After access to local variable u [match] | Patterns.cs:54:18:54:37 | After Patterns u [match] | match |
+| Patterns.cs:54:37:54:37 | access to local variable u | Patterns.cs:54:37:54:37 | After access to local variable u [match] | match |
 | Patterns.cs:56:26:56:27 | Entry | Patterns.cs:56:33:56:33 | i |  |
 | Patterns.cs:56:26:56:27 | Normal Exit | Patterns.cs:56:26:56:27 | Exit |  |
 | Patterns.cs:56:33:56:33 | i | Patterns.cs:57:5:63:5 | {...} |  |
@@ -6020,13 +6028,14 @@
 | Patterns.cs:58:16:62:9 | After ... switch { ... } | Patterns.cs:58:9:62:10 | return ...; |  |
 | Patterns.cs:60:13:60:17 | After not ... [match] | Patterns.cs:60:13:60:28 | After ... => ... [match] | match |
 | Patterns.cs:60:13:60:17 | After not ... [no-match] | Patterns.cs:60:13:60:28 | After ... => ... [no-match] | no-match |
-| Patterns.cs:60:13:60:17 | Before not ... | Patterns.cs:60:17:60:17 | 1 |  |
-| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | After not ... [match] | match |
-| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | After not ... [no-match] | no-match |
-| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:60:13:60:17 | Before not ... |  |
+| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:17:60:17 | 1 |  |
+| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:60:13:60:17 | not ... |  |
 | Patterns.cs:60:13:60:28 | After ... => ... [match] | Patterns.cs:60:22:60:28 | "not 1" |  |
 | Patterns.cs:60:13:60:28 | After ... => ... [no-match] | Patterns.cs:61:13:61:24 | ... => ... |  |
-| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:13:60:17 | not ... |  |
+| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:17:60:17 | After 1 [match] | match |
+| Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:17:60:17 | After 1 [no-match] | no-match |
+| Patterns.cs:60:17:60:17 | After 1 [match] | Patterns.cs:60:13:60:17 | After not ... [no-match] | no-match |
+| Patterns.cs:60:17:60:17 | After 1 [no-match] | Patterns.cs:60:13:60:17 | After not ... [match] | match |
 | Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:58:16:62:9 | After ... switch { ... } |  |
 | Patterns.cs:61:13:61:13 | After _ [match] | Patterns.cs:61:13:61:24 | After ... => ... [match] | match |
 | Patterns.cs:61:13:61:13 | _ | Patterns.cs:61:13:61:13 | After _ [match] | match |
@@ -6043,13 +6052,14 @@
 | Patterns.cs:67:16:71:9 | After ... switch { ... } | Patterns.cs:67:9:71:10 | return ...; |  |
 | Patterns.cs:69:13:69:17 | After not ... [match] | Patterns.cs:69:13:69:33 | After ... => ... [match] | match |
 | Patterns.cs:69:13:69:17 | After not ... [no-match] | Patterns.cs:69:13:69:33 | After ... => ... [no-match] | no-match |
-| Patterns.cs:69:13:69:17 | Before not ... | Patterns.cs:69:17:69:17 | 2 |  |
-| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:13:69:17 | After not ... [match] | match |
-| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:13:69:17 | After not ... [no-match] | no-match |
-| Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:69:13:69:17 | Before not ... |  |
+| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:17:69:17 | 2 |  |
+| Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:69:13:69:17 | not ... |  |
 | Patterns.cs:69:13:69:33 | After ... => ... [match] | Patterns.cs:69:22:69:33 | "impossible" |  |
 | Patterns.cs:69:13:69:33 | After ... => ... [no-match] | Patterns.cs:70:13:70:27 | ... => ... |  |
-| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:13:69:17 | not ... |  |
+| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:17:69:17 | After 2 [match] | match |
+| Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:17:69:17 | After 2 [no-match] | no-match |
+| Patterns.cs:69:17:69:17 | After 2 [match] | Patterns.cs:69:13:69:17 | After not ... [no-match] | no-match |
+| Patterns.cs:69:17:69:17 | After 2 [no-match] | Patterns.cs:69:13:69:17 | After not ... [match] | match |
 | Patterns.cs:69:22:69:33 | "impossible" | Patterns.cs:67:16:71:9 | After ... switch { ... } |  |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | After 2 [match] | match |
 | Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | After 2 [no-match] | no-match |
@@ -6104,45 +6114,51 @@
 | Patterns.cs:85:26:85:27 | Entry | Patterns.cs:85:33:85:33 | i |  |
 | Patterns.cs:85:26:85:27 | Normal Exit | Patterns.cs:85:26:85:27 | Exit |  |
 | Patterns.cs:85:33:85:33 | i | Patterns.cs:85:39:85:69 | ... ? ... : ... |  |
-| Patterns.cs:85:39:85:39 | access to parameter i | Patterns.cs:85:39:85:53 | ... is ... |  |
-| Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:39:85:53 | After ... is ... [false] | false |
-| Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:39:85:53 | [MatchTrue] ... is ... | true |
+| Patterns.cs:85:39:85:39 | access to parameter i | Patterns.cs:85:44:85:53 | ... or ... |  |
+| Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:39:85:39 | access to parameter i |  |
 | Patterns.cs:85:39:85:53 | After ... is ... [false] | Patterns.cs:85:67:85:69 | "2" |  |
 | Patterns.cs:85:39:85:53 | After ... is ... [true] | Patterns.cs:85:57:85:63 | "not 2" |  |
-| Patterns.cs:85:39:85:53 | Before ... is ... | Patterns.cs:85:39:85:39 | access to parameter i |  |
-| Patterns.cs:85:39:85:53 | [MatchTrue] ... is ... | Patterns.cs:85:44:85:53 | Before ... or ... |  |
-| Patterns.cs:85:39:85:69 | ... ? ... : ... | Patterns.cs:85:39:85:53 | Before ... is ... |  |
+| Patterns.cs:85:39:85:69 | ... ? ... : ... | Patterns.cs:85:39:85:53 | ... is ... |  |
 | Patterns.cs:85:39:85:69 | After ... ? ... : ... | Patterns.cs:85:26:85:27 | Normal Exit |  |
-| Patterns.cs:85:44:85:44 | 1 | Patterns.cs:85:49:85:53 | Before not ... |  |
-| Patterns.cs:85:44:85:53 | ... or ... | Patterns.cs:85:44:85:53 | After ... or ... |  |
-| Patterns.cs:85:44:85:53 | After ... or ... | Patterns.cs:85:39:85:53 | After ... is ... [true] | true |
-| Patterns.cs:85:44:85:53 | Before ... or ... | Patterns.cs:85:44:85:44 | 1 |  |
-| Patterns.cs:85:49:85:53 | After not ... | Patterns.cs:85:44:85:53 | ... or ... |  |
-| Patterns.cs:85:49:85:53 | Before not ... | Patterns.cs:85:53:85:53 | 2 |  |
-| Patterns.cs:85:49:85:53 | not ... | Patterns.cs:85:49:85:53 | After not ... |  |
-| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:49:85:53 | not ... |  |
+| Patterns.cs:85:44:85:44 | 1 | Patterns.cs:85:44:85:44 | After 1 [match] | match |
+| Patterns.cs:85:44:85:44 | 1 | Patterns.cs:85:44:85:44 | After 1 [no-match] | no-match |
+| Patterns.cs:85:44:85:44 | After 1 [match] | Patterns.cs:85:44:85:53 | After ... or ... [match] | match |
+| Patterns.cs:85:44:85:44 | After 1 [no-match] | Patterns.cs:85:49:85:53 | not ... |  |
+| Patterns.cs:85:44:85:53 | ... or ... | Patterns.cs:85:44:85:44 | 1 |  |
+| Patterns.cs:85:44:85:53 | After ... or ... [match] | Patterns.cs:85:39:85:53 | After ... is ... [true] | true |
+| Patterns.cs:85:44:85:53 | After ... or ... [no-match] | Patterns.cs:85:39:85:53 | After ... is ... [false] | false |
+| Patterns.cs:85:49:85:53 | After not ... [match] | Patterns.cs:85:44:85:53 | After ... or ... [match] | match |
+| Patterns.cs:85:49:85:53 | After not ... [no-match] | Patterns.cs:85:44:85:53 | After ... or ... [no-match] | no-match |
+| Patterns.cs:85:49:85:53 | not ... | Patterns.cs:85:53:85:53 | 2 |  |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:53:85:53 | After 2 [match] | match |
+| Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:53:85:53 | After 2 [no-match] | no-match |
+| Patterns.cs:85:53:85:53 | After 2 [match] | Patterns.cs:85:49:85:53 | After not ... [no-match] | no-match |
+| Patterns.cs:85:53:85:53 | After 2 [no-match] | Patterns.cs:85:49:85:53 | After not ... [match] | match |
 | Patterns.cs:85:57:85:63 | "not 2" | Patterns.cs:85:39:85:69 | After ... ? ... : ... |  |
 | Patterns.cs:85:67:85:69 | "2" | Patterns.cs:85:39:85:69 | After ... ? ... : ... |  |
 | Patterns.cs:87:26:87:27 | Entry | Patterns.cs:87:33:87:33 | i |  |
 | Patterns.cs:87:26:87:27 | Normal Exit | Patterns.cs:87:26:87:27 | Exit |  |
 | Patterns.cs:87:33:87:33 | i | Patterns.cs:87:39:87:70 | ... ? ... : ... |  |
-| Patterns.cs:87:39:87:39 | access to parameter i | Patterns.cs:87:39:87:54 | ... is ... |  |
-| Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:39:87:54 | After ... is ... [false] | false |
-| Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:39:87:54 | [MatchTrue] ... is ... | true |
+| Patterns.cs:87:39:87:39 | access to parameter i | Patterns.cs:87:44:87:54 | ... and ... |  |
+| Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:39:87:39 | access to parameter i |  |
 | Patterns.cs:87:39:87:54 | After ... is ... [false] | Patterns.cs:87:64:87:70 | "not 1" |  |
 | Patterns.cs:87:39:87:54 | After ... is ... [true] | Patterns.cs:87:58:87:60 | "1" |  |
-| Patterns.cs:87:39:87:54 | Before ... is ... | Patterns.cs:87:39:87:39 | access to parameter i |  |
-| Patterns.cs:87:39:87:54 | [MatchTrue] ... is ... | Patterns.cs:87:44:87:54 | Before ... and ... |  |
-| Patterns.cs:87:39:87:70 | ... ? ... : ... | Patterns.cs:87:39:87:54 | Before ... is ... |  |
+| Patterns.cs:87:39:87:70 | ... ? ... : ... | Patterns.cs:87:39:87:54 | ... is ... |  |
 | Patterns.cs:87:39:87:70 | After ... ? ... : ... | Patterns.cs:87:26:87:27 | Normal Exit |  |
-| Patterns.cs:87:44:87:44 | 1 | Patterns.cs:87:50:87:54 | Before not ... |  |
-| Patterns.cs:87:44:87:54 | ... and ... | Patterns.cs:87:44:87:54 | After ... and ... |  |
-| Patterns.cs:87:44:87:54 | After ... and ... | Patterns.cs:87:39:87:54 | After ... is ... [true] | true |
-| Patterns.cs:87:44:87:54 | Before ... and ... | Patterns.cs:87:44:87:44 | 1 |  |
-| Patterns.cs:87:50:87:54 | After not ... | Patterns.cs:87:44:87:54 | ... and ... |  |
-| Patterns.cs:87:50:87:54 | Before not ... | Patterns.cs:87:54:87:54 | 2 |  |
-| Patterns.cs:87:50:87:54 | not ... | Patterns.cs:87:50:87:54 | After not ... |  |
-| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:50:87:54 | not ... |  |
+| Patterns.cs:87:44:87:44 | 1 | Patterns.cs:87:44:87:44 | After 1 [match] | match |
+| Patterns.cs:87:44:87:44 | 1 | Patterns.cs:87:44:87:44 | After 1 [no-match] | no-match |
+| Patterns.cs:87:44:87:44 | After 1 [match] | Patterns.cs:87:50:87:54 | not ... |  |
+| Patterns.cs:87:44:87:44 | After 1 [no-match] | Patterns.cs:87:44:87:54 | After ... and ... [no-match] | no-match |
+| Patterns.cs:87:44:87:54 | ... and ... | Patterns.cs:87:44:87:44 | 1 |  |
+| Patterns.cs:87:44:87:54 | After ... and ... [match] | Patterns.cs:87:39:87:54 | After ... is ... [true] | true |
+| Patterns.cs:87:44:87:54 | After ... and ... [no-match] | Patterns.cs:87:39:87:54 | After ... is ... [false] | false |
+| Patterns.cs:87:50:87:54 | After not ... [match] | Patterns.cs:87:44:87:54 | After ... and ... [match] | match |
+| Patterns.cs:87:50:87:54 | After not ... [no-match] | Patterns.cs:87:44:87:54 | After ... and ... [no-match] | no-match |
+| Patterns.cs:87:50:87:54 | not ... | Patterns.cs:87:54:87:54 | 2 |  |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:54:87:54 | After 2 [match] | match |
+| Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:54:87:54 | After 2 [no-match] | no-match |
+| Patterns.cs:87:54:87:54 | After 2 [match] | Patterns.cs:87:50:87:54 | After not ... [no-match] | no-match |
+| Patterns.cs:87:54:87:54 | After 2 [no-match] | Patterns.cs:87:50:87:54 | After not ... [match] | match |
 | Patterns.cs:87:58:87:60 | "1" | Patterns.cs:87:39:87:70 | After ... ? ... : ... |  |
 | Patterns.cs:87:64:87:70 | "not 1" | Patterns.cs:87:39:87:70 | After ... ? ... : ... |  |
 | Patterns.cs:93:17:93:19 | Entry | Patterns.cs:94:5:99:5 | {...} |  |
@@ -6150,25 +6166,30 @@
 | Patterns.cs:94:5:99:5 | After {...} | Patterns.cs:93:17:93:19 | Normal Exit |  |
 | Patterns.cs:94:5:99:5 | {...} | Patterns.cs:95:9:98:9 | if (...) ... |  |
 | Patterns.cs:95:9:98:9 | After if (...) ... | Patterns.cs:94:5:99:5 | After {...} |  |
-| Patterns.cs:95:9:98:9 | if (...) ... | Patterns.cs:95:13:95:40 | Before ... is ... |  |
-| Patterns.cs:95:13:95:16 | this access | Patterns.cs:95:13:95:40 | ... is ... |  |
-| Patterns.cs:95:13:95:40 | ... is ... | Patterns.cs:95:13:95:40 | After ... is ... [false] | false |
-| Patterns.cs:95:13:95:40 | ... is ... | Patterns.cs:95:13:95:40 | [MatchTrue] ... is ... | true |
+| Patterns.cs:95:9:98:9 | if (...) ... | Patterns.cs:95:13:95:40 | ... is ... |  |
+| Patterns.cs:95:13:95:16 | this access | Patterns.cs:95:21:95:40 | { ... } |  |
+| Patterns.cs:95:13:95:40 | ... is ... | Patterns.cs:95:13:95:16 | this access |  |
 | Patterns.cs:95:13:95:40 | After ... is ... [false] | Patterns.cs:95:9:98:9 | After if (...) ... |  |
 | Patterns.cs:95:13:95:40 | After ... is ... [true] | Patterns.cs:96:9:98:9 | {...} |  |
-| Patterns.cs:95:13:95:40 | Before ... is ... | Patterns.cs:95:13:95:16 | this access |  |
-| Patterns.cs:95:13:95:40 | [MatchTrue] ... is ... | Patterns.cs:95:21:95:40 | Before { ... } |  |
-| Patterns.cs:95:21:95:40 | After { ... } | Patterns.cs:95:13:95:40 | After ... is ... [true] | true |
-| Patterns.cs:95:21:95:40 | After { ... } | Patterns.cs:95:21:95:40 | { ... } |  |
-| Patterns.cs:95:21:95:40 | Before { ... } | Patterns.cs:95:21:95:40 | Before { ... } |  |
-| Patterns.cs:95:21:95:40 | Before { ... } | Patterns.cs:95:29:95:38 | Before ... or ... |  |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | After { ... } |  |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | After { ... } |  |
-| Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:36:95:38 | access to constant B |  |
-| Patterns.cs:95:29:95:38 | ... or ... | Patterns.cs:95:29:95:38 | After ... or ... |  |
-| Patterns.cs:95:29:95:38 | After ... or ... | Patterns.cs:95:21:95:40 | { ... } |  |
-| Patterns.cs:95:29:95:38 | Before ... or ... | Patterns.cs:95:29:95:31 | access to constant A |  |
-| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:29:95:38 | ... or ... |  |
+| Patterns.cs:95:21:95:40 | After { ... } [match] | Patterns.cs:95:13:95:40 | After ... is ... [true] | true |
+| Patterns.cs:95:21:95:40 | After { ... } [match] | Patterns.cs:95:21:95:40 | After { ... } [match] | match |
+| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:13:95:40 | After ... is ... [false] | false |
+| Patterns.cs:95:21:95:40 | After { ... } [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] | no-match |
+| Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | Patterns.cs:95:29:95:38 | ... or ... |  |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | After { ... } [no-match] | no-match |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | [OuterPatternMatch] { ... } | match |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } |  |
+| Patterns.cs:95:29:95:31 | After access to constant A [match] | Patterns.cs:95:29:95:38 | After ... or ... [match] | match |
+| Patterns.cs:95:29:95:31 | After access to constant A [no-match] | Patterns.cs:95:36:95:38 | access to constant B |  |
+| Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:29:95:31 | After access to constant A [match] | match |
+| Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:29:95:31 | After access to constant A [no-match] | no-match |
+| Patterns.cs:95:29:95:38 | ... or ... | Patterns.cs:95:29:95:31 | access to constant A |  |
+| Patterns.cs:95:29:95:38 | After ... or ... [match] | Patterns.cs:95:21:95:40 | After { ... } [match] | match |
+| Patterns.cs:95:29:95:38 | After ... or ... [no-match] | Patterns.cs:95:21:95:40 | After { ... } [no-match] | no-match |
+| Patterns.cs:95:36:95:38 | After access to constant B [match] | Patterns.cs:95:29:95:38 | After ... or ... [match] | match |
+| Patterns.cs:95:36:95:38 | After access to constant B [no-match] | Patterns.cs:95:29:95:38 | After ... or ... [no-match] | no-match |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:36:95:38 | After access to constant B [match] | match |
+| Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:36:95:38 | After access to constant B [no-match] | no-match |
 | Patterns.cs:96:9:98:9 | After {...} | Patterns.cs:95:9:98:9 | After if (...) ... |  |
 | Patterns.cs:96:9:98:9 | {...} | Patterns.cs:97:13:97:39 | ...; |  |
 | Patterns.cs:97:13:97:38 | After call to method WriteLine | Patterns.cs:97:13:97:39 | After ...; |  |
@@ -6204,15 +6225,15 @@
 | PostDominance.cs:11:5:15:5 | After {...} | PostDominance.cs:10:10:10:11 | Normal Exit |  |
 | PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:12:9:13:19 | if (...) ... |  |
 | PostDominance.cs:12:9:13:19 | After if (...) ... | PostDominance.cs:14:9:14:29 | ...; |  |
-| PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:12:13:12:21 | Before ... is ... |  |
-| PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:12:13:12:21 | ... is ... |  |
-| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:12:13:12:21 | After ... is ... [false] | false |
-| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:12:13:12:21 | [MatchTrue] ... is ... | true |
+| PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:12:13:12:21 | ... is ... |  |
+| PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:12:18:12:21 | null |  |
+| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:12:13:12:13 | access to parameter s |  |
 | PostDominance.cs:12:13:12:21 | After ... is ... [false] | PostDominance.cs:12:9:13:19 | After if (...) ... |  |
 | PostDominance.cs:12:13:12:21 | After ... is ... [true] | PostDominance.cs:13:13:13:19 | Before return ...; |  |
-| PostDominance.cs:12:13:12:21 | Before ... is ... | PostDominance.cs:12:13:12:13 | access to parameter s |  |
-| PostDominance.cs:12:13:12:21 | [MatchTrue] ... is ... | PostDominance.cs:12:18:12:21 | null |  |
-| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:13:12:21 | After ... is ... [true] | true |
+| PostDominance.cs:12:18:12:21 | After null [match] | PostDominance.cs:12:13:12:21 | After ... is ... [true] | true |
+| PostDominance.cs:12:18:12:21 | After null [no-match] | PostDominance.cs:12:13:12:21 | After ... is ... [false] | false |
+| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:18:12:21 | After null [match] | match |
+| PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:18:12:21 | After null [no-match] | no-match |
 | PostDominance.cs:13:13:13:19 | Before return ...; | PostDominance.cs:13:13:13:19 | return ...; |  |
 | PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:10:10:10:11 | Normal Exit | return |
 | PostDominance.cs:14:9:14:28 | After call to method WriteLine | PostDominance.cs:14:9:14:29 | After ...; |  |
@@ -6228,15 +6249,15 @@
 | PostDominance.cs:18:5:22:5 | After {...} | PostDominance.cs:17:10:17:11 | Normal Exit |  |
 | PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:19:9:20:55 | if (...) ... |  |
 | PostDominance.cs:19:9:20:55 | After if (...) ... | PostDominance.cs:21:9:21:29 | ...; |  |
-| PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:19:13:19:21 | Before ... is ... |  |
-| PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:19:13:19:21 | ... is ... |  |
-| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:19:13:19:21 | After ... is ... [false] | false |
-| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:19:13:19:21 | [MatchTrue] ... is ... | true |
+| PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:19:13:19:21 | ... is ... |  |
+| PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:19:18:19:21 | null |  |
+| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:19:13:19:13 | access to parameter s |  |
 | PostDominance.cs:19:13:19:21 | After ... is ... [false] | PostDominance.cs:19:9:20:55 | After if (...) ... |  |
 | PostDominance.cs:19:13:19:21 | After ... is ... [true] | PostDominance.cs:20:13:20:55 | Before throw ...; |  |
-| PostDominance.cs:19:13:19:21 | Before ... is ... | PostDominance.cs:19:13:19:13 | access to parameter s |  |
-| PostDominance.cs:19:13:19:21 | [MatchTrue] ... is ... | PostDominance.cs:19:18:19:21 | null |  |
-| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:13:19:21 | After ... is ... [true] | true |
+| PostDominance.cs:19:18:19:21 | After null [match] | PostDominance.cs:19:13:19:21 | After ... is ... [true] | true |
+| PostDominance.cs:19:18:19:21 | After null [no-match] | PostDominance.cs:19:13:19:21 | After ... is ... [false] | false |
+| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:18:19:21 | After null [match] | match |
+| PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:18:19:21 | After null [no-match] | no-match |
 | PostDominance.cs:20:13:20:55 | Before throw ...; | PostDominance.cs:20:19:20:54 | Before object creation of type ArgumentNullException |  |
 | PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:17:10:17:11 | Exceptional Exit | exception |
 | PostDominance.cs:20:19:20:54 | After object creation of type ArgumentNullException | PostDominance.cs:20:13:20:55 | throw ...; |  |
@@ -6470,13 +6491,14 @@
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:30:13:30:20 | After default: [match] | goto |
 | Switch.cs:20:13:20:23 | After case ...: [match] | Switch.cs:21:17:22:27 | if (...) ... |  |
 | Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:13:24:56 | case ...: |  |
-| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Before Int32 i |  |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i |  |
 | Switch.cs:20:18:20:22 | After Int32 i [match] | Switch.cs:20:13:20:23 | After case ...: [match] | match |
 | Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:20:13:20:23 | After case ...: [no-match] | no-match |
-| Switch.cs:20:18:20:22 | Before Int32 i | Switch.cs:20:22:20:22 | access to local variable i |  |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | After Int32 i [match] | match |
 | Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | After Int32 i [no-match] | no-match |
-| Switch.cs:20:22:20:22 | access to local variable i | Switch.cs:20:18:20:22 | Int32 i |  |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | [OuterPatternMatch] Int32 i | match |
+| Switch.cs:20:18:20:22 | [OuterPatternMatch] Int32 i | Switch.cs:20:22:20:22 | access to local variable i |  |
+| Switch.cs:20:22:20:22 | After access to local variable i [match] | Switch.cs:20:18:20:22 | After Int32 i [match] | match |
+| Switch.cs:20:22:20:22 | access to local variable i | Switch.cs:20:22:20:22 | After access to local variable i [match] | match |
 | Switch.cs:21:17:22:27 | After if (...) ... | Switch.cs:23:17:23:28 | Before goto case ...; |  |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:21:21:29 | Before ... == ... |  |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:26:21:29 | null |  |
@@ -6493,13 +6515,14 @@
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:17:23:28 | goto case ...; |  |
 | Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:24:32:24:55 | ... && ... |  |
 | Switch.cs:24:13:24:56 | After case ...: [no-match] | Switch.cs:27:13:27:39 | case ...: |  |
-| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | Before String s |  |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s |  |
 | Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:24:13:24:56 | After case ...: [match] | match |
 | Switch.cs:24:18:24:25 | After String s [no-match] | Switch.cs:24:13:24:56 | After case ...: [no-match] | no-match |
-| Switch.cs:24:18:24:25 | Before String s | Switch.cs:24:25:24:25 | access to local variable s |  |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | After String s [match] | match |
 | Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | After String s [no-match] | no-match |
-| Switch.cs:24:25:24:25 | access to local variable s | Switch.cs:24:18:24:25 | String s |  |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | [OuterPatternMatch] String s | match |
+| Switch.cs:24:18:24:25 | [OuterPatternMatch] String s | Switch.cs:24:25:24:25 | access to local variable s |  |
+| Switch.cs:24:25:24:25 | After access to local variable s [match] | Switch.cs:24:18:24:25 | After String s [match] | match |
+| Switch.cs:24:25:24:25 | access to local variable s | Switch.cs:24:25:24:25 | After access to local variable s [match] | match |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:39 | access to property Length |  |
 | Switch.cs:24:32:24:39 | After access to property Length | Switch.cs:24:43:24:43 | 0 |  |
 | Switch.cs:24:32:24:39 | Before access to property Length | Switch.cs:24:32:24:32 | access to local variable s |  |
@@ -6530,13 +6553,14 @@
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:10:10:10:11 | Normal Exit | return |
 | Switch.cs:27:13:27:39 | After case ...: [match] | Switch.cs:27:32:27:38 | Before call to method Throw |  |
 | Switch.cs:27:13:27:39 | After case ...: [no-match] | Switch.cs:30:13:30:20 | default: |  |
-| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Before Double d |  |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d |  |
 | Switch.cs:27:18:27:25 | After Double d [match] | Switch.cs:27:13:27:39 | After case ...: [match] | match |
 | Switch.cs:27:18:27:25 | After Double d [no-match] | Switch.cs:27:13:27:39 | After case ...: [no-match] | no-match |
-| Switch.cs:27:18:27:25 | Before Double d | Switch.cs:27:25:27:25 | access to local variable d |  |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | After Double d [match] | match |
 | Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | After Double d [no-match] | no-match |
-| Switch.cs:27:25:27:25 | access to local variable d | Switch.cs:27:18:27:25 | Double d |  |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | [OuterPatternMatch] Double d | match |
+| Switch.cs:27:18:27:25 | [OuterPatternMatch] Double d | Switch.cs:27:25:27:25 | access to local variable d |  |
+| Switch.cs:27:25:27:25 | After access to local variable d [match] | Switch.cs:27:18:27:25 | After Double d [match] | match |
+| Switch.cs:27:25:27:25 | access to local variable d | Switch.cs:27:25:27:25 | After access to local variable d [match] | match |
 | Switch.cs:27:32:27:38 | Before call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |  |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:10:10:10:11 | Exceptional Exit | exception |
 | Switch.cs:28:13:28:17 | Label: | Switch.cs:29:17:29:23 | Before return ...; |  |
@@ -6814,13 +6838,14 @@
 | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | Switch.cs:126:13:126:19 | Before return ...; |  |
 | Switch.cs:125:24:125:29 | After Boolean b [match] | Switch.cs:125:24:125:34 | After ... => ... [match] | match |
 | Switch.cs:125:24:125:29 | After Boolean b [no-match] | Switch.cs:125:24:125:34 | After ... => ... [no-match] | no-match |
-| Switch.cs:125:24:125:29 | Before Boolean b | Switch.cs:125:29:125:29 | access to local variable b |  |
-| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | After Boolean b [match] | match |
 | Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | After Boolean b [no-match] | no-match |
-| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Before Boolean b |  |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | [OuterPatternMatch] Boolean b | match |
+| Switch.cs:125:24:125:29 | [OuterPatternMatch] Boolean b | Switch.cs:125:29:125:29 | access to local variable b |  |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b |  |
 | Switch.cs:125:24:125:34 | After ... => ... [match] | Switch.cs:125:34:125:34 | access to local variable b |  |
 | Switch.cs:125:24:125:34 | After ... => ... [no-match] | Switch.cs:125:37:125:46 | ... => ... |  |
-| Switch.cs:125:29:125:29 | access to local variable b | Switch.cs:125:24:125:29 | Boolean b |  |
+| Switch.cs:125:29:125:29 | After access to local variable b [match] | Switch.cs:125:24:125:29 | After Boolean b [match] | match |
+| Switch.cs:125:29:125:29 | access to local variable b | Switch.cs:125:29:125:29 | After access to local variable b [match] | match |
 | Switch.cs:125:34:125:34 | After access to local variable b [false] | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | false |
 | Switch.cs:125:34:125:34 | After access to local variable b [true] | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | true |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | After access to local variable b [false] | false |
@@ -6848,13 +6873,14 @@
 | Switch.cs:131:17:131:53 | After ... switch { ... } [null] | Switch.cs:131:16:131:66 | After call to method ToString |  |
 | Switch.cs:131:28:131:35 | After String s [match] | Switch.cs:131:28:131:40 | After ... => ... [match] | match |
 | Switch.cs:131:28:131:35 | After String s [no-match] | Switch.cs:131:28:131:40 | After ... => ... [no-match] | no-match |
-| Switch.cs:131:28:131:35 | Before String s | Switch.cs:131:35:131:35 | access to local variable s |  |
-| Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | After String s [match] | match |
 | Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | After String s [no-match] | no-match |
-| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | Before String s |  |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | [OuterPatternMatch] String s | match |
+| Switch.cs:131:28:131:35 | [OuterPatternMatch] String s | Switch.cs:131:35:131:35 | access to local variable s |  |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s |  |
 | Switch.cs:131:28:131:40 | After ... => ... [match] | Switch.cs:131:40:131:40 | access to local variable s |  |
 | Switch.cs:131:28:131:40 | After ... => ... [no-match] | Switch.cs:131:43:131:51 | ... => ... |  |
-| Switch.cs:131:35:131:35 | access to local variable s | Switch.cs:131:28:131:35 | String s |  |
+| Switch.cs:131:35:131:35 | After access to local variable s [match] | Switch.cs:131:28:131:35 | After String s [match] | match |
+| Switch.cs:131:35:131:35 | access to local variable s | Switch.cs:131:35:131:35 | After access to local variable s [match] | match |
 | Switch.cs:131:40:131:40 | After access to local variable s [non-null] | Switch.cs:131:17:131:53 | After ... switch { ... } [non-null] | non-null |
 | Switch.cs:131:40:131:40 | After access to local variable s [null] | Switch.cs:131:17:131:53 | After ... switch { ... } [null] | null |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | After access to local variable s [non-null] | non-null |
@@ -7088,18 +7114,18 @@
 | TypeAccesses.cs:6:13:6:23 | After ... as ... | TypeAccesses.cs:6:9:6:23 | ... = ... |  |
 | TypeAccesses.cs:6:13:6:23 | Before ... as ... | TypeAccesses.cs:6:13:6:13 | access to parameter o |  |
 | TypeAccesses.cs:7:9:7:25 | After if (...) ... | TypeAccesses.cs:8:9:8:28 | ... ...; |  |
-| TypeAccesses.cs:7:9:7:25 | if (...) ... | TypeAccesses.cs:7:13:7:22 | Before ... is ... |  |
-| TypeAccesses.cs:7:13:7:13 | access to parameter o | TypeAccesses.cs:7:13:7:22 | ... is ... |  |
-| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:13:7:22 | After ... is ... [false] | false |
-| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:13:7:22 | [MatchTrue] ... is ... | true |
+| TypeAccesses.cs:7:9:7:25 | if (...) ... | TypeAccesses.cs:7:13:7:22 | ... is ... |  |
+| TypeAccesses.cs:7:13:7:13 | access to parameter o | TypeAccesses.cs:7:18:7:22 | Int32 j |  |
+| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:13:7:13 | access to parameter o |  |
 | TypeAccesses.cs:7:13:7:22 | After ... is ... [false] | TypeAccesses.cs:7:9:7:25 | After if (...) ... |  |
 | TypeAccesses.cs:7:13:7:22 | After ... is ... [true] | TypeAccesses.cs:7:25:7:25 | ; |  |
-| TypeAccesses.cs:7:13:7:22 | Before ... is ... | TypeAccesses.cs:7:13:7:13 | access to parameter o |  |
-| TypeAccesses.cs:7:13:7:22 | [MatchTrue] ... is ... | TypeAccesses.cs:7:18:7:22 | Before Int32 j |  |
-| TypeAccesses.cs:7:18:7:22 | After Int32 j | TypeAccesses.cs:7:13:7:22 | After ... is ... [true] | true |
-| TypeAccesses.cs:7:18:7:22 | Before Int32 j | TypeAccesses.cs:7:22:7:22 | access to local variable j |  |
-| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:18:7:22 | After Int32 j |  |
-| TypeAccesses.cs:7:22:7:22 | access to local variable j | TypeAccesses.cs:7:18:7:22 | Int32 j |  |
+| TypeAccesses.cs:7:18:7:22 | After Int32 j [match] | TypeAccesses.cs:7:13:7:22 | After ... is ... [true] | true |
+| TypeAccesses.cs:7:18:7:22 | After Int32 j [no-match] | TypeAccesses.cs:7:13:7:22 | After ... is ... [false] | false |
+| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:18:7:22 | After Int32 j [no-match] | no-match |
+| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:18:7:22 | [OuterPatternMatch] Int32 j | match |
+| TypeAccesses.cs:7:18:7:22 | [OuterPatternMatch] Int32 j | TypeAccesses.cs:7:22:7:22 | access to local variable j |  |
+| TypeAccesses.cs:7:22:7:22 | After access to local variable j [match] | TypeAccesses.cs:7:18:7:22 | After Int32 j [match] | match |
+| TypeAccesses.cs:7:22:7:22 | access to local variable j | TypeAccesses.cs:7:22:7:22 | After access to local variable j [match] | match |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:9:7:25 | After if (...) ... |  |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:13:8:27 | Before Type t = ... |  |
 | TypeAccesses.cs:8:9:8:28 | After ... ...; | TypeAccesses.cs:4:5:9:5 | After {...} |  |

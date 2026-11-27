@@ -11,6 +11,8 @@ module Private {
 
   class Guard = RU::Guard;
 
+  class GuardValue = RU::GuardValue;
+
   class ConstantIntegerExpr = CU::ConstantIntegerExpr;
 
   class SsaVariable = CS::SsaDefinition;

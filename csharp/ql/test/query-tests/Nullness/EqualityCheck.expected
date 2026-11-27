@@ -48,6 +48,8 @@
 | C.cs:41:22:41:30 | ... == ... | true | C.cs:41:27:41:30 | null | C.cs:41:22:41:22 | access to local variable s |
 | C.cs:45:22:45:30 | ... != ... | false | C.cs:45:22:45:22 | access to local variable s | C.cs:45:27:45:30 | null |
 | C.cs:45:22:45:30 | ... != ... | false | C.cs:45:27:45:30 | null | C.cs:45:22:45:22 | access to local variable s |
+| C.cs:88:18:88:23 | access to type String | match | C.cs:88:13:88:13 | access to local variable o | C.cs:88:18:88:23 | access to type String |
+| C.cs:88:18:88:23 | access to type String | match | C.cs:88:18:88:23 | access to type String | C.cs:88:13:88:13 | access to local variable o |
 | C.cs:113:22:113:36 | ... == ... | true | C.cs:113:22:113:28 | access to local variable colours | C.cs:113:33:113:36 | null |
 | C.cs:113:22:113:36 | ... == ... | true | C.cs:113:33:113:36 | null | C.cs:113:22:113:28 | access to local variable colours |
 | C.cs:113:41:113:59 | ... == ... | true | C.cs:113:41:113:54 | access to property Length | C.cs:113:59:113:59 | 0 |
@@ -80,12 +82,16 @@
 | C.cs:235:24:235:32 | ... == ... | true | C.cs:235:29:235:32 | null | C.cs:235:24:235:24 | access to local variable s |
 | D.cs:28:13:28:25 | ... != ... | false | D.cs:28:13:28:17 | access to parameter param | D.cs:28:22:28:25 | null |
 | D.cs:28:13:28:25 | ... != ... | false | D.cs:28:22:28:25 | null | D.cs:28:13:28:17 | access to parameter param |
+| D.cs:37:18:37:23 | access to type String | match | D.cs:37:13:37:13 | access to parameter x | D.cs:37:18:37:23 | access to type String |
+| D.cs:37:18:37:23 | access to type String | match | D.cs:37:18:37:23 | access to type String | D.cs:37:13:37:13 | access to parameter x |
 | D.cs:38:13:38:21 | ... == ... | true | D.cs:38:13:38:13 | access to parameter x | D.cs:38:18:38:21 | null |
 | D.cs:38:13:38:21 | ... == ... | true | D.cs:38:18:38:21 | null | D.cs:38:13:38:13 | access to parameter x |
 | D.cs:39:16:39:24 | ... == ... | true | D.cs:39:16:39:16 | access to parameter x | D.cs:39:21:39:24 | null |
 | D.cs:39:16:39:24 | ... == ... | true | D.cs:39:21:39:24 | null | D.cs:39:16:39:16 | access to parameter x |
 | D.cs:45:13:45:22 | ... != ... | false | D.cs:45:13:45:14 | access to local variable o1 | D.cs:45:19:45:22 | null |
 | D.cs:45:13:45:22 | ... != ... | false | D.cs:45:19:45:22 | null | D.cs:45:13:45:14 | access to local variable o1 |
+| D.cs:48:19:48:24 | access to type String | match | D.cs:48:13:48:14 | access to local variable o2 | D.cs:48:19:48:24 | access to type String |
+| D.cs:48:19:48:24 | access to type String | match | D.cs:48:19:48:24 | access to type String | D.cs:48:13:48:14 | access to local variable o2 |
 | D.cs:51:13:51:44 | ... != ... | false | D.cs:51:14:51:35 | ... = ... | D.cs:51:41:51:44 | null |
 | D.cs:51:13:51:44 | ... != ... | false | D.cs:51:41:51:44 | null | D.cs:51:14:51:35 | ... = ... |
 | D.cs:55:13:55:42 | ... != ... | false | D.cs:55:14:55:32 | ... && ... | D.cs:55:38:55:42 | false |
@@ -136,6 +142,8 @@
 | D.cs:242:13:242:25 | ... == ... | true | D.cs:242:22:242:25 | null | D.cs:242:13:242:17 | access to local variable other |
 | D.cs:244:13:244:25 | ... != ... | false | D.cs:244:13:244:17 | access to local variable other | D.cs:244:22:244:25 | null |
 | D.cs:244:13:244:25 | ... != ... | false | D.cs:244:22:244:25 | null | D.cs:244:13:244:17 | access to local variable other |
+| D.cs:266:22:266:27 | access to type String | match | D.cs:266:13:266:17 | access to local variable other | D.cs:266:22:266:27 | access to type String |
+| D.cs:266:22:266:27 | access to type String | match | D.cs:266:22:266:27 | access to type String | D.cs:266:13:266:17 | access to local variable other |
 | D.cs:274:17:274:26 | ... == ... | true | D.cs:274:17:274:20 | access to array element | D.cs:274:25:274:26 | 42 |
 | D.cs:274:17:274:26 | ... == ... | true | D.cs:274:25:274:26 | 42 | D.cs:274:17:274:20 | access to array element |
 | D.cs:299:17:299:22 | ... != ... | false | D.cs:299:17:299:17 | access to local variable i | D.cs:299:22:299:22 | 0 |
@@ -192,10 +200,16 @@
 | E.cs:85:18:85:29 | ... != ... | false | E.cs:85:26:85:29 | null | E.cs:85:18:85:21 | access to parameter vals |
 | E.cs:92:13:92:28 | case ...: | true | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:92:18:92:27 | access to constant MY_CONST_A |
 | E.cs:92:13:92:28 | case ...: | true | E.cs:92:18:92:27 | access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard |
+| E.cs:92:18:92:27 | access to constant MY_CONST_A | match | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:92:18:92:27 | access to constant MY_CONST_A |
+| E.cs:92:18:92:27 | access to constant MY_CONST_A | match | E.cs:92:18:92:27 | access to constant MY_CONST_A | E.cs:90:17:90:27 | access to local variable switchguard |
 | E.cs:95:13:95:28 | case ...: | true | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:95:18:95:27 | access to constant MY_CONST_C |
 | E.cs:95:13:95:28 | case ...: | true | E.cs:95:18:95:27 | access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard |
+| E.cs:95:18:95:27 | access to constant MY_CONST_C | match | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:95:18:95:27 | access to constant MY_CONST_C |
+| E.cs:95:18:95:27 | access to constant MY_CONST_C | match | E.cs:95:18:95:27 | access to constant MY_CONST_C | E.cs:90:17:90:27 | access to local variable switchguard |
 | E.cs:97:13:97:28 | case ...: | true | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:97:18:97:27 | access to constant MY_CONST_B |
 | E.cs:97:13:97:28 | case ...: | true | E.cs:97:18:97:27 | access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard |
+| E.cs:97:18:97:27 | access to constant MY_CONST_B | match | E.cs:90:17:90:27 | access to local variable switchguard | E.cs:97:18:97:27 | access to constant MY_CONST_B |
+| E.cs:97:18:97:27 | access to constant MY_CONST_B | match | E.cs:97:18:97:27 | access to constant MY_CONST_B | E.cs:90:17:90:27 | access to local variable switchguard |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:21:126:24 | access to local variable step | E.cs:126:29:126:29 | 0 |
 | E.cs:126:21:126:29 | ... == ... | true | E.cs:126:29:126:29 | 0 | E.cs:126:21:126:24 | access to local variable step |
 | E.cs:153:13:153:24 | ... != ... | false | E.cs:153:13:153:16 | access to local variable obj2 | E.cs:153:21:153:24 | null |
@@ -210,6 +224,8 @@
 | E.cs:180:13:180:23 | ... == ... | true | E.cs:180:20:180:23 | null | E.cs:180:13:180:15 | access to parameter obj |
 | E.cs:184:13:184:22 | ... == ... | true | E.cs:184:13:184:14 | (...) ... | E.cs:184:19:184:22 | null |
 | E.cs:184:13:184:22 | ... == ... | true | E.cs:184:19:184:22 | null | E.cs:184:13:184:14 | (...) ... |
+| E.cs:208:18:208:23 | access to type String | match | E.cs:208:13:208:13 | access to parameter s | E.cs:208:18:208:23 | access to type String |
+| E.cs:208:18:208:23 | access to type String | match | E.cs:208:18:208:23 | access to type String | E.cs:208:13:208:13 | access to parameter s |
 | E.cs:252:13:252:21 | ... != ... | false | E.cs:252:13:252:13 | access to parameter i | E.cs:252:18:252:21 | null |
 | E.cs:252:13:252:21 | ... != ... | false | E.cs:252:18:252:21 | null | E.cs:252:13:252:13 | access to parameter i |
 | E.cs:259:13:259:21 | ... == ... | true | E.cs:259:13:259:13 | access to parameter i | E.cs:259:18:259:21 | null |
@@ -218,12 +234,14 @@
 | E.cs:274:17:274:25 | ... != ... | false | E.cs:274:22:274:25 | null | E.cs:274:17:274:17 | access to local variable o |
 | E.cs:293:13:293:24 | ... == ... | true | E.cs:293:13:293:19 | call to method M2 | E.cs:293:24:293:24 | (...) ... |
 | E.cs:293:13:293:24 | ... == ... | true | E.cs:293:24:293:24 | (...) ... | E.cs:293:13:293:19 | call to method M2 |
-| E.cs:321:13:321:30 | ... is ... | true | E.cs:321:14:321:21 | ... ?? ... | E.cs:321:27:321:30 | null |
-| E.cs:321:13:321:30 | ... is ... | true | E.cs:321:27:321:30 | null | E.cs:321:14:321:21 | ... ?? ... |
+| E.cs:321:27:321:30 | null | match | E.cs:321:14:321:21 | ... ?? ... | E.cs:321:27:321:30 | null |
+| E.cs:321:27:321:30 | null | match | E.cs:321:27:321:30 | null | E.cs:321:14:321:21 | ... ?? ... |
 | E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:13:355:13 | access to local variable x | E.cs:355:18:355:21 | null |
 | E.cs:355:13:355:21 | dynamic call to operator != | false | E.cs:355:18:355:21 | null | E.cs:355:13:355:13 | access to local variable x |
 | E.cs:362:13:362:29 | ... != ... | false | E.cs:362:13:362:13 | access to local variable x | E.cs:362:18:362:29 | (...) ... |
 | E.cs:362:13:362:29 | ... != ... | false | E.cs:362:18:362:29 | (...) ... | E.cs:362:13:362:13 | access to local variable x |
+| E.cs:372:18:372:23 | access to type String | match | E.cs:372:13:372:13 | access to parameter o | E.cs:372:18:372:23 | access to type String |
+| E.cs:372:18:372:23 | access to type String | match | E.cs:372:18:372:23 | access to type String | E.cs:372:13:372:13 | access to parameter o |
 | E.cs:382:14:382:23 | ... == ... | true | E.cs:382:14:382:15 | access to parameter e1 | E.cs:382:20:382:23 | null |
 | E.cs:382:14:382:23 | ... == ... | true | E.cs:382:20:382:23 | null | E.cs:382:14:382:15 | access to parameter e1 |
 | E.cs:382:28:382:37 | ... != ... | false | E.cs:382:28:382:29 | access to parameter e2 | E.cs:382:34:382:37 | null |
@@ -246,16 +264,34 @@
 | E.cs:430:34:430:45 | ... == ... | true | E.cs:430:39:430:45 | access to property Value | E.cs:430:34:430:34 | access to parameter j |
 | E.cs:437:13:437:18 | ... == ... | true | E.cs:437:13:437:13 | access to parameter i | E.cs:437:18:437:18 | 0 |
 | E.cs:437:13:437:18 | ... == ... | true | E.cs:437:18:437:18 | 0 | E.cs:437:13:437:13 | access to parameter i |
-| E.cs:437:23:437:31 | ... is ... | true | E.cs:437:23:437:23 | access to parameter s | E.cs:437:28:437:31 | null |
-| E.cs:437:23:437:31 | ... is ... | true | E.cs:437:28:437:31 | null | E.cs:437:23:437:23 | access to parameter s |
+| E.cs:437:28:437:31 | null | match | E.cs:437:23:437:23 | access to parameter s | E.cs:437:28:437:31 | null |
+| E.cs:437:28:437:31 | null | match | E.cs:437:28:437:31 | null | E.cs:437:23:437:23 | access to parameter s |
 | E.cs:442:13:442:18 | ... == ... | true | E.cs:442:13:442:13 | access to parameter i | E.cs:442:18:442:18 | 1 |
 | E.cs:442:13:442:18 | ... == ... | true | E.cs:442:18:442:18 | 1 | E.cs:442:13:442:13 | access to parameter i |
+| E.cs:442:28:442:39 | not ... | match | E.cs:442:23:442:23 | access to parameter s | E.cs:442:28:442:39 | not ... |
+| E.cs:442:28:442:39 | not ... | match | E.cs:442:28:442:39 | not ... | E.cs:442:23:442:23 | access to parameter s |
+| E.cs:442:32:442:39 | not ... | match | E.cs:442:23:442:23 | access to parameter s | E.cs:442:32:442:39 | not ... |
+| E.cs:442:32:442:39 | not ... | match | E.cs:442:32:442:39 | not ... | E.cs:442:23:442:23 | access to parameter s |
+| E.cs:442:36:442:39 | null | match | E.cs:442:23:442:23 | access to parameter s | E.cs:442:36:442:39 | null |
+| E.cs:442:36:442:39 | null | match | E.cs:442:36:442:39 | null | E.cs:442:23:442:23 | access to parameter s |
 | E.cs:447:13:447:18 | ... == ... | true | E.cs:447:13:447:13 | access to parameter i | E.cs:447:18:447:18 | 2 |
 | E.cs:447:13:447:18 | ... == ... | true | E.cs:447:18:447:18 | 2 | E.cs:447:13:447:13 | access to parameter i |
-| E.cs:447:23:447:35 | ... is ... | false | E.cs:447:23:447:23 | access to parameter s | E.cs:447:32:447:35 | null |
-| E.cs:447:23:447:35 | ... is ... | false | E.cs:447:32:447:35 | null | E.cs:447:23:447:23 | access to parameter s |
+| E.cs:447:28:447:35 | not ... | match | E.cs:447:23:447:23 | access to parameter s | E.cs:447:28:447:35 | not ... |
+| E.cs:447:28:447:35 | not ... | match | E.cs:447:28:447:35 | not ... | E.cs:447:23:447:23 | access to parameter s |
+| E.cs:447:32:447:35 | null | match | E.cs:447:23:447:23 | access to parameter s | E.cs:447:32:447:35 | null |
+| E.cs:447:32:447:35 | null | match | E.cs:447:32:447:35 | null | E.cs:447:23:447:23 | access to parameter s |
 | E.cs:452:13:452:18 | ... == ... | true | E.cs:452:13:452:13 | access to parameter i | E.cs:452:18:452:18 | 3 |
 | E.cs:452:13:452:18 | ... == ... | true | E.cs:452:18:452:18 | 3 | E.cs:452:13:452:13 | access to parameter i |
+| E.cs:452:28:452:33 | access to type Object | match | E.cs:452:23:452:23 | access to parameter s | E.cs:452:28:452:33 | access to type Object |
+| E.cs:452:28:452:33 | access to type Object | match | E.cs:452:28:452:33 | access to type Object | E.cs:452:23:452:23 | access to parameter s |
+| E.cs:457:18:457:27 | not ... | match | E.cs:457:13:457:13 | access to parameter s | E.cs:457:18:457:27 | not ... |
+| E.cs:457:18:457:27 | not ... | match | E.cs:457:18:457:27 | not ... | E.cs:457:13:457:13 | access to parameter s |
+| E.cs:457:22:457:27 | access to type Object | match | E.cs:457:13:457:13 | access to parameter s | E.cs:457:22:457:27 | access to type Object |
+| E.cs:457:22:457:27 | access to type Object | match | E.cs:457:22:457:27 | access to type Object | E.cs:457:13:457:13 | access to parameter s |
+| Forwarding.cs:45:21:45:26 | access to type String | match | Forwarding.cs:45:16:45:16 | access to parameter o | Forwarding.cs:45:21:45:26 | access to type String |
+| Forwarding.cs:45:21:45:26 | access to type String | match | Forwarding.cs:45:21:45:26 | access to type String | Forwarding.cs:45:16:45:16 | access to parameter o |
+| Forwarding.cs:50:18:50:23 | access to type String | match | Forwarding.cs:50:13:50:13 | access to parameter o | Forwarding.cs:50:18:50:23 | access to type String |
+| Forwarding.cs:50:18:50:23 | access to type String | match | Forwarding.cs:50:18:50:23 | access to type String | Forwarding.cs:50:13:50:13 | access to parameter o |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:13:59:13 | access to parameter o | Forwarding.cs:59:18:59:21 | null |
 | Forwarding.cs:59:13:59:21 | ... == ... | true | Forwarding.cs:59:18:59:21 | null | Forwarding.cs:59:13:59:13 | access to parameter o |
 | Forwarding.cs:78:16:78:39 | call to method ReferenceEquals | true | Forwarding.cs:78:32:78:32 | access to parameter o | Forwarding.cs:78:35:78:38 | null |

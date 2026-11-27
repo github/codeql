@@ -2574,8 +2574,8 @@
 | Patterns.cs:7:20:7:23 | null | Patterns.cs:7:20:7:23 | null |
 | Patterns.cs:8:9:18:9 | if (...) ... | Patterns.cs:8:9:18:9 | if (...) ... |
 | Patterns.cs:8:13:8:13 | access to local variable o | Patterns.cs:8:13:8:13 | access to local variable o |
-| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:8:13:8:13 | access to local variable o |
-| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:22:8:23 | access to local variable i1 |
+| Patterns.cs:8:13:8:23 | ... is ... | Patterns.cs:8:13:8:23 | ... is ... |
+| Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:18:8:23 | Int32 i1 |
 | Patterns.cs:8:22:8:23 | access to local variable i1 | Patterns.cs:8:22:8:23 | access to local variable i1 |
 | Patterns.cs:9:9:11:9 | {...} | Patterns.cs:9:9:11:9 | {...} |
 | Patterns.cs:10:13:10:42 | call to method WriteLine | Patterns.cs:10:33:10:36 | "int " |
@@ -2586,8 +2586,8 @@
 | Patterns.cs:10:38:10:39 | access to local variable i1 | Patterns.cs:10:38:10:39 | access to local variable i1 |
 | Patterns.cs:12:14:18:9 | if (...) ... | Patterns.cs:12:14:18:9 | if (...) ... |
 | Patterns.cs:12:18:12:18 | access to local variable o | Patterns.cs:12:18:12:18 | access to local variable o |
-| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:12:18:12:18 | access to local variable o |
-| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:30:12:31 | access to local variable s1 |
+| Patterns.cs:12:18:12:31 | ... is ... | Patterns.cs:12:18:12:31 | ... is ... |
+| Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:23:12:31 | String s1 |
 | Patterns.cs:12:30:12:31 | access to local variable s1 | Patterns.cs:12:30:12:31 | access to local variable s1 |
 | Patterns.cs:13:9:15:9 | {...} | Patterns.cs:13:9:15:9 | {...} |
 | Patterns.cs:14:13:14:45 | call to method WriteLine | Patterns.cs:14:33:14:39 | "string " |
@@ -2598,8 +2598,8 @@
 | Patterns.cs:14:41:14:42 | access to local variable s1 | Patterns.cs:14:41:14:42 | access to local variable s1 |
 | Patterns.cs:16:14:18:9 | if (...) ... | Patterns.cs:16:14:18:9 | if (...) ... |
 | Patterns.cs:16:18:16:18 | access to local variable o | Patterns.cs:16:18:16:18 | access to local variable o |
-| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:16:18:16:18 | access to local variable o |
-| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:27:16:28 | access to local variable v1 |
+| Patterns.cs:16:18:16:28 | ... is ... | Patterns.cs:16:18:16:28 | ... is ... |
+| Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:23:16:28 | Object v1 |
 | Patterns.cs:16:27:16:28 | access to local variable v1 | Patterns.cs:16:27:16:28 | access to local variable v1 |
 | Patterns.cs:17:9:18:9 | {...} | Patterns.cs:17:9:18:9 | {...} |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:20:9:38:9 | switch (...) {...} |
@@ -2608,7 +2608,7 @@
 | Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:22:18:22:22 | "xyz" |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:23:17:23:22 | break; |
 | Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | case ...: |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:22:24:23 | access to local variable i2 |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | Int32 i2 |
 | Patterns.cs:24:22:24:23 | access to local variable i2 | Patterns.cs:24:22:24:23 | access to local variable i2 |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:30:24:31 | access to local variable i2 |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:31 | access to local variable i2 |
@@ -2621,7 +2621,7 @@
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:47:25:48 | access to local variable i2 |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:26:17:26:22 | break; |
 | Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | case ...: |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:22:27:23 | access to local variable i3 |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | Int32 i3 |
 | Patterns.cs:27:22:27:23 | access to local variable i3 | Patterns.cs:27:22:27:23 | access to local variable i3 |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:37:28:40 | "int " |
 | Patterns.cs:28:17:28:47 | ...; | Patterns.cs:28:17:28:47 | ...; |
@@ -2631,7 +2631,7 @@
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:42:28:43 | access to local variable i3 |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:29:17:29:22 | break; |
 | Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | case ...: |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:25:30:26 | access to local variable s2 |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | String s2 |
 | Patterns.cs:30:25:30:26 | access to local variable s2 | Patterns.cs:30:25:30:26 | access to local variable s2 |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:37:31:43 | "string " |
 | Patterns.cs:31:17:31:50 | ...; | Patterns.cs:31:17:31:50 | ...; |
@@ -2641,7 +2641,7 @@
 | Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:31:45:31:46 | access to local variable s2 |
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:32:17:32:22 | break; |
 | Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | case ...: |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:22:33:23 | access to local variable v2 |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | Object v2 |
 | Patterns.cs:33:22:33:23 | access to local variable v2 | Patterns.cs:33:22:33:23 | access to local variable v2 |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:34:17:34:22 | break; |
 | Patterns.cs:35:13:35:20 | default: | Patterns.cs:35:13:35:20 | default: |
@@ -2653,29 +2653,28 @@
 | Patterns.cs:40:17:40:17 | access to local variable o | Patterns.cs:40:17:40:17 | access to local variable o |
 | Patterns.cs:47:32:47:32 | c | Patterns.cs:47:32:47:32 | c |
 | Patterns.cs:48:9:48:9 | access to parameter c | Patterns.cs:48:9:48:9 | access to parameter c |
-| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:48:9:48:9 | access to parameter c |
-| Patterns.cs:48:14:48:20 | not ... | Patterns.cs:48:18:48:20 | a |
+| Patterns.cs:48:9:48:20 | ... is ... | Patterns.cs:48:9:48:20 | ... is ... |
+| Patterns.cs:48:14:48:20 | not ... | Patterns.cs:48:14:48:20 | not ... |
 | Patterns.cs:48:18:48:20 | a | Patterns.cs:48:18:48:20 | a |
 | Patterns.cs:50:34:50:34 | c | Patterns.cs:50:34:50:34 | c |
 | Patterns.cs:51:9:51:9 | access to parameter c | Patterns.cs:51:9:51:9 | access to parameter c |
-| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:9:51:9 | access to parameter c |
+| Patterns.cs:51:9:51:21 | ... is ... | Patterns.cs:51:9:51:21 | ... is ... |
 | Patterns.cs:51:9:51:39 | ... ? ... : ... | Patterns.cs:51:9:51:39 | ... ? ... : ... |
-| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:51:18:51:21 | null |
+| Patterns.cs:51:14:51:21 | not ... | Patterns.cs:51:14:51:21 | not ... |
 | Patterns.cs:51:18:51:21 | null | Patterns.cs:51:18:51:21 | null |
 | Patterns.cs:51:25:51:25 | access to parameter c | Patterns.cs:51:25:51:25 | access to parameter c |
-| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:51:25:51:25 | access to parameter c |
+| Patterns.cs:51:25:51:30 | ... is ... | Patterns.cs:51:25:51:30 | ... is ... |
 | Patterns.cs:51:30:51:30 | 1 | Patterns.cs:51:30:51:30 | 1 |
 | Patterns.cs:51:34:51:34 | access to parameter c | Patterns.cs:51:34:51:34 | access to parameter c |
-| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:51:34:51:34 | access to parameter c |
+| Patterns.cs:51:34:51:39 | ... is ... | Patterns.cs:51:34:51:39 | ... is ... |
 | Patterns.cs:51:39:51:39 | 2 | Patterns.cs:51:39:51:39 | 2 |
 | Patterns.cs:53:34:53:34 | c | Patterns.cs:53:34:53:34 | c |
 | Patterns.cs:54:9:54:9 | access to parameter c | Patterns.cs:54:9:54:9 | access to parameter c |
-| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:9 | access to parameter c |
-| Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:37:54:37 | access to local variable u |
-| Patterns.cs:54:18:54:25 | access to type Patterns | Patterns.cs:54:18:54:25 | access to type Patterns |
-| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:37:54:37 | access to local variable u |
-| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:37:54:37 | access to local variable u |
-| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:33:54:33 | 1 |
+| Patterns.cs:54:9:54:37 | ... is ... | Patterns.cs:54:9:54:37 | ... is ... |
+| Patterns.cs:54:14:54:37 | not ... | Patterns.cs:54:14:54:37 | not ... |
+| Patterns.cs:54:18:54:37 | Patterns u | Patterns.cs:54:18:54:37 | Patterns u |
+| Patterns.cs:54:18:54:37 | { ... } | Patterns.cs:54:18:54:37 | { ... } |
+| Patterns.cs:54:27:54:35 | { ... } | Patterns.cs:54:27:54:35 | { ... } |
 | Patterns.cs:54:33:54:33 | 1 | Patterns.cs:54:33:54:33 | 1 |
 | Patterns.cs:54:37:54:37 | access to local variable u | Patterns.cs:54:37:54:37 | access to local variable u |
 | Patterns.cs:56:33:56:33 | i | Patterns.cs:56:33:56:33 | i |
@@ -2683,7 +2682,7 @@
 | Patterns.cs:58:9:62:10 | return ...; | Patterns.cs:58:16:62:9 | ... switch { ... } |
 | Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:58:16:58:16 | access to parameter i |
 | Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:58:16:62:9 | ... switch { ... } |
-| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:17:60:17 | 1 |
+| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | not ... |
 | Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:60:13:60:28 | ... => ... |
 | Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:17:60:17 | 1 |
 | Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:60:22:60:28 | "not 1" |
@@ -2694,7 +2693,7 @@
 | Patterns.cs:67:9:71:10 | return ...; | Patterns.cs:67:16:71:9 | ... switch { ... } |
 | Patterns.cs:67:16:67:16 | 2 | Patterns.cs:67:16:67:16 | 2 |
 | Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:67:16:71:9 | ... switch { ... } |
-| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:17:69:17 | 2 |
+| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:13:69:17 | not ... |
 | Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:69:13:69:33 | ... => ... |
 | Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:17:69:17 | 2 |
 | Patterns.cs:69:22:69:33 | "impossible" | Patterns.cs:69:22:69:33 | "impossible" |
@@ -2722,32 +2721,32 @@
 | Patterns.cs:81:18:81:20 | "0" | Patterns.cs:81:18:81:20 | "0" |
 | Patterns.cs:85:33:85:33 | i | Patterns.cs:85:33:85:33 | i |
 | Patterns.cs:85:39:85:39 | access to parameter i | Patterns.cs:85:39:85:39 | access to parameter i |
-| Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:39:85:39 | access to parameter i |
+| Patterns.cs:85:39:85:53 | ... is ... | Patterns.cs:85:39:85:53 | ... is ... |
 | Patterns.cs:85:39:85:69 | ... ? ... : ... | Patterns.cs:85:39:85:69 | ... ? ... : ... |
 | Patterns.cs:85:44:85:44 | 1 | Patterns.cs:85:44:85:44 | 1 |
-| Patterns.cs:85:44:85:53 | ... or ... | Patterns.cs:85:44:85:44 | 1 |
-| Patterns.cs:85:49:85:53 | not ... | Patterns.cs:85:53:85:53 | 2 |
+| Patterns.cs:85:44:85:53 | ... or ... | Patterns.cs:85:44:85:53 | ... or ... |
+| Patterns.cs:85:49:85:53 | not ... | Patterns.cs:85:49:85:53 | not ... |
 | Patterns.cs:85:53:85:53 | 2 | Patterns.cs:85:53:85:53 | 2 |
 | Patterns.cs:85:57:85:63 | "not 2" | Patterns.cs:85:57:85:63 | "not 2" |
 | Patterns.cs:85:67:85:69 | "2" | Patterns.cs:85:67:85:69 | "2" |
 | Patterns.cs:87:33:87:33 | i | Patterns.cs:87:33:87:33 | i |
 | Patterns.cs:87:39:87:39 | access to parameter i | Patterns.cs:87:39:87:39 | access to parameter i |
-| Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:39:87:39 | access to parameter i |
+| Patterns.cs:87:39:87:54 | ... is ... | Patterns.cs:87:39:87:54 | ... is ... |
 | Patterns.cs:87:39:87:70 | ... ? ... : ... | Patterns.cs:87:39:87:70 | ... ? ... : ... |
 | Patterns.cs:87:44:87:44 | 1 | Patterns.cs:87:44:87:44 | 1 |
-| Patterns.cs:87:44:87:54 | ... and ... | Patterns.cs:87:44:87:44 | 1 |
-| Patterns.cs:87:50:87:54 | not ... | Patterns.cs:87:54:87:54 | 2 |
+| Patterns.cs:87:44:87:54 | ... and ... | Patterns.cs:87:44:87:54 | ... and ... |
+| Patterns.cs:87:50:87:54 | not ... | Patterns.cs:87:50:87:54 | not ... |
 | Patterns.cs:87:54:87:54 | 2 | Patterns.cs:87:54:87:54 | 2 |
 | Patterns.cs:87:58:87:60 | "1" | Patterns.cs:87:58:87:60 | "1" |
 | Patterns.cs:87:64:87:70 | "not 1" | Patterns.cs:87:64:87:70 | "not 1" |
 | Patterns.cs:94:5:99:5 | {...} | Patterns.cs:94:5:99:5 | {...} |
 | Patterns.cs:95:9:98:9 | if (...) ... | Patterns.cs:95:9:98:9 | if (...) ... |
 | Patterns.cs:95:13:95:16 | this access | Patterns.cs:95:13:95:16 | this access |
-| Patterns.cs:95:13:95:40 | ... is ... | Patterns.cs:95:13:95:16 | this access |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:29:95:31 | access to constant A |
-| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:29:95:31 | access to constant A |
+| Patterns.cs:95:13:95:40 | ... is ... | Patterns.cs:95:13:95:40 | ... is ... |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } |
+| Patterns.cs:95:21:95:40 | { ... } | Patterns.cs:95:21:95:40 | { ... } |
 | Patterns.cs:95:29:95:31 | access to constant A | Patterns.cs:95:29:95:31 | access to constant A |
-| Patterns.cs:95:29:95:38 | ... or ... | Patterns.cs:95:29:95:31 | access to constant A |
+| Patterns.cs:95:29:95:38 | ... or ... | Patterns.cs:95:29:95:38 | ... or ... |
 | Patterns.cs:95:36:95:38 | access to constant B | Patterns.cs:95:36:95:38 | access to constant B |
 | Patterns.cs:96:9:98:9 | {...} | Patterns.cs:96:9:98:9 | {...} |
 | Patterns.cs:97:13:97:38 | call to method WriteLine | Patterns.cs:97:31:97:37 | "not C" |
@@ -2766,7 +2765,7 @@
 | PostDominance.cs:11:5:15:5 | {...} | PostDominance.cs:11:5:15:5 | {...} |
 | PostDominance.cs:12:9:13:19 | if (...) ... | PostDominance.cs:12:9:13:19 | if (...) ... |
 | PostDominance.cs:12:13:12:13 | access to parameter s | PostDominance.cs:12:13:12:13 | access to parameter s |
-| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:12:13:12:13 | access to parameter s |
+| PostDominance.cs:12:13:12:21 | ... is ... | PostDominance.cs:12:13:12:21 | ... is ... |
 | PostDominance.cs:12:18:12:21 | null | PostDominance.cs:12:18:12:21 | null |
 | PostDominance.cs:13:13:13:19 | return ...; | PostDominance.cs:13:13:13:19 | return ...; |
 | PostDominance.cs:14:9:14:28 | call to method WriteLine | PostDominance.cs:14:27:14:27 | access to parameter s |
@@ -2776,7 +2775,7 @@
 | PostDominance.cs:18:5:22:5 | {...} | PostDominance.cs:18:5:22:5 | {...} |
 | PostDominance.cs:19:9:20:55 | if (...) ... | PostDominance.cs:19:9:20:55 | if (...) ... |
 | PostDominance.cs:19:13:19:13 | access to parameter s | PostDominance.cs:19:13:19:13 | access to parameter s |
-| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:19:13:19:13 | access to parameter s |
+| PostDominance.cs:19:13:19:21 | ... is ... | PostDominance.cs:19:13:19:21 | ... is ... |
 | PostDominance.cs:19:18:19:21 | null | PostDominance.cs:19:18:19:21 | null |
 | PostDominance.cs:20:13:20:55 | throw ...; | PostDominance.cs:20:45:20:53 | nameof(...) |
 | PostDominance.cs:20:19:20:54 | object creation of type ArgumentNullException | PostDominance.cs:20:45:20:53 | nameof(...) |
@@ -2883,7 +2882,7 @@
 | Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | null |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:19:17:19:29 | goto default; |
 | Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | case ...: |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:22:20:22 | access to local variable i |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | Int32 i |
 | Switch.cs:20:22:20:22 | access to local variable i | Switch.cs:20:22:20:22 | access to local variable i |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:17:22:27 | if (...) ... |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:21:21:21 | access to parameter o |
@@ -2893,7 +2892,7 @@
 | Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:23:27:23:27 | 0 |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:27:23:27 | 0 |
 | Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | case ...: |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:25:24:25 | access to local variable s |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | String s |
 | Switch.cs:24:25:24:25 | access to local variable s | Switch.cs:24:25:24:25 | access to local variable s |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:32 | access to local variable s |
 | Switch.cs:24:32:24:39 | access to property Length | Switch.cs:24:32:24:32 | access to local variable s |
@@ -2908,7 +2907,7 @@
 | Switch.cs:25:35:25:35 | access to local variable s | Switch.cs:25:35:25:35 | access to local variable s |
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:26:17:26:23 | return ...; |
 | Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | case ...: |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:25:27:25 | access to local variable d |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | Double d |
 | Switch.cs:27:25:27:25 | access to local variable d | Switch.cs:27:25:27:25 | access to local variable d |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |
 | Switch.cs:28:13:28:17 | Label: | Switch.cs:28:13:28:17 | Label: |
@@ -3028,7 +3027,7 @@
 | Switch.cs:125:9:126:19 | if (...) ... | Switch.cs:125:9:126:19 | if (...) ... |
 | Switch.cs:125:13:125:13 | access to parameter o | Switch.cs:125:13:125:13 | access to parameter o |
 | Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:48 | ... switch { ... } |
-| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:29:125:29 | access to local variable b |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | Boolean b |
 | Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:34 | ... => ... |
 | Switch.cs:125:29:125:29 | access to local variable b | Switch.cs:125:29:125:29 | access to local variable b |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:34:125:34 | access to local variable b |
@@ -3042,7 +3041,7 @@
 | Switch.cs:131:16:131:66 | call to method ToString | Switch.cs:131:17:131:53 | ... switch { ... } |
 | Switch.cs:131:17:131:17 | access to parameter o | Switch.cs:131:17:131:17 | access to parameter o |
 | Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:53 | ... switch { ... } |
-| Switch.cs:131:28:131:35 | String s | Switch.cs:131:35:131:35 | access to local variable s |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | String s |
 | Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:40 | ... => ... |
 | Switch.cs:131:35:131:35 | access to local variable s | Switch.cs:131:35:131:35 | access to local variable s |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:40:131:40 | access to local variable s |
@@ -3149,8 +3148,8 @@
 | TypeAccesses.cs:6:13:6:23 | ... as ... | TypeAccesses.cs:6:13:6:13 | access to parameter o |
 | TypeAccesses.cs:7:9:7:25 | if (...) ... | TypeAccesses.cs:7:9:7:25 | if (...) ... |
 | TypeAccesses.cs:7:13:7:13 | access to parameter o | TypeAccesses.cs:7:13:7:13 | access to parameter o |
-| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:13:7:13 | access to parameter o |
-| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:22:7:22 | access to local variable j |
+| TypeAccesses.cs:7:13:7:22 | ... is ... | TypeAccesses.cs:7:13:7:22 | ... is ... |
+| TypeAccesses.cs:7:18:7:22 | Int32 j | TypeAccesses.cs:7:18:7:22 | Int32 j |
 | TypeAccesses.cs:7:22:7:22 | access to local variable j | TypeAccesses.cs:7:22:7:22 | access to local variable j |
 | TypeAccesses.cs:7:25:7:25 | ; | TypeAccesses.cs:7:25:7:25 | ; |
 | TypeAccesses.cs:8:9:8:28 | ... ...; | TypeAccesses.cs:8:9:8:28 | ... ...; |

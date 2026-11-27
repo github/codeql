@@ -78,6 +78,11 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     BasicBlock getBasicBlock();
   }
 
+  /** Holds if `node` indicates that `e` evaluates to the value `s`. */
+  default predicate nodeIsAfterValue(ControlFlowNode node, Expr e, ConditionalSuccessor s) {
+    none()
+  }
+
   class ConstantValue {
     /** Gets a textual representation of this constant value. */
     string toString();
@@ -151,6 +156,11 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
    */
   predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity);
 
+  /**
+   * Holds if `scrutinee` is equal to `pattern` which `pattern` matches.
+   */
+  default predicate equalityPatternTest(Expr pattern, Expr scrutinee) { none() }
+
   class ConditionalExpr extends Expr {
     /** Gets the condition of this expression. */
     Expr getCondition();
@@ -216,12 +226,14 @@ module Make<
   private newtype TAbstractSingleValue =
     TValueNull() or
     TValueBool(Boolean b) or
+    TValueMatch(Boolean b) or
     TValueInt(int i) { exists(ConstantExpr c | c.asIntegerValue() = i) or i = 0 } or
     TValueConstant(ConstantValue c) { exists(ConstantExpr ce | ce.asConstantValue() = c) }
 
   private newtype TGuardValue =
     TValue(TAbstractSingleValue val, Boolean isVal) {
-      val instanceof TValueBool implies isVal = true
+      (val instanceof TValueBool implies isVal = true) and
+      (val instanceof TValueMatch implies isVal = true)
     } or
     TIntRange(int bound, Boolean upper) {
       exists(ConstantExpr c | c.asIntegerValue() + [-1, 0, 1] = bound) and
@@ -239,6 +251,10 @@ module Make<
       result = "true" and this = TValueBool(true)
       or
       result = "false" and this = TValueBool(false)
+      or
+      result = "match" and this = TValueMatch(true)
+      or
+      result = "non-match" and this = TValueMatch(false)
       or
       exists(int i | result = i.toString() and this = TValueInt(i))
       or
@@ -264,6 +280,9 @@ module Make<
       exists(boolean b |
         this = TValue(TValueBool(b), true) and
         result = TValue(TValueBool(b.booleanNot()), true)
+        or
+        this = TValue(TValueMatch(b), true) and
+        result = TValue(TValueMatch(b.booleanNot()), true)
       )
       or
       exists(int bound, int d, boolean upper |
@@ -298,6 +317,9 @@ module Make<
 
     /** Gets the boolean that this value represents, if any. */
     boolean asBooleanValue() { this = TValue(TValueBool(result), true) }
+
+    /** Gets the match boolean that this value represents, if any. */
+    boolean asMatchValue() { this = TValue(TValueMatch(result), true) }
 
     /** Gets the constant that this value represents, if any. */
     ConstantValue asConstantValue() { this = TValue(TValueConstant(result), true) }
@@ -402,6 +424,8 @@ module Make<
       s instanceof NullnessSuccessor and v = TValue(TValueNull(), s.getValue())
       or
       s instanceof BooleanSuccessor and v = TValue(TValueBool(s.getValue()), true)
+      or
+      s instanceof MatchingSuccessor and v = TValue(TValueMatch(s.getValue()), true)
     )
     or
     exceptionBranchPoint(bb1, bb2, _) and v = TException(false)
@@ -449,6 +473,24 @@ module Make<
     )
   }
 
+  /**
+   * Holds if the fact that `e` evaluates to the value `v` is represented by a
+   * node in the basic block `bb` and not by a branch edge.
+   *
+   * For example, this holds for short-circuiting boolean expressions like
+   * `a || b` where the control-flow branching happens at `a` and `b`, while
+   * the nodes for the implied value of the entire expression occur later
+   * within the subsequent basic blocks.
+   */
+  private predicate midBlockGuard(Expr e, BasicBlock bb, GuardValue v) {
+    exists(ControlFlowNode node, BooleanSuccessor s |
+      nodeIsAfterValue(node, e, s) and
+      bb.getNode(_) = node and
+      not e.(PreGuard).hasValueBranchEdge(_, bb, v) and
+      v.asBooleanValue() = s.getValue()
+    )
+  }
+
   final private class FinalAstNode = AstNode;
 
   /**
@@ -483,6 +525,11 @@ module Make<
         dominatingEdge(guard, succ) and
         succ.dominates(bb)
       )
+      or
+      exists(BasicBlock guard |
+        midBlockGuard(this, guard, v) and
+        guard.dominates(bb)
+      )
     }
 
     /**
@@ -509,6 +556,14 @@ module Make<
      */
     predicate isEquality(Expr e1, Expr e2, GuardValue eqval) {
       equalityTestSymmetric(this, e1, e2, eqval.asBooleanValue())
+      or
+      equalityPatternTest(this, e1) and
+      e2 = this and
+      eqval.asMatchValue() = true
+      or
+      equalityPatternTest(this, e2) and
+      e1 = this and
+      eqval.asMatchValue() = true
       or
       constcaseEquality(this, e1, e2) and eqval.asBooleanValue() = true
       or
@@ -1044,6 +1099,8 @@ module Make<
 
     private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
       guard.hasValueBranchEdge(_, _, v)
+      or
+      midBlockGuard(guard, _, v)
     }
 
     private module BranchImplies = ImpliesTC<hasAValueBranchEdge/2>;
@@ -1053,6 +1110,13 @@ module Make<
     ) {
       exists(Guard g0, GuardValue v0 |
         g0.hasValueBranchEdge(bb1, bb2, v0) and
+        BranchImplies::guardControls(guard, v, g0, v0)
+      )
+    }
+
+    private predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue v) {
+      exists(Guard g0, GuardValue v0 |
+        midBlockGuard(g0, bb, v0) and
         BranchImplies::guardControls(guard, v, g0, v0)
       )
     }
@@ -1079,6 +1143,12 @@ module Make<
         ssaControlsBranchEdge(def, guard, succ, v) and
         dominatingEdge(guard, succ) and
         succ.dominates(bb)
+      )
+      or
+      exists(Guard g0, BasicBlock guardbb, GuardValue v0 |
+        midBlockGuard(g0, guardbb, v0) and
+        BranchImplies::ssaControls(def, v, g0, v0) and
+        guardbb.dominates(bb)
       )
     }
 
@@ -1531,6 +1601,11 @@ module Make<
           this.valueControlsBranchEdge(guard, succ, v) and
           dominatingEdge(guard, succ) and
           succ.dominates(bb)
+        )
+        or
+        exists(BasicBlock guard |
+          guardControlsBlock(this, guard, v) and
+          guard.dominates(bb)
         )
       }
 

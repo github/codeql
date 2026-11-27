@@ -102,10 +102,10 @@
 | Finally.cs:7:13:7:13 | i | Finally.cs:7:13:7:17 | Int32 i = ... | Finally.cs:7:13:7:13 | access to local variable i | Finally.cs:7:17:7:17 | 0 | certain |
 | Finally.cs:7:13:7:13 | i | Finally.cs:15:13:15:17 | ... = ... | Finally.cs:15:13:15:13 | access to local variable i | Finally.cs:15:17:15:17 | 1 | certain |
 | Patterns.cs:7:16:7:16 | o | Patterns.cs:7:16:7:23 | Object o = ... | Patterns.cs:7:16:7:16 | access to local variable o | Patterns.cs:7:20:7:23 | null | certain |
-| Patterns.cs:8:22:8:23 | i1 | Patterns.cs:8:18:8:23 | Int32 i1 | Patterns.cs:8:22:8:23 | access to local variable i1 | Patterns.cs:8:13:8:13 | access to local variable o | certain |
-| Patterns.cs:12:30:12:31 | s1 | Patterns.cs:12:23:12:31 | String s1 | Patterns.cs:12:30:12:31 | access to local variable s1 | Patterns.cs:12:18:12:18 | access to local variable o | certain |
-| Patterns.cs:16:27:16:28 | v1 | Patterns.cs:16:23:16:28 | Object v1 | Patterns.cs:16:27:16:28 | access to local variable v1 | Patterns.cs:16:18:16:18 | access to local variable o | certain |
-| Patterns.cs:24:22:24:23 | i2 | Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:22:24:23 | access to local variable i2 | Patterns.cs:20:17:20:17 | access to local variable o | certain |
-| Patterns.cs:27:22:27:23 | i3 | Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:22:27:23 | access to local variable i3 | Patterns.cs:20:17:20:17 | access to local variable o | certain |
-| Patterns.cs:30:25:30:26 | s2 | Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:25:30:26 | access to local variable s2 | Patterns.cs:20:17:20:17 | access to local variable o | certain |
-| Patterns.cs:33:22:33:23 | v2 | Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:22:33:23 | access to local variable v2 | Patterns.cs:20:17:20:17 | access to local variable o | certain |
+| Patterns.cs:8:22:8:23 | i1 | Patterns.cs:8:22:8:23 | Int32 i1 | Patterns.cs:8:22:8:23 | access to local variable i1 | Patterns.cs:8:13:8:13 | access to local variable o | certain |
+| Patterns.cs:12:30:12:31 | s1 | Patterns.cs:12:30:12:31 | String s1 | Patterns.cs:12:30:12:31 | access to local variable s1 | Patterns.cs:12:18:12:18 | access to local variable o | certain |
+| Patterns.cs:16:27:16:28 | v1 | Patterns.cs:16:27:16:28 | Object v1 | Patterns.cs:16:27:16:28 | access to local variable v1 | Patterns.cs:16:18:16:18 | access to local variable o | certain |
+| Patterns.cs:24:22:24:23 | i2 | Patterns.cs:24:22:24:23 | Int32 i2 | Patterns.cs:24:22:24:23 | access to local variable i2 | Patterns.cs:20:17:20:17 | access to local variable o | certain |
+| Patterns.cs:27:22:27:23 | i3 | Patterns.cs:27:22:27:23 | Int32 i3 | Patterns.cs:27:22:27:23 | access to local variable i3 | Patterns.cs:20:17:20:17 | access to local variable o | certain |
+| Patterns.cs:30:25:30:26 | s2 | Patterns.cs:30:25:30:26 | String s2 | Patterns.cs:30:25:30:26 | access to local variable s2 | Patterns.cs:20:17:20:17 | access to local variable o | certain |
+| Patterns.cs:33:22:33:23 | v2 | Patterns.cs:33:22:33:23 | Object v2 | Patterns.cs:33:22:33:23 | access to local variable v2 | Patterns.cs:20:17:20:17 | access to local variable o | certain |

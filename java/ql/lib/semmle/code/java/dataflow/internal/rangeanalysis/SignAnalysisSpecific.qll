@@ -13,12 +13,12 @@ module Private {
   private import Sign
   import Impl
 
+  class GuardValue = G::GuardValue;
+
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
   class Guard extends G::Guards_v2::Guard {
-    predicate isEquality(Expr e1, Expr e2, boolean eqval) {
-      super.isEquality(e1, e2, any(G::GuardValue gv | gv.asBooleanValue() = eqval))
-    }
+    predicate isEquality(Expr e1, Expr e2, GuardValue eqval) { super.isEquality(e1, e2, eqval) }
   }
 
   class SsaVariable = Ssa::SsaDefinition;
@@ -175,14 +175,14 @@ module Private {
   /**
    * Holds if `guard` controls the position `controlled` with the value `testIsTrue`.
    */
-  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, boolean testIsTrue) {
-    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), testIsTrue)
+  predicate guardControlsSsaRead(Guard guard, SsaReadPosition controlled, GuardValue val) {
+    guard.controls(controlled.(SsaReadPositionBlock).getBlock(), val.asBooleanValue())
     or
     exists(SsaReadPositionPhiInputEdge controlledEdge | controlledEdge = controlled |
-      guard.controls(controlledEdge.getOrigBlock(), testIsTrue) or
+      guard.controls(controlledEdge.getOrigBlock(), val.asBooleanValue()) or
       guard
           .controlsBranchEdge(controlledEdge.getOrigBlock(), controlledEdge.getPhiBlock(),
-            testIsTrue)
+            val.asBooleanValue())
     )
   }
 }
