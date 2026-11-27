@@ -90,3 +90,19 @@ jsonfile.readFile('baz.json').then(obj => console.log(obj))
 
 var walker = require("walker");
 walker('/etc/').filterDir(() => {}).on('entry', () => {}); // only file access modelled.
+
+const fs = require("fs");
+function getFs() {
+	return fs;
+}
+getFs().createReadStream("input").pipe(process.stdout);
+
+const fsHolder = { fs };
+fsHolder.fs.createReadStream("input").pipe(process.stdout);
+
+require("fs").createReadStream("input").pipe(process.stdout);
+require("node:fs").createReadStream("input").pipe(process.stdout);
+require("mz/fs").createReadStream("input").pipe(process.stdout);
+require("original-fs").createReadStream("input").pipe(process.stdout);
+require("fs-extra").createReadStream("input").pipe(process.stdout);
+require("graceful-fs").createReadStream("input").pipe(process.stdout);
