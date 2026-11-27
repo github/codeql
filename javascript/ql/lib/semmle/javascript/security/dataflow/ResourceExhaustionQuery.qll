@@ -67,8 +67,53 @@ predicate isNumericFlowStep(DataFlow::Node src, DataFlow::Node dst) {
     c = dst and
     src = c.getAnArgument()
   |
-    c = DataFlow::globalVarRef("Math").getAMemberCall(_) or
+    c = DataFlow::globalVarRef("Math").getAMemberCall(_) and
+    not (
+      c = DataFlow::globalVarRef("Math").getAMemberCall("min") and
+      isConstantNumber(c.getAnArgument().asExpr())
+    )
+    or
     c = DataFlow::globalVarRef(["Number", "parseInt", "parseFloat"]).getACall()
+  )
+}
+
+/** Holds if `e` evaluates to a finite constant value. */
+private predicate isConstantNumber(Expr e) {
+  e =
+    any(NumberLiteral literal |
+      exists(literal.getIntValue())
+      or
+      // Subtracting an infinite floating-point value from itself does not yield zero.
+      exists(float value | value = literal.getFloatValue() and value - value = 0.0)
+    )
+  or
+  e =
+    any(UnaryExpr sign |
+      isConstantNumber(sign.getOperand()) and
+      (sign instanceof NegExpr or sign instanceof PlusExpr)
+    )
+  or
+  isConstantNumber(e.stripParens())
+  or
+  exists(Variable v, VariableDeclarator decl |
+    v.isLocal() or decl.getDeclStmt() instanceof ConstDeclStmt
+  |
+    e = v.getAnAccess() and
+    decl.getBindingPattern() = unique(VarDecl varDecl | varDecl = v.getADeclaration()) and
+    not v.isParameter() and
+    not v.isNamespaceExport() and
+    not v = any(EnhancedForLoop loop).getAnIterationVariable() and
+    not exists(EnhancedForLoop loop | loop.getIteratorExpr().stripParens() = v.getAnAccess()) and
+    forex(Expr assigned | assigned = v.getAnAssignedExpr() | isConstantNumber(assigned)) and
+    forall(VarAccess write |
+      write = v.getAnAccess() and
+      write.isLValue()
+    |
+      exists(AssignExpr assignment |
+        write = assignment.getTarget().stripParens() and
+        isConstantNumber(assignment.getRhs())
+      )
+    )
   )
 }
 

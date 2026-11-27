@@ -1,5 +1,21 @@
 #select
 | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | This creates a timer with a user-controlled duration from a $@. | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | user-provided value |
+| math-min.js:28:16:28:26 | Math.min(n) | math-min.js:7:27:7:33 | req.url | math-min.js:28:16:28:26 | Math.min(n) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:29:16:29:33 | Math.min(n, other) | math-min.js:7:27:7:33 | req.url | math-min.js:29:16:29:33 | Math.min(n, other) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:30:16:30:31 | Math.max(n, MAX) | math-min.js:7:27:7:33 | req.url | math-min.js:30:16:30:31 | Math.max(n, MAX) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:31:16:31:27 | Math.ceil(n) | math-min.js:7:27:7:33 | req.url | math-min.js:31:16:31:27 | Math.ceil(n) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:32:16:32:36 | Math.mi ... finity) | math-min.js:7:27:7:33 | req.url | math-min.js:32:16:32:36 | Math.mi ... finity) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:33:16:33:33 | Math.min(n, 1e999) | math-min.js:7:27:7:33 | req.url | math-min.js:33:16:33:33 | Math.min(n, 1e999) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:37:16:37:33 | Math.min(n, bound) | math-min.js:7:27:7:33 | req.url | math-min.js:37:16:37:33 | Math.min(n, bound) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:40:16:40:35 | Math.min(n, updated) | math-min.js:7:27:7:33 | req.url | math-min.js:40:16:40:35 | Math.min(n, updated) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:43:16:43:39 | Math.mi ... mented) | math-min.js:7:27:7:33 | req.url | math-min.js:43:16:43:39 | Math.mi ... mented) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:46:16:46:40 | Math.mi ... ctured) | math-min.js:7:27:7:33 | req.url | math-min.js:46:16:46:40 | Math.mi ... ctured) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:48:18:48:39 | Math.mi ... ration) | math-min.js:7:27:7:33 | req.url | math-min.js:48:18:48:39 | Math.mi ... ration) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:53:18:53:39 | Math.mi ... pBound) | math-min.js:7:27:7:33 | req.url | math-min.js:53:18:53:39 | Math.mi ... pBound) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:57:16:57:46 | Math.mi ... dBound) | math-min.js:7:27:7:33 | req.url | math-min.js:57:16:57:46 | Math.mi ... dBound) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:60:16:60:38 | Math.mi ... clared) | math-min.js:7:27:7:33 | req.url | math-min.js:60:16:60:38 | Math.mi ... clared) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| math-min.js:63:18:63:35 | Math.min(n, limit) | math-min.js:7:27:7:33 | req.url | math-min.js:63:18:63:35 | Math.min(n, limit) | This creates a buffer with a user-controlled size from a $@. | math-min.js:7:27:7:33 | req.url | user-provided value |
+| namespace-export.ts:14:16:14:38 | Math.mi ... ts.max) | namespace-export.ts:9:27:9:33 | req.url | namespace-export.ts:14:16:14:38 | Math.mi ... ts.max) | This creates a buffer with a user-controlled size from a $@. | namespace-export.ts:9:27:9:33 | req.url | user-provided value |
 | resource-exhaustion.js:14:16:14:16 | n | resource-exhaustion.js:5:21:5:27 | req.url | resource-exhaustion.js:14:16:14:16 | n | This creates a buffer with a user-controlled size from a $@. | resource-exhaustion.js:5:21:5:27 | req.url | user-provided value |
 | resource-exhaustion.js:15:22:15:22 | n | resource-exhaustion.js:5:21:5:27 | req.url | resource-exhaustion.js:15:22:15:22 | n | This creates a buffer with a user-controlled size from a $@. | resource-exhaustion.js:5:21:5:27 | req.url | user-provided value |
 | resource-exhaustion.js:16:26:16:26 | n | resource-exhaustion.js:5:21:5:27 | req.url | resource-exhaustion.js:16:26:16:26 | n | This creates a buffer with a user-controlled size from a $@. | resource-exhaustion.js:5:21:5:27 | req.url | user-provided value |
@@ -25,6 +41,134 @@ edges
 | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | provenance |  |
 | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | documentaion-examples/ResourceExhaustion_timeout.js:5:14:5:59 | parseIn ... .delay) | provenance | Config |
 | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:46 | url.par ... , true) | provenance |  |
+| math-min.js:7:9:7:13 | query | math-min.js:8:22:8:26 | query | provenance |  |
+| math-min.js:7:9:7:13 | query | math-min.js:9:26:9:30 | query | provenance |  |
+| math-min.js:7:17:7:40 | url.par ... , true) | math-min.js:7:9:7:13 | query | provenance |  |
+| math-min.js:7:27:7:33 | req.url | math-min.js:7:17:7:40 | url.par ... , true) | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:11:25:11:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:12:30:12:30 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:13:25:13:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:14:25:14:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:15:25:15:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:16:25:16:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:17:25:17:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:20:25:20:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:21:22:21:22 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:22:23:22:23 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:23:33:23:33 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:24:34:24:34 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:25:37:25:37 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:28:25:28:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:29:25:29:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:30:25:30:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:31:26:31:26 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:32:25:32:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:33:25:33:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:37:25:37:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:40:25:40:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:43:25:43:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:46:25:46:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:48:27:48:27 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:53:27:53:27 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:57:25:57:25 | n | provenance |  |
+| math-min.js:8:9:8:9 | n | math-min.js:60:25:60:25 | n | provenance |  |
+| math-min.js:8:13:8:29 | parseInt(query.n) | math-min.js:8:9:8:9 | n | provenance |  |
+| math-min.js:8:22:8:26 | query | math-min.js:8:22:8:28 | query.n | provenance |  |
+| math-min.js:8:22:8:28 | query.n | math-min.js:8:13:8:29 | parseInt(query.n) | provenance | Config |
+| math-min.js:9:9:9:13 | other | math-min.js:29:28:29:32 | other | provenance |  |
+| math-min.js:9:9:9:13 | other | math-min.js:36:11:36:15 | other | provenance |  |
+| math-min.js:9:9:9:13 | other | math-min.js:45:21:45:25 | other | provenance |  |
+| math-min.js:9:9:9:13 | other | math-min.js:47:26:47:30 | other | provenance |  |
+| math-min.js:9:9:9:13 | other | math-min.js:56:26:56:30 | other | provenance |  |
+| math-min.js:9:9:9:13 | other | math-min.js:59:38:59:42 | other | provenance |  |
+| math-min.js:9:9:9:13 | other | math-min.js:65:16:65:20 | other | provenance |  |
+| math-min.js:9:17:9:37 | parseIn ... .other) | math-min.js:9:9:9:13 | other | provenance |  |
+| math-min.js:9:26:9:30 | query | math-min.js:9:26:9:36 | query.other | provenance |  |
+| math-min.js:9:26:9:36 | query.other | math-min.js:9:17:9:37 | parseIn ... .other) | provenance | Config |
+| math-min.js:11:25:11:25 | n | math-min.js:12:30:12:30 | n | provenance |  |
+| math-min.js:12:30:12:30 | n | math-min.js:13:25:13:25 | n | provenance |  |
+| math-min.js:13:25:13:25 | n | math-min.js:14:25:14:25 | n | provenance |  |
+| math-min.js:14:25:14:25 | n | math-min.js:15:25:15:25 | n | provenance |  |
+| math-min.js:15:25:15:25 | n | math-min.js:16:25:16:25 | n | provenance |  |
+| math-min.js:16:25:16:25 | n | math-min.js:17:25:17:25 | n | provenance |  |
+| math-min.js:17:25:17:25 | n | math-min.js:20:25:20:25 | n | provenance |  |
+| math-min.js:20:25:20:25 | n | math-min.js:21:22:21:22 | n | provenance |  |
+| math-min.js:21:22:21:22 | n | math-min.js:22:23:22:23 | n | provenance |  |
+| math-min.js:22:23:22:23 | n | math-min.js:23:33:23:33 | n | provenance |  |
+| math-min.js:23:33:23:33 | n | math-min.js:24:34:24:34 | n | provenance |  |
+| math-min.js:24:34:24:34 | n | math-min.js:25:37:25:37 | n | provenance |  |
+| math-min.js:25:37:25:37 | n | math-min.js:28:25:28:25 | n | provenance |  |
+| math-min.js:28:25:28:25 | n | math-min.js:28:16:28:26 | Math.min(n) | provenance | Config |
+| math-min.js:28:25:28:25 | n | math-min.js:29:25:29:25 | n | provenance |  |
+| math-min.js:29:25:29:25 | n | math-min.js:29:16:29:33 | Math.min(n, other) | provenance | Config |
+| math-min.js:29:25:29:25 | n | math-min.js:30:25:30:25 | n | provenance |  |
+| math-min.js:29:28:29:32 | other | math-min.js:29:16:29:33 | Math.min(n, other) | provenance | Config |
+| math-min.js:30:25:30:25 | n | math-min.js:30:16:30:31 | Math.max(n, MAX) | provenance | Config |
+| math-min.js:30:25:30:25 | n | math-min.js:31:26:31:26 | n | provenance |  |
+| math-min.js:31:26:31:26 | n | math-min.js:31:16:31:27 | Math.ceil(n) | provenance | Config |
+| math-min.js:31:26:31:26 | n | math-min.js:32:25:32:25 | n | provenance |  |
+| math-min.js:32:25:32:25 | n | math-min.js:32:16:32:36 | Math.mi ... finity) | provenance | Config |
+| math-min.js:32:25:32:25 | n | math-min.js:33:25:33:25 | n | provenance |  |
+| math-min.js:33:25:33:25 | n | math-min.js:33:16:33:33 | Math.min(n, 1e999) | provenance | Config |
+| math-min.js:33:25:33:25 | n | math-min.js:37:25:37:25 | n | provenance |  |
+| math-min.js:36:3:36:7 | bound | math-min.js:37:28:37:32 | bound | provenance |  |
+| math-min.js:36:11:36:15 | other | math-min.js:36:3:36:7 | bound | provenance |  |
+| math-min.js:37:25:37:25 | n | math-min.js:37:16:37:33 | Math.min(n, bound) | provenance | Config |
+| math-min.js:37:25:37:25 | n | math-min.js:40:25:40:25 | n | provenance |  |
+| math-min.js:37:28:37:32 | bound | math-min.js:37:16:37:33 | Math.min(n, bound) | provenance | Config |
+| math-min.js:40:25:40:25 | n | math-min.js:40:16:40:35 | Math.min(n, updated) | provenance | Config |
+| math-min.js:40:25:40:25 | n | math-min.js:43:25:43:25 | n | provenance |  |
+| math-min.js:43:25:43:25 | n | math-min.js:43:16:43:39 | Math.mi ... mented) | provenance | Config |
+| math-min.js:43:25:43:25 | n | math-min.js:46:25:46:25 | n | provenance |  |
+| math-min.js:45:3:45:16 | [destructured] [0] | math-min.js:45:4:45:15 | destructured | provenance |  |
+| math-min.js:45:4:45:15 | destructured | math-min.js:45:4:45:15 | destructured | provenance |  |
+| math-min.js:45:4:45:15 | destructured | math-min.js:46:28:46:39 | destructured | provenance |  |
+| math-min.js:45:20:45:26 | [other] [0] | math-min.js:45:3:45:16 | [destructured] [0] | provenance |  |
+| math-min.js:45:21:45:25 | other | math-min.js:45:20:45:26 | [other] [0] | provenance |  |
+| math-min.js:46:25:46:25 | n | math-min.js:46:16:46:40 | Math.mi ... ctured) | provenance | Config |
+| math-min.js:46:25:46:25 | n | math-min.js:48:27:48:27 | n | provenance |  |
+| math-min.js:46:25:46:25 | n | math-min.js:53:27:53:27 | n | provenance |  |
+| math-min.js:46:25:46:25 | n | math-min.js:57:25:57:25 | n | provenance |  |
+| math-min.js:46:28:46:39 | destructured | math-min.js:46:16:46:40 | Math.mi ... ctured) | provenance | Config |
+| math-min.js:47:12:47:20 | iteration | math-min.js:48:30:48:38 | iteration | provenance |  |
+| math-min.js:47:25:47:31 | [other] [0] | math-min.js:47:12:47:20 | iteration | provenance |  |
+| math-min.js:47:26:47:30 | other | math-min.js:47:25:47:31 | [other] [0] | provenance |  |
+| math-min.js:48:27:48:27 | n | math-min.js:48:18:48:39 | Math.mi ... ration) | provenance | Config |
+| math-min.js:48:27:48:27 | n | math-min.js:53:27:53:27 | n | provenance |  |
+| math-min.js:48:27:48:27 | n | math-min.js:57:25:57:25 | n | provenance |  |
+| math-min.js:48:30:48:38 | iteration | math-min.js:48:18:48:39 | Math.mi ... ration) | provenance | Config |
+| math-min.js:53:27:53:27 | n | math-min.js:53:18:53:39 | Math.mi ... pBound) | provenance | Config |
+| math-min.js:53:27:53:27 | n | math-min.js:57:25:57:25 | n | provenance |  |
+| math-min.js:56:4:56:21 | parenthesizedBound | math-min.js:57:28:57:45 | parenthesizedBound | provenance |  |
+| math-min.js:56:26:56:30 | other | math-min.js:56:4:56:21 | parenthesizedBound | provenance |  |
+| math-min.js:57:25:57:25 | n | math-min.js:57:16:57:46 | Math.mi ... dBound) | provenance | Config |
+| math-min.js:57:25:57:25 | n | math-min.js:60:25:60:25 | n | provenance |  |
+| math-min.js:57:28:57:45 | parenthesizedBound | math-min.js:57:16:57:46 | Math.mi ... dBound) | provenance | Config |
+| math-min.js:59:7:59:20 | { redeclared } [redeclared] | math-min.js:59:9:59:18 | redeclared | provenance |  |
+| math-min.js:59:9:59:18 | redeclared | math-min.js:59:9:59:18 | redeclared | provenance |  |
+| math-min.js:59:9:59:18 | redeclared | math-min.js:60:28:60:37 | redeclared | provenance |  |
+| math-min.js:59:24:59:44 | { redec ... other } [redeclared] | math-min.js:59:7:59:20 | { redeclared } [redeclared] | provenance |  |
+| math-min.js:59:38:59:42 | other | math-min.js:59:24:59:44 | { redec ... other } [redeclared] | provenance |  |
+| math-min.js:60:25:60:25 | n | math-min.js:60:16:60:38 | Math.mi ... clared) | provenance | Config |
+| math-min.js:60:25:60:25 | n | math-min.js:62:3:64:3 | functio ... ert\\n  } [n] | provenance |  |
+| math-min.js:60:25:60:25 | n | math-min.js:65:3:65:14 | useParameter [n] | provenance |  |
+| math-min.js:60:28:60:37 | redeclared | math-min.js:60:16:60:38 | Math.mi ... clared) | provenance | Config |
+| math-min.js:62:3:64:3 | functio ... ert\\n  } [n] | math-min.js:62:12:62:23 | useParameter [n] | provenance |  |
+| math-min.js:62:3:64:3 | functio ... ert\\n  } [n] | math-min.js:63:27:63:27 | n | provenance |  |
+| math-min.js:62:12:62:23 | useParameter [n] | math-min.js:65:3:65:14 | useParameter [n] | provenance |  |
+| math-min.js:62:25:62:29 | limit | math-min.js:63:30:63:34 | limit | provenance |  |
+| math-min.js:63:27:63:27 | n | math-min.js:63:18:63:35 | Math.min(n, limit) | provenance | Config |
+| math-min.js:63:30:63:34 | limit | math-min.js:63:18:63:35 | Math.min(n, limit) | provenance | Config |
+| math-min.js:65:3:65:14 | useParameter [n] | math-min.js:63:27:63:27 | n | provenance |  |
+| math-min.js:65:16:65:20 | other | math-min.js:62:25:62:29 | limit | provenance |  |
+| namespace-export.ts:9:9:9:13 | query | namespace-export.ts:10:22:10:26 | query | provenance |  |
+| namespace-export.ts:9:17:9:40 | url.par ... , true) | namespace-export.ts:9:9:9:13 | query | provenance |  |
+| namespace-export.ts:9:27:9:33 | req.url | namespace-export.ts:9:17:9:40 | url.par ... , true) | provenance |  |
+| namespace-export.ts:10:9:10:9 | n | namespace-export.ts:14:25:14:25 | n | provenance |  |
+| namespace-export.ts:10:13:10:29 | parseInt(query.n) | namespace-export.ts:10:9:10:9 | n | provenance |  |
+| namespace-export.ts:10:22:10:26 | query | namespace-export.ts:10:22:10:28 | query.n | provenance |  |
+| namespace-export.ts:10:22:10:28 | query.n | namespace-export.ts:10:13:10:29 | parseInt(query.n) | provenance | Config |
+| namespace-export.ts:14:25:14:25 | n | namespace-export.ts:14:16:14:38 | Math.mi ... ts.max) | provenance | Config |
 | resource-exhaustion.js:5:7:5:7 | s | resource-exhaustion.js:6:20:6:20 | s | provenance |  |
 | resource-exhaustion.js:5:7:5:7 | s | resource-exhaustion.js:35:12:35:12 | s | provenance |  |
 | resource-exhaustion.js:5:7:5:7 | s | resource-exhaustion.js:82:17:82:17 | s | provenance |  |
@@ -56,6 +200,98 @@ nodes
 | documentaion-examples/ResourceExhaustion_timeout.js:5:23:5:58 | url.par ... y.delay | semmle.label | url.par ... y.delay |
 | documentaion-examples/ResourceExhaustion_timeout.js:5:33:5:39 | req.url | semmle.label | req.url |
 | documentaion-examples/ResourceExhaustion_timeout.js:7:16:7:20 | delay | semmle.label | delay |
+| math-min.js:7:9:7:13 | query | semmle.label | query |
+| math-min.js:7:17:7:40 | url.par ... , true) | semmle.label | url.par ... , true) |
+| math-min.js:7:27:7:33 | req.url | semmle.label | req.url |
+| math-min.js:8:9:8:9 | n | semmle.label | n |
+| math-min.js:8:13:8:29 | parseInt(query.n) | semmle.label | parseInt(query.n) |
+| math-min.js:8:22:8:26 | query | semmle.label | query |
+| math-min.js:8:22:8:28 | query.n | semmle.label | query.n |
+| math-min.js:9:9:9:13 | other | semmle.label | other |
+| math-min.js:9:17:9:37 | parseIn ... .other) | semmle.label | parseIn ... .other) |
+| math-min.js:9:26:9:30 | query | semmle.label | query |
+| math-min.js:9:26:9:36 | query.other | semmle.label | query.other |
+| math-min.js:11:25:11:25 | n | semmle.label | n |
+| math-min.js:12:30:12:30 | n | semmle.label | n |
+| math-min.js:13:25:13:25 | n | semmle.label | n |
+| math-min.js:14:25:14:25 | n | semmle.label | n |
+| math-min.js:15:25:15:25 | n | semmle.label | n |
+| math-min.js:16:25:16:25 | n | semmle.label | n |
+| math-min.js:17:25:17:25 | n | semmle.label | n |
+| math-min.js:20:25:20:25 | n | semmle.label | n |
+| math-min.js:21:22:21:22 | n | semmle.label | n |
+| math-min.js:22:23:22:23 | n | semmle.label | n |
+| math-min.js:23:33:23:33 | n | semmle.label | n |
+| math-min.js:24:34:24:34 | n | semmle.label | n |
+| math-min.js:25:37:25:37 | n | semmle.label | n |
+| math-min.js:28:16:28:26 | Math.min(n) | semmle.label | Math.min(n) |
+| math-min.js:28:25:28:25 | n | semmle.label | n |
+| math-min.js:29:16:29:33 | Math.min(n, other) | semmle.label | Math.min(n, other) |
+| math-min.js:29:25:29:25 | n | semmle.label | n |
+| math-min.js:29:28:29:32 | other | semmle.label | other |
+| math-min.js:30:16:30:31 | Math.max(n, MAX) | semmle.label | Math.max(n, MAX) |
+| math-min.js:30:25:30:25 | n | semmle.label | n |
+| math-min.js:31:16:31:27 | Math.ceil(n) | semmle.label | Math.ceil(n) |
+| math-min.js:31:26:31:26 | n | semmle.label | n |
+| math-min.js:32:16:32:36 | Math.mi ... finity) | semmle.label | Math.mi ... finity) |
+| math-min.js:32:25:32:25 | n | semmle.label | n |
+| math-min.js:33:16:33:33 | Math.min(n, 1e999) | semmle.label | Math.min(n, 1e999) |
+| math-min.js:33:25:33:25 | n | semmle.label | n |
+| math-min.js:36:3:36:7 | bound | semmle.label | bound |
+| math-min.js:36:11:36:15 | other | semmle.label | other |
+| math-min.js:37:16:37:33 | Math.min(n, bound) | semmle.label | Math.min(n, bound) |
+| math-min.js:37:25:37:25 | n | semmle.label | n |
+| math-min.js:37:28:37:32 | bound | semmle.label | bound |
+| math-min.js:40:16:40:35 | Math.min(n, updated) | semmle.label | Math.min(n, updated) |
+| math-min.js:40:25:40:25 | n | semmle.label | n |
+| math-min.js:43:16:43:39 | Math.mi ... mented) | semmle.label | Math.mi ... mented) |
+| math-min.js:43:25:43:25 | n | semmle.label | n |
+| math-min.js:45:3:45:16 | [destructured] [0] | semmle.label | [destructured] [0] |
+| math-min.js:45:4:45:15 | destructured | semmle.label | destructured |
+| math-min.js:45:4:45:15 | destructured | semmle.label | destructured |
+| math-min.js:45:20:45:26 | [other] [0] | semmle.label | [other] [0] |
+| math-min.js:45:21:45:25 | other | semmle.label | other |
+| math-min.js:46:16:46:40 | Math.mi ... ctured) | semmle.label | Math.mi ... ctured) |
+| math-min.js:46:25:46:25 | n | semmle.label | n |
+| math-min.js:46:28:46:39 | destructured | semmle.label | destructured |
+| math-min.js:47:12:47:20 | iteration | semmle.label | iteration |
+| math-min.js:47:25:47:31 | [other] [0] | semmle.label | [other] [0] |
+| math-min.js:47:26:47:30 | other | semmle.label | other |
+| math-min.js:48:18:48:39 | Math.mi ... ration) | semmle.label | Math.mi ... ration) |
+| math-min.js:48:27:48:27 | n | semmle.label | n |
+| math-min.js:48:30:48:38 | iteration | semmle.label | iteration |
+| math-min.js:53:18:53:39 | Math.mi ... pBound) | semmle.label | Math.mi ... pBound) |
+| math-min.js:53:27:53:27 | n | semmle.label | n |
+| math-min.js:56:4:56:21 | parenthesizedBound | semmle.label | parenthesizedBound |
+| math-min.js:56:26:56:30 | other | semmle.label | other |
+| math-min.js:57:16:57:46 | Math.mi ... dBound) | semmle.label | Math.mi ... dBound) |
+| math-min.js:57:25:57:25 | n | semmle.label | n |
+| math-min.js:57:28:57:45 | parenthesizedBound | semmle.label | parenthesizedBound |
+| math-min.js:59:7:59:20 | { redeclared } [redeclared] | semmle.label | { redeclared } [redeclared] |
+| math-min.js:59:9:59:18 | redeclared | semmle.label | redeclared |
+| math-min.js:59:9:59:18 | redeclared | semmle.label | redeclared |
+| math-min.js:59:24:59:44 | { redec ... other } [redeclared] | semmle.label | { redec ... other } [redeclared] |
+| math-min.js:59:38:59:42 | other | semmle.label | other |
+| math-min.js:60:16:60:38 | Math.mi ... clared) | semmle.label | Math.mi ... clared) |
+| math-min.js:60:25:60:25 | n | semmle.label | n |
+| math-min.js:60:28:60:37 | redeclared | semmle.label | redeclared |
+| math-min.js:62:3:64:3 | functio ... ert\\n  } [n] | semmle.label | functio ... ert\\n  } [n] |
+| math-min.js:62:12:62:23 | useParameter [n] | semmle.label | useParameter [n] |
+| math-min.js:62:25:62:29 | limit | semmle.label | limit |
+| math-min.js:63:18:63:35 | Math.min(n, limit) | semmle.label | Math.min(n, limit) |
+| math-min.js:63:27:63:27 | n | semmle.label | n |
+| math-min.js:63:30:63:34 | limit | semmle.label | limit |
+| math-min.js:65:3:65:14 | useParameter [n] | semmle.label | useParameter [n] |
+| math-min.js:65:16:65:20 | other | semmle.label | other |
+| namespace-export.ts:9:9:9:13 | query | semmle.label | query |
+| namespace-export.ts:9:17:9:40 | url.par ... , true) | semmle.label | url.par ... , true) |
+| namespace-export.ts:9:27:9:33 | req.url | semmle.label | req.url |
+| namespace-export.ts:10:9:10:9 | n | semmle.label | n |
+| namespace-export.ts:10:13:10:29 | parseInt(query.n) | semmle.label | parseInt(query.n) |
+| namespace-export.ts:10:22:10:26 | query | semmle.label | query |
+| namespace-export.ts:10:22:10:28 | query.n | semmle.label | query.n |
+| namespace-export.ts:14:16:14:38 | Math.mi ... ts.max) | semmle.label | Math.mi ... ts.max) |
+| namespace-export.ts:14:25:14:25 | n | semmle.label | n |
 | resource-exhaustion.js:5:7:5:7 | s | semmle.label | s |
 | resource-exhaustion.js:5:11:5:34 | url.par ... , true) | semmle.label | url.par ... , true) |
 | resource-exhaustion.js:5:21:5:27 | req.url | semmle.label | req.url |
