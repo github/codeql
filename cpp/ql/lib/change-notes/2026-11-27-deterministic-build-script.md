@@ -1,4 +1,4 @@
 ---
 category: fix
 ---
-* The C/C++ autobuilder now consistently selects the same build script when multiple candidates are at the same depth.
+* The C# and C/C++ autobuilders now consistently select the same build script when multiple candidates are at the same depth.
