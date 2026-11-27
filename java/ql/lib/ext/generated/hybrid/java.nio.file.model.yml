@@ -1,0 +1,24 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://www.github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.nio.file", "Files", False, "copy", "(InputStream,Path,CopyOption[])", "", "Argument[1]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Files", False, "createDirectories", "(Path,FileAttribute[])", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Files", False, "createFile", "(Path,FileAttribute[])", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Files", False, "delete", "(Path)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Files", False, "readAllBytes", "(Path)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Files", False, "write", "(Path,byte[],OpenOption[])", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Files", False, "writeString", "(Path,CharSequence,Charset,OpenOption[])", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Files", False, "writeString", "(Path,CharSequence,OpenOption[])", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Path", False, "resolve", "(Path)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Path", False, "resolve", "(String)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Paths", False, "get", "(String,String[])", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.nio.file", "Paths", False, "get", "(String,String[])", "", "Argument[1]", "ai-candidate-cwe-22", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.nio.file", "Files", False, "readAllBytes", "(Path)", "", "ReturnValue", "ai-candidate", "ai-generated"]

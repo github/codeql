@@ -1,0 +1,36 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://www.github.com/WebGoat/WebGoat#3fd66ee9d94ae2673bff0867eeda5fadfd7a8dde by codeql-mads-via-llm in application mode
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.io", "File", False, "File", "(File,String)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "File", "(File,String)", "", "Argument[1]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "File", "(String)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "File", "(String,String)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "File", "(String,String)", "", "Argument[1]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "createNewFile", "()", "", "Argument[this]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "delete", "()", "", "Argument[this]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "mkdir", "()", "", "Argument[this]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "File", False, "mkdirs", "()", "", "Argument[this]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "FileInputStream", False, "FileInputStream", "(File)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "FileInputStream", False, "FileInputStream", "(String)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "FileOutputStream", False, "FileOutputStream", "(File)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "ObjectInputStream", False, "ObjectInputStream", "(InputStream)", "", "Argument[0]", "ai-candidate-cwe-502", "ai-generated"]
+      - ["java.io", "ObjectInputStream", False, "defaultReadObject", "()", "", "Argument[this]", "ai-candidate-cwe-502", "ai-generated"]
+      - ["java.io", "ObjectInputStream", False, "readObject", "()", "", "Argument[this]", "ai-candidate-cwe-502", "ai-generated"]
+      - ["java.io", "PrintStream", False, "println", "(String)", "", "Argument[0]", "ai-candidate-cwe-117", "ai-generated"]
+      - ["java.io", "PrintWriter", False, "PrintWriter", "(File)", "", "Argument[0]", "ai-candidate-cwe-22", "ai-generated"]
+      - ["java.io", "PrintWriter", False, "println", "(String)", "", "Argument[0]", "ai-candidate-cwe-79", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.io", "BufferedReader", False, "readLine", "()", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["java.io", "File", False, "listFiles", "()", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["java.io", "File", False, "listFiles", "(FileFilter)", "", "ReturnValue", "ai-candidate", "ai-generated"]
+      - ["java.io", "FileInputStream", False, "FileInputStream", "(File)", "", "Argument[this]", "ai-candidate", "ai-generated"]
+      - ["java.io", "FileInputStream", False, "FileInputStream", "(String)", "", "Argument[this]", "ai-candidate", "ai-generated"]
+      - ["java.io", "InputStream", False, "read", "(byte[])", "", "Argument[0]", "ai-candidate", "ai-generated"]
+      - ["java.io", "InputStream", False, "readAllBytes", "()", "", "ReturnValue", "ai-candidate", "ai-generated"]
