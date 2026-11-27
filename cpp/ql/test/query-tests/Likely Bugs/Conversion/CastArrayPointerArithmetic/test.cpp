@@ -100,7 +100,7 @@ void test () {
 class DerivedWithData: public Base {
 public:
 	int y;
-	const void *data() const { return this + 1; } // $ SPURIOUS: Alert
+	const void *data() const { return this + 1; }
 };
 
 void use_data(const DerivedWithData &d) {
@@ -108,5 +108,5 @@ void use_data(const DerivedWithData &d) {
 }
 
 void downcast_and_dereference(Base *b) {
-	use_data(*static_cast<const DerivedWithData *>(b)); // $ SPURIOUS: Source // GOOD: a downcast, not an upcast
+	use_data(*static_cast<const DerivedWithData *>(b)); // GOOD: a downcast, not an upcast
 }
