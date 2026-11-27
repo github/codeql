@@ -13,11 +13,12 @@ namespace Semmle.Autobuild.Shared
     public class BuildCommandAutoRule : IBuildRule<AutobuildOptionsShared>
     {
         private readonly WithDotNet<AutobuildOptionsShared> withDotNet;
+        private (string path, int depth)[] candidates = Array.Empty<(string, int)>();
 
         /// <summary>
         /// Paths to files in the project directory which we classified as scripts, in no guaranteed order.
         /// </summary>
-        public IEnumerable<string> CandidatePaths { get; private set; }
+        public IEnumerable<string> CandidatePaths => this.candidates.Select(p => p.path);
 
         /// <summary>
         /// The path of the script we decided to run, if any.
@@ -27,7 +28,6 @@ namespace Semmle.Autobuild.Shared
         public BuildCommandAutoRule(WithDotNet<AutobuildOptionsShared> withDotNet)
         {
             this.withDotNet = withDotNet;
-            this.CandidatePaths = new List<string>();
         }
 
         /// <summary>
@@ -65,17 +65,16 @@ namespace Semmle.Autobuild.Shared
             var scripts = buildScripts.SelectMany(s => extensions.Select(e => s + e));
             // search through the files in the project directory for paths which end in one of
             // the names given by `scripts`
-            var candidates = builder.Paths
+            this.candidates = builder.Paths
                 .Where(p => scripts.Any(p.Item1.ToLower().EndsWith))
                 .ToArray();
-            this.CandidatePaths = candidates.Select(p => p.Item1);
 
-            var comparer = Comparer<(string path, int depth)>.Create((left, right) =>
-            {
-                var depthComparison = left.depth.CompareTo(right.depth);
-                return depthComparison != 0 ? depthComparison : StringComparer.Ordinal.Compare(left.path, right.path);
-            });
-            this.ScriptPath = candidates.Length == 0 ? null : candidates.MinBy(p => p, comparer).Item1;
+            // .NET optimizes FirstOrDefault on an ordered sequence to a linear-time minimum scan without sorting.
+            this.ScriptPath = this.candidates
+                .OrderBy(p => p.depth)
+                .ThenBy(p => p.path, StringComparer.Ordinal)
+                .Select(p => p.path)
+                .FirstOrDefault();
 
             if (this.ScriptPath is null)
                 return BuildScript.Failure;
