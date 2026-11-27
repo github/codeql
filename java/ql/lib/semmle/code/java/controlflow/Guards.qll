@@ -87,6 +87,10 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
 
   class Expr = J::Expr;
 
+  predicate nodeIsAfterValue(ControlFlowNode node, Expr e, ConditionalSuccessor s) {
+    node.isAfterValue(e, s)
+  }
+
   private newtype TConstantValue =
     TCharValue(string c) { any(CharacterLiteral lit).getValue() = c } or
     TStringValue(string value) { any(CompileTimeConstantExpr c).getStringValue() = value } or

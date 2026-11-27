@@ -22,6 +22,10 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
 
   class Expr = CS::Expr;
 
+  predicate nodeIsAfterValue(ControlFlowNode node, Expr e, ConditionalSuccessor s) {
+    node.isAfterValue(e, s)
+  }
+
   private newtype TConstantValue =
     TStringValue(string value) { any(StringLiteral s).getValue() = value }
 

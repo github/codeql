@@ -26,6 +26,10 @@ private module GuardsInput implements
 
   class Expr = G::Expr;
 
+  predicate nodeIsAfterValue(CfgImpl::Cfg::ControlFlowNode node, Expr e, ConditionalSuccessor s) {
+    node.isAfterValue(e, s)
+  }
+
   private newtype TConstantValue = TStringValue(string s) { s = any(G::Expr e).getStringValue() }
 
   class ConstantValue extends TConstantValue {

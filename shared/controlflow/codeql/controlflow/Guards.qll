@@ -78,6 +78,11 @@ signature module InputSig<LocationSig Location, TypSig ControlFlowNode, TypSig B
     BasicBlock getBasicBlock();
   }
 
+  /** Holds if `node` indicates that `e` evaluates to the value `s`. */
+  default predicate nodeIsAfterValue(ControlFlowNode node, Expr e, ConditionalSuccessor s) {
+    none()
+  }
+
   class ConstantValue {
     /** Gets a textual representation of this constant value. */
     string toString();
@@ -449,6 +454,24 @@ module Make<
     )
   }
 
+  /**
+   * Holds if the fact that `e` evaluates to the value `v` is represented by a
+   * node in the basic block `bb` and not by a branch edge.
+   *
+   * For example, this holds for short-circuiting boolean expressions like
+   * `a || b` where the control-flow branching happens at `a` and `b`, while
+   * the nodes for the implied value of the entire expression occur later
+   * within the subsequent basic blocks.
+   */
+  private predicate midBlockGuard(Expr e, BasicBlock bb, GuardValue v) {
+    exists(ControlFlowNode node, BooleanSuccessor s |
+      nodeIsAfterValue(node, e, s) and
+      bb.getNode(_) = node and
+      not e.(PreGuard).hasValueBranchEdge(_, bb, v) and
+      v.asBooleanValue() = s.getValue()
+    )
+  }
+
   final private class FinalAstNode = AstNode;
 
   /**
@@ -482,6 +505,11 @@ module Make<
         this.hasValueBranchEdge(guard, succ, v) and
         dominatingEdge(guard, succ) and
         succ.dominates(bb)
+      )
+      or
+      exists(BasicBlock guard |
+        midBlockGuard(this, guard, v) and
+        guard.dominates(bb)
       )
     }
 
@@ -1044,6 +1072,8 @@ module Make<
 
     private predicate hasAValueBranchEdge(Guard guard, GuardValue v) {
       guard.hasValueBranchEdge(_, _, v)
+      or
+      midBlockGuard(guard, _, v)
     }
 
     private module BranchImplies = ImpliesTC<hasAValueBranchEdge/2>;
@@ -1053,6 +1083,13 @@ module Make<
     ) {
       exists(Guard g0, GuardValue v0 |
         g0.hasValueBranchEdge(bb1, bb2, v0) and
+        BranchImplies::guardControls(guard, v, g0, v0)
+      )
+    }
+
+    private predicate guardControlsBlock(Guard guard, BasicBlock bb, GuardValue v) {
+      exists(Guard g0, GuardValue v0 |
+        midBlockGuard(g0, bb, v0) and
         BranchImplies::guardControls(guard, v, g0, v0)
       )
     }
@@ -1079,6 +1116,12 @@ module Make<
         ssaControlsBranchEdge(def, guard, succ, v) and
         dominatingEdge(guard, succ) and
         succ.dominates(bb)
+      )
+      or
+      exists(Guard g0, BasicBlock guardbb, GuardValue v0 |
+        midBlockGuard(g0, guardbb, v0) and
+        BranchImplies::ssaControls(def, v, g0, v0) and
+        guardbb.dominates(bb)
       )
     }
 
@@ -1159,6 +1202,37 @@ module Make<
         tgtGuard.getBasicBlock() = bb
       }
 
+      pragma[nomagic]
+      private predicate relevantValue1(SsaDefinition def, GuardValue v1) {
+        DisjunctImplies::ssaControls(def, v1, _, _)
+      }
+
+      pragma[nomagic]
+      private predicate relevantValue2(SsaDefinition def, GuardValue v2) {
+        ssaControlsGuard(def, v2, _, _, _)
+      }
+
+      pragma[nomagic]
+      private predicate relevantDisjointValues(SsaDefinition def, GuardValue v1, GuardValue v2) {
+        relevantValue1(def, v1) and
+        relevantValue2(def, v2) and
+        disjointValues(v1, v2)
+      }
+
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
+       * evaluates to a value disjoint from `v`. The basic block of `tgtGuard` is `bb`.
+       */
+      pragma[nomagic]
+      private predicate ssaControlsGuard2(
+        SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal, BasicBlock bb
+      ) {
+        exists(GuardValue v2 |
+          ssaControlsGuard(def, v2, tgtGuard, tgtVal, bb) and
+          relevantDisjointValues(def, v, v2)
+        )
+      }
+
       /**
        * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
        * evaluates to `v`.
@@ -1167,13 +1241,11 @@ module Make<
       predicate disjunctiveGuardControls(
         Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal
       ) {
-        exists(SsaDefinition def, GuardValue v1, GuardValue v2, BasicBlock bb |
+        exists(SsaDefinition def, GuardValue v1, BasicBlock bb |
           // If `def==v1 || guard==v` controls `bb`,
           ssaDisjunctionControls(def, v1, guard, v, bb) and
-          // and `tgtGuard==tgtVal` in `bb` implies `def==v2`,
-          ssaControlsGuard(def, v2, tgtGuard, tgtVal, bb) and
-          // and `v1` and `v2` are disjoint,
-          disjointValues(v1, v2)
+          // and `tgtGuard==tgtVal` in `bb` implies `def` having some value `v2` disjoint from `v1`,
+          ssaControlsGuard2(def, v1, tgtGuard, tgtVal, bb)
           // then assuming `tgtGuard==tgtVal` it follows that `def` cannot be `v1`
           // and therefore we must have `guard==v`.
         )
@@ -1531,6 +1603,11 @@ module Make<
           this.valueControlsBranchEdge(guard, succ, v) and
           dominatingEdge(guard, succ) and
           succ.dominates(bb)
+        )
+        or
+        exists(BasicBlock guard |
+          guardControlsBlock(this, guard, v) and
+          guard.dominates(bb)
         )
       }
 
