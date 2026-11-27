@@ -1,0 +1,72 @@
+name: Run Clippy on changed Rust code
+
+# Run on every PR; package selection below skips lint setup for unrelated changes.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - rc/*
+
+permissions:
+  contents: read
+
+concurrency:
+  # Cancel superseded PR checks; each push gets its own group so GitHub cannot
+  # replace an already-pending push run with a newer one.
+  group: cargo-clippy-${{ github.event_name }}-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  clippy:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # PRs compare the merge commit with its first parent; pushes need full
+          # history to compare the event's before SHA across multi-commit pushes.
+          fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 0 }}
+      - name: Test package selection
+        run: python3 -m unittest discover -s misc/scripts/cargo-clippy
+      - name: Select affected packages
+        id: select
+        env:
+          # Use the PR merge base's actual first parent, or the push's before SHA.
+          BASE: ${{ github.event_name == 'pull_request' && 'HEAD^1' || github.event.before }}
+        run: |
+          packages=$(python3 misc/scripts/cargo-clippy/cargo_clippy.py select --base "$BASE")
+          echo "packages=$packages" >> "$GITHUB_OUTPUT"
+          echo "Selected packages: $packages" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Restore Cargo cache
+        id: cache
+        if: steps.select.outputs.packages != '[]'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-clippy-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-${{ github.sha }}
+          restore-keys: |
+            cargo-clippy-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}-
+      - name: Show stable toolchain and cache
+        if: steps.select.outputs.packages != '[]'
+        env:
+          CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          rustup show active-toolchain
+          cargo clippy --version
+          echo "Exact cache hit: ${CACHE_HIT:-false}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Inject ast-generator sources
+        if: contains(fromJSON(steps.select.outputs.packages), 'ast-generator')
+        run: bazel run //rust/ast-generator:inject-sources
+      - name: Clippy
+        if: steps.select.outputs.packages != '[]'
+        env:
+          PACKAGES: ${{ steps.select.outputs.packages }}
+          # For the unified extractor: skip linking the native Swift shim and
+          # only check Rust code.
+          SWIFT_SYNTAX_RS_CHECK_ONLY: "1"
+        run: python3 misc/scripts/cargo-clippy/cargo_clippy.py lint "$PACKAGES"
