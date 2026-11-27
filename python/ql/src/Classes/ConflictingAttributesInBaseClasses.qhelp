@@ -49,7 +49,7 @@ functionality provided by the two base classes does not overlap, as shown in cla
 </example>
 <references>
 
-    <li>Python Language Reference: <a href="https://docs.python.org/2/reference/datamodel.html">Data model</a>.</li>
+    <li>Python Language Reference: <a href="https://docs.python.org/3/reference/datamodel.html">Data model</a>.</li>
     <li>Python releases: <a href="https://www.python.org/download/releases/2.3/mro/">The Python 2.3 Method Resolution Order</a>.</li>
     <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/C3_linearization">C3 linearization</a>.</li>
     <li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Composition_over_inheritance">Composition over inheritance</a>.</li>

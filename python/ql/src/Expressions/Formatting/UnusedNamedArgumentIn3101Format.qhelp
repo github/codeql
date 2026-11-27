@@ -28,7 +28,7 @@ Check that the format string is correct and then remove any surplus keyword argu
 </example>
 <references>
 
-  <li>Python Library Reference: <a href="https://docs.python.org/2/library/string.html#string-formatting">String Formatting.</a> </li>
+  <li>Python Library Reference: <a href="https://docs.python.org/3/library/string.html#format-string-syntax">String Formatting.</a> </li>
 
 
 </references>

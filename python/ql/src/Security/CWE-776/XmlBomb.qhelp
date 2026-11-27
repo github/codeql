@@ -68,7 +68,7 @@ Python 3 standard library:
 </li>
 <li>
 Python 2 standard library:
-<a href="https://docs.python.org/2/library/xml.html#xml-vulnerabilities">XML Vulnerabilities</a>.
+<a href="https://docs.python.org/3/library/xml.html#xml-security">XML Vulnerabilities</a>.
 </li>
 </references>
 </qhelp>

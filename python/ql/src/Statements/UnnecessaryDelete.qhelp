@@ -28,7 +28,7 @@ in such cases.</p>
 
 <references>
 
-  <li>Python: <a href="https://docs.python.org/2/reference/simple_stmts.html#the-del-statement">The 'del' statement</a>.</li>
-  <li>Python/C API Reference Manual: <a href="https://docs.python.org/2.0/api/refcounts.html">Reference counts</a>.</li>
+  <li>Python: <a href="https://docs.python.org/3/reference/simple_stmts.html#the-del-statement">The 'del' statement</a>.</li>
+  <li>Python/C API Reference Manual: <a href="https://docs.python.org/3/c-api/refcounting.html">Reference counts</a>.</li>
 </references>
 </qhelp>
