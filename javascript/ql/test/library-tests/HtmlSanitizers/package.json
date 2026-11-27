@@ -7,10 +7,10 @@
     "he": "^1.1.1",
     "html-entities": "^1.2.1",
     "lodash": "^4.17.10",
-    "sanitize-html": "^1.18.2",
+    "sanitize-html": "^2.17.6",
     "sanitizer": "^0.1.3",
     "underscore": "^1.9.1",
-    "validator": "^10.4.0",
+    "validator": "^13.15.35",
     "xss": "^1.0.3",
     "xss-filters": "^1.2.7"
   }
