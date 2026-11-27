@@ -25,9 +25,9 @@ and that the test should be corrected, rather than deleted.
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/reference/compound_stmts.html#the-if-statement">The If Statement</a>.</li>
-  <li>Python: <a href="http://docs.python.org/reference/compound_stmts.html#the-while-statement">The While Statement</a>.</li>
-  <li>Python: <a href="http://docs.python.org/reference/expressions.html#literals">Literals (constant values)</a>.</li>
+  <li>Python: <a href="https://docs.python.org/reference/compound_stmts.html#the-if-statement">The If Statement</a>.</li>
+  <li>Python: <a href="https://docs.python.org/reference/compound_stmts.html#the-while-statement">The While Statement</a>.</li>
+  <li>Python: <a href="https://docs.python.org/reference/expressions.html#literals">Literals (constant values)</a>.</li>
 
 
 </references>

@@ -36,7 +36,7 @@ This is harder to read than the second example, especially to a programmer more 
 
 <li>Python Language Reference: <a href="https://docs.python.org/2/reference/grammar.html">Full grammar specification</a>.</li>
 <li>Google Python Style Guide: <a href="https://google.github.io/styleguide/pyguide.html#Parentheses">Use parentheses sparingly</a>.</li>
-<li>Python PEP Index: <a href="http://legacy.python.org/dev/peps/pep-0008/">PEP 8</a>.</li>
+<li>Python PEP Index: <a href="https://legacy.python.org/dev/peps/pep-0008/">PEP 8</a>.</li>
 
 
 </references>

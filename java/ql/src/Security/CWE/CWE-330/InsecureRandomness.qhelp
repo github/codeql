@@ -55,10 +55,10 @@
 	<references>
 		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
         <li>
-            Java Docs: <a href="http://docs.oracle.com/javase/8/docs/api/java/util/Random.html">Random</a>.
+            Java Docs: <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Random.html">Random</a>.
         </li>
         <li>
-            Java Docs: <a href="http://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html">SecureRandom</a>.
+            Java Docs: <a href="https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html">SecureRandom</a>.
         </li>
 	</references>
 </qhelp>

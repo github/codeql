@@ -42,7 +42,7 @@ the call should be qualified with <code>exports</code> like this:
 
 <references>
 <li>Node.js: <a href="https://nodejs.org/api/modules.html">Modules</a>.</li>
-<li>JSLint Help: <a href="http://www.jslint.com/help.html">JSLint Directives</a>.</li>
+<li>JSLint Help: <a href="https://www.jslint.com/help.html">JSLint Directives</a>.</li>
 <li>Closure Compiler: <a href="https://developers.google.com/closure/compiler/docs/api-tutorial3">Advanced Compilation and Externs</a>.</li>
 </references>
 </qhelp>

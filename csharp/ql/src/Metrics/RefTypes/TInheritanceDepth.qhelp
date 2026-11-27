@@ -36,9 +36,9 @@ the position in the inheritance hierarchy.</p>
 </section>
 <references>
 
-  <li>Barbara Liskov. <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.12.819&amp;rep=rep1&amp;type=pdf">Data Abstraction and Hierarchy</a>.</li>
+  <li>Barbara Liskov. <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.12.819&amp;rep=rep1&amp;type=pdf">Data Abstraction and Hierarchy</a>.</li>
   <li>Martin Fowler. <em>Refactoring</em>. Addison-Wesley. 1999.</li>
-  <li>Mick West. <a href="http://cowboyprogramming.com/2007/01/05/evolve-your-heirachy">Evolve Your Hierarchy</a>.</li>
+  <li>Mick West. <a href="https://cowboyprogramming.com/2007/01/05/evolve-your-heirachy">Evolve Your Hierarchy</a>.</li>
 
 </references>
 </qhelp>

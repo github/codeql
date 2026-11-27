@@ -34,7 +34,7 @@ the comparison would evaluate to <code>true</code>).
 <sample src="BadAdditionOverflowCheckExample2.cpp" />
 </example>
 <references>
-<li><a href="http://c-faq.com/expr/preservingrules.html">Preserving Rules</a></li>
+<li><a href="https://c-faq.com/expr/preservingrules.html">Preserving Rules</a></li>
 <li><a href="https://www.securecoding.cert.org/confluence/plugins/servlet/mobile#content/view/20086942">Understand integer conversion rules</a></li>
 </references>
 </qhelp>

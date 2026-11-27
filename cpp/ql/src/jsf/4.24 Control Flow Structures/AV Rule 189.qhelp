@@ -26,7 +26,7 @@ the break statement only exits from one level of the loop.</p>
   AV Rule 189, <em>Joint Strike Fighter Air Vehicle C++ Coding Standards</em>. Lockheed Martin Corporation, 2005.
 </li>
 <li>
-  <a href="http://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html">A Case against the GO TO Statement (EWD-215).</a>
+  <a href="https://www.cs.utexas.edu/users/EWD/transcriptions/EWD02xx/EWD215.html">A Case against the GO TO Statement (EWD-215).</a>
 </li>
 <li>
   MSDN Library: <a href="https://docs.microsoft.com/en-us/cpp/cpp/goto-statement-cpp">goto Statement (C++)</a>.
@@ -36,7 +36,7 @@ the break statement only exits from one level of the loop.</p>
   Chapter 4: Control Flow, Rule 4.6 (<a href="https://web.archive.org/web/20190919025638/https://mongers.org/industrial-c++/">PDF</a>).
 </li>
 <li>
-  <a href="http://www.cplusplus.com/doc/tutorial/control/">www.cplusplus.com Control Structures</a>
+  <a href="https://www.cplusplus.com/doc/tutorial/control/">www.cplusplus.com Control Structures</a>
 </li>
 
 
