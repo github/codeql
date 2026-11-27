@@ -59,7 +59,7 @@ Macros here are typically a thin public wrapper around a private rule (`codeql_c
 the rule narrow and the ergonomics in the macro. Each macro decorates the caller's `name` to mint its helper targets,
 for example `internal/<name>` or `single_arch/<name>`. Their visibility is that macro's choice (private, package
 default, or the caller's own), so read the macro instead of assuming. When an error names a target you cannot find in
-any source file, a macro minted it: grep the suffix under `misc/bazel/`.
+any source file, a macro minted it: grep the suffix in the package's loaded `.bzl` files, including language-local ones.
 
 ## Shared helpers
 
@@ -164,8 +164,8 @@ Do not change either the override path or the `local_path_override`; they work a
 versions of the internal helpers that shared `.bzl` files load *unconditionally*. That is its only job, and it is small
 enough to read.
 
-**Extend the stub only when a `.bzl` file every standalone target loads gains a new internal `load()`**, which breaks
-package loading outright, for everyone. Prefer not needing one. **Never add a stub so that an internal-only target
+**Extend the stub only when a shared `.bzl` file needed by standalone targets gains a new internal `load()`**, which breaks
+package loading for those targets. Prefer not needing one. **Never add a stub so that an internal-only target
 appears to build**: some targets depend on internal libraries (`grep -rl @semmle_code --include=*.bazel` finds them) and
 are correctly unbuildable here. Unlike a `load()`, such a dependency only fails when that target is actually requested.
 
