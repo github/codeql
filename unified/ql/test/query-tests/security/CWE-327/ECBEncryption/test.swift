@@ -4,12 +4,16 @@
 // These stubs roughly follows the same structure as classes from CryptoSwift
 class AES
 {
+	static let blockSize = 16
+
 	init(key: Array<UInt8>, blockMode: BlockMode, padding: Padding) { }
 	init(key: Array<UInt8>, blockMode: BlockMode) { }
 }
 
 class Blowfish
 {
+	static let blockSize = 8
+
 	init(key: Array<UInt8>, blockMode: BlockMode, padding: Padding) { }
 }
 
@@ -77,6 +81,12 @@ func test1() {
 	let bg3 = Blowfish(key: key, blockMode: getCBCBlockMode(), padding: padding) // GOOD
 }
 
+typealias Key = Array<UInt8>
+
+func randomIV(_ blockSize: Int) -> Array<UInt8> {
+	return (0..<blockSize).map({ _ in UInt8.random(in: 0...UInt8.max) })
+}
+
 func doc_example_encrypt(key : Key, padding : Padding) {
 	// ...
 
@@ -86,9 +96,9 @@ func doc_example_encrypt(key : Key, padding : Padding) {
 	_ = try Blowfish(key: key, blockMode: ECB(), padding: padding) // $ Alert[unified/swift/ecb-encryption]
 
 	// GOOD: ECB is not used for block mode
-	_ = try AES(key: key, blockMode: CBC(iv: AES.randomIV(AES.blockSize)), padding: padding)
-	_ = try AES(key: key, blockMode: CBC(iv: AES.randomIV(AES.blockSize)))
-	_ = try Blowfish(key: key, blockMode: CBC(iv: Blowfish.randomIV(Blowfish.blockSize)), padding: padding)
+	_ = try AES(key: key, blockMode: CBC(iv: randomIV(AES.blockSize)), padding: padding)
+	_ = try AES(key: key, blockMode: CBC(iv: randomIV(AES.blockSize)))
+	_ = try Blowfish(key: key, blockMode: CBC(iv: randomIV(Blowfish.blockSize)), padding: padding)
 
 	// ...
 }

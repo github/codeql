@@ -1,38 +1,38 @@
 #select
-| test.swift:56:37:56:39 | ecb | test.swift:50:12:50:16 | ECB(...) | test.swift:56:37:56:39 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:50:12:50:16 | ECB(...) | ECB(...) |
-| test.swift:57:37:57:39 | ecb | test.swift:50:12:50:16 | ECB(...) | test.swift:57:37:57:39 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:50:12:50:16 | ECB(...) | ECB(...) |
-| test.swift:58:37:58:41 | ECB(...) | test.swift:58:37:58:41 | ECB(...) | test.swift:58:37:58:41 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:58:37:58:41 | ECB(...) | ECB(...) |
-| test.swift:59:37:59:41 | ECB(...) | test.swift:59:37:59:41 | ECB(...) | test.swift:59:37:59:41 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:59:37:59:41 | ECB(...) | ECB(...) |
-| test.swift:60:37:60:53 | getECBBlockMode(...) | test.swift:39:9:39:13 | ECB(...) | test.swift:60:37:60:53 | getECBBlockMode(...) | The initialization of the cipher 'getECBBlockMode(...)' uses the insecure ECB block mode from $@. | test.swift:39:9:39:13 | ECB(...) | ECB(...) |
-| test.swift:61:37:61:53 | getECBBlockMode(...) | test.swift:39:9:39:13 | ECB(...) | test.swift:61:37:61:53 | getECBBlockMode(...) | The initialization of the cipher 'getECBBlockMode(...)' uses the insecure ECB block mode from $@. | test.swift:39:9:39:13 | ECB(...) | ECB(...) |
-| test.swift:71:42:71:44 | ecb | test.swift:50:12:50:16 | ECB(...) | test.swift:71:42:71:44 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:50:12:50:16 | ECB(...) | ECB(...) |
-| test.swift:72:42:72:46 | ECB(...) | test.swift:72:42:72:46 | ECB(...) | test.swift:72:42:72:46 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:72:42:72:46 | ECB(...) | ECB(...) |
-| test.swift:73:42:73:58 | getECBBlockMode(...) | test.swift:39:9:39:13 | ECB(...) | test.swift:73:42:73:58 | getECBBlockMode(...) | The initialization of the cipher 'getECBBlockMode(...)' uses the insecure ECB block mode from $@. | test.swift:39:9:39:13 | ECB(...) | ECB(...) |
-| test.swift:84:35:84:39 | ECB(...) | test.swift:84:35:84:39 | ECB(...) | test.swift:84:35:84:39 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:84:35:84:39 | ECB(...) | ECB(...) |
-| test.swift:85:35:85:39 | ECB(...) | test.swift:85:35:85:39 | ECB(...) | test.swift:85:35:85:39 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:85:35:85:39 | ECB(...) | ECB(...) |
-| test.swift:86:40:86:44 | ECB(...) | test.swift:86:40:86:44 | ECB(...) | test.swift:86:40:86:44 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:86:40:86:44 | ECB(...) | ECB(...) |
+| test.swift:60:37:60:39 | ecb | test.swift:54:12:54:16 | ECB(...) | test.swift:60:37:60:39 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:54:12:54:16 | ECB(...) | ECB(...) |
+| test.swift:61:37:61:39 | ecb | test.swift:54:12:54:16 | ECB(...) | test.swift:61:37:61:39 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:54:12:54:16 | ECB(...) | ECB(...) |
+| test.swift:62:37:62:41 | ECB(...) | test.swift:62:37:62:41 | ECB(...) | test.swift:62:37:62:41 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:62:37:62:41 | ECB(...) | ECB(...) |
+| test.swift:63:37:63:41 | ECB(...) | test.swift:63:37:63:41 | ECB(...) | test.swift:63:37:63:41 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:63:37:63:41 | ECB(...) | ECB(...) |
+| test.swift:64:37:64:53 | getECBBlockMode(...) | test.swift:43:9:43:13 | ECB(...) | test.swift:64:37:64:53 | getECBBlockMode(...) | The initialization of the cipher 'getECBBlockMode(...)' uses the insecure ECB block mode from $@. | test.swift:43:9:43:13 | ECB(...) | ECB(...) |
+| test.swift:65:37:65:53 | getECBBlockMode(...) | test.swift:43:9:43:13 | ECB(...) | test.swift:65:37:65:53 | getECBBlockMode(...) | The initialization of the cipher 'getECBBlockMode(...)' uses the insecure ECB block mode from $@. | test.swift:43:9:43:13 | ECB(...) | ECB(...) |
+| test.swift:75:42:75:44 | ecb | test.swift:54:12:54:16 | ECB(...) | test.swift:75:42:75:44 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:54:12:54:16 | ECB(...) | ECB(...) |
+| test.swift:76:42:76:46 | ECB(...) | test.swift:76:42:76:46 | ECB(...) | test.swift:76:42:76:46 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:76:42:76:46 | ECB(...) | ECB(...) |
+| test.swift:77:42:77:58 | getECBBlockMode(...) | test.swift:43:9:43:13 | ECB(...) | test.swift:77:42:77:58 | getECBBlockMode(...) | The initialization of the cipher 'getECBBlockMode(...)' uses the insecure ECB block mode from $@. | test.swift:43:9:43:13 | ECB(...) | ECB(...) |
+| test.swift:94:35:94:39 | ECB(...) | test.swift:94:35:94:39 | ECB(...) | test.swift:94:35:94:39 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:94:35:94:39 | ECB(...) | ECB(...) |
+| test.swift:95:35:95:39 | ECB(...) | test.swift:95:35:95:39 | ECB(...) | test.swift:95:35:95:39 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:95:35:95:39 | ECB(...) | ECB(...) |
+| test.swift:96:40:96:44 | ECB(...) | test.swift:96:40:96:44 | ECB(...) | test.swift:96:40:96:44 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:96:40:96:44 | ECB(...) | ECB(...) |
 edges
-| test.swift:39:9:39:13 | ECB(...) | test.swift:60:37:60:53 | getECBBlockMode(...) | provenance |  |
-| test.swift:39:9:39:13 | ECB(...) | test.swift:61:37:61:53 | getECBBlockMode(...) | provenance |  |
-| test.swift:39:9:39:13 | ECB(...) | test.swift:73:42:73:58 | getECBBlockMode(...) | provenance |  |
-| test.swift:50:6:50:8 | ecb | test.swift:56:37:56:39 | ecb | provenance |  |
-| test.swift:50:6:50:8 | ecb | test.swift:57:37:57:39 | ecb | provenance |  |
-| test.swift:50:6:50:8 | ecb | test.swift:71:42:71:44 | ecb | provenance |  |
-| test.swift:50:12:50:16 | ECB(...) | test.swift:50:6:50:8 | ecb | provenance |  |
+| test.swift:43:9:43:13 | ECB(...) | test.swift:64:37:64:53 | getECBBlockMode(...) | provenance |  |
+| test.swift:43:9:43:13 | ECB(...) | test.swift:65:37:65:53 | getECBBlockMode(...) | provenance |  |
+| test.swift:43:9:43:13 | ECB(...) | test.swift:77:42:77:58 | getECBBlockMode(...) | provenance |  |
+| test.swift:54:6:54:8 | ecb | test.swift:60:37:60:39 | ecb | provenance |  |
+| test.swift:54:6:54:8 | ecb | test.swift:61:37:61:39 | ecb | provenance |  |
+| test.swift:54:6:54:8 | ecb | test.swift:75:42:75:44 | ecb | provenance |  |
+| test.swift:54:12:54:16 | ECB(...) | test.swift:54:6:54:8 | ecb | provenance |  |
 nodes
-| test.swift:39:9:39:13 | ECB(...) | semmle.label | ECB(...) |
-| test.swift:50:6:50:8 | ecb | semmle.label | ecb |
-| test.swift:50:12:50:16 | ECB(...) | semmle.label | ECB(...) |
-| test.swift:56:37:56:39 | ecb | semmle.label | ecb |
-| test.swift:57:37:57:39 | ecb | semmle.label | ecb |
-| test.swift:58:37:58:41 | ECB(...) | semmle.label | ECB(...) |
-| test.swift:59:37:59:41 | ECB(...) | semmle.label | ECB(...) |
-| test.swift:60:37:60:53 | getECBBlockMode(...) | semmle.label | getECBBlockMode(...) |
-| test.swift:61:37:61:53 | getECBBlockMode(...) | semmle.label | getECBBlockMode(...) |
-| test.swift:71:42:71:44 | ecb | semmle.label | ecb |
-| test.swift:72:42:72:46 | ECB(...) | semmle.label | ECB(...) |
-| test.swift:73:42:73:58 | getECBBlockMode(...) | semmle.label | getECBBlockMode(...) |
-| test.swift:84:35:84:39 | ECB(...) | semmle.label | ECB(...) |
-| test.swift:85:35:85:39 | ECB(...) | semmle.label | ECB(...) |
-| test.swift:86:40:86:44 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:43:9:43:13 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:54:6:54:8 | ecb | semmle.label | ecb |
+| test.swift:54:12:54:16 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:60:37:60:39 | ecb | semmle.label | ecb |
+| test.swift:61:37:61:39 | ecb | semmle.label | ecb |
+| test.swift:62:37:62:41 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:63:37:63:41 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:64:37:64:53 | getECBBlockMode(...) | semmle.label | getECBBlockMode(...) |
+| test.swift:65:37:65:53 | getECBBlockMode(...) | semmle.label | getECBBlockMode(...) |
+| test.swift:75:42:75:44 | ecb | semmle.label | ecb |
+| test.swift:76:42:76:46 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:77:42:77:58 | getECBBlockMode(...) | semmle.label | getECBBlockMode(...) |
+| test.swift:94:35:94:39 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:95:35:95:39 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:96:40:96:44 | ECB(...) | semmle.label | ECB(...) |
 subpaths
