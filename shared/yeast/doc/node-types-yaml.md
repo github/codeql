@@ -56,19 +56,27 @@ Members are resolved as named or unnamed using the
 ## Named nodes
 
 Named nodes are concrete AST node types. Each entry is a node kind mapping to
-its fields. A node with no fields (a leaf token like `identifier`) uses an
-empty value:
+its fields. A value-carrying leaf token like `identifier` uses an empty value. A
+fieldless structural node uses an explicit empty map:
 
 ```yaml
 named:
   identifier:
-  constant:
+  pass_statement: {}
 ```
 
 ```json
 {"type": "identifier", "named": true, "fields": {}},
-{"type": "constant", "named": true, "fields": {}}
+{"type": "pass_statement", "named": true, "fields": {}}
 ```
+
+The generated JSON is identical, but the YAML distinction lets `rules!`
+recognize when a bare rule result should inherit leaf content.
+
+JSON node-types files do not preserve this distinction. Converting YAML to
+JSON and back renders both forms as empty values, so explicit `{}` mappings for
+fieldless structural nodes must be restored before using the converted YAML
+with `rules!`.
 
 ### Fields
 

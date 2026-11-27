@@ -229,6 +229,7 @@ named:
   assignment:
     left: identifier
   identifier:
+  structural: {}
 ",
         )
         .unwrap()
@@ -266,7 +267,7 @@ named:
 
     #[test]
     fn leaves_fieldless_structural_nodes_unchanged() {
-        let mut rule = crate::rule_parse::parse_rule(quote!((source) => (assignment))).unwrap();
+        let mut rule = crate::rule_parse::parse_rule(quote!((source) => (structural))).unwrap();
         rule.resolve_bare_leaf_content(&output_leaf_kinds())
             .unwrap();
 
@@ -277,5 +278,29 @@ named:
             panic!("expected one output node");
         };
         assert!(node.content.is_none());
+    }
+
+    #[test]
+    fn allows_nested_fieldless_structural_nodes() {
+        let mut rule =
+            crate::rule_parse::parse_rule(quote!((source) => (assignment left: (structural))))
+                .unwrap();
+        rule.resolve_bare_leaf_content(&output_leaf_kinds())
+            .unwrap();
+
+        let Replacement::Templates(templates) = rule.replacement else {
+            panic!("expected template replacement");
+        };
+        let [Template::Node(assignment)] = templates.as_slice() else {
+            panic!("expected one output node");
+        };
+        let [Field::Named {
+            value: Template::Node(structural),
+            ..
+        }] = assignment.fields.as_slice()
+        else {
+            panic!("expected one structural child");
+        };
+        assert!(structural.content.is_none());
     }
 }
