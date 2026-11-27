@@ -6,6 +6,8 @@ private import codeql.rust.elements.SourceFile
 private import codeql.rust.elements.AstNode
 private import codeql.rust.elements.Comment
 private import codeql.rust.elements.DocComment
+private import codeql.rust.elements.MacroCall
+private import codeql.rust.elements.MacroItems
 private import codeql.rust.Diagnostics
 private import codeql.rust.elements.internal.ExtractorStep
 
@@ -89,8 +91,12 @@ class ExtractedFile extends File {
   ExtractedFile() { this.fromSource() }
 
   private Diagnostic getNoSemanticsDiagnostic() {
-    result.getTag() = "semantics" and result.getLocation().getFile() = this
+    result.getTag() = "semantics" and
+    result.getLocation().getFile() = this
   }
+
+  /** Holds if the standalone extraction reported that semantic information was unavailable. */
+  predicate hasNoStandaloneSemanticsDiagnostic() { exists(this.getNoSemanticsDiagnostic()) }
 
   /**
    * Holds if we have semantical information about this file, which means
@@ -98,14 +104,42 @@ class ExtractedFile extends File {
    * * expand any macros
    * * skip any blocks that are conditionally compiled out
    */
-  predicate hasSemantics() { not exists(this.getNoSemanticsDiagnostic()) }
+  predicate hasSemantics() {
+    not exists(this.getNoSemanticsDiagnostic())
+    or
+    exists(ExtractorStep s | s.getAction() = "LoadSource" and s.getFile() = this)
+  }
+
+  /** Holds if `node` belongs to this file's active include expansion. */
+  predicate isInActiveIncludeExpansion(AstNode node) {
+    node.getFile() = this and
+    exists(MacroItems included, MacroCall call |
+      included = node.getParentNode*() and
+      included = call.getMacroCallExpansion() and
+      included.getFile() = node.getFile() and
+      included.getFile() != call.getFile()
+    )
+  }
+
+  /** Holds if `node` is not an inactive standalone copy of an include expansion. */
+  predicate isNotInactiveStandaloneCopy(AstNode node) {
+    node.getFile() = this and
+    not (
+      this.hasNoStandaloneSemanticsDiagnostic() and
+      this.isInActiveIncludeExpansion(_) and
+      not this.isInActiveIncludeExpansion(node)
+    )
+  }
 
   /**
    * Holds if we know this file was skipped by conditional compilation.
    * This is not the same as `not this.hasSemantics()`, as a file
    * might not have semantics because of some error.
    */
-  predicate isSkippedByCompilation() { this.getNoSemanticsDiagnostic().getSeverityText() = "Info" }
+  predicate isSkippedByCompilation() {
+    this.getNoSemanticsDiagnostic().getSeverityText() = "Info" and
+    not exists(ExtractorStep s | s.getAction() = "LoadSource" and s.getFile() = this)
+  }
 }
 
 /**
