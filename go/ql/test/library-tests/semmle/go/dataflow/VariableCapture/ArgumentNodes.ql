@@ -1,0 +1,69 @@
+import go
+private import semmle.go.dataflow.internal.DataFlowPrivate as Impl
+private import semmle.go.dataflow.internal.DataFlowNodes::Private as Nodes
+import utils.test.InlineExpectationsTest
+
+module ArgumentNodesTest implements TestSig {
+  string getARelevantTag() {
+    result =
+      [
+        "closure-args", "callee-post", "closure-post", "argument-post", "syntactic-arg",
+        "receiver-post", "closure-params"
+      ]
+  }
+
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::CallNode call |
+      call.getEnclosingCallable().getName() = "closureArgumentNodes" and
+      location = call.getLocation() and
+      element = call.toString()
+    |
+      tag = "closure-args" and
+      value =
+        count(DataFlow::ArgumentNode argument | argument.argumentOf(call.asExpr(), -2)).toString()
+      or
+      tag = "callee-post" and
+      value =
+        count(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = call.getCalleeNode())
+            .toString()
+      or
+      tag = "closure-post" and
+      value =
+        count(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = Impl::getArgument(call, -2))
+            .toString()
+      or
+      tag = "argument-post" and
+      call.getTarget().getName() = "callback" and
+      value =
+        count(DataFlow::PostUpdateNode post | post.getPreUpdateNode() = Impl::getArgument(call, 0))
+            .toString()
+      or
+      tag = "syntactic-arg" and
+      call.getTarget().getName() = "callback" and
+      value =
+        count(DataFlow::ArgumentNode argument |
+          argument.argumentOf(call.asExpr(), 0) and
+          argument.getACorrespondingSyntacticArgument() = call.getSyntacticArgument(0)
+        ).toString()
+      or
+      tag = "receiver-post" and
+      call instanceof DataFlow::MethodCallNode and
+      value =
+        count(DataFlow::PostUpdateNode post |
+          post.getPreUpdateNode() = call.(DataFlow::MethodCallNode).getReceiver()
+        ).toString()
+    )
+    or
+    exists(FuncLit function |
+      DataFlow::exprNode(function).getEnclosingCallable().getName() = "closureArgumentNodes" and
+      location = function.getLocation() and
+      element = function.toString() and
+      tag = "closure-params" and
+      value =
+        count(Nodes::CapturedVariablesParameterNode parameter | parameter.getFunction() = function)
+            .toString()
+    )
+  }
+}
+
+import MakeTest<ArgumentNodesTest>

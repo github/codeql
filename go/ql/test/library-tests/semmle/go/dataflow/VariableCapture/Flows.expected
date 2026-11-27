@@ -1,0 +1,5 @@
+testFailures
+spuriousConstructionClearing
+exposedCaptureNode
+ambiguousCapturePostUpdate
+unscopedCaptureNode

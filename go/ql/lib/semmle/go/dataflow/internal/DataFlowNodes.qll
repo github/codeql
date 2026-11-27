@@ -8,6 +8,7 @@ private import semmle.go.dataflow.SsaImpl as SsaImpl
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
+private import VariableCapture as VariableCapture
 
 private module SsaFlow = SsaImpl::DataFlowIntegration;
 
@@ -23,7 +24,11 @@ private newtype TNode =
   } or
   MkSliceElementNode(SliceExpr se) or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
+  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) } or
+  MkCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode capture) or
+  MkCapturedVariablesParameterNode(FuncLit function) {
+    exists(VariableCapture::Flow::ThisParameterNode parameter | parameter.getCallable() = function)
+  }
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -152,6 +157,69 @@ module Private {
       // We do not currently have support for callback-based library models.
       none()
     }
+  }
+
+  /** A synthesized access to captured storage. */
+  class CaptureNode extends Node, MkCaptureNode {
+    VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() {
+      this = MkCaptureNode(result)
+    }
+
+    override ControlFlow::Root getRoot() {
+      result = this.getSynthesizedCaptureNode().getEnclosingCallable()
+    }
+
+    override BasicBlock getBasicBlock() {
+      result = this.getSynthesizedCaptureNode().getBasicBlock()
+    }
+
+    override Type getType() {
+      exists(VariableCapture::CapturedVariable v |
+        this.getSynthesizedCaptureNode().isVariableAccess(v) and
+        result = v.getType()
+      )
+      or
+      this.getSynthesizedCaptureNode().isInstanceAccess() and
+      result = this.getRoot().(FuncLit).getType()
+    }
+
+    override string getNodeKind() { result = "captured variable" }
+
+    override string toString() { result = this.getSynthesizedCaptureNode().toString() }
+
+    override Location getLocation() { result = this.getSynthesizedCaptureNode().getLocation() }
+  }
+
+  /** The closure object passed implicitly when invoking a function literal that captures variables. */
+  class CapturedVariablesParameterNode extends ParameterNode, MkCapturedVariablesParameterNode {
+    FuncLit getFunction() { this = MkCapturedVariablesParameterNode(result) }
+
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      c.asCallable().getFuncDef() = this.getFunction() and i = -2
+    }
+
+    override ControlFlow::Root getRoot() { result = this.getFunction() }
+
+    override Type getType() { result = this.getFunction().getType() }
+
+    override string getNodeKind() { result = "captured variables parameter" }
+
+    override string toString() { result = "captured variables" }
+
+    override Location getLocation() { result = this.getFunction().getLocation() }
+  }
+
+  private class CapturePostUpdateNode extends CaptureNode, PostUpdateNode {
+    CaptureNode pre;
+
+    CapturePostUpdateNode() {
+      VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+        pre.getSynthesizedCaptureNode())
+    }
+
+    override Node getPreUpdateNode() { result = pre }
+
+    override string toString() { result = pre.toString() + " [postupdate]" }
   }
 }
 
@@ -505,10 +573,13 @@ module Public {
    * pointless recomputation of `getACallee()` each recursive iteration.
    */
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
-    result = cn.getCalleeNode() or
-    basicLocalFlowStep(result, getACalleeSource(cn)) or
-    jumpStep(result, getACalleeSource(cn)) or
-    result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
+    result = cn.getCalleeNode()
+    or
+    basicLocalFlowStep(result, getACalleeSource(cn))
+    or
+    jumpStep(result, getACalleeSource(cn))
+    or
+    additionalLambdaFlowStep(result, getACalleeSource(cn), _)
   }
 
   /** A data flow node that represents a call. */
@@ -866,6 +937,11 @@ module Public {
   }
 
   private predicate insnDirectlyHasPostUpdateNode(IR::Instruction insn) {
+    exists(CallExpr call |
+      isLambdaCall(call) and
+      insn = IR::evalExprInstruction(call.getCalleeExpr().stripParens())
+    )
+    or
     exists(Expr e | insn = IR::evalExprInstruction(e.stripParens()) |
       e instanceof AddressExpr or
       e = any(AddressExpr ae).getOperand()
@@ -924,7 +1000,7 @@ module Public {
   }
 
   /**
-   * A data-flow node that occurs as an argument in a call, including receiver arguments.
+   * A data-flow node that occurs as an argument in a call, including receiver and closure arguments.
    */
   class ArgumentNode extends Node {
     CallNode c;
@@ -935,7 +1011,8 @@ module Public {
     /**
      * Holds if this argument occurs at the given position in the given call.
      *
-     * The receiver argument is considered to have index `-1`.
+     * The receiver argument has index `-1`. The closure object of a call through
+     * a function value has index `-2`.
      *
      * Note that we currently do not track receiver arguments into calls to interface methods.
      */

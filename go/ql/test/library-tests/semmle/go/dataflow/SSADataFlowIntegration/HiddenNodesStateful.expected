@@ -51,6 +51,32 @@ edges
 | main.go:38:11:38:18 | call to source | main.go:38:11:38:18 | call to source | provenance | Config |
 | main.go:40:8:40:12 | value | main.go:40:8:40:12 | value | provenance | Config |
 | main.go:43:7:43:11 | value | main.go:43:7:43:11 | value | provenance | Config |
+| main.go:58:11:58:18 | call to source | main.go:58:11:58:18 | call to source | provenance | Config |
+| main.go:58:11:58:18 | call to source | main.go:60:2:60:4 | set [postupdate] [captured value] | provenance |  |
+| main.go:58:11:58:18 | call to source | main.go:60:2:60:4 | set [postupdate] [captured value] | provenance |  |
+| main.go:60:2:60:4 | set [postupdate] [captured value] | main.go:61:7:61:11 | value | provenance |  |
+| main.go:60:2:60:4 | set [postupdate] [captured value] | main.go:61:7:61:11 | value | provenance |  |
+| main.go:60:2:60:4 | set [postupdate] [captured value] | main.go:61:7:61:11 | value | provenance | Config |
+| main.go:61:7:61:11 | value | main.go:61:7:61:11 | value | provenance | Config |
+| main.go:65:11:65:18 | call to source | main.go:65:11:65:18 | call to source | provenance | Config |
+| main.go:65:11:65:18 | call to source | main.go:69:7:69:11 | value | provenance |  |
+| main.go:65:11:65:18 | call to source | main.go:69:7:69:11 | value | provenance |  |
+| main.go:65:11:65:18 | call to source | main.go:69:7:69:11 | value | provenance |  |
+| main.go:65:11:65:18 | call to source | main.go:69:7:69:11 | value | provenance | Config |
+| main.go:65:11:65:18 | call to source | main.go:69:7:69:11 | value | provenance | Config |
+| main.go:67:8:67:12 | value | main.go:67:8:67:12 | value | provenance | Config |
+| main.go:69:7:69:11 | value | main.go:69:7:69:11 | value | provenance | Config |
+| main.go:69:7:69:11 | value | main.go:69:7:69:11 | value | provenance | Config |
+| main.go:69:7:69:11 | value | main.go:70:2:70:5 | read [captured value] | provenance |  |
+| main.go:69:7:69:11 | value | main.go:70:2:70:5 | read [captured value] | provenance |  |
+| main.go:69:7:69:11 | value | main.go:70:2:70:5 | read [captured value] | provenance | Config |
+| main.go:70:2:70:5 | read [captured value] | main.go:67:8:67:12 | value | provenance |  |
+| main.go:70:2:70:5 | read [captured value] | main.go:67:8:67:12 | value | provenance |  |
+| main.go:74:11:74:18 | call to source | main.go:74:11:74:18 | call to source | provenance | Config |
+| main.go:74:11:74:18 | call to source | main.go:81:7:81:11 | value | provenance |  |
+| main.go:74:11:74:18 | call to source | main.go:81:7:81:11 | value | provenance |  |
+| main.go:74:11:74:18 | call to source | main.go:81:7:81:11 | value | provenance | Config |
+| main.go:81:7:81:11 | value | main.go:81:7:81:11 | value | provenance | Config |
 nodes
 | main.go:10:2:10:18 | SSA def(value) | semmle.label | SSA def(value) |
 | main.go:10:2:10:18 | SSA def(value) | semmle.label | SSA def(value) |
@@ -82,6 +108,25 @@ nodes
 | main.go:40:8:40:12 | value | semmle.label | value |
 | main.go:43:7:43:11 | value | semmle.label | value |
 | main.go:43:7:43:11 | value | semmle.label | value |
+| main.go:58:11:58:18 | call to source | semmle.label | call to source |
+| main.go:58:11:58:18 | call to source | semmle.label | call to source |
+| main.go:60:2:60:4 | set [postupdate] [captured value] | semmle.label | set [postupdate] [captured value] |
+| main.go:60:2:60:4 | set [postupdate] [captured value] | semmle.label | set [postupdate] [captured value] |
+| main.go:61:7:61:11 | value | semmle.label | value |
+| main.go:61:7:61:11 | value | semmle.label | value |
+| main.go:65:11:65:18 | call to source | semmle.label | call to source |
+| main.go:65:11:65:18 | call to source | semmle.label | call to source |
+| main.go:67:8:67:12 | value | semmle.label | value |
+| main.go:67:8:67:12 | value | semmle.label | value |
+| main.go:69:7:69:11 | value | semmle.label | value |
+| main.go:69:7:69:11 | value | semmle.label | value |
+| main.go:69:7:69:11 | value | semmle.label | value |
+| main.go:70:2:70:5 | read [captured value] | semmle.label | read [captured value] |
+| main.go:70:2:70:5 | read [captured value] | semmle.label | read [captured value] |
+| main.go:74:11:74:18 | call to source | semmle.label | call to source |
+| main.go:74:11:74:18 | call to source | semmle.label | call to source |
+| main.go:81:7:81:11 | value | semmle.label | value |
+| main.go:81:7:81:11 | value | semmle.label | value |
 subpaths
 #select
 | main.go:12:8:12:12 | value | main.go:10:11:10:18 | call to source | main.go:12:8:12:12 | value | stateful |
@@ -92,3 +137,7 @@ subpaths
 | main.go:31:8:31:12 | value | main.go:26:11:26:18 | call to source | main.go:31:8:31:12 | value | stateful |
 | main.go:40:8:40:12 | value | main.go:38:11:38:18 | call to source | main.go:40:8:40:12 | value | stateful |
 | main.go:43:7:43:11 | value | main.go:38:11:38:18 | call to source | main.go:43:7:43:11 | value | stateful |
+| main.go:61:7:61:11 | value | main.go:58:11:58:18 | call to source | main.go:61:7:61:11 | value | stateful |
+| main.go:67:8:67:12 | value | main.go:65:11:65:18 | call to source | main.go:67:8:67:12 | value | stateful |
+| main.go:69:7:69:11 | value | main.go:65:11:65:18 | call to source | main.go:69:7:69:11 | value | stateful |
+| main.go:81:7:81:11 | value | main.go:74:11:74:18 | call to source | main.go:81:7:81:11 | value | stateful |

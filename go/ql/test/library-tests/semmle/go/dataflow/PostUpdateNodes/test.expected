@@ -22,7 +22,9 @@
 | test.go:29:6:29:6 | a | test.go:29:6:29:6 | a [postupdate] |
 | test.go:30:2:30:2 | c | test.go:30:2:30:2 | c [postupdate] |
 | test.go:30:7:30:7 | a | test.go:30:7:30:7 | a [postupdate] |
+| test.go:35:2:35:2 | f | test.go:35:2:35:2 | f [postupdate] |
 | test.go:35:4:35:4 | a | test.go:35:4:35:4 | a [postupdate] |
+| test.go:36:2:36:3 | fp | test.go:36:2:36:3 | fp [postupdate] |
 | test.go:36:5:36:5 | a | test.go:36:5:36:5 | a [postupdate] |
 | test.go:40:2:40:2 | c | test.go:40:2:40:2 | c [postupdate] |
 | test.go:40:2:40:2 | implicit-deref c | test.go:40:2:40:2 | implicit-deref c [postupdate] |

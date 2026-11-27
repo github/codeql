@@ -1,0 +1,52 @@
+uselessPhiNode
+| test.go:10:1:14:1 | SSA phi(x) | 1 |
+| test.go:16:1:21:1 | SSA phi(x) | 1 |
+| test.go:32:7:32:29 | SSA phi(x) | 1 |
+| test.go:39:9:39:31 | SSA phi(x) | 1 |
+| test.go:45:1:51:1 | SSA phi(x) | 1 |
+| test.go:64:1:70:1 | SSA phi(x) | 1 |
+| test.go:72:1:78:1 | SSA phi(x) | 1 |
+| test.go:82:1:86:1 | SSA phi(x) | 1 |
+| test.go:88:1:93:1 | SSA phi(x) | 1 |
+| test.go:89:2:92:2 | SSA phi(x) | 1 |
+| test.go:120:8:120:30 | SSA phi(x) | 1 |
+| test.go:128:7:128:29 | SSA phi(x) | 1 |
+| test.go:146:1:149:1 | SSA phi(x) | 1 |
+| test.go:209:1:215:1 | SSA phi(f) | 1 |
+| test.go:209:1:215:1 | SSA phi(x) | 1 |
+| test.go:219:9:224:2 | SSA phi(f) | 1 |
+| test.go:231:9:236:2 | SSA phi(f) | 1 |
+| test.go:231:9:236:2 | SSA phi(y) | 1 |
+| test.go:252:1:257:1 | SSA phi(x) | 1 |
+| test.go:303:19:303:41 | SSA phi(x) | 1 |
+| test.go:309:1:326:1 | SSA phi(x) | 1 |
+| test.go:339:3:344:3 | SSA phi(y) | 1 |
+| test.go:352:9:359:2 | SSA phi(y) | 1 |
+| test.go:353:3:358:3 | SSA phi(y) | 1 |
+| test.go:382:9:390:2 | SSA phi(y) | 1 |
+phiWithoutTwoPriorRefs
+| test.go:10:1:14:1 | SSA phi(x) | test.go:10:1:14:1 | Exceptional Exit | test.go:11:2:11:2 | x | 1 |
+| test.go:16:1:21:1 | SSA phi(x) | test.go:16:1:21:1 | Exceptional Exit | test.go:17:2:17:2 | x | 1 |
+| test.go:32:7:32:29 | SSA phi(x) | test.go:32:7:32:29 | Exit | test.go:31:2:31:2 | x | 1 |
+| test.go:39:9:39:31 | SSA phi(x) | test.go:39:9:39:31 | Exit | test.go:38:2:38:2 | x | 1 |
+| test.go:45:1:51:1 | SSA phi(x) | test.go:45:1:51:1 | Exceptional Exit | test.go:46:2:46:2 | x | 1 |
+| test.go:64:1:70:1 | SSA phi(x) | test.go:64:1:70:1 | Exceptional Exit | test.go:65:2:65:2 | x | 1 |
+| test.go:72:1:78:1 | SSA phi(x) | test.go:72:1:78:1 | Exceptional Exit | test.go:73:2:73:2 | x | 1 |
+| test.go:82:1:86:1 | SSA phi(x) | test.go:82:1:86:1 | Exceptional Exit | test.go:83:2:83:2 | x | 1 |
+| test.go:88:1:93:1 | SSA phi(x) | test.go:88:1:93:1 | Exceptional Exit | test.go:89:9:89:9 | x | 1 |
+| test.go:89:2:92:2 | SSA phi(x) | test.go:89:2:92:2 | After range statement | test.go:89:9:89:9 | x | 1 |
+| test.go:120:8:120:30 | SSA phi(x) | test.go:120:8:120:30 | Exit | test.go:118:2:118:2 | x | 1 |
+| test.go:128:7:128:29 | SSA phi(x) | test.go:128:7:128:29 | Exit | test.go:127:24:127:24 | x | 1 |
+| test.go:146:1:149:1 | SSA phi(x) | test.go:146:1:149:1 | Exceptional Exit | test.go:147:2:147:2 | x | 1 |
+| test.go:209:1:215:1 | SSA phi(f) | test.go:209:1:215:1 | Exceptional Exit | test.go:211:2:211:2 | f | 1 |
+| test.go:209:1:215:1 | SSA phi(x) | test.go:209:1:215:1 | Exceptional Exit | test.go:210:2:210:2 | x | 1 |
+| test.go:219:9:224:2 | SSA phi(f) | test.go:219:9:224:2 | Exit | test.go:218:6:218:6 | f | 1 |
+| test.go:231:9:236:2 | SSA phi(f) | test.go:231:9:236:2 | Exit | test.go:230:6:230:6 | f | 1 |
+| test.go:231:9:236:2 | SSA phi(y) | test.go:231:9:236:2 | Exit | test.go:232:3:232:3 | y | 1 |
+| test.go:252:1:257:1 | SSA phi(x) | test.go:252:1:257:1 | Exit | test.go:253:2:253:2 | x | 1 |
+| test.go:303:19:303:41 | SSA phi(x) | test.go:303:19:303:41 | Exit | test.go:302:2:302:2 | x | 1 |
+| test.go:309:1:326:1 | SSA phi(x) | test.go:309:1:326:1 | Exceptional Exit | test.go:322:2:322:2 | x | 1 |
+| test.go:339:3:344:3 | SSA phi(y) | test.go:339:3:344:3 | After if statement | test.go:340:4:340:4 | y | 1 |
+| test.go:352:9:359:2 | SSA phi(y) | test.go:352:9:359:2 | Exit | test.go:354:4:354:4 | y | 1 |
+| test.go:353:3:358:3 | SSA phi(y) | test.go:353:3:358:3 | After if statement | test.go:354:4:354:4 | y | 1 |
+| test.go:382:9:390:2 | SSA phi(y) | test.go:382:9:390:2 | Exceptional Exit | test.go:383:3:383:3 | y | 1 |

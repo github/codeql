@@ -4,14 +4,19 @@
 
 import go
 
+private predicate inTestCallable(DataFlow::Node node) {
+  node.getRoot().getEnclosingFunction*().(FuncDecl).getFunction().getName() =
+    ["readMerge", "writeMerge", "loop", "capturedWrite", "capturedRead", "uncertainUpdate"]
+}
+
 private predicate sourceNode(DataFlow::Node node) {
   node.(DataFlow::CallNode).getTarget().getName() = "source" and
-  node.getEnclosingCallable().getName() = ["readMerge", "writeMerge", "loop"]
+  inTestCallable(node)
 }
 
 private predicate sinkNode(DataFlow::Node node) {
   node = any(DataFlow::CallNode call | call.getTarget().getName() = "sink").getArgument(0) and
-  node.getEnclosingCallable().getName() = ["readMerge", "writeMerge", "loop"]
+  inTestCallable(node)
 }
 
 module NeverSkipConfig implements DataFlow::ConfigSig {

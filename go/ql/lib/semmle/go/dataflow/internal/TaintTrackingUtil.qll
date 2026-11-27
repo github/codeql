@@ -28,14 +28,19 @@ predicate localExprTaint(Expr src, Expr sink) {
 }
 
 /**
- * Holds if taint can flow in one local step from `src` to `sink`.
+ * Holds if taint can flow in one local step from `src` to `sink`,
+ * excluding internal capture-storage nodes.
  */
 predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  DataFlow::localFlowStep(src, sink) or
-  localAdditionalTaintStep(src, sink, _) or
-  // Simple flow through library code is included in the exposed local
-  // step relation, even though flow is technically inter-procedural
-  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
+  not DataFlowPrivate::isInternalCaptureNode(src) and
+  not DataFlowPrivate::isInternalCaptureNode(sink) and
+  (
+    DataFlow::localFlowStep(src, sink) or
+    localAdditionalTaintStep(src, sink, _) or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
+  )
 }
 
 private Type getElementType(Type containerType) {
