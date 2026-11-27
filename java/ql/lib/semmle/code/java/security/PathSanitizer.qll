@@ -60,12 +60,100 @@ private predicate localTaintFlowToPathGuard(Expr e, PathGuard g) {
   FlowToPathGuard::hasExprFlow(e, g.getCheckedExpr())
 }
 
+/**
+ * Holds if `n2` is a `String`, `File`, or `Path` representation of `n1` that
+ * preserves path-traversal components.
+ */
+private predicate pathRepresentationStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(MethodCall mc, Method m |
+    n2.asExpr() = mc and
+    m = mc.getMethod()
+  |
+    n1.asExpr() = mc.getQualifier() and
+    mc.getNumArgument() = 0 and
+    (
+      m.hasName("toString") and
+      exists(RefType qt | qt = mc.getQualifier().getType().(RefType).getAnAncestor() |
+        qt instanceof TypePath or
+        qt instanceof TypeFile or
+        qt instanceof TypeString
+      )
+      or
+      m.getDeclaringType().getAnAncestor() instanceof TypePath and
+      m.hasName(["toAbsolutePath", "toFile"])
+      or
+      m.getDeclaringType().getAnAncestor() instanceof TypeFile and
+      m.hasName(["getAbsoluteFile", "getAbsolutePath", "getPath", "toPath"])
+    )
+    or
+    n1.asExpr() = mc.getArgument(0) and
+    m.getParameter(0).getType() instanceof TypeString and
+    (
+      mc.getNumArgument() = 1
+      or
+      mc.getNumArgument() = 2 and
+      mc.getArgument(1).(ArrayCreationExpr).getFirstDimensionSize() = 0
+    ) and
+    (
+      m.getDeclaringType() instanceof TypePaths and m.hasName("get")
+      or
+      m.getDeclaringType() instanceof TypePath and m.hasName("of")
+      or
+      m.getDeclaringType().getAnAncestor() instanceof TypeFileSystem and m.hasName("getPath")
+    )
+  )
+  or
+  exists(ClassInstanceExpr cc |
+    n2.asExpr() = cc and
+    n1.asExpr() = cc.getArgument(0) and
+    cc.getConstructedType().getAnAncestor() instanceof TypeFile and
+    cc.getNumArgument() = 1 and
+    cc.getCallee().getParameter(0).getType() instanceof TypeString
+  )
+}
+
 private predicate localFlowToPathGuard(DataFlow::Node n, PathGuard g) {
   n.asExpr() = g.getCheckedExpr()
   or
   exists(DataFlow::Node mid |
     localFlowToPathGuard(mid, g) and
-    DataFlow::localFlowStep(n, mid)
+    (
+      DataFlow::localFlowStep(n, mid) or
+      pathRepresentationStep(n, mid)
+    )
+  )
+}
+
+private predicate fileConstructorChildStep(DataFlow::Node n1, DataFlow::Node n2) {
+  exists(ConstructorCall cc |
+    cc.getConstructedType().getAnAncestor() instanceof TypeFile and
+    n1.asExpr() = cc.getArgument(1) and
+    n2.asExpr() = cc
+  )
+}
+
+private predicate reachesPathGuard(DataFlow::Node n) {
+  pathGuardNode(n)
+  or
+  exists(DataFlow::Node mid |
+    reachesPathGuard(mid) and
+    (
+      TaintTracking::localTaintStep(n, mid) or
+      fileConstructorChildStep(n, mid)
+    )
+  )
+}
+
+private predicate flowsFromGuard(DataFlow::Node n, PathGuard g) {
+  localFlowToPathGuard(n, g)
+  or
+  exists(DataFlow::Node mid |
+    flowsFromGuard(mid, g) and
+    reachesPathGuard(n) and
+    (
+      TaintTracking::localTaintStep(mid, n) or
+      fileConstructorChildStep(mid, n)
+    )
   )
 }
 
@@ -74,12 +162,8 @@ private predicate localFlowToPathGuard(DataFlow::Node n, PathGuard g) {
  * `previousGuard` are connected by local taint flow, possibly from a common value.
  */
 private predicate checksRelatedValue(Expr e, PathGuard previousGuard) {
-  localTaintFlowToPathGuard(e, previousGuard)
-  or
-  exists(DataFlow::Node prev |
-    localFlowToPathGuard(prev, previousGuard) and
-    FlowToPathGuard::hasFlow(prev, DataFlow::exprNode(e))
-  )
+  localTaintFlowToPathGuard(e, previousGuard) or
+  flowsFromGuard(DataFlow::exprNode(e), previousGuard)
 }
 
 private class AllowedPrefixGuard extends PathGuard instanceof MethodCall {

@@ -1,5 +1,6 @@
 import java.io.File;
 import java.net.URI;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import android.net.Uri;
@@ -192,6 +193,8 @@ public class Test {
                 sink(source); // $ hasTaintFlow
         }
         {
+            // Lossy `File.getName()` does not link `baseName` back to precomputed `resolved`
+            // (note: `sink(source)` is still sanitized because `localTaintFlowToPathGuard` allows taint steps).
             String source = (String) source();
             String baseName = new File(source).getName();
             Path resolved = Paths.get("/safe/sub").resolve(source);
@@ -208,6 +211,53 @@ public class Test {
             } else {
                 sink(source); // $ hasTaintFlow
                 sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            Path source = (Path) source();
+            Path resolved = Paths.get("/safe").resolve(source);
+            if (!source.toString().contains("..") && resolved.startsWith("/safe")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            File source = (File) source();
+            String str = source.getPath();
+            Path resolved = Paths.get("/safe").resolve(source.toPath());
+            if (!str.contains("..") && resolved.startsWith("/safe")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            File source = (File) source();
+            String absPath = source.getAbsoluteFile().getAbsolutePath();
+            Path resolved = Paths.get("/safe").resolve(source.toPath());
+            if (!absPath.contains("..") && resolved.startsWith("/safe")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            File dir = new File("/safe");
+            String name = (String) source();
+            File file = new File(dir, name);
+            if (!name.contains("..") && file.toPath().startsWith(dir.toPath())) {
+                sink(file); // Safe
+                sink(name); // $ hasTaintFlow
+            } else {
+                sink(file); // $ hasTaintFlow
+                sink(name); // $ hasTaintFlow
             }
         }
         {
@@ -432,6 +482,60 @@ public class Test {
                     sink(trimmed); // Safe
                 else
                     sink(trimmed); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            String target = source + "/file";
+            if (Paths.get(source).startsWith("/safe") && !target.contains("..")) {
+                sink(source); // Safe
+                sink(target); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(target); // $ hasTaintFlow
+            }
+        }
+        {
+            Path source = (Path) source();
+            String str = source.toString();
+            if (source.toString().startsWith("/safe") && !str.contains("..")) {
+                sink(source); // Safe
+                sink(str); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(str); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            Path checked = FileSystems.getDefault().getPath(source);
+            String target = source + "/file";
+            if (checked.startsWith("/safe") && !target.contains("..")) {
+                sink(source); // Safe
+                sink(target); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(target); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            Path checked = FileSystems.getDefault().getPath(source, "/safe");
+            String target = source + "/etc";
+            if (checked.startsWith("/safe") && !target.contains("..")) {
+                sink(target); // $ hasTaintFlow
+            }
+        }
+        {
+            Path source = (Path) source();
+            Path abs = source.toAbsolutePath();
+            Path target = source.resolve("file");
+            if (abs.startsWith("/safe") && !target.toString().contains("..")) {
+                sink(source); // Safe
+                sink(target); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(target); // $ hasTaintFlow
             }
         }
     }

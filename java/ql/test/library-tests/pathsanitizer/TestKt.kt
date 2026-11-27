@@ -1,5 +1,6 @@
 import java.io.File
 import java.net.URI
+import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.Paths
 import android.net.Uri
@@ -203,6 +204,41 @@ class TestKt {
             } else {
                 sink(source) // $ hasTaintFlow
                 sink(resolved) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source = source() as Path?
+            val resolved: Path = Paths.get("/safe").resolve(source!!)
+            if (!source.toString().contains("..") && resolved.startsWith("/safe")) {
+                sink(source) // Safe
+                sink(resolved) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(resolved) // $ hasTaintFlow
+            }
+        }
+        run {
+            val dir = File("/safe")
+            val name = source() as String?
+            val file = File(dir, name!!)
+            if (!name.contains("..") && file.toPath().startsWith(dir.toPath())) {
+                sink(file) // Safe
+                sink(name) // $ hasTaintFlow
+            } else {
+                sink(file) // $ hasTaintFlow
+                sink(name) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source = source() as String?
+            val checked: Path = FileSystems.getDefault().getPath(source!!).toAbsolutePath()
+            val target = source + "/file"
+            if (checked.startsWith("/safe") && !target.contains("..")) {
+                sink(source) // Safe
+                sink(target) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(target) // $ hasTaintFlow
             }
         }
         run {
