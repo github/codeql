@@ -9,6 +9,7 @@ workspace = true
 
 # When updating these dependencies, run `rust/update_cargo_deps.sh`
 [dependencies]
+extractor-common = { path = "../extractor-common" }
 flate2 = "1.1"
 globset = "0.4"
 tree-sitter = ">= 0.23.0"

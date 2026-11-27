@@ -33,7 +33,7 @@ void good() {
 </example>
 <references>
 
-  <li>Open Standards: <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf">Standard for Programming Language C++, draft n3337</a> [except.throw], clause 9, page 380.</li>
+  <li>Open Standards: <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf">Standard for Programming Language C++, draft n3337</a> [except.throw], clause 9, page 380.</li>
 
 
 </references>

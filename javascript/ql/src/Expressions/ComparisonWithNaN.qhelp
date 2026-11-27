@@ -27,7 +27,7 @@ Instead of <code>x === NaN</code>, use <code>isNaN(x)</code>.
 <references>
 
 
-<li>Arvind Kumar: <a href="http://www.devarticles.in/javascript/javascript-common-mistake-of-comparing-variable-with-nan-and-not-with-isnan/">Javascript common mistake of comparing with NaN and not with isNaN</a>.</li>
+<li>Arvind Kumar: <a href="https://www.devarticles.in/javascript/javascript-common-mistake-of-comparing-variable-with-nan-and-not-with-isnan/">Javascript common mistake of comparing with NaN and not with isNaN</a>.</li>
 <li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN">NaN</a>.</li>
 
 

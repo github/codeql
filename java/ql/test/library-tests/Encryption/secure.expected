@@ -1,2 +1,5 @@
-| Test.java:22:4:22:8 | "AES" |
-| Test.java:23:4:23:17 | "AES_function" |
+| Test.java:38:4:38:8 | "AES" |
+| Test.java:39:4:39:17 | "AES_function" |
+| Test.java:40:4:40:13 | "ChaCha20" |
+| Test.java:41:4:41:22 | "ChaCha20-Poly1305" |
+| Test.java:42:4:42:21 | "ChaCha20Poly1305" |

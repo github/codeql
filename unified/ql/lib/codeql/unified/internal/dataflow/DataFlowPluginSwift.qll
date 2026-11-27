@@ -108,12 +108,20 @@ private class SwiftDataFlowPlugin extends DataFlowPlugin {
       node2.isResultValue(call)
     )
     or
-    // Singleton blocks propagate their value upwards, e.g. in `if expr { expr } else { expr }`
-    exists(Block block |
-      not exists(block.getStmt(1)) and
-      node1.isResultValue(block.getStmt(0)) and
+    // Handle value flow for blocks that should evaluate to their last expression
+    exists(Block block, Stmt lastStmt |
+      lastStmt = block.getLastStmt() and
+      node1.isResultValue(lastStmt) and
       step.value() and
       node2.isResultValue(block)
+    |
+      // Singleton blocks (e.g. in `if expr { expr } else { expr }`)
+      lastStmt = block.getStmt(0)
+      or
+      // The blocks constructed for postfix conditional compilation blocks
+      // `{ let #base = ...; if ... }`
+      lastStmt = block.getStmt(1) and
+      block.getStmt(0).(VariableDeclaration).getPattern().(Identifier).getValue() = "#base"
     )
   }
 }

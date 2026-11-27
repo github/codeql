@@ -36,7 +36,7 @@ verification fails.
 
 <references>
 <li>
-Paramiko documentation: <a href="http://docs.paramiko.org/en/2.4/api/client.html?highlight=set_missing_host_key_policy#paramiko.client.SSHClient.set_missing_host_key_policy">set_missing_host_key_policy</a>.
+Paramiko documentation: <a href="https://docs.paramiko.org/en/2.4/api/client.html?highlight=set_missing_host_key_policy#paramiko.client.SSHClient.set_missing_host_key_policy">set_missing_host_key_policy</a>.
 </li>
 </references>
 </qhelp>

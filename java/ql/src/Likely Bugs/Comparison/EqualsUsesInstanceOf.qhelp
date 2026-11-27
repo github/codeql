@@ -76,7 +76,7 @@ using <code>getClass</code> rather than <code>instanceof</code>.
     <a href="https://www.artima.com/lejava/articles/equality.html">How to Write an Equality Method in Java</a>.
 </li>
 <li>JavaSolutions, April 2002:
-<a href="http://www.angelikalanger.com/Articles/JavaSolutions/SecretsOfEquals/Equals.html">Secrets of equals()</a>.
+<a href="https://www.angelikalanger.com/Articles/JavaSolutions/SecretsOfEquals/Equals.html">Secrets of equals()</a>.
 </li>
 
 

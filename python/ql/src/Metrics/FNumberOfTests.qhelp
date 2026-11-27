@@ -45,8 +45,8 @@
 
 <li>Python Standard Library: <a href="https://docs.python.org/library/unittest.html">unitest</a>.</li>
 <li>Python Standard Library: <a href="https://docs.python.org/2/library/doctest.html">doctest</a>.</li>
-<li><a href="http://pytest.org/latest/">http://pytest.org</a>.</li>
-<li>Read the docs: <a href="http://nose.readthedocs.org/en/latest/">http://nose.readthedocs.org/en/latest</a>.</li>
+<li><a href="https://pytest.org/latest/">https://pytest.org</a>.</li>
+<li>Read the docs: <a href="https://nose.readthedocs.org/en/latest/">https://nose.readthedocs.org/en/latest</a>.</li>
 
 </references>
 </qhelp>

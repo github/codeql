@@ -208,9 +208,24 @@ private string algorithmRegex(string algorithmString) {
  * `reason` explains why it is insecure.
  */
 predicate insecureAlgorithm(string name, string reason) {
-  name = "DES" and
+  // Exclude 3DES variants (such as TripleDES, 3DES, and DESede), which are handled separately below.
+  name = "(?<!(?i)triple)(?<!(?i)triple[-_])(?<!3)(?<!3[-_])DES(?!(?i)[-_]?ede|[-_]?3)" and
   reason =
     "It has a short key length of 56 bits, making it vulnerable to brute-force attacks. Consider using AES instead."
+  or
+  // 3TDEA (Triple DES) has different names across JCA, JSSE, and Bouncy Castle.
+  name =
+    [
+      "DES[-_]?ede(3|(RFC321[17])?Wrap)?",
+      "(?i:PBEWith(MD5|SHA1?)And([23]-?Key)?(TripleDES|DESede)(-CBC)?)", "Triple[-_]?DES",
+      "3[-_]?DES", "DES[-_]?3"
+    ] and
+  reason =
+    "It uses a 64-bit block size, making it vulnerable to birthday attacks, and has been disallowed by NIST for encryption and key wrapping. Consider using AES instead."
+  or
+  name = ["SKIPJACK", "Skipjack"] and
+  reason =
+    "It has a short key length of 80 bits, making it vulnerable to brute-force attacks, and has been disallowed by NIST for encryption. Consider using AES instead."
   or
   name = "RC2" and
   reason = "It is vulnerable to related-key attacks. Consider using AES instead."
@@ -268,7 +283,9 @@ string getASecureAlgorithmName() {
       // These are modern, secure algorithms recommended by NIST and other standards bodies.
       "EC", "ECDSA", "ECDH", "EdDSA", "Ed25519", "Ed448", "XDH", "X25519", "X448",
       // HMAC-based algorithms and key derivation functions.
-      "HMACSHA(1|256|384|512)", "HmacSHA(1|256|384|512)", "PBKDF2"
+      "HMACSHA(1|256|384|512)", "HmacSHA(1|256|384|512)", "PBKDF2",
+      // Stream cipher and AEAD construction (RFC 8439 / JEP 329).
+      "ChaCha20", "ChaCha20Poly1305"
     ]
 }
 

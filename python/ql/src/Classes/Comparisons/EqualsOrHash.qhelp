@@ -36,8 +36,8 @@ no equality method. Equality will be determined by object identity, which may no
 <references>
 
 
-<li>Python Language Reference: <a href="http://docs.python.org/reference/datamodel.html#object.__hash__">object.__hash__</a>.</li>
-<li>Python Glossary: <a href="http://docs.python.org/3/glossary.html#term-hashable">hashable</a>.</li>
+<li>Python Language Reference: <a href="https://docs.python.org/reference/datamodel.html#object.__hash__">object.__hash__</a>.</li>
+<li>Python Glossary: <a href="https://docs.python.org/3/glossary.html#term-hashable">hashable</a>.</li>
 
 
 </references>

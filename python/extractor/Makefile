@@ -35,6 +35,12 @@ ast: $(MASTER_FILE)
 	python3 -m semmle.query_gen $(AST_GENERATED_DIR)
 	codeql query format --in-place $(AST_GENERATED_FILE)
 
+LEGACY_AST_TYPES_FILE = yeast-python/legacy_ast_types.yml
+
+.PHONY: legacy-ast-types
+legacy-ast-types: $(MASTER_FILE) semmle/python/ast.py semmle/python/legacy_ast_types_gen.py
+	poetry run python -m semmle.python.legacy_ast_types_gen $(LEGACY_AST_TYPES_FILE)
+
 ################################################################################
 # Tests
 ################################################################################

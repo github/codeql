@@ -25,7 +25,7 @@ instead of using the <code>==</code> operator overloaded in <code>AlwaysEqual</c
 </example>
 <references>
 
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/53k8ybth.aspx">== Operator</a></li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/53k8ybth.aspx">== Operator</a></li>
 
 </references>
 </qhelp>

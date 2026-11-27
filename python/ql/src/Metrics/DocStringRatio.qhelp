@@ -24,11 +24,11 @@ the public functions first.</p>
 </recommendation>
 <references>
 
-<li>Python for Beginners: <a href="http://www.pythonforbeginners.com/basics/python-docstrings/">
+<li>Python for Beginners: <a href="https://www.pythonforbeginners.com/basics/python-docstrings/">
 Python Docstrings</a>.</li>
-<li>Python PEP 8: <a href="http://www.python.org/dev/peps/pep-0008/#documentation-strings">Documentation 
+<li>Python PEP 8: <a href="https://www.python.org/dev/peps/pep-0008/#documentation-strings">Documentation 
 Strings</a>.</li>
-<li>Python PEP 257: <a href="http://www.python.org/dev/peps/pep-0257/">Docstring Conventions</a>.</li>
+<li>Python PEP 257: <a href="https://www.python.org/dev/peps/pep-0257/">Docstring Conventions</a>.</li>
 
 
 </references>

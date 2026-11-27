@@ -11,6 +11,22 @@ class Test {
 			"des_function",
 			"function_using_des",
 			"EncryptWithDES",
+			"DESede",
+			"DESedeWrap",
+			"DESedeRFC3211Wrap",
+			"DESEDERFC3211WRAP",
+			"desederfc3211wrap",
+			"DESedeRFC3217Wrap",
+			"PBEWithSHA1AndDESedE",
+			"PBEWITHSHA1ANDDESEDE",
+			"pbewithsha1anddesede",
+			"PBEWITHMD5ANDTRIPLEDES",
+			"PBEWITHSHAAND3-KEYTRIPLEDES-CBC",
+			"pbewithshaand3-keytripledes-cbc",
+			"TripleDES",
+			"3DES",
+			"SKIPJACK",
+			"Skipjack",
 			"RC2",
 			"RC4",
 			"ARCFOUR",
@@ -21,6 +37,9 @@ class Test {
 	List<String> goodStrings = Arrays.asList(
 			"AES",
 			"AES_function",
+			"ChaCha20",
+			"ChaCha20-Poly1305",
+			"ChaCha20Poly1305",
 			// false negative - can't think of a good way to detect this without
 			// catching things we shouldn't
 			"AESEncryption");
@@ -28,6 +47,8 @@ class Test {
 	List<String> unknownStrings = Arrays.asList(
 			// not a use of RC2 (camelCase is tricky)
 			"GetPrc2",
+			// uppercase PBE name without delimiter before RC2 (covered by potentially-weak query)
+			"PBEWITHSHA1ANDRC2_40",
 			// not a use of DES
 			"Description",
 			// not a use of DES

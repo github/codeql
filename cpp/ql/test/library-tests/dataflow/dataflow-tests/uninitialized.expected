@@ -61,3 +61,5 @@
 | test.cpp:1137:7:1137:10 | data | test.cpp:1140:10:1140:13 | data |
 | test.cpp:1335:10:1335:15 | buffer | test.cpp:1336:10:1336:15 | buffer |
 | test.cpp:1335:10:1335:15 | buffer | test.cpp:1337:5:1337:10 | buffer |
+| test.cpp:1342:8:1342:10 | buf | test.cpp:1343:13:1343:15 | buf |
+| test.cpp:1348:7:1348:7 | x | test.cpp:1349:13:1349:13 | x |

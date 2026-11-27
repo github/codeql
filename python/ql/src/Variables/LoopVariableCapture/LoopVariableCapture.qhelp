@@ -38,7 +38,7 @@ In the following (GOOD) example, <code>functools.partial</code> is used to parti
 
 </example>
 <references>
-<li>The Hitchhiker's Guide to Python: <a href="http://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures">Late Binding Closures</a>.</li>
+<li>The Hitchhiker's Guide to Python: <a href="https://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures">Late Binding Closures</a>.</li>
 <li>Python Language Reference: <a href="https://docs.python.org/reference/executionmodel.html#naming-and-binding">Naming and binding</a>.</li>
 <li>Stack Overflow: <a href="https://stackoverflow.com/questions/3431676/creating-functions-or-lambdas-in-a-loop-or-comprehension">Creating functions (or lambdas) in a loop (or comprehension)</a>.</li>
 <li>Python Language Reference: <a href="https://docs.python.org/3/library/functools.html#functools.partial">functools.partial</a>.</li>

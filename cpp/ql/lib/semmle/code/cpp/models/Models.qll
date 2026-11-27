@@ -1,4 +1,5 @@
 private import implementations.Allocation
+private import implementations.Bdlde
 private import implementations.Deallocation
 private import implementations.Fopen
 private import implementations.Fread
@@ -58,3 +59,4 @@ private import implementations.CAtlTemporaryFile
 private import implementations.CRegKey
 private import implementations.WinHttp
 private import implementations.Http
+private import implementations.BdlbStringRef

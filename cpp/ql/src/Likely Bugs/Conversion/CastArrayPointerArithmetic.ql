@@ -28,13 +28,14 @@ module CastToPointerArithFlowConfig implements DataFlow::StateConfigSig {
   class FlowState = Type;
 
   predicate isSource(DataFlow::Node node, FlowState state) {
-    not node.asExpr() instanceof Conversion and
-    exists(Type baseType1, Type baseType2 |
-      hasBaseType(node.asExpr(), baseType1) and
-      hasBaseType(node.asExpr().getConversion*(), baseType2) and
-      introducesNewField(baseType1, baseType2)
-    ) and
-    getFullyConvertedType(node) = state
+    exists(Expr e, Type baseType1, Type baseType2 |
+      not e instanceof Conversion and
+      node.asConvertedExpr() = e.getFullyConverted() and
+      hasBaseType(e, baseType1) and
+      hasBaseType(e.getConversion*(), baseType2) and
+      introducesNewField(baseType1, baseType2) and
+      state = e.getFullyConverted().getUnspecifiedType()
+    )
   }
 
   predicate isSink(DataFlow::Node node, FlowState state) {

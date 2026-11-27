@@ -49,7 +49,7 @@ simultaneously in separate threads then they could cause a deadlock.
 <references>
 
 <li>Dijkstra, E. W., <i>EWD-310:
-<a href="http://www.cs.utexas.edu/users/EWD/ewd03xx/EWD310.PDF">Hierarchical
+<a href="https://www.cs.utexas.edu/users/EWD/ewd03xx/EWD310.PDF">Hierarchical
 Ordering of Sequential Processes</a></i>.  E. W. Dijkstra
 Archive. Center for American History, University of Texas at Austin.
 </li>

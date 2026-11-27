@@ -477,12 +477,7 @@ pub fn leaf_kinds_from_yaml(yaml_input: &str) -> Result<BTreeSet<String>, String
     Ok(yaml
         .named
         .into_iter()
-        .filter_map(|(name, fields)| {
-            fields
-                .as_ref()
-                .is_none_or(BTreeMap::is_empty)
-                .then_some(name)
-        })
+        .filter_map(|(name, fields)| fields.is_none().then_some(name))
         .collect())
 }
 
@@ -841,7 +836,7 @@ named:
         .unwrap();
 
         assert!(leaf_kinds.contains("identifier"));
-        assert!(leaf_kinds.contains("empty_fields"));
+        assert!(!leaf_kinds.contains("empty_fields"));
         assert!(!leaf_kinds.contains("call"));
     }
 

@@ -11,3 +11,5 @@ extensions:
     data:
       - ["", "", False, "is_clean_value", "", "", "Argument[*0]", "true", "test-barrier", "manual"]
       - ["", "", False, "is_clean_pointer", "", "", "Argument[0]", "true", "test-barrier", "manual"]
+      - ["", "", False, "is_clean_long", "", "", "Argument[0]", "true", "test-barrier", "manual"]
+      - ["", "", False, "is_clean_void_value", "", "", "Argument[*0]", "true", "test-barrier", "manual"]

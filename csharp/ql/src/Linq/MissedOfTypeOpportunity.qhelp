@@ -28,7 +28,7 @@ intent better and reducing the number of distinct variables in scope within the 
 </example>
 <references>
 
-  <li>MSDN: <a href="http://msdn.microsoft.com/en-us/library/bb360913.aspx">Enumerable.OfType&lt;TResult&gt; Method</a>.</li>
+  <li>MSDN: <a href="https://msdn.microsoft.com/en-us/library/bb360913.aspx">Enumerable.OfType&lt;TResult&gt; Method</a>.</li>
 
 
 </references>
