@@ -1740,10 +1740,26 @@ module DataFlow {
       succ = TSsaDefNode(ssaCapture)
     )
     or
-    // Flow through implicit SSA nodes
-    exists(SsaImplicitDefinition ssa | succ = TSsaDefNode(ssa) |
-      // from the inputs of phi and pi nodes into the node itself
-      pred = TSsaDefNode(ssa.(SsaPseudoDefinition).getAnInput().getDefinition())
+    // Flow into a phi through a separate node when an incoming branch can be
+    // controlled by a guard, allowing barriers to block just the checked input.
+    // Other phi inputs keep the direct edge to avoid unnecessary flow nodes.
+    exists(SsaPhiNode phi, BasicBlock bb |
+      pred = TSsaDefNode(phi.getInputFromBlock(bb).getDefinition()) and
+      succ = TSsaPhiInputNode(phi, bb)
+      or
+      pred = TSsaPhiInputNode(phi, bb) and
+      succ = TSsaDefNode(phi)
+      or
+      pred = TSsaDefNode(phi.getInputFromBlock(bb).getDefinition()) and
+      succ = TSsaDefNode(phi) and
+      not exists(TSsaPhiInputNode(phi, bb))
+    )
+    or
+    // Other pseudo-definitions, such as SSA refinements, retain their usual flow.
+    exists(SsaPseudoDefinition ssa |
+      not ssa instanceof SsaPhiNode and
+      pred = TSsaDefNode(ssa.getAnInput().getDefinition()) and
+      succ = TSsaDefNode(ssa)
     )
     or
     exists(Expr predExpr, Expr succExpr |

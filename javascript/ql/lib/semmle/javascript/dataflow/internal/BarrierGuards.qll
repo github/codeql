@@ -313,6 +313,21 @@ module MakeStateBarrierGuard<
     )
   }
 
+  /** Blocks only the incoming phi branch where the checked value is safe. */
+  pragma[nomagic]
+  private predicate barrierGuardBlocksPhiInput(
+    BarrierGuard guard, SsaPhiNode phi, BasicBlock bb, FlowState state
+  ) {
+    exists(ConditionGuardNode cond, boolean outcome, SsaVariable input |
+      barrierGuardIsRelevant(guard) and
+      guard.getEnclosingExpr() = cond.getTest() and
+      cond.dominates(bb) and
+      outcome = cond.getOutcome() and
+      input = phi.getInputFromBlock(bb) and
+      barrierGuardBlocksExpr(guard, outcome, input.getAUse(), state)
+    )
+  }
+
   /**
    * Holds if the result of `guard` is used in the branching condition `cond`.
    *
@@ -386,6 +401,11 @@ module MakeStateBarrierGuard<
     exists(Expr use |
       barrierGuardBlocksAccessPathUse(use, state) and
       nd = DataFlow::valueNode(use)
+    )
+    or
+    exists(DataFlowPrivate::SsaPhiInputNode input |
+      nd = input and
+      barrierGuardBlocksPhiInput(_, input.getPhi(), input.getInputBlock(), state)
     )
     or
     ssa2BlocksNode(nd, state)
