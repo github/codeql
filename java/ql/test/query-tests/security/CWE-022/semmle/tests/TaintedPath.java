@@ -127,4 +127,19 @@ public class TaintedPath {
             }
         }
     }
+
+    public void sendUserFileBadUnrelatedPrefix(Socket sock, String route) throws IOException {
+        if (!route.startsWith("/download/")) {
+            return;
+        }
+        BufferedReader filenameReader =
+                new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8")); // $ Source[java/path-injection]
+        String filename = filenameReader.readLine();
+        // BAD: routing prefix check on `route` does not prevent `filename` from being an absolute path.
+        if (!filename.contains("..")) {
+            Path base = Paths.get("/srv/app/files");
+            BufferedReader fileReader = new BufferedReader(new FileReader(base.resolve(filename).toFile())); // $ Alert[java/path-injection]
+            fileReader.close();
+        }
+    }
 }

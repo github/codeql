@@ -54,8 +54,32 @@ private predicate anyNode(DataFlow::Node n) { any() }
 
 private predicate pathGuardNode(DataFlow::Node n) { n.asExpr() = any(PathGuard g).getCheckedExpr() }
 
+private module FlowToPathGuard = TaintTracking::LocalTaintFlow<anyNode/1, pathGuardNode/1>;
+
 private predicate localTaintFlowToPathGuard(Expr e, PathGuard g) {
-  TaintTracking::LocalTaintFlow<anyNode/1, pathGuardNode/1>::hasExprFlow(e, g.getCheckedExpr())
+  FlowToPathGuard::hasExprFlow(e, g.getCheckedExpr())
+}
+
+private predicate localFlowToPathGuard(DataFlow::Node n, PathGuard g) {
+  n.asExpr() = g.getCheckedExpr()
+  or
+  exists(DataFlow::Node mid |
+    localFlowToPathGuard(mid, g) and
+    DataFlow::localFlowStep(n, mid)
+  )
+}
+
+/**
+ * Holds if `e` (which itself flows to a `PathGuard`) and the expression checked by
+ * `previousGuard` are connected by local taint flow, possibly from a common value.
+ */
+private predicate checksRelatedValue(Expr e, PathGuard previousGuard) {
+  localTaintFlowToPathGuard(e, previousGuard)
+  or
+  exists(DataFlow::Node prev |
+    localFlowToPathGuard(prev, previousGuard) and
+    FlowToPathGuard::hasFlow(prev, DataFlow::exprNode(e))
+  )
 }
 
 private class AllowedPrefixGuard extends PathGuard instanceof MethodCall {
@@ -82,12 +106,13 @@ private predicate allowedPrefixGuard(Guard g, Expr e, boolean branch) {
   //    sink(file);
   g instanceof AllowedPrefixGuard and
   localTaintFlowToPathGuard(e, g) and
-  exists(Expr previousGuard |
-    localTaintFlowToPathGuard(previousGuard.(PathNormalizeSanitizer), g)
+  (
+    localTaintFlowToPathGuard(any(PathNormalizeSanitizer p), g)
     or
-    previousGuard
-        .(PathTraversalGuard)
-        .controls(g.getBasicBlock(), previousGuard.(PathTraversalGuard).getBranch())
+    exists(PathTraversalGuard previousGuard |
+      previousGuard.controls(g.getBasicBlock(), previousGuard.getBranch()) and
+      checksRelatedValue(e, previousGuard)
+    )
   )
 }
 
@@ -108,12 +133,14 @@ private class FileGetNameCall extends MethodCall {
  */
 private predicate dotDotCheckGuard(Guard g, Expr e, boolean branch) {
   pathTraversalGuard(g, e, branch) and
-  exists(Guard previousGuard |
+  exists(PathGuard previousGuard |
     previousGuard.(AllowedPrefixGuard).controls(g.getBasicBlock(), true)
     or
     previousGuard
         .(BlockListGuard)
         .controls(g.getBasicBlock(), previousGuard.(BlockListGuard).getBranch())
+  |
+    checksRelatedValue(e, previousGuard)
   )
   or
   // `File.getName` strips any directory prefix, returning only the final path
@@ -137,7 +164,7 @@ private class BlockListGuard extends PathGuard {
   BlockListGuard() {
     exists(StringSubstringMatch match, boolean matchingBranch |
       this = match and
-      checkedExpr = match.getInputString() and
+      checkedExpr = match.getInputString().getUnderlyingExpr() and
       isDisallowedWord(match.getMatchExpression()) and
       match.hasSubstringOnBranch(matchingBranch) and
       branch = matchingBranch.booleanNot()
@@ -172,12 +199,13 @@ private predicate blockListGuard(Guard g, Expr e, boolean branch) {
   //    sink(file);
   g instanceof BlockListGuard and
   localTaintFlowToPathGuard(e, g) and
-  exists(Expr previousGuard |
-    localTaintFlowToPathGuard(previousGuard.(PathNormalizeSanitizer), g)
+  (
+    localTaintFlowToPathGuard(any(PathNormalizeSanitizer p), g)
     or
-    previousGuard
-        .(PathTraversalGuard)
-        .controls(g.getBasicBlock(), previousGuard.(PathTraversalGuard).getBranch())
+    exists(PathTraversalGuard previousGuard |
+      previousGuard.controls(g.getBasicBlock(), previousGuard.getBranch()) and
+      checksRelatedValue(e, previousGuard)
+    )
   )
 }
 
@@ -250,7 +278,7 @@ private class PathTraversalGuard extends PathGuard {
   PathTraversalGuard() {
     exists(StringSubstringMatch match, boolean matchingBranch |
       this = match and
-      checkedExpr = match.getInputString() and
+      checkedExpr = match.getInputString().getUnderlyingExpr() and
       match.getMatchExpression().(CompileTimeConstantExpr).getStringValue() = ".." and
       match.hasSubstringOnBranch(matchingBranch) and
       branch = matchingBranch.booleanNot()
