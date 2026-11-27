@@ -155,63 +155,19 @@ var server4 = http.createServer(function (req, res) {
     axios.get(target1.toString()); // $ Alert[js/request-forgery]
 
     // An absolute url will ignore the base argument.
+    // This is not modeled, so the base is still treated as tainted.
     const fixed = 'https://fixed.example/path';
     const target2 = new URL(fixed, input);
-    axios.get(target2.toString()); // Safe
+    axios.get(target2.toString()); // $ SPURIOUS: Alert[js/request-forgery]
 
-    // All URL objects are absolute and will ignore the base argument.
+    // A URL object is always absolute and will ignore the base argument, but this is not modeled.
     const absolute = new URL('https://fixed.example/path');
     const target3 = new URL(absolute, input);
-    axios.get(target3.toString()); // Safe
-
-    // All sources of first argument should be evaluated when determining if it is absolute.
-    const conditional = flag ? 'https://fixed.example' : '/path';
-    const target4 = new URL(conditional, input);
-    axios.get(target4.toString()); // $ Alert[js/request-forgery]
+    axios.get(target3.toString()); // $ SPURIOUS: Alert[js/request-forgery]
 
     // Tainted input in 'url' argument with absolute url in 'base' argument.
-    const target5 = new URL(input, 'https://fixed.example');
-    axios.get(target5.toString()); // $ Alert[js/request-forgery]
-
-    // Same-scheme input without '://' is resolved against thte base.
-    const target6 = new URL('https:/path', input);
-    axios.get(target6.toString()); // $ Alert[js/request-forgery]
-
-    const target7 = new URL('HTTPS:path', input);
-    axios.get(target7.toString()); // $ Alert[js/request-forgery]
-
-    // A concatenation in one branch must not be ignored when determining if the first argument is absolute.
-    const mixed = flag ? 'https://fixed.example' : '/assets/' + id;
-    const target8 = new URL(mixed, input);
-    axios.get(target8.toString()); // $ Alert[js/request-forgery]
-
-    // A constant concatenation of an absolute url will ignore the base argument.
-    const target9 = new URL('https://fixed.example' + '/path', input);
-    axios.get(target9.toString()); // Safe
-
-    // A default value is not the only possible value of a parameter.
-    const withDefault = (url = 'https://fixed.example') => {
-        const target = new URL(url, input);
-        axios.get(target.toString()); // $ Alert[js/request-forgery]
-    };
-    withDefault('/path');
-
-    // The same applies when the parameter is reached through a chain of assignments.
-    const withDefaultChain = (url = 'https://fixed.example') => {
-        const alias1 = url;
-        const alias2 = alias1;
-        const alias3 = alias2;
-        const target = new URL(alias3, input);
-        axios.get(target.toString()); // $ Alert[js/request-forgery]
-    };
-    withDefaultChain('/path');
-
-    // An absolute url reached through a chain of assignments will ignore the base argument.
-    const chain1 = 'https://fixed.example/path';
-    const chain2 = chain1;
-    const chain3 = chain2;
-    const target10 = new URL(chain3, input);
-    axios.get(target10.toString()); // Safe
+    const target4 = new URL(input, 'https://fixed.example');
+    axios.get(target4.toString()); // $ Alert[js/request-forgery]
 });
 
 // Tests for tainted 'base' argument using 'url' library.
@@ -220,13 +176,8 @@ var server5 = http.createServer(function (req, res) {
 
     const input = req.query.input; // $ Source[js/request-forgery]
 
-    const target1 = new URL('/path', input);
-    axios.get(target1.toString()); // $ Alert[js/request-forgery]
-
-    // All URL objects are absolute and will ignore the base argument.
-    const absolute = new URL('https://fixed.example/path');
-    const target = new URL(absolute, input);
-    axios.get(target.toString()); // Safe
+    const target = new URL('/path', input);
+    axios.get(target.toString()); // $ Alert[js/request-forgery]
 });
 
 const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]

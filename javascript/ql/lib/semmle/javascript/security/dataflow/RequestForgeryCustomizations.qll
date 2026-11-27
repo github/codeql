@@ -84,27 +84,12 @@ module RequestForgery {
   }
 
   /**
-   * Holds if `nd` is an absolute URL, that is, a string with a URL scheme such as
-   * `https://example.com`, or a `URL` object, which is always absolute.
-   */
-  private predicate isAbsoluteUrl(DataFlow::Node nd) {
-    exists(DataFlow::Node origin | origin = nd.getImmediatePredecessor*() |
-      origin instanceof UrlObject or
-      origin.getStringValue().regexpMatch("(?i)[a-z][a-z0-9+.-]*://.*")
-    )
-  }
-
-  /**
    * Holds if there is a taint step from `pred` to `succ` for request forgery.
    */
   predicate isAdditionalRequestForgeryStep(DataFlow::Node pred, DataFlow::Node succ) {
     exists(UrlObject url |
       succ = url and
-      (
-        pred = url.getArgument(0)
-        or
-        pred = url.getArgument(1) and not isAbsoluteUrl(url.getArgument(0))
-      )
+      pred = url.getArgument([0, 1])
     )
     or
     exists(HtmlSanitizerCall call |
