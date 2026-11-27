@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.javalin.validation", "Validator", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.validation", "Validator", True, "getOrDefault", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.validation", "Validator", True, "getOrNull", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.javalin.validation", "Validator", True, "getOrThrow", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
