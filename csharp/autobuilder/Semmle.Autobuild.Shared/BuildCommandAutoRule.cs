@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Semmle.Util;
@@ -63,8 +64,12 @@ namespace Semmle.Autobuild.Shared
             // e.g. for Linux: build, build.sh
             var scripts = buildScripts.SelectMany(s => extensions.Select(e => s + e));
             // search through the files in the project directory for paths which end in one of
-            // the names given by `scripts`, then order them by their distance from the root
-            this.CandidatePaths = builder.Paths.Where(p => scripts.Any(p.Item1.ToLower().EndsWith)).OrderBy(p => p.Item2).Select(p => p.Item1);
+            // the names given by `scripts`, then order them by depth and path
+            this.CandidatePaths = builder.Paths
+                .Where(p => scripts.Any(p.Item1.ToLower().EndsWith))
+                .OrderBy(p => p.Item2)
+                .ThenBy(p => p.Item1, StringComparer.Ordinal)
+                .Select(p => p.Item1);
             // pick the first matching path, if there is one
             this.ScriptPath = this.CandidatePaths.FirstOrDefault();
 
