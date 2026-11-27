@@ -8,6 +8,9 @@
 | test.swift:71:42:71:44 | ecb | test.swift:50:12:50:16 | ECB(...) | test.swift:71:42:71:44 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:50:12:50:16 | ECB(...) | ECB(...) |
 | test.swift:72:42:72:46 | ECB(...) | test.swift:72:42:72:46 | ECB(...) | test.swift:72:42:72:46 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:72:42:72:46 | ECB(...) | ECB(...) |
 | test.swift:73:42:73:58 | getECBBlockMode(...) | test.swift:39:9:39:13 | ECB(...) | test.swift:73:42:73:58 | getECBBlockMode(...) | The initialization of the cipher 'getECBBlockMode(...)' uses the insecure ECB block mode from $@. | test.swift:39:9:39:13 | ECB(...) | ECB(...) |
+| test.swift:84:35:84:39 | ECB(...) | test.swift:84:35:84:39 | ECB(...) | test.swift:84:35:84:39 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:84:35:84:39 | ECB(...) | ECB(...) |
+| test.swift:85:35:85:39 | ECB(...) | test.swift:85:35:85:39 | ECB(...) | test.swift:85:35:85:39 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:85:35:85:39 | ECB(...) | ECB(...) |
+| test.swift:86:40:86:44 | ECB(...) | test.swift:86:40:86:44 | ECB(...) | test.swift:86:40:86:44 | ECB(...) | The initialization of the cipher 'ECB(...)' uses the insecure ECB block mode from $@. | test.swift:86:40:86:44 | ECB(...) | ECB(...) |
 edges
 | test.swift:39:9:39:13 | ECB(...) | test.swift:60:37:60:53 | getECBBlockMode(...) | provenance |  |
 | test.swift:39:9:39:13 | ECB(...) | test.swift:61:37:61:53 | getECBBlockMode(...) | provenance |  |
@@ -29,4 +32,7 @@ nodes
 | test.swift:71:42:71:44 | ecb | semmle.label | ecb |
 | test.swift:72:42:72:46 | ECB(...) | semmle.label | ECB(...) |
 | test.swift:73:42:73:58 | getECBBlockMode(...) | semmle.label | getECBBlockMode(...) |
+| test.swift:84:35:84:39 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:85:35:85:39 | ECB(...) | semmle.label | ECB(...) |
+| test.swift:86:40:86:44 | ECB(...) | semmle.label | ECB(...) |
 subpaths
