@@ -1,0 +1,37 @@
+constructor
+| dotted-import.swift:7:23:7:48 | URL(...) | URL |
+| dotted-import.swift:9:21:9:57 | ... .URL(...) | URL |
+| dotted-import.swift:11:9:11:50 | ... .init(...) | URL |
+| module-import.swift:7:23:7:48 | URL(...) | URL |
+| module-import.swift:9:21:9:57 | ... .URL(...) | URL |
+| module-import.swift:11:9:11:50 | ... .init(...) | URL |
+| no-import.swift:5:23:5:48 | URL(...) | URL |
+| no-import.swift:7:21:7:57 | ... .URL(...) | URL |
+| no-import.swift:9:9:9:50 | ... .init(...) | URL |
+| no-import.swift:12:9:12:38 | ... .Index(...) | String.Index |
+| no-import.swift:13:9:13:49 | ... .Index(...) | String.Index |
+| scoped-import.swift:7:23:7:48 | URL(...) | URL |
+| scoped-import.swift:9:21:9:57 | ... .URL(...) | URL |
+| scoped-import.swift:11:9:11:50 | ... .init(...) | URL |
+isSink
+| no-import.swift:12:37:12:37 | 0 | string-length |
+| no-import.swift:13:48:13:48 | 0 | string-length |
+isSource
+| dotted-import.swift:4:9:4:17 | ... .lines | remote |
+| dotted-import.swift:5:9:5:26 | ... .lines | remote |
+| dotted-import.swift:8:9:8:25 | ... .lines | remote |
+| dotted-import.swift:10:9:10:23 | ... .lines | remote |
+| module-import.swift:4:9:4:17 | ... .lines | remote |
+| module-import.swift:5:9:5:26 | ... .lines | remote |
+| module-import.swift:8:9:8:25 | ... .lines | remote |
+| module-import.swift:10:9:10:23 | ... .lines | remote |
+| no-import.swift:2:9:2:17 | ... .lines | remote |
+| no-import.swift:3:9:3:26 | ... .lines | remote |
+| no-import.swift:6:9:6:25 | ... .lines | remote |
+| no-import.swift:8:9:8:23 | ... .lines | remote |
+| other-modules.swift:8:9:8:31 | ... .value | remote |
+| other-modules.swift:10:9:10:31 | ... .text | local |
+| scoped-import.swift:4:9:4:17 | ... .lines | remote |
+| scoped-import.swift:5:9:5:26 | ... .lines | remote |
+| scoped-import.swift:8:9:8:25 | ... .lines | remote |
+| scoped-import.swift:10:9:10:23 | ... .lines | remote |
