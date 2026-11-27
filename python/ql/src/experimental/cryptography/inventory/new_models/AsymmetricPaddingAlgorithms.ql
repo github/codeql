@@ -3,7 +3,7 @@
  * @description Finds all potential usage of padding schemes used with asymmeric algorithms.
  * @kind problem
  * @id py/quantum-readiness/cbom/asymmetric-padding-schemes
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
