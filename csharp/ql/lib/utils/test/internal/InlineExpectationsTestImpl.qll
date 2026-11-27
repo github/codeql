@@ -29,6 +29,9 @@ module Impl implements InlineExpectationsTestSig {
       result = this.asAspComment().getBody()
     }
 
+    /** Holds if this is a C# `//` comment. */
+    predicate isLineComment() { exists(this.asCSharpComment()) }
+
     /** Gets the location of this comment. */
     Location getLocation() {
       result = this.asCSharpComment().getLocation()
@@ -58,5 +61,13 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // C# databases can also contain XML (e.g. `.csproj`, `.config`) and Razor markup, whose
+    // comment syntaxes are not yet supported, so we only render for C# sources.
+    relativePath.regexpMatch(".*\\.(cs|csx)") and
+    result = "//"
   }
 }

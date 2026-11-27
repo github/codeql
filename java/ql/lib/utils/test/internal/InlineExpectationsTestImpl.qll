@@ -12,6 +12,9 @@ module Impl implements InlineExpectationsTestSig {
   abstract class ExpectationComment extends J::Top {
     /** Gets the contents of the given comment, _without_ the preceding comment marker (`//`). */
     abstract string getContents();
+
+    /** Java expectation comments use line-comment syntax. */
+    predicate isLineComment() { any() }
   }
 
   private class JavadocExpectationComment extends J::Javadoc, ExpectationComment {
@@ -44,5 +47,13 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // Java databases can also contain XML; those files use a different (block) comment
+    // syntax that is not yet supported, so we only render for Java and Kotlin sources.
+    relativePath.matches(["%.java", "%.kt"]) and
+    result = "//"
   }
 }

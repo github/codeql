@@ -17,6 +17,9 @@ module Impl implements InlineExpectationsTestSig {
     /** Returns the contents of the given comment, _without_ the preceding comment marker (`//`). */
     string getContents() { result = comment.getContents().suffix(2) }
 
+    /** C++ expectation comments use line-comment syntax. */
+    predicate isLineComment() { any() }
+
     /** Gets a textual representation of this element. */
     string toString() { result = comment.toString() }
 
@@ -34,5 +37,15 @@ module Impl implements InlineExpectationsTestSig {
       result =
         f.getRelativePath() + ":" + startline + ":" + startcolumn + ":" + endline + ":" + endcolumn
     )
+  }
+
+  bindingset[relativePath]
+  string getStartCommentMarker(string relativePath) {
+    // C/C++ databases can also contain XML (e.g. `.xml`, `.props`), whose block-comment
+    // syntax is not yet supported, so we only render for C/C++ sources.
+    relativePath
+        .toLowerCase()
+        .regexpMatch(".*\\.(c|i|cc|cp|cpp|cxx|c\\+\\+|icc|ipp|ixx|i\\+\\+|ii|h|r|hh|hp|hpp|hxx|h\\+\\+|tcc|tpp|txx|t\\+\\+|inl|cu|cuh)") and
+    result = "//"
   }
 }
