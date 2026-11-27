@@ -7,4 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <Target Name="CheckMSBuildServer">
+    <Error Condition="'$(DOTNET_CLI_USE_MSBUILD_SERVER)' != 'false'"
+           Text="Expected the .NET CLI MSBuild server to be disabled during CodeQL tracing." />
+    <Error Condition="'$(MSBUILDDISABLENODEREUSE)' != '1'"
+           Text="Expected MSBuild node reuse to be disabled during CodeQL tracing." />
+  </Target>
+
 </Project>
