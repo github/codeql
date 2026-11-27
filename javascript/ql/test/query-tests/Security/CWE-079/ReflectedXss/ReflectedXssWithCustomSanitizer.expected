@@ -51,6 +51,11 @@
 | partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:31:47:31:53 | req.url | user-provided value |
 | partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to $@. | partial.js:40:43:40:49 | req.url | user-provided value |
 | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
+| replaceAll.js:23:12:23:53 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
+| replaceAll.js:24:12:24:57 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
+| replaceAll.js:25:12:25:59 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
+| replaceAll.js:28:12:28:69 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
+| replaceAll.js:29:12:29:67 | "<p>" + ...  "</p>" | Cross-site scripting vulnerability due to $@. | replaceAll.js:16:16:16:29 | req.query.name | user-provided value |
 | response-object.js:14:18:14:21 | data | Cross-site scripting vulnerability due to $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:17:18:17:21 | data | Cross-site scripting vulnerability due to $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:23:18:23:21 | data | Cross-site scripting vulnerability due to $@. | response-object.js:7:18:7:25 | req.body | user-provided value |

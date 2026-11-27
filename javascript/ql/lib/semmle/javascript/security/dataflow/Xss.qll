@@ -31,7 +31,7 @@ module Shared {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A global regexp replacement involving the `<`, `'`, or `"` meta-character, viewed as a sanitizer for
+   * A global replacement involving the `<`, `'`, or `"` meta-character, viewed as a sanitizer for
    * XSS vulnerabilities.
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
@@ -42,6 +42,10 @@ module Shared {
         or
         // or it's like a wild-card.
         RegExp::isWildcardLike(this.getRegExp().getRoot())
+        or
+        // or it's a `replaceAll` call whose string pattern is a meta-character.
+        this.getMethodName() = "replaceAll" and
+        forex(string s | this.getArgument(0).mayHaveStringValue(s) | s = ["<", "'", "\""])
       )
     }
   }
