@@ -96,3 +96,17 @@ void test () {
 	char_pointer_arith(dss); // GOOD: pointer arithmetic is done with char*
 
 }
+
+class DerivedWithData: public Base {
+public:
+	int y;
+	const void *data() const { return this + 1; } // $ SPURIOUS: Alert
+};
+
+void use_data(const DerivedWithData &d) {
+	d.data();
+}
+
+void downcast_and_dereference(Base *b) {
+	use_data(*static_cast<const DerivedWithData *>(b)); // $ SPURIOUS: Source // GOOD: a downcast, not an upcast
+}
