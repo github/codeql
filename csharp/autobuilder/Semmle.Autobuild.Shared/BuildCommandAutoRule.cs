@@ -15,7 +15,7 @@ namespace Semmle.Autobuild.Shared
         private readonly WithDotNet<AutobuildOptionsShared> withDotNet;
 
         /// <summary>
-        /// A list of paths to files in the project directory which we classified as scripts.
+        /// Paths to files in the project directory which we classified as scripts, in no guaranteed order.
         /// </summary>
         public IEnumerable<string> CandidatePaths { get; private set; }
 
@@ -64,14 +64,18 @@ namespace Semmle.Autobuild.Shared
             // e.g. for Linux: build, build.sh
             var scripts = buildScripts.SelectMany(s => extensions.Select(e => s + e));
             // search through the files in the project directory for paths which end in one of
-            // the names given by `scripts`, then order them by depth and path
-            this.CandidatePaths = builder.Paths
+            // the names given by `scripts`
+            var candidates = builder.Paths
                 .Where(p => scripts.Any(p.Item1.ToLower().EndsWith))
-                .OrderBy(p => p.Item2)
-                .ThenBy(p => p.Item1, StringComparer.Ordinal)
-                .Select(p => p.Item1);
-            // pick the first matching path, if there is one
-            this.ScriptPath = this.CandidatePaths.FirstOrDefault();
+                .ToArray();
+            this.CandidatePaths = candidates.Select(p => p.Item1);
+
+            var comparer = Comparer<(string path, int depth)>.Create((left, right) =>
+            {
+                var depthComparison = left.depth.CompareTo(right.depth);
+                return depthComparison != 0 ? depthComparison : StringComparer.Ordinal.Compare(left.path, right.path);
+            });
+            this.ScriptPath = candidates.Length == 0 ? null : candidates.MinBy(p => p, comparer).Item1;
 
             if (this.ScriptPath is null)
                 return BuildScript.Failure;

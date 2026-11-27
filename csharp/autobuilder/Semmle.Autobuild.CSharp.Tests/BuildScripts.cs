@@ -689,7 +689,7 @@ namespace Semmle.Autobuild.CSharp.Tests
                 @"C:\Project/a/zbuild.sh",
                 @"C:\Project/z/abuild.sh",
                 @"C:\Project/a/a/build.sh"
-            }, rule.CandidatePaths);
+            }.OrderBy(p => p, StringComparer.Ordinal), rule.CandidatePaths.OrderBy(p => p, StringComparer.Ordinal));
         }
 
         [Theory]
@@ -709,7 +709,22 @@ namespace Semmle.Autobuild.CSharp.Tests
             {
                 @"C:\Project\BUILD.cmd",
                 @"C:\Project\build.bat"
-            }, rule.CandidatePaths);
+            }.OrderBy(p => p, StringComparer.Ordinal), rule.CandidatePaths.OrderBy(p => p, StringComparer.Ordinal));
+        }
+
+        [Fact]
+        public void TestBuildScriptSelectionWithNoCandidates()
+        {
+            actions.EnumerateFiles[@"C:\Project"] = "foo.cs";
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+
+            var autobuilder = CreateAutoBuilder(false);
+            var rule = new BuildCommandAutoRule((_, build) => build(null));
+            var script = rule.Analyse(autobuilder, true);
+
+            Assert.Null(rule.ScriptPath);
+            Assert.Empty(rule.CandidatePaths);
+            Assert.NotEqual(0, script.Run(actions, StartCallback, EndCallback));
         }
 
         [Fact]
