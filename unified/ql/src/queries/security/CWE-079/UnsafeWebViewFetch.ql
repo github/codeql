@@ -42,6 +42,13 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node = any(UnsafeWebViewFetchSink sink) }
 
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // include the taint source that reaches the base URL, if any
+    BaseUrlFlow::flowTo(sink.(UnsafeWebViewFetchSink).getABaseUrl())
+  }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 
