@@ -10,4 +10,7 @@ var cp = require('child_process'),
 
 	const safe = "\"" + path.join(__dirname, "temp") + "\"";
 	execa.shellSync('rm -rf ' + safe);
+
+	cp.execFileSync('sh', ['-c', 'rm -rf -- "$1"', 'sh', path.join(__dirname, "temp")]);
+	cp.execFileSync('sh', ['-c', 'rm -rf ' + path.join(__dirname, "temp"), 'sh', 'unused']); // $ Alert
 });

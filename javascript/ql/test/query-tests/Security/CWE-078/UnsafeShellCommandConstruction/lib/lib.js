@@ -759,3 +759,8 @@ module.exports.sanitizerParseFloat = function (name) { // $ Source
 		cp.exec("rm -rf " + parsed);
 	}
 }
+
+module.exports.indirectPositional = function (name) { // $ Source
+	cp.spawn("sh", ["-c", 'rm -rf -- "$1"', "sh", "prefix/" + name], cb);
+	cp.spawn("sh", ["-c", "rm -rf " + name, "sh", "unused"], cb); // $ Alert
+}

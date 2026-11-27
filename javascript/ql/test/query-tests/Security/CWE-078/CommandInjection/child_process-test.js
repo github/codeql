@@ -63,7 +63,7 @@ var server = http.createServer(function(req, res) {
 
 });
 
-function run(cmd, args) { // $ Sink
+function run(cmd, args) {
   cp.spawn(cmd, args); // $ Alert - but note that the sink is where `args` is build.
 }
 
@@ -201,4 +201,34 @@ http.createServer(function(req, res) {
     cp.execFile("echo", options);
     cp.execFile("echo", options, () => {});
     cp.execFileSync("echo", options);
+});
+
+http.createServer(function(req, res) {
+    let cmd = url.parse(req.url, true).query.path; // $ Sink Source
+
+    // POSIX `sh -c` / `bash -c` positional parameters ($0, $1, ...) are not interpreted as shell code
+    cp.execFile("sh", ["-c", 'grep -c -- "$1" /var/log/app.log', "sh", cmd], () => {});
+    cp.spawn("bash", ["-c", 'wc -l < "$1"', "bash", cmd]);
+    cp.execFileSync("sh", ["-c", 'for f in "$@"; do wc -c < "$f"; done', "sh"].concat([cmd]));
+    cp.spawn("sh", ["-c", 'wc -l < "$1"', "sh", ...[cmd]]);
+    let shArgs = ["-c", 'wc -l < "$1"', "sh"];
+    shArgs.push(cmd);
+    cp.spawn("sh", shArgs);
+    run("sh", ["-c", 'wc -l < "$1"', "sh", cmd]);
+    cp.spawn("sh", ["-e", "-c", 'wc -l < "$1"', "sh", cmd]);
+    cp.spawn("sh", ["-c", "-e", 'wc -l < "$1"', "sh", cmd]);
+    cp.spawn("sh", ["-c", "--", 'wc -l < "$1"', "sh", cmd]);
+    cp.spawn("bash", ["-euo", "pipefail", "-c", 'wc -l < "$1"', "bash", cmd]);
+    cp.execFile("sh", ["-c", 'grep "$@" /var/log/app.log', "sh"].concat(["-c", cmd]), () => {});
+
+    // Tainted command_string with `sh -c` / `bash -c` must still alert
+    cp.execFile("sh", ["-c", "grep " + cmd, "sh", "safe"], () => {}); // $ Alert
+    cp.spawn("sh", ["-e", "-c", cmd]); // $ Alert
+    cp.spawn("sh", ["-c", "-e", cmd]); // $ Alert
+    cp.spawn("sh", ["-c", "--", cmd]); // $ Alert
+    cp.spawn("bash", ["-euo", "pipefail", "-c", cmd]); // $ Alert
+    cp.spawn("sh", ["-c"].concat(cmd)); // $ Alert
+    let mutatedArgs = ["-c", "echo ok"];
+    mutatedArgs.splice(1, 1, cmd);
+    cp.spawn("sh", mutatedArgs); // $ Alert
 });
