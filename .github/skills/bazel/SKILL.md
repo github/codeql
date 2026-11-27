@@ -59,7 +59,7 @@ Macros here are typically a thin public wrapper around a private rule (`codeql_c
 the rule narrow and the ergonomics in the macro. Each macro decorates the caller's `name` to mint its helper targets,
 for example `internal/<name>` or `single_arch/<name>`. Their visibility is that macro's choice (private, package
 default, or the caller's own), so read the macro instead of assuming. When an error names a target you cannot find in
-any source file, a macro minted it: grep the suffix under `misc/bazel/`.
+any source file, a macro minted it: grep the suffix in the package's loaded `.bzl` files, including language-local ones.
 
 ## Shared helpers
 
