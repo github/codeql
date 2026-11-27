@@ -2,7 +2,7 @@ name: Pull request feedback
 
 on:
   pull_request_target:
-    types: [ opened, synchronize ]
+    types: [ labeled ]
 
 permissions: {}
 jobs:
@@ -16,5 +16,5 @@ jobs:
       uses: actions/checkout@v3
       if: contains(github.event.pull_request.labels.*.name, 'safe to test')
       with:
-        ref: ${{ github.event.pull_request.head.ref }}
+        ref: ${{ github.event.pull_request.head.ref }}  # BAD (mutable ref)
     - run: ./cmd
