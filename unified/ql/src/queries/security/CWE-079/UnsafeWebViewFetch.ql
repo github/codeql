@@ -38,7 +38,7 @@ private class UnsafeWebViewFetchSink extends DataFlow::Node {
  * A taint configuration from taint sources to sinks for this query.
  */
 module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
 
   predicate isSink(DataFlow::Node node) { node = any(UnsafeWebViewFetchSink sink) }
 
@@ -60,7 +60,7 @@ import UnsafeWebViewFetchFlow::PathGraph
  * A taint configuration from taint sources to base URL arguments of WebView fetches.
  */
 module BaseUrlConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { Models::isSource(node, _) }
+  predicate isSource(DataFlow::Node node) { Models::isSource(node, "remote") }
 
   predicate isSink(DataFlow::Node node) { node = any(UnsafeWebViewFetchSink sink).getABaseUrl() }
 
