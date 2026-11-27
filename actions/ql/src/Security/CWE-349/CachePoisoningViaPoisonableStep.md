@@ -1,6 +1,6 @@
 ## Overview
 
-GitHub Actions cache poisoning is a technique that allows an attacker to inject malicious content into the Action's cache from unprivileged workflow, potentially leading to code execution in privileged workflows.
+GitHub Actions cache poisoning is a technique that allows an attacker to inject malicious content into the Actions cache from an unprivileged workflow with cache-write access, potentially leading to code execution in privileged workflows.
 
 An attacker with the ability to run code in the context of the default branch (e.g. through Code Injection or Execution of Untrusted Code) can exploit this to:
 
@@ -23,7 +23,13 @@ Due to the above design, if something is cached in the context of the default br
 
 ## Recommendation
 
-1. Avoid using caching in workflows that handle sensitive operations like releases.
+Set `cache-mode: read` on workflows or jobs that process untrusted input and only need to restore
+caches, or `cache-mode: none` if they do not need cache access. These restrictions are enforced by
+the cache service. Job-level settings override workflow-level settings. Set an explicit mode on
+jobs that call reusable workflows to limit the access those workflows can request. Do not use
+`write-only` to prevent cache poisoning: it prevents restores but still permits saves.
+
+1. Avoid restoring caches in workflows that handle sensitive operations like releases. Use `cache-mode: none` to disable cache access.
 2. If caching must be used:
    - Validate restored cache contents before use.
    - Use short-lived, workflow-specific cache keys.
@@ -34,9 +40,13 @@ Due to the above design, if something is cached in the context of the default br
 
 ## Example
 
-GitHub gives workflows triggered by low-trust events, such as `issue_comment`,
+By default, GitHub gives workflows triggered by low-trust events, such as `issue_comment`,
 `pull_request_target`, and `workflow_run`, read-only access to the default branch cache scope.
-This query therefore reports only workflows whose trigger can write to that scope.
+An explicit `cache-mode: write` or `cache-mode: write-only` grants write access even for these
+triggers, while `read` and `none` prevent cache saves. Reusable workflows cannot exceed an explicit
+mode set by their caller, but can override an implicit trigger-based default.
+This query reports only jobs that can write to the default branch cache scope, accounting for
+the trigger, branch, and effective cache mode.
 
 ### Incorrect Usage
 
@@ -67,7 +77,8 @@ jobs:
 
 ### Correct Usage
 
-The following workflow runs untrusted code in a non-privileged job and the cache is scoped to the Pull Request branch.
+The following workflow runs untrusted code in a non-privileged job with the cache scoped to the
+pull request's merge ref. It also explicitly prevents cache saves with `cache-mode: read`.
 
 ```yaml
 name: Secure Workflow
@@ -75,6 +86,7 @@ on:
   pull_request:
     branches: [main]
 permissions: {}
+cache-mode: read
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -90,4 +102,5 @@ jobs:
 
 - Adnan Khan's Blog: [The Monsters in Your Build Cache – GitHub Actions Cache Poisoning](https://adnanthekhan.com/2024/05/06/the-monsters-in-your-build-cache-github-actions-cache-poisoning/).
 - GitHub Docs: [Cache access for low-trust workflow triggers](https://docs.github.com/actions/reference/workflows-and-actions/dependency-caching#cache-access-for-low-trust-workflow-triggers).
+- GitHub Docs: [Controlling cache access with cache-mode](https://docs.github.com/actions/reference/workflows-and-actions/dependency-caching#controlling-cache-access-with-cache-mode).
 - Scribe Security Blog: [Cache Poisoning in GitHub Actions](https://scribesecurity.com/blog/github-cache-poisoning/).
