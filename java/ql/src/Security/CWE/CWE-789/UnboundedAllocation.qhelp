@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+ When user input is used to control how much memory is allocated, such as in the size of an array, care should be taken to validate this number
+ and ensure it is within a sensible bound.
+ Otherwise, a malicous user may be able to cause a DoS (Denial of Service) attack by causing the application to consume a large amount of memory.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that user-provided sizes are within some upper bound. 
+Alternatively, a structure such as an <code>ArrayList</code> can be used to ensure that the application only allocates as much memory as is necessary.</p>
+
+</recommendation>
+<example>
+
+<p>
+The following example allocates an amount of memory directly from a user-provided value:
+</p>
+
+<sample src="UnboundedAllocationBad.java" />
+
+<p>The following example first validates the user input against an upper bound:</p>
+
+<sample src="UnboundedAllocationGood.java" />
+
+</example>
+<references>
+
+</references>
+</qhelp>
