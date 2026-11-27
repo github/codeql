@@ -1,0 +1,42 @@
+edges
+| commands.c:14:52:14:54 | *req | commands.c:16:72:16:74 | *req | provenance |  |
+| commands.c:14:52:14:54 | *req | commands.c:18:60:18:62 | *req | provenance |  |
+| commands.c:16:12:16:18 | snprintf output argument | commands.c:17:10:17:16 | *command | provenance |  |
+| commands.c:16:49:16:70 | *call to evhttp_request_get_uri | commands.c:16:12:16:18 | snprintf output argument | provenance | Config |
+| commands.c:16:72:16:74 | *req | commands.c:16:49:16:70 | *call to evhttp_request_get_uri | provenance | MaD:32633 |
+| commands.c:18:28:18:58 | *call to evhttp_request_get_input_buffer | commands.c:18:28:18:58 | *call to evhttp_request_get_input_buffer | provenance |  |
+| commands.c:18:28:18:58 | *call to evhttp_request_get_input_buffer | commands.c:19:65:19:69 | *input | provenance |  |
+| commands.c:18:28:18:58 | *call to evhttp_request_get_input_buffer | commands.c:22:19:22:23 | *input | provenance |  |
+| commands.c:18:60:18:62 | *req | commands.c:18:28:18:58 | *call to evhttp_request_get_input_buffer | provenance | MaD:32634 |
+| commands.c:19:12:19:18 | snprintf output argument | commands.c:20:10:20:16 | *command | provenance |  |
+| commands.c:19:49:19:63 | *call to evbuffer_pullup | commands.c:19:12:19:18 | snprintf output argument | provenance | Config |
+| commands.c:19:65:19:69 | *input | commands.c:19:49:19:63 | *call to evbuffer_pullup | provenance | MaD:32635 |
+| commands.c:22:19:22:23 | *input | commands.c:22:26:22:29 | evbuffer_remove output argument | provenance | MaD:32636 |
+| commands.c:22:26:22:29 | evbuffer_remove output argument | commands.c:23:49:23:52 | *body | provenance |  |
+| commands.c:23:12:23:18 | snprintf output argument | commands.c:24:10:24:16 | *command | provenance |  |
+| commands.c:23:49:23:52 | *body | commands.c:23:12:23:18 | snprintf output argument | provenance | Config |
+| commands.c:28:37:28:51 | evhttp_set_cb output argument | commands.c:14:52:14:54 | *req | provenance | Src:MaD:32631  |
+nodes
+| commands.c:14:52:14:54 | *req | semmle.label | *req |
+| commands.c:16:12:16:18 | snprintf output argument | semmle.label | snprintf output argument |
+| commands.c:16:49:16:70 | *call to evhttp_request_get_uri | semmle.label | *call to evhttp_request_get_uri |
+| commands.c:16:72:16:74 | *req | semmle.label | *req |
+| commands.c:17:10:17:16 | *command | semmle.label | *command |
+| commands.c:18:28:18:58 | *call to evhttp_request_get_input_buffer | semmle.label | *call to evhttp_request_get_input_buffer |
+| commands.c:18:28:18:58 | *call to evhttp_request_get_input_buffer | semmle.label | *call to evhttp_request_get_input_buffer |
+| commands.c:18:60:18:62 | *req | semmle.label | *req |
+| commands.c:19:12:19:18 | snprintf output argument | semmle.label | snprintf output argument |
+| commands.c:19:49:19:63 | *call to evbuffer_pullup | semmle.label | *call to evbuffer_pullup |
+| commands.c:19:65:19:69 | *input | semmle.label | *input |
+| commands.c:20:10:20:16 | *command | semmle.label | *command |
+| commands.c:22:19:22:23 | *input | semmle.label | *input |
+| commands.c:22:26:22:29 | evbuffer_remove output argument | semmle.label | evbuffer_remove output argument |
+| commands.c:23:12:23:18 | snprintf output argument | semmle.label | snprintf output argument |
+| commands.c:23:49:23:52 | *body | semmle.label | *body |
+| commands.c:24:10:24:16 | *command | semmle.label | *command |
+| commands.c:28:37:28:51 | evhttp_set_cb output argument | semmle.label | evhttp_set_cb output argument |
+subpaths
+#select
+| commands.c:17:10:17:16 | command | commands.c:28:37:28:51 | evhttp_set_cb output argument | commands.c:17:10:17:16 | *command | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system((unnamed parameter 0)). | commands.c:28:37:28:51 | evhttp_set_cb output argument | user input (external) | commands.c:16:12:16:18 | snprintf output argument | snprintf output argument |
+| commands.c:20:10:20:16 | command | commands.c:28:37:28:51 | evhttp_set_cb output argument | commands.c:20:10:20:16 | *command | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system((unnamed parameter 0)). | commands.c:28:37:28:51 | evhttp_set_cb output argument | user input (external) | commands.c:19:12:19:18 | snprintf output argument | snprintf output argument |
+| commands.c:24:10:24:16 | command | commands.c:28:37:28:51 | evhttp_set_cb output argument | commands.c:24:10:24:16 | *command | This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to system((unnamed parameter 0)). | commands.c:28:37:28:51 | evhttp_set_cb output argument | user input (external) | commands.c:23:12:23:18 | snprintf output argument | snprintf output argument |
