@@ -14,6 +14,7 @@
 
 import python
 private import LegacyPointsTo
+import semmle.python.ApiGraphs
 
 predicate understood_attribute(Attribute attr, ClassValue cls, ClassValue attr_cls) {
   exists(string name | attr.getName() = name |
@@ -94,6 +95,57 @@ private string special_method() {
   result = any(BinaryExpr b).getOp().getSpecialMethodName()
 }
 
+/*
+ * utilities for detection `...` typing ellipsis expression statements
+ *
+ * Various Python typing constructs merely define class/function signatures.
+ * In this case, the body is commonly a single `...` expression statement.
+ */
+
+private predicate is_only_scope_statement(Stmt s) {
+  forex(Stmt scope_stmt | scope_stmt = s.getScope().getAStmt() | scope_stmt = s)
+}
+
+private Function getAnOverload() {
+  exists(Expr e |
+    e = API::moduleImport("typing").getMember("overload").getAValueReachableFromSource().asExpr()
+  |
+    e = result.getADecorator()
+  )
+}
+
+private API::Node getATypedSubclass(API::Node base) {
+  // class Result(base, ...)
+  result = base.getASubclass()
+  or
+  // Result = base[...]
+  result = base.getASubscript()
+}
+
+private ClassDef getAProtocolDef() {
+  exists(Expr e |
+    e =
+      getATypedSubclass*(API::moduleImport("typing").getMember("Protocol"))
+          .getAValueReachableFromSource()
+          .asExpr()
+  |
+    e instanceof ClassExpr and
+    e = result.getValue()
+  )
+}
+
+predicate is_typing_ellipsis(ExprStmt s) {
+  s.getValue() instanceof Ellipsis and
+  s.getScope() instanceof Function and
+  is_only_scope_statement(s) and
+  (
+    s.getScope() = getAnOverload()
+    or
+    s.getScope().getScope() instanceof Class and
+    s.getScope().getScope() = getAProtocolDef().getDefinedClass()
+  )
+}
+
 predicate is_notebook(File f) {
   exists(Comment c | c.getLocation().getFile() = f |
     c.getText().regexpMatch("#\\s*<nbformat>.+</nbformat>\\s*")
@@ -126,6 +178,8 @@ predicate python2_print(Expr e) {
 predicate no_effect(Expr e) {
   // strings can be used as comments
   not e instanceof StringLiteral and
+  // await triggers actions and switches coroutines
+  not e instanceof Await and
   not e.hasSideEffects() and
   forall(Expr sub | sub = e.getASubExpression*() |
     not side_effecting_binary(sub) and
@@ -137,5 +191,5 @@ predicate no_effect(Expr e) {
 }
 
 from ExprStmt stmt
-where no_effect(stmt.getValue())
+where no_effect(stmt.getValue()) and not is_typing_ellipsis(stmt)
 select stmt, "This statement has no effect."
