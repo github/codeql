@@ -1,2 +1,5 @@
-| tests2.cpp:34:4:34:9 | call to strcat | This buffer only contains enough room for 'str1' (copied on line 33) |
-| tests2.cpp:52:4:52:9 | call to strcat | This buffer only contains enough room for 'str1' (copied on line 51) |
+| tests2.cpp:48:4:48:9 | call to strcat | This buffer only contains enough room for 'str1' (copied on line 47) |
+| tests2.cpp:66:4:66:9 | call to strcat | This buffer only contains enough room for 'str1' (copied on line 65) |
+| tests2.cpp:118:4:118:11 | call to wcsftime | Using sizeof(buf) passes byte count instead of wchar_t element count to wcsftime. Use sizeof(buf)/sizeof(wchar_t) or array length instead. |
+| tests2.cpp:142:4:142:11 | call to wcsftime | Using sizeof(smallBuf) passes byte count instead of wchar_t element count to wcsftime. Use sizeof(smallBuf)/sizeof(wchar_t) or array length instead. |
+| tests2.cpp:151:5:151:12 | call to wcsftime | Using sizeof(dynamicBuf) passes pointer size instead of buffer size to wcsftime. Pass the actual element count or use a length variable instead. |
