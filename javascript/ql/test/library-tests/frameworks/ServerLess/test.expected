@@ -5,3 +5,5 @@
 | tst5/app.js:1:36:1:40 | event |
 | tst6/handler.js:6:23:6:36 | req.query.name |
 | tst7/handler.js:1:34:1:38 | event |
+| tst8/cjs.cjs:1:26:1:30 | event |
+| tst8/esm.mjs:1:31:1:35 | event |
