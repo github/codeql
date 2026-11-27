@@ -1039,6 +1039,12 @@ token_trees(
   unique int id: @token_tree
 );
 
+#keyset[id]
+token_tree_texts(
+  int id: @token_tree ref,
+  string text: string ref
+);
+
 try_block_modifiers(
   unique int id: @try_block_modifier
 );
@@ -3611,6 +3617,11 @@ macro_call_token_trees(
 macro_call_macro_call_expansions(
   int id: @macro_call ref,
   int macro_call_expansion: @ast_node ref
+);
+
+#keyset[id]
+macro_call_is_builtin_include(
+  int id: @macro_call ref
 );
 
 statics(

@@ -1806,6 +1806,11 @@ module Raw {
    */
   class TokenTree extends @token_tree, AstNode {
     override string toString() { result = "TokenTree" }
+
+    /**
+     * Gets the text of this token tree, if it exists.
+     */
+    string getText() { token_tree_texts(this, result) }
   }
 
   private Element getImmediateChildOfTokenTree(TokenTree e, int index) { none() }
@@ -7733,6 +7738,11 @@ module Raw {
      * Gets the macro call expansion of this macro call, if it exists.
      */
     AstNode getMacroCallExpansion() { macro_call_macro_call_expansions(this, result) }
+
+    /**
+     * Holds if this macro call has an extracted expansion of the built-in `include!` macro.
+     */
+    predicate isBuiltinInclude() { macro_call_is_builtin_include(this) }
   }
 
   private Element getImmediateChildOfMacroCall(MacroCall e, int index) {

@@ -93,5 +93,12 @@ module Generated {
      * Holds if `getMacroCallExpansion()` exists.
      */
     final predicate hasMacroCallExpansion() { exists(this.getMacroCallExpansion()) }
+
+    /**
+     * Holds if this macro call has an extracted expansion of the built-in `include!` macro.
+     */
+    predicate isBuiltinInclude() {
+      Synth::convertMacroCallToRaw(this).(Raw::MacroCall).isBuiltinInclude()
+    }
   }
 }

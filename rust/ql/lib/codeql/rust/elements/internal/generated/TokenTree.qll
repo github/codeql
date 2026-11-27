@@ -32,5 +32,15 @@ module Generated {
     override string getAPrimaryQlClass() { result = "TokenTree" }
 
     override string toStringImpl() { result = this.getAPrimaryQlClass() }
+
+    /**
+     * Gets the text of this token tree, if it exists.
+     */
+    string getText() { result = Synth::convertTokenTreeToRaw(this).(Raw::TokenTree).getText() }
+
+    /**
+     * Holds if `getText()` exists.
+     */
+    final predicate hasText() { exists(this.getText()) }
   }
 }

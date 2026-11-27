@@ -438,10 +438,19 @@ impl<'db> Translator<'db> {
             .as_ref()
             .and_then(|s| s.expand_macro_call(mcall))
         {
+            let is_builtin_include = self.semantics.is_some_and(|semantics| {
+                semantics
+                    .hir_file_for(&expanded.value)
+                    .macro_file()
+                    .is_some_and(|id| id.is_include_macro(semantics.db))
+            });
             self.emit_macro_expansion_parse_errors(mcall, &expanded.value);
             let expand_to = ra_ap_hir_expand::ExpandTo::from_call_site(mcall);
             let kind = expanded.kind();
             if let Some(value) = self.emit_expanded_as(expand_to, expanded.value) {
+                if is_builtin_include {
+                    generated::MacroCall::emit_is_builtin_include(label, &mut self.trap.writer);
+                }
                 generated::MacroCall::emit_macro_call_expansion(
                     label,
                     value,

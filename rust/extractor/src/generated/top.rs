@@ -2786,6 +2786,7 @@ impl From<trap::Label<Token>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct TokenTree {
     pub id: trap::TrapId<TokenTree>,
+    pub text: Option<String>,
 }
 
 impl trap::TrapEntry for TokenTree {
@@ -2795,6 +2796,9 @@ impl trap::TrapEntry for TokenTree {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("token_trees", vec![id.into()]);
+        if let Some(v) = self.text {
+            out.add_tuple("token_tree_texts", vec![id.into(), v.into()]);
+        }
     }
 }
 
@@ -11894,6 +11898,10 @@ impl trap::TrapEntry for MacroCall {
 impl MacroCall {
     pub fn emit_macro_call_expansion(id: trap::Label<Self>, value: trap::Label<AstNode>, out: &mut trap::Writer) {
         out.add_tuple("macro_call_macro_call_expansions", vec![id.into(), value.into()]);
+    }
+
+    pub fn emit_is_builtin_include(id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("macro_call_is_builtin_include", vec![id.into()]);
     }
 
 }

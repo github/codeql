@@ -2799,7 +2799,11 @@ impl Translator<'_> {
         &mut self,
         node: &ast::TokenTree,
     ) -> Option<Label<generated::TokenTree>> {
-        let label = self.trap.emit(generated::TokenTree { id: TrapId::Star });
+        let text = node.try_get_text();
+        let label = self.trap.emit(generated::TokenTree {
+            id: TrapId::Star,
+            text,
+        });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
         Some(label)

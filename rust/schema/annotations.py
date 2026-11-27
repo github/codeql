@@ -1474,6 +1474,11 @@ class _:
     """
 
     macro_call_expansion: optional[AstNode] | child | rust.detach
+    is_builtin_include: (
+        predicate
+        | doc("this macro call has an extracted expansion of the built-in `include!` macro")
+        | rust.detach
+    )
 
 
 @annotate(MacroItems)
