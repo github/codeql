@@ -1,0 +1,8 @@
+name: Repository root composite action
+runs:
+  using: composite
+  steps:
+    - uses: $/.github/actions/root-nested
+    - uses: $/.github/actions/nested-only
+    - uses: covered/action@v1 # $ Alert
+    - uses: missing/action@v1 # $ Alert

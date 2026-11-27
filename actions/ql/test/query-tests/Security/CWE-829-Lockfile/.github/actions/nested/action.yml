@@ -1,0 +1,6 @@
+name: Nested composite action
+runs:
+  using: composite
+  steps:
+    - uses: $/.github/actions/covered
+    - uses: ./.github/actions/nested-only

@@ -1,0 +1,7 @@
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: $/.github/actions/nested
+      - uses: $/.github/actions/nested-shared

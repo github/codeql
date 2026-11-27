@@ -5,8 +5,14 @@ workflows:
     - mismatched/action@v1
     - malformed/action@v1
     - missing/action@v1
+    - covered/action@v1
+    - partial/action@v1
+    - only-rust/action@v1
   .github/workflows/other.yml:
     - other-workflow/action@v1
+    - covered/action@v1
+  .github/workflows/dot-caller.yml:
+    - covered/action@v1
 dependencies:
   DToLnAy/RuSt-ToOlChAiN@v1:
     ref: v1
@@ -28,3 +34,12 @@ dependencies:
     commit: 6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772
     owner_id: 5
     repo_id: 6
+  covered/action@v1:
+    ref: v1
+    commit: sha1-3333333333333333333333333333333333333333
+  partial/action@v1:
+    ref: v1
+    commit: sha1-4444444444444444444444444444444444444444
+  only-rust/action@v1:
+    ref: v1
+    commit: sha1-5555555555555555555555555555555555555555

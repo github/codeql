@@ -1,0 +1,6 @@
+name: Uncalled cyclic composite action
+runs:
+  using: composite
+  steps:
+    - uses: $/.github/actions/cycle-a
+    - uses: $/.github/actions/cycle-branch

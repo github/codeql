@@ -1,0 +1,5 @@
+name: Composite action called only through another composite
+runs:
+  using: composite
+  steps:
+    - uses: covered/action@v1 # $ Alert
