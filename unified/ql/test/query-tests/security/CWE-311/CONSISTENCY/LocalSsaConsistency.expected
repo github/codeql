@@ -1,0 +1,6 @@
+readWithoutDef
+| testSwiftUI.swift:70:2:75:2 | self | testSwiftUI.swift:72:13:74:3 | Entry | 12 |
+| testSwiftUI.swift:77:2:82:2 | self | testSwiftUI.swift:79:13:81:3 | Entry | 12 |
+readWithoutPriorRef
+| testSwiftUI.swift:70:2:75:2 | self | testSwiftUI.swift:72:13:74:3 | Entry | 12 |
+| testSwiftUI.swift:77:2:82:2 | self | testSwiftUI.swift:79:13:81:3 | Entry | 12 |

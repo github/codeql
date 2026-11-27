@@ -1,0 +1,233 @@
+#select
+| SQLite.swift:123:17:123:27 | insertQuery | SQLite.swift:119:70:119:86 | mobilePhoneNumber | SQLite.swift:123:17:123:27 | insertQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:119:70:119:86 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:124:17:124:27 | updateQuery | SQLite.swift:120:50:120:66 | mobilePhoneNumber | SQLite.swift:124:17:124:27 | updateQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:120:50:120:66 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:131:17:131:27 | insertQuery | SQLite.swift:119:70:119:86 | mobilePhoneNumber | SQLite.swift:131:17:131:27 | insertQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:119:70:119:86 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:132:17:132:27 | updateQuery | SQLite.swift:120:50:120:66 | mobilePhoneNumber | SQLite.swift:132:17:132:27 | updateQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:120:50:120:66 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:135:20:135:30 | insertQuery | SQLite.swift:119:70:119:86 | mobilePhoneNumber | SQLite.swift:135:20:135:30 | insertQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:119:70:119:86 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:136:20:136:30 | updateQuery | SQLite.swift:120:50:120:66 | mobilePhoneNumber | SQLite.swift:136:20:136:30 | updateQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:120:50:120:66 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:139:24:139:34 | insertQuery | SQLite.swift:119:70:119:86 | mobilePhoneNumber | SQLite.swift:139:24:139:34 | insertQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:119:70:119:86 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:140:24:140:34 | updateQuery | SQLite.swift:120:50:120:66 | mobilePhoneNumber | SQLite.swift:140:24:140:34 | updateQuery | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:120:50:120:66 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:147:32:147:48 | mobilePhoneNumber | SQLite.swift:147:32:147:48 | mobilePhoneNumber | SQLite.swift:147:32:147:48 | mobilePhoneNumber | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:147:32:147:48 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:148:28:148:44 | mobilePhoneNumber | SQLite.swift:148:28:148:44 | mobilePhoneNumber | SQLite.swift:148:28:148:44 | mobilePhoneNumber | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:148:28:148:44 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:149:31:149:47 | mobilePhoneNumber | SQLite.swift:149:31:149:47 | mobilePhoneNumber | SQLite.swift:149:31:149:47 | mobilePhoneNumber | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:149:31:149:47 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:152:21:152:37 | mobilePhoneNumber | SQLite.swift:152:21:152:37 | mobilePhoneNumber | SQLite.swift:152:21:152:37 | mobilePhoneNumber | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:152:21:152:37 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:153:20:153:36 | mobilePhoneNumber | SQLite.swift:153:20:153:36 | mobilePhoneNumber | SQLite.swift:153:20:153:36 | mobilePhoneNumber | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:153:20:153:36 | mobilePhoneNumber | mobilePhoneNumber |
+| SQLite.swift:154:23:154:39 | mobilePhoneNumber | SQLite.swift:154:23:154:39 | mobilePhoneNumber | SQLite.swift:154:23:154:39 | mobilePhoneNumber | This database operation may read or write unencrypted sensitive data from $@. | SQLite.swift:154:23:154:39 | mobilePhoneNumber | mobilePhoneNumber |
+| sqlite3_c_api.swift:46:27:46:37 | insertQuery | sqlite3_c_api.swift:42:69:42:80 | medicalNotes | sqlite3_c_api.swift:46:27:46:37 | insertQuery | This database operation may read or write unencrypted sensitive data from $@. | sqlite3_c_api.swift:42:69:42:80 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:47:27:47:37 | updateQuery | sqlite3_c_api.swift:43:49:43:60 | medicalNotes | sqlite3_c_api.swift:47:27:47:37 | updateQuery | This database operation may read or write unencrypted sensitive data from $@. | sqlite3_c_api.swift:43:49:43:60 | medicalNotes | medicalNotes |
+| sqlite3_c_api.swift:58:36:58:47 | medicalNotes | sqlite3_c_api.swift:58:36:58:47 | medicalNotes | sqlite3_c_api.swift:58:36:58:47 | medicalNotes | This database operation may read or write unencrypted sensitive data from $@. | sqlite3_c_api.swift:58:36:58:47 | medicalNotes | medicalNotes |
+| testCoreData2.swift:37:2:37:12 | ... .myValue | testCoreData2.swift:37:16:37:28 | bankAccountNo | testCoreData2.swift:37:2:37:12 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:37:16:37:28 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:38:2:38:24 | ... .myBankAccountNumber | testCoreData2.swift:38:2:38:24 | ... .myBankAccountNumber | testCoreData2.swift:38:2:38:24 | ... .myBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:38:2:38:24 | ... .myBankAccountNumber | ... .myBankAccountNumber |
+| testCoreData2.swift:39:2:39:24 | ... .myBankAccountNumber | testCoreData2.swift:39:2:39:24 | ... .myBankAccountNumber | testCoreData2.swift:39:2:39:24 | ... .myBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:39:2:39:24 | ... .myBankAccountNumber | ... .myBankAccountNumber |
+| testCoreData2.swift:40:2:40:25 | ... .myBankAccountNumber2 | testCoreData2.swift:40:2:40:25 | ... .myBankAccountNumber2 | testCoreData2.swift:40:2:40:25 | ... .myBankAccountNumber2 | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:40:2:40:25 | ... .myBankAccountNumber2 | ... .myBankAccountNumber2 |
+| testCoreData2.swift:41:2:41:25 | ... .myBankAccountNumber2 | testCoreData2.swift:41:2:41:25 | ... .myBankAccountNumber2 | testCoreData2.swift:41:2:41:25 | ... .myBankAccountNumber2 | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:41:2:41:25 | ... .myBankAccountNumber2 | ... .myBankAccountNumber2 |
+| testCoreData2.swift:42:2:42:31 | ... .notStoredBankAccountNumber | testCoreData2.swift:42:2:42:31 | ... .notStoredBankAccountNumber | testCoreData2.swift:42:2:42:31 | ... .notStoredBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:42:2:42:31 | ... .notStoredBankAccountNumber | ... .notStoredBankAccountNumber |
+| testCoreData2.swift:43:2:43:31 | ... .notStoredBankAccountNumber | testCoreData2.swift:43:2:43:31 | ... .notStoredBankAccountNumber | testCoreData2.swift:43:2:43:31 | ... .notStoredBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:43:2:43:31 | ... .notStoredBankAccountNumber | ... .notStoredBankAccountNumber |
+| testCoreData2.swift:57:3:57:25 | ... .myBankAccountNumber | testCoreData2.swift:57:3:57:25 | ... .myBankAccountNumber | testCoreData2.swift:57:3:57:25 | ... .myBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:57:3:57:25 | ... .myBankAccountNumber | ... .myBankAccountNumber |
+| testCoreData2.swift:60:4:60:26 | ... .myBankAccountNumber | testCoreData2.swift:60:4:60:26 | ... .myBankAccountNumber | testCoreData2.swift:60:4:60:26 | ... .myBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:60:4:60:26 | ... .myBankAccountNumber | ... .myBankAccountNumber |
+| testCoreData2.swift:62:4:62:26 | ... .myBankAccountNumber | testCoreData2.swift:62:4:62:26 | ... .myBankAccountNumber | testCoreData2.swift:62:4:62:26 | ... .myBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:62:4:62:26 | ... .myBankAccountNumber | ... .myBankAccountNumber |
+| testCoreData2.swift:65:3:65:25 | ... .myBankAccountNumber | testCoreData2.swift:65:3:65:25 | ... .myBankAccountNumber | testCoreData2.swift:65:3:65:25 | ... .myBankAccountNumber | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:65:3:65:25 | ... .myBankAccountNumber | ... .myBankAccountNumber |
+| testCoreData2.swift:79:2:79:14 | ... .myValue | testCoreData2.swift:79:18:79:40 | ... .bankAccountNo | testCoreData2.swift:79:2:79:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:79:18:79:40 | ... .bankAccountNo | ... .bankAccountNo |
+| testCoreData2.swift:80:2:80:14 | ... .myValue | testCoreData2.swift:80:18:80:41 | ... .bankAccountNo2 | testCoreData2.swift:80:2:80:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:80:18:80:41 | ... .bankAccountNo2 | ... .bankAccountNo2 |
+| testCoreData2.swift:82:2:82:14 | ... .myValue | testCoreData2.swift:82:18:82:30 | bankAccountNo | testCoreData2.swift:82:2:82:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:82:18:82:30 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:83:2:83:14 | ... .myValue | testCoreData2.swift:83:18:83:30 | bankAccountNo | testCoreData2.swift:83:2:83:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:83:18:83:30 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:84:2:84:14 | ... .myValue | testCoreData2.swift:84:18:84:31 | bankAccountNo2 | testCoreData2.swift:84:2:84:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:84:18:84:31 | bankAccountNo2 | bankAccountNo2 |
+| testCoreData2.swift:85:2:85:14 | ... .myValue | testCoreData2.swift:85:18:85:31 | bankAccountNo2 | testCoreData2.swift:85:2:85:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:85:18:85:31 | bankAccountNo2 | bankAccountNo2 |
+| testCoreData2.swift:93:2:93:14 | ... .myValue | testCoreData2.swift:91:10:91:22 | bankAccountNo | testCoreData2.swift:93:2:93:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:91:10:91:22 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:98:2:98:14 | ... .myValue | testCoreData2.swift:95:10:95:22 | bankAccountNo | testCoreData2.swift:98:2:98:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:95:10:95:22 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:104:2:104:14 | ... .myValue | testCoreData2.swift:101:10:101:22 | bankAccountNo | testCoreData2.swift:104:2:104:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:101:10:101:22 | bankAccountNo | bankAccountNo |
+| testCoreData2.swift:105:2:105:14 | ... .myValue | testCoreData2.swift:101:10:101:22 | bankAccountNo | testCoreData2.swift:105:2:105:14 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData2.swift:101:10:101:22 | bankAccountNo | bankAccountNo |
+| testCoreData.swift:19:12:19:16 | value | testCoreData.swift:61:25:61:32 | password | testCoreData.swift:19:12:19:16 | value | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:61:25:61:32 | password | password |
+| testCoreData.swift:32:13:32:20 | newValue | testCoreData.swift:64:16:64:23 | password | testCoreData.swift:32:13:32:20 | newValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:64:16:64:23 | password | password |
+| testCoreData.swift:48:15:48:22 | password | testCoreData.swift:48:15:48:22 | password | testCoreData.swift:48:15:48:22 | password | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:48:15:48:22 | password | password |
+| testCoreData.swift:51:24:51:31 | password | testCoreData.swift:51:24:51:31 | password | testCoreData.swift:51:24:51:31 | password | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:51:24:51:31 | password | password |
+| testCoreData.swift:58:15:58:22 | password | testCoreData.swift:58:15:58:22 | password | testCoreData.swift:58:15:58:22 | password | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:58:15:58:22 | password | password |
+| testCoreData.swift:64:2:64:12 | ... .myValue | testCoreData.swift:64:16:64:23 | password | testCoreData.swift:64:2:64:12 | ... .myValue | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:64:16:64:23 | password | password |
+| testCoreData.swift:81:15:81:15 | y | testCoreData.swift:80:10:80:22 | getPassword(...) | testCoreData.swift:81:15:81:15 | y | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:80:10:80:22 | getPassword(...) | getPassword(...) |
+| testCoreData.swift:85:15:85:24 | ... .password | testCoreData.swift:85:15:85:24 | ... .password | testCoreData.swift:85:15:85:24 | ... .password | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:85:15:85:24 | ... .password | ... .password |
+| testCoreData.swift:95:15:95:15 | x | testCoreData.swift:91:10:91:15 | passwd | testCoreData.swift:95:15:95:15 | x | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:91:10:91:15 | passwd | passwd |
+| testCoreData.swift:96:15:96:15 | y | testCoreData.swift:92:10:92:15 | passwd | testCoreData.swift:96:15:96:15 | y | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:92:10:92:15 | passwd | passwd |
+| testCoreData.swift:97:15:97:15 | z | testCoreData.swift:93:10:93:15 | passwd | testCoreData.swift:97:15:97:15 | z | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:93:10:93:15 | passwd | passwd |
+| testCoreData.swift:104:15:104:15 | y | testCoreData.swift:92:10:92:15 | passwd | testCoreData.swift:104:15:104:15 | y | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:92:10:92:15 | passwd | passwd |
+| testCoreData.swift:128:15:128:33 | generateSecretKey(...) | testCoreData.swift:128:15:128:33 | generateSecretKey(...) | testCoreData.swift:128:15:128:33 | generateSecretKey(...) | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:128:15:128:33 | generateSecretKey(...) | generateSecretKey(...) |
+| testCoreData.swift:129:15:129:30 | getCertificate(...) | testCoreData.swift:129:15:129:30 | getCertificate(...) | testCoreData.swift:129:15:129:30 | getCertificate(...) | This database operation may read or write unencrypted sensitive data from $@. | testCoreData.swift:129:15:129:30 | getCertificate(...) | getCertificate(...) |
+| testRealm.swift:41:2:41:7 | ... .data | testRealm.swift:41:11:41:20 | myPassword | testRealm.swift:41:2:41:7 | ... .data | This database operation may read or write unencrypted sensitive data from $@. | testRealm.swift:41:11:41:20 | myPassword | myPassword |
+| testRealm.swift:49:2:49:7 | ... .data | testRealm.swift:49:11:49:20 | myPassword | testRealm.swift:49:2:49:7 | ... .data | This database operation may read or write unencrypted sensitive data from $@. | testRealm.swift:49:11:49:20 | myPassword | myPassword |
+| testRealm.swift:66:2:66:7 | ... .data | testRealm.swift:66:11:66:20 | myPassword | testRealm.swift:66:2:66:7 | ... .data | This database operation may read or write unencrypted sensitive data from $@. | testRealm.swift:66:11:66:20 | myPassword | myPassword |
+| testRealm.swift:73:2:73:11 | ... .password | testRealm.swift:73:2:73:11 | ... .password | testRealm.swift:73:2:73:11 | ... .password | This database operation may read or write unencrypted sensitive data from $@. | testRealm.swift:73:2:73:11 | ... .password | ... .password |
+edges
+| SQLite.swift:119:6:119:16 | insertQuery | SQLite.swift:123:17:123:27 | insertQuery | provenance |  |
+| SQLite.swift:119:6:119:16 | insertQuery | SQLite.swift:131:17:131:27 | insertQuery | provenance |  |
+| SQLite.swift:119:6:119:16 | insertQuery | SQLite.swift:135:20:135:30 | insertQuery | provenance |  |
+| SQLite.swift:119:6:119:16 | insertQuery | SQLite.swift:139:24:139:34 | insertQuery | provenance |  |
+| SQLite.swift:119:70:119:86 | mobilePhoneNumber | SQLite.swift:119:6:119:16 | insertQuery | provenance |  |
+| SQLite.swift:120:6:120:16 | updateQuery | SQLite.swift:124:17:124:27 | updateQuery | provenance |  |
+| SQLite.swift:120:6:120:16 | updateQuery | SQLite.swift:132:17:132:27 | updateQuery | provenance |  |
+| SQLite.swift:120:6:120:16 | updateQuery | SQLite.swift:136:20:136:30 | updateQuery | provenance |  |
+| SQLite.swift:120:6:120:16 | updateQuery | SQLite.swift:140:24:140:34 | updateQuery | provenance |  |
+| SQLite.swift:120:50:120:66 | mobilePhoneNumber | SQLite.swift:120:6:120:16 | updateQuery | provenance |  |
+| sqlite3_c_api.swift:42:6:42:16 | insertQuery | sqlite3_c_api.swift:46:27:46:37 | insertQuery | provenance |  |
+| sqlite3_c_api.swift:42:69:42:80 | medicalNotes | sqlite3_c_api.swift:42:6:42:16 | insertQuery | provenance |  |
+| sqlite3_c_api.swift:43:6:43:16 | updateQuery | sqlite3_c_api.swift:47:27:47:37 | updateQuery | provenance |  |
+| sqlite3_c_api.swift:43:49:43:60 | medicalNotes | sqlite3_c_api.swift:43:6:43:16 | updateQuery | provenance |  |
+| testCoreData2.swift:37:16:37:28 | bankAccountNo | testCoreData2.swift:37:2:37:12 | ... .myValue | provenance |  |
+| testCoreData2.swift:79:18:79:40 | ... .bankAccountNo | testCoreData2.swift:79:2:79:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:80:18:80:41 | ... .bankAccountNo2 | testCoreData2.swift:80:2:80:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:82:18:82:30 | bankAccountNo | testCoreData2.swift:82:18:82:36 | ... .value | provenance | Config |
+| testCoreData2.swift:82:18:82:36 | ... .value | testCoreData2.swift:82:2:82:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:83:18:83:30 | bankAccountNo | testCoreData2.swift:83:18:83:37 | ... .value2 | provenance | Config |
+| testCoreData2.swift:83:18:83:37 | ... .value2 | testCoreData2.swift:83:2:83:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:84:18:84:31 | bankAccountNo2 | testCoreData2.swift:84:18:84:37 | ... .value | provenance | Config |
+| testCoreData2.swift:84:18:84:37 | ... .value | testCoreData2.swift:84:2:84:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:85:18:85:31 | bankAccountNo2 | testCoreData2.swift:85:18:85:38 | ... .value2 | provenance | Config |
+| testCoreData2.swift:85:18:85:38 | ... .value2 | testCoreData2.swift:85:2:85:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:91:6:91:6 | a | testCoreData2.swift:92:10:92:10 | a | provenance |  |
+| testCoreData2.swift:91:10:91:22 | bankAccountNo | testCoreData2.swift:91:6:91:6 | a | provenance |  |
+| testCoreData2.swift:92:6:92:6 | b | testCoreData2.swift:93:18:93:18 | b | provenance |  |
+| testCoreData2.swift:92:10:92:10 | a | testCoreData2.swift:92:10:92:16 | ... .value | provenance | Config |
+| testCoreData2.swift:92:10:92:16 | ... .value | testCoreData2.swift:92:6:92:6 | b | provenance |  |
+| testCoreData2.swift:93:18:93:18 | b | testCoreData2.swift:93:2:93:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:95:6:95:6 | c | testCoreData2.swift:97:12:97:12 | c | provenance |  |
+| testCoreData2.swift:95:10:95:22 | bankAccountNo | testCoreData2.swift:95:6:95:6 | c | provenance |  |
+| testCoreData2.swift:97:2:97:2 | [post] d [value] | testCoreData2.swift:98:18:98:18 | d [value] | provenance |  |
+| testCoreData2.swift:97:2:97:8 | ... .value | testCoreData2.swift:97:2:97:2 | [post] d [value] | provenance |  |
+| testCoreData2.swift:97:12:97:12 | c | testCoreData2.swift:97:12:97:18 | ... .value | provenance | Config |
+| testCoreData2.swift:97:12:97:18 | ... .value | testCoreData2.swift:97:2:97:8 | ... .value | provenance |  |
+| testCoreData2.swift:98:18:98:18 | d [value] | testCoreData2.swift:98:18:98:24 | ... .value | provenance |  |
+| testCoreData2.swift:98:18:98:24 | ... .value | testCoreData2.swift:98:2:98:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:101:6:101:6 | e | testCoreData2.swift:104:18:104:18 | e | provenance |  |
+| testCoreData2.swift:101:6:101:6 | e | testCoreData2.swift:105:18:105:18 | e | provenance |  |
+| testCoreData2.swift:101:10:101:22 | bankAccountNo | testCoreData2.swift:101:6:101:6 | e | provenance |  |
+| testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:104:18:104:24 | ... .value | provenance | Config |
+| testCoreData2.swift:104:18:104:24 | ... .value | testCoreData2.swift:104:2:104:14 | ... .myValue | provenance |  |
+| testCoreData2.swift:105:18:105:18 | e | testCoreData2.swift:105:18:105:25 | ... .value2 | provenance | Config |
+| testCoreData2.swift:105:18:105:25 | ... .value2 | testCoreData2.swift:105:2:105:14 | ... .myValue | provenance |  |
+| testCoreData.swift:18:19:18:23 | value | testCoreData.swift:19:12:19:16 | value | provenance |  |
+| testCoreData.swift:61:25:61:32 | password | testCoreData.swift:18:19:18:23 | value | provenance |  |
+| testCoreData.swift:64:2:64:12 | ... .myValue | testCoreData.swift:32:13:32:20 | newValue | provenance |  |
+| testCoreData.swift:64:16:64:23 | password | testCoreData.swift:64:2:64:12 | ... .myValue | provenance |  |
+| testCoreData.swift:64:16:64:23 | password | testCoreData.swift:64:2:64:12 | ... .myValue | provenance |  |
+| testCoreData.swift:80:6:80:6 | y | testCoreData.swift:81:15:81:15 | y | provenance |  |
+| testCoreData.swift:80:10:80:22 | getPassword(...) | testCoreData.swift:80:6:80:6 | y | provenance |  |
+| testCoreData.swift:91:6:91:6 | x | testCoreData.swift:95:15:95:15 | x | provenance |  |
+| testCoreData.swift:91:10:91:15 | passwd | testCoreData.swift:91:6:91:6 | x | provenance |  |
+| testCoreData.swift:92:6:92:6 | y | testCoreData.swift:96:15:96:15 | y | provenance |  |
+| testCoreData.swift:92:6:92:6 | y | testCoreData.swift:104:15:104:15 | y | provenance |  |
+| testCoreData.swift:92:10:92:15 | passwd | testCoreData.swift:92:6:92:6 | y | provenance |  |
+| testCoreData.swift:93:6:93:6 | z | testCoreData.swift:97:15:97:15 | z | provenance |  |
+| testCoreData.swift:93:10:93:15 | passwd | testCoreData.swift:93:6:93:6 | z | provenance |  |
+| testRealm.swift:41:11:41:20 | myPassword | testRealm.swift:41:2:41:7 | ... .data | provenance |  |
+| testRealm.swift:49:11:49:20 | myPassword | testRealm.swift:49:2:49:7 | ... .data | provenance |  |
+| testRealm.swift:66:11:66:20 | myPassword | testRealm.swift:66:2:66:7 | ... .data | provenance |  |
+nodes
+| SQLite.swift:119:6:119:16 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:119:70:119:86 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:120:6:120:16 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:120:50:120:66 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:123:17:123:27 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:124:17:124:27 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:131:17:131:27 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:132:17:132:27 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:135:20:135:30 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:136:20:136:30 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:139:24:139:34 | insertQuery | semmle.label | insertQuery |
+| SQLite.swift:140:24:140:34 | updateQuery | semmle.label | updateQuery |
+| SQLite.swift:147:32:147:48 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:148:28:148:44 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:149:31:149:47 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:152:21:152:37 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:153:20:153:36 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| SQLite.swift:154:23:154:39 | mobilePhoneNumber | semmle.label | mobilePhoneNumber |
+| sqlite3_c_api.swift:42:6:42:16 | insertQuery | semmle.label | insertQuery |
+| sqlite3_c_api.swift:42:69:42:80 | medicalNotes | semmle.label | medicalNotes |
+| sqlite3_c_api.swift:43:6:43:16 | updateQuery | semmle.label | updateQuery |
+| sqlite3_c_api.swift:43:49:43:60 | medicalNotes | semmle.label | medicalNotes |
+| sqlite3_c_api.swift:46:27:46:37 | insertQuery | semmle.label | insertQuery |
+| sqlite3_c_api.swift:47:27:47:37 | updateQuery | semmle.label | updateQuery |
+| sqlite3_c_api.swift:58:36:58:47 | medicalNotes | semmle.label | medicalNotes |
+| testCoreData2.swift:37:2:37:12 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:37:16:37:28 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:38:2:38:24 | ... .myBankAccountNumber | semmle.label | ... .myBankAccountNumber |
+| testCoreData2.swift:39:2:39:24 | ... .myBankAccountNumber | semmle.label | ... .myBankAccountNumber |
+| testCoreData2.swift:40:2:40:25 | ... .myBankAccountNumber2 | semmle.label | ... .myBankAccountNumber2 |
+| testCoreData2.swift:41:2:41:25 | ... .myBankAccountNumber2 | semmle.label | ... .myBankAccountNumber2 |
+| testCoreData2.swift:42:2:42:31 | ... .notStoredBankAccountNumber | semmle.label | ... .notStoredBankAccountNumber |
+| testCoreData2.swift:43:2:43:31 | ... .notStoredBankAccountNumber | semmle.label | ... .notStoredBankAccountNumber |
+| testCoreData2.swift:57:3:57:25 | ... .myBankAccountNumber | semmle.label | ... .myBankAccountNumber |
+| testCoreData2.swift:60:4:60:26 | ... .myBankAccountNumber | semmle.label | ... .myBankAccountNumber |
+| testCoreData2.swift:62:4:62:26 | ... .myBankAccountNumber | semmle.label | ... .myBankAccountNumber |
+| testCoreData2.swift:65:3:65:25 | ... .myBankAccountNumber | semmle.label | ... .myBankAccountNumber |
+| testCoreData2.swift:79:2:79:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:79:18:79:40 | ... .bankAccountNo | semmle.label | ... .bankAccountNo |
+| testCoreData2.swift:80:2:80:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:80:18:80:41 | ... .bankAccountNo2 | semmle.label | ... .bankAccountNo2 |
+| testCoreData2.swift:82:2:82:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:82:18:82:30 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:82:18:82:36 | ... .value | semmle.label | ... .value |
+| testCoreData2.swift:83:2:83:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:83:18:83:30 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:83:18:83:37 | ... .value2 | semmle.label | ... .value2 |
+| testCoreData2.swift:84:2:84:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:84:18:84:31 | bankAccountNo2 | semmle.label | bankAccountNo2 |
+| testCoreData2.swift:84:18:84:37 | ... .value | semmle.label | ... .value |
+| testCoreData2.swift:85:2:85:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:85:18:85:31 | bankAccountNo2 | semmle.label | bankAccountNo2 |
+| testCoreData2.swift:85:18:85:38 | ... .value2 | semmle.label | ... .value2 |
+| testCoreData2.swift:91:6:91:6 | a | semmle.label | a |
+| testCoreData2.swift:91:10:91:22 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:92:6:92:6 | b | semmle.label | b |
+| testCoreData2.swift:92:10:92:10 | a | semmle.label | a |
+| testCoreData2.swift:92:10:92:16 | ... .value | semmle.label | ... .value |
+| testCoreData2.swift:93:2:93:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:93:18:93:18 | b | semmle.label | b |
+| testCoreData2.swift:95:6:95:6 | c | semmle.label | c |
+| testCoreData2.swift:95:10:95:22 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:97:2:97:2 | [post] d [value] | semmle.label | [post] d [value] |
+| testCoreData2.swift:97:2:97:8 | ... .value | semmle.label | ... .value |
+| testCoreData2.swift:97:12:97:12 | c | semmle.label | c |
+| testCoreData2.swift:97:12:97:18 | ... .value | semmle.label | ... .value |
+| testCoreData2.swift:98:2:98:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:98:18:98:18 | d [value] | semmle.label | d [value] |
+| testCoreData2.swift:98:18:98:24 | ... .value | semmle.label | ... .value |
+| testCoreData2.swift:101:6:101:6 | e | semmle.label | e |
+| testCoreData2.swift:101:10:101:22 | bankAccountNo | semmle.label | bankAccountNo |
+| testCoreData2.swift:104:2:104:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:104:18:104:18 | e | semmle.label | e |
+| testCoreData2.swift:104:18:104:24 | ... .value | semmle.label | ... .value |
+| testCoreData2.swift:105:2:105:14 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData2.swift:105:18:105:18 | e | semmle.label | e |
+| testCoreData2.swift:105:18:105:25 | ... .value2 | semmle.label | ... .value2 |
+| testCoreData.swift:18:19:18:23 | value | semmle.label | value |
+| testCoreData.swift:19:12:19:16 | value | semmle.label | value |
+| testCoreData.swift:32:13:32:20 | newValue | semmle.label | newValue |
+| testCoreData.swift:48:15:48:22 | password | semmle.label | password |
+| testCoreData.swift:51:24:51:31 | password | semmle.label | password |
+| testCoreData.swift:58:15:58:22 | password | semmle.label | password |
+| testCoreData.swift:61:25:61:32 | password | semmle.label | password |
+| testCoreData.swift:64:2:64:12 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData.swift:64:2:64:12 | ... .myValue | semmle.label | ... .myValue |
+| testCoreData.swift:64:16:64:23 | password | semmle.label | password |
+| testCoreData.swift:80:6:80:6 | y | semmle.label | y |
+| testCoreData.swift:80:10:80:22 | getPassword(...) | semmle.label | getPassword(...) |
+| testCoreData.swift:81:15:81:15 | y | semmle.label | y |
+| testCoreData.swift:85:15:85:24 | ... .password | semmle.label | ... .password |
+| testCoreData.swift:91:6:91:6 | x | semmle.label | x |
+| testCoreData.swift:91:10:91:15 | passwd | semmle.label | passwd |
+| testCoreData.swift:92:6:92:6 | y | semmle.label | y |
+| testCoreData.swift:92:10:92:15 | passwd | semmle.label | passwd |
+| testCoreData.swift:93:6:93:6 | z | semmle.label | z |
+| testCoreData.swift:93:10:93:15 | passwd | semmle.label | passwd |
+| testCoreData.swift:95:15:95:15 | x | semmle.label | x |
+| testCoreData.swift:96:15:96:15 | y | semmle.label | y |
+| testCoreData.swift:97:15:97:15 | z | semmle.label | z |
+| testCoreData.swift:104:15:104:15 | y | semmle.label | y |
+| testCoreData.swift:128:15:128:33 | generateSecretKey(...) | semmle.label | generateSecretKey(...) |
+| testCoreData.swift:129:15:129:30 | getCertificate(...) | semmle.label | getCertificate(...) |
+| testRealm.swift:41:2:41:7 | ... .data | semmle.label | ... .data |
+| testRealm.swift:41:11:41:20 | myPassword | semmle.label | myPassword |
+| testRealm.swift:49:2:49:7 | ... .data | semmle.label | ... .data |
+| testRealm.swift:49:11:49:20 | myPassword | semmle.label | myPassword |
+| testRealm.swift:66:2:66:7 | ... .data | semmle.label | ... .data |
+| testRealm.swift:66:11:66:20 | myPassword | semmle.label | myPassword |
+| testRealm.swift:73:2:73:11 | ... .password | semmle.label | ... .password |
+subpaths

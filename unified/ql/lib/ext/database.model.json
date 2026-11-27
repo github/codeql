@@ -24,10 +24,10 @@
         ["", "Statement", true, "bind(_:)", "", "", "Argument[0]", "database-store", "manual"],
         ["", "Statement", true, "run(_:)", "", "", "Argument[0]", "database-store", "manual"],
         ["", "Statement", true, "scalar(_:)", "", "", "Argument[0]", "database-store", "manual"],
-        ["", "QueryType", true, "insert(_:)", "", "", "Argument[0]", "database-store", "manual"],
+        //["", "QueryType", true, "insert(_:)", "", "", "Argument[0]", "database-store", "manual"],
         ["", "QueryType", true, "update(_:)", "", "", "Argument[0]", "database-store", "manual"],
-        ["", "QueryType", true, "insert(_:_:)", "", "", "Argument[0,1]", "database-store", "manual"],
-        ["", "QueryType", true, "insert(or:_:)", "", "", "Argument[0]", "database-store", "manual"],
+        //["", "QueryType", true, "insert(_:_:)", "", "", "Argument[0,1]", "database-store", "manual"], --- too noisy while sink matching is imprecise
+        //["", "QueryType", true, "insert(or:_:)", "", "", "Argument[0]", "database-store", "manual"],
         ["", "QueryType", true, "insertMany(_:)", "", "", "Argument[0]", "database-store", "manual"],
         ["", "QueryType", true, "insertMany(or:_:)", "", "", "Argument[0]", "database-store", "manual"],
         ["", "QueryType", true, "update(_:_:)", "", "", "Argument[0,1]", "database-store", "manual"],
