@@ -459,7 +459,7 @@ public class ESNextParser extends JSXParser {
   protected Statement parseForStatement(Position startLoc) {
     int startPos = this.start;
     boolean isAwait = false;
-    if (this.inAsync || (options.esnext() && !this.inFunction)) {
+    if (this.inAsync || (options.esnext() && !this.inFunction && !this.inStaticBlock)) {
         if (this.eatContextual("await")) {
           isAwait = true;
         }
