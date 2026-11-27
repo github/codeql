@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.context.externalize", "DebugObjectInput", True, "readObject", "()", "", "this", "unsafe-deserialization", "ai-generated"]
+      #- ["org.apache.axis2.context.externalize", "DebugObjectInput", True, "trace", "(String)", "", "Argument[0]", "log-injection", "ai-generated"] # INVALID: Helper logging API; not a meaningful log-injection sink
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeBytes", "(String)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeChars", "(String)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeObject", "(Object)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "DebugObjectOutputStream", True, "writeUTF", "(String)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readArrayList", "()", "", "this", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readHashMap", "()", "", "this", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readLinkedList", "()", "", "this", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readList", "(List)", "", "this", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readMap", "(Map)", "", "this", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.context.externalize", "SafeObjectInputStream", True, "readObject", "()", "", "this", "unsafe-deserialization", "ai-generated"]

@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.util", "FileWriter", True, "createClassFile", "(File,String,String,String)", "", "Argument[0..3]", "path-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "LogWriter", True, "write", "(char[],int,int)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "MetaDataEntry", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.util", "ObjectStateUtils", True, "readArrayList", "(ObjectInput,String)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.util", "ObjectStateUtils", True, "readHashMap", "(ObjectInput,String)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.util", "ObjectStateUtils", True, "readLinkedList", "(ObjectInput,String)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.util", "ObjectStateUtils", True, "readObject", "(ObjectInput,String)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.util", "ObjectStateUtils", True, "readString", "(ObjectInput,String)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "debug", "(Object)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "debug", "(Object,Throwable)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "error", "(Object)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "error", "(Object,Throwable)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "fatal", "(Object)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "fatal", "(Object,Throwable)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "info", "(Object)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "info", "(Object,Throwable)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "trace", "(Object)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "trace", "(Object,Throwable)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "warn", "(Object)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "OnDemandLogger", True, "warn", "(Object,Throwable)", "", "Argument[0]", "log-injection", "ai-generated"]
+      - ["org.apache.axis2.util", "SecureWSDLLocator", True, "getBaseInputSource", "()", "", "this", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.util", "SecureWSDLLocator", True, "getImportInputSource", "(String,String)", "", "Argument[0..1]", "request-forgery", "ai-generated"]
+      #- ["org.apache.axis2.util", "Utils", True, "getNewConfigurationContext", "(String)", "", "Argument[0]", "path-injection", "ai-generated"] # INVALID: Method not found in repo
+      - ["org.apache.axis2.util", "XMLPrettyPrinter", True, "prettify", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
+      #- ["org.apache.axis2.util", "XMLUtils", True, "getInputSourceFromURI", "(String)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Only returns new InputSource(uri); no fetch
+      - ["org.apache.axis2.util", "XMLUtils", True, "newDocument", "(String)", "", "Argument[0]", "request-forgery", "ai-generated"]
+      - ["org.apache.axis2.util", "XMLUtils", True, "newDocument", "(String,String,String)", "", "Argument[0]", "request-forgery", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.util", "CallbackReceiver", True, "receive", "(MessageContext)", "", "Argument[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.util", "OptionsParser", True, "getPassword", "()", "", "ReturnValue", "commandargs", "ai-generated"]
+      - ["org.apache.axis2.util", "OptionsParser", True, "getRemainingArgs", "()", "", "ReturnValue", "commandargs", "ai-generated"]
+      - ["org.apache.axis2.util", "OptionsParser", True, "getRemainingFlags", "()", "", "ReturnValue", "commandargs", "ai-generated"]
+      - ["org.apache.axis2.util", "OptionsParser", True, "getUser", "()", "", "ReturnValue", "commandargs", "ai-generated"]
+      - ["org.apache.axis2.util", "OptionsParser", True, "isValueSet", "(char)", "", "ReturnValue", "commandargs", "ai-generated"]

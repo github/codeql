@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.transport.jms.iowrappers", "BytesMessageDataSource", True, "getInputStream", "()", "", "ReturnValue", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.jms.iowrappers", "BytesMessageInputStream", True, "read", "(byte[])", "", "Argument[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.transport.jms.iowrappers", "BytesMessageInputStream", True, "read", "(byte[],int,int)", "", "Argument[0]", "remote", "ai-generated"]
