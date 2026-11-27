@@ -9,3 +9,4 @@ qltest_dependencies:
     - aes-gcm = { version = "0.10.3" }
     - base64 = { version = "0.22.1" }
     - rusqlite = { version = "0.32" }
+    - tokio = { version = "1.43.0", features = ["full"] }
