@@ -5,15 +5,18 @@ java_test(
     srcs = glob(["**/*.java"]),
     data = [
         "//javascript/extractor/lib/typescript",
+        "//javascript/extractor/lib/typescript:native",
         "//javascript/extractor/parser-tests",
         "//javascript/extractor/tests",
         "@nodejs//:node_bin",
     ],
     env = {
         "NODE_BIN": "$(rlocationpath @nodejs//:node_bin)",
+        "TS_NATIVE_ZIP": "$(rlocationpath //javascript/extractor/lib/typescript:native)",
         "TS_WRAPPER_ZIP": "$(rlocationpath //javascript/extractor/lib/typescript)",
     },
     test_class = "com.semmle.js.extractor.test.AllTests",
+    runtime_deps = ["@semmle_code//resources/lib/java:commons-io"],
     # To use `replaceExpectedOutput` you need to uncomment the following line
     # (to be allowed to override the .trap files on disk)
     # tags = ["no-sandbox"],

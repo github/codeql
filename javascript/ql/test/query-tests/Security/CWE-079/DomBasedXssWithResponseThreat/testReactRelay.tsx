@@ -4,7 +4,7 @@ import { useFragment } from 'react-relay';
 const func1 = ({ commentRef, query }) => {
   const commentData = useFragment(query, commentRef); // $ Source=[js/xss]
   return (
-    <p dangerouslySetInnerHTML={{ __html: commentData.text }}> // $ Alert=[js/xss]
+    <p dangerouslySetInnerHTML={{ __html: commentData.text }}> {/* $ Alert=[js/xss] */}
       {" "}
       {commentData.text}
     </p>
@@ -44,7 +44,7 @@ function func5({ query, props }) {
   const [data, refetch] = useRefetchableFragment(query, props.comment); // $ Source
   return (
     <>
-      <h1 dangerouslySetInnerHTML={{ __html: data }} /> // $ Alert
+      <h1 dangerouslySetInnerHTML={{ __html: data }} /> {/* $ Alert */}
       <h1 dangerouslySetInnerHTML={{ __html: refetch }} />
       <Button
         onClick={() => {
