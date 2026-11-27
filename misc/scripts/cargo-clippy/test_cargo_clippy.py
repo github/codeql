@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from cargo_clippy import select, workspace
+from cargo_clippy import changed_files, select, workspace
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -37,6 +37,13 @@ class SelectionTests(unittest.TestCase):
         packages, _ = workspace(ROOT)
         self.assertEqual(
             select(ROOT, ["Cargo.lock"]),
+            sorted(package["package"]["name"] for package in packages.values()),
+        )
+
+    def test_missing_base_selects_everything(self):
+        packages, _ = workspace(ROOT)
+        self.assertEqual(
+            select(ROOT, changed_files(ROOT, "f" * 40)),
             sorted(package["package"]["name"] for package in packages.values()),
         )
 

@@ -89,6 +89,14 @@ def changed_files(root, base):
     if base in ("0" * 40, "0" * 64):
         # A newly created branch has no previous tree, so select everything.
         return ["Cargo.toml"]
+    if subprocess.run(
+        ["git", "cat-file", "-e", base + "^{commit}"],
+        cwd=root,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    ).returncode:
+        # A force-push may leave the event's previous commit unavailable locally.
+        return ["Cargo.toml"]
     return subprocess.check_output(
         ["git", "diff", "--name-only", "--no-renames", "-z", base, "HEAD"],
         cwd=root,
