@@ -9,8 +9,12 @@ string formatNumberOfNodesForExpr(Expr e) {
   exists(int n | n = strictcount(Node node | node.asExpr() = e) | n > 1 and result = ": " + n)
 }
 
+string formatNumberOfNodesForParameter(Parameter p) {
+  exists(int n | n = strictcount(Node node | node.asParameter() = p) | n > 1 and result = ": " + n)
+}
+
 module AsExprTest implements TestSig {
-  string getARelevantTag() { result = ["asExpr", "numberOfNodes"] }
+  string getARelevantTag() { result = ["asExpr", "numberOfNodes", "asParameter", "parameterNode"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Node n, Expr e, string exprString |
@@ -20,16 +24,42 @@ module AsExprTest implements TestSig {
       exprString = e.toString()
     |
       tag = "asExpr" and
-      (
-        // If the `toString` on the node is identical to the `toString` of the
-        // expression then we don't show it in the expected output.
-        if exprString = element
-        then value = quote(exprString)
-        else value = quote(exprString + "(" + element + ")")
-      )
+      // If the `toString` on the node is identical to the `toString` of the
+      // expression then we don't show it in the expected output.
+      if exprString = element
+      then value = quote(exprString)
+      else value = quote(exprString + "(" + element + ")")
       or
       tag = "numberOfNodes" and
       value = quote(exprString + formatNumberOfNodesForExpr(e))
+    )
+    or
+    exists(Node n, Parameter p, string paramString |
+      not p.getName().matches("(unnamed%") and
+      location = p.getLocation() and
+      element = n.toString() and
+      paramString = p.toString()
+    |
+      p = n.asParameter() and
+      (
+        tag = "asParameter" and
+        // If the `toString` on the node is identical to the `toString` of the
+        // parameter then we don't show it in the expected output.
+        if paramString = element
+        then value = quote(paramString)
+        else value = quote(paramString + "(" + element + ")")
+        or
+        tag = "numberOfNodes" and
+        value = quote(paramString + formatNumberOfNodesForParameter(p))
+      )
+      or
+      parameterNode(p) = n and
+      tag = "parameterNode" and
+      // If the `toString` on the node is identical to the `toString` of the
+      // parameter then we don't show it in the expected output.
+      if paramString = element
+      then value = quote(paramString)
+      else value = quote(paramString + "(" + element + ")")
     )
   }
 }
