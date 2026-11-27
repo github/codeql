@@ -39,7 +39,7 @@ void test_aggregate_literal() {
   const int ys[] = {[0] = 4, [1] = 5, [0] = 6}; // $ asExpr=4 asExpr=5 asExpr=6 asExpr={...}
 }
 
-void test_postfix_crement(int *p, int q) {
+void test_postfix_crement(int *p, int q) { // $ asParameter=p asParameter=q parameterNode=p parameterNode=q
   p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
   q++; // $ asExpr="... ++" asExpr=q
   (p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
@@ -63,4 +63,13 @@ struct C {
 void test_constructor_calls() {
   C c; // $ asExpr="call to C"
   C *p = new C; // $ asExpr="call to C" asExpr=new asIndirectExpr=new
+}
+
+void test_parameters(
+  int x, // $ asParameter=x parameterNode=x
+  int &r, // $ asParameter=r(*r) parameterNode=r(*r)
+  const int &cr, // $ asParameter=cr(*cr) parameterNode=cr(*cr)
+  int &&rr, // $ asParameter=rr(*rr) parameterNode=rr(*rr)
+  int *p, // $ asParameter=p parameterNode=p
+  int *&rp) { // $ asParameter=rp(*rp) parameterNode=rp(*rp)
 }

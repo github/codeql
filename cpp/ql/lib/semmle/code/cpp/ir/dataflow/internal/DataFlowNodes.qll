@@ -957,7 +957,7 @@ module Public {
   /**
    * Gets the `Node` corresponding to the value of `p` at function entry.
    */
-  ExplicitParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+  ParameterNode parameterNode(Parameter p) { result.asParameter() = p }
 
   /**
    * Gets the `Node` corresponding to a definition by reference of the variable
