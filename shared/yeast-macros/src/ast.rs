@@ -294,10 +294,12 @@ named:
         let [Template::Node(assignment)] = templates.as_slice() else {
             panic!("expected one output node");
         };
-        let [Field::Named {
-            value: Template::Node(structural),
-            ..
-        }] = assignment.fields.as_slice()
+        let [
+            Field::Named {
+                value: Template::Node(structural),
+                ..
+            },
+        ] = assignment.fields.as_slice()
         else {
             panic!("expected one structural child");
         };

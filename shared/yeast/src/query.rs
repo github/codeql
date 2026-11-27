@@ -1,4 +1,4 @@
-use crate::{build::BuildCtx, captures::Captures, Ast, TreeId};
+use crate::{Ast, TreeId, build::BuildCtx, captures::Captures};
 
 #[doc(hidden)]
 pub trait QueryTarget: TreeId {

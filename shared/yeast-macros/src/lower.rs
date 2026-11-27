@@ -1,5 +1,5 @@
 use proc_macro2::{Ident, Span, TokenStream, TokenTree};
-use quote::{quote, quote_spanned, ToTokens};
+use quote::{ToTokens, quote, quote_spanned};
 use std::cell::RefCell;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use syn::spanned::Spanned;

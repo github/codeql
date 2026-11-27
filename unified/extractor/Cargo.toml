@@ -3,7 +3,7 @@ name = "codeql-extractor-unified"
 description = "CodeQL Unified extractor"
 version = "0.1.0"
 authors = ["GitHub"]
-edition = "2024"
+edition.workspace = true
 
 [lints]
 workspace = true

@@ -3,7 +3,7 @@ name = "swift-syntax-rs"
 description = "Rust wrapper around the swift-syntax package for parsing Swift source"
 version = "0.1.0"
 authors = ["GitHub"]
-edition = "2024"
+edition.workspace = true
 links = "SwiftSyntaxFFI"
 
 [lints]

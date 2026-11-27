@@ -2,7 +2,7 @@
 name = "codeql-extractor-ql"
 version = "0.1.0"
 authors = ["GitHub"]
-edition = "2021"
+edition.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

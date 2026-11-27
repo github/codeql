@@ -31,6 +31,9 @@ exclude = [
     "rust/ql/integration-tests",
 ]
 
+[workspace.package]
+edition = "2024"
+
 [workspace.lints.rust]
 redundant_imports = "warn"
 

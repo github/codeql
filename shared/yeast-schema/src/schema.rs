@@ -1,6 +1,6 @@
 use std::collections::{BTreeMap, BTreeSet};
 
-use crate::{FieldId, KindId, CHILD_FIELD};
+use crate::{CHILD_FIELD, FieldId, KindId};
 
 #[derive(Clone, Debug)]
 pub struct NodeType {
