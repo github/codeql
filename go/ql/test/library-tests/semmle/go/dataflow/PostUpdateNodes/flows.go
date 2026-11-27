@@ -79,9 +79,13 @@ func testAddressOfFieldUnmarshal() {
 	sink(o.Inner.Val) // $ hasTaintFlow="selection of Val"
 }
 
+func taint() *inner {
+	return &inner{}
+}
+
 func calleeReadsOnly(p *inner) {
 	if p == nil {
-		p = &inner{val: source()}
+		p = taint()
 	}
 	_ = p.val
 }
