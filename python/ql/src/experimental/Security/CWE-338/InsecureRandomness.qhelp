@@ -41,7 +41,7 @@ Instead, use <code>secrets</code>:
 </example>
 
 <references>
-  <li>Wikipedia. <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+  <li>Wikipedia. <a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
   <li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Randomness">Insecure Randomness</a>.</li>
   <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation">Secure Random Number Generation</a>.</li>
 </references>

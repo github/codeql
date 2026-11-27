@@ -25,7 +25,7 @@ These functions allow unbounded writes to buffers, which may cause an overflow w
 <references>
 
 <li>Common Weakness
-Enumeration: <a href="http://cwe.mitre.org/data/definitions/120.html">CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow').</a></li>
+Enumeration: <a href="https://cwe.mitre.org/data/definitions/120.html">CWE-120: Buffer Copy without Checking Size of Input ('Classic Buffer Overflow').</a></li>
 <li>CERT C Coding
 Standard: <a href="https://www.securecoding.cert.org/confluence/display/c/STR31-C.+Guarantee+that+storage+for+strings+has+sufficient+space+for+character+data+and+the+null+terminator">STR31-C. Guarantee
 that storage for strings has sufficient space for character data and

@@ -36,7 +36,7 @@ The second example shows an improved version of the class where <code>__del__</c
 </example>
 <references>
 
-  <li>Python Standard Library: <a href="http://docs.python.org/library/stdtypes.html#context-manager-types">Context manager</a>.</li>
+  <li>Python Standard Library: <a href="https://docs.python.org/library/stdtypes.html#context-manager-types">Context manager</a>.</li>
 
 </references>
 </qhelp>

@@ -41,7 +41,7 @@ should never be called.
   <a href="https://en.wikipedia.org/wiki/Rule_of_three_(C%2B%2B_programming)">Rule of Three [Wikipedia]</a>
 </li>
 <li>
-  <a href="http://www.artima.com/cppsource/bigtwo.html">The Law of The Big Two</a>
+  <a href="https://www.artima.com/cppsource/bigtwo.html">The Law of The Big Two</a>
 </li>
 <li>
   cppreference.com: <a href="https://en.cppreference.com/cpp/language/copy_constructor">copy constructor</a>

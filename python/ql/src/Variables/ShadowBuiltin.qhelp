@@ -23,8 +23,8 @@ confusion as a reader of the code may expect the variable to refer to a built-in
 </example>
 <references>
 
-<li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html">Built-in Functions</a>,
-                            <a href="http://docs.python.org/2/library/stdtypes.html">Built-in Types</a>.</li>
+<li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html">Built-in Functions</a>,
+                            <a href="https://docs.python.org/2/library/stdtypes.html">Built-in Types</a>.</li>
 
 </references>
 </qhelp>

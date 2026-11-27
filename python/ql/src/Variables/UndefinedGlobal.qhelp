@@ -29,7 +29,7 @@ Nonetheless, the code will be more robust and clearer if the variable is set to 
 <references>
 
 <li>Python Standard Library: <a href="https://docs.python.org/library/exceptions.html#exceptions.NameError">NameError</a>.</li>
-<li>The Python Tutorial: <a href="http://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
+<li>The Python Tutorial: <a href="https://docs.python.org/2/tutorial/modules.html">Modules</a>.</li>
 
 
 </references>

@@ -25,7 +25,7 @@ This may result in an <code>AttributeError</code> at run time.
 </example>
 <references>
 
-<li>Python Standard Library: <a href="http://docs.python.org/library/exceptions.html#exceptions.AttributeError">exception AttributeError</a>.
+<li>Python Standard Library: <a href="https://docs.python.org/library/exceptions.html#exceptions.AttributeError">exception AttributeError</a>.
 </li>
 
 </references>

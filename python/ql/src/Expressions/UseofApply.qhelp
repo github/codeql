@@ -20,8 +20,8 @@ Replace <code>apply(function, args, keywords)</code> with <code>function(*args, 
 </recommendation>
 <references>
 
-     <li>Python Standard Library: <a href="http://docs.python.org/2/library/functions.html#apply">apply</a>.</li>
-     <li>Python PEP-290: <a href="http://www.python.org/dev/peps/pep-0290/">Code Migration and Modernization</a>.</li>
+     <li>Python Standard Library: <a href="https://docs.python.org/2/library/functions.html#apply">apply</a>.</li>
+     <li>Python PEP-290: <a href="https://www.python.org/dev/peps/pep-0290/">Code Migration and Modernization</a>.</li>
 
 
 </references>
