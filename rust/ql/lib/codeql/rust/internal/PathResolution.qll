@@ -170,6 +170,16 @@ private module UseOption = Option<Use>;
 
 private class UseOption = UseOption::Option;
 
+private predicate isDerivedExpansionItem(TypeItem type, Item item) {
+  item = type.getDeriveMacroExpansion(_).getItem(_)
+  or
+  exists(Item wrapper | isDerivedExpansionItem(type, wrapper) |
+    item = wrapper.(MacroCall).getMacroCallExpansion().(MacroItems).getItem(_)
+    or
+    item = wrapper.getAttributeMacroExpansion().getItem(_)
+  )
+}
+
 /**
  * An item that may be referred to by a path, and which is a node in
  * the _item graph_.
@@ -300,9 +310,16 @@ abstract class ItemNode extends Locatable {
     )
   }
 
+  private ItemNode getDerivedTypeItemParent() { isDerivedExpansionItem(result, this) }
+
   /** Gets the immediately enclosing item of this item, if any. */
   pragma[nomagic]
-  ItemNode getImmediateParent() { this = result.getADescendant() }
+  ItemNode getImmediateParent() {
+    result = this.getDerivedTypeItemParent().getImmediateParent()
+    or
+    not exists(this.getDerivedTypeItemParent()) and
+    this = result.getADescendant()
+  }
 
   /** Gets a child item of this item, if any. */
   ItemNode getAChild() { this = result.getImmediateParent() }
@@ -2241,7 +2258,7 @@ private predicate useImportEdge(Use use, string name, ItemNode item, SuccessorKi
     if tree.isGlob()
     then
       exists(ItemNode encl, Namespace ns, SuccessorKind kind1, UseOption useOpt |
-        encl.getADescendant() = use and
+        encl = use.(ItemNode).getImmediateParent() and
         item = getASuccessor(used, name, ns, kind1, useOpt) and
         checkQualifiedVisibility(use, item, kind1, useOpt) and
         // glob imports can be shadowed

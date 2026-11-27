@@ -1,6 +1,13 @@
+derive_generated_canonical_paths
+| derive_macro.rs:8:12:8:17 | struct ConfigBuilder | test::derive_macro::ConfigBuilder |
+| derive_macro.rs:14:3:14:45 | struct MacroGenerated | test::derive_macro::MacroGenerated |
+| derive_macro.rs:21:3:21:49 | struct AttributeGenerated | test::derive_macro::AttributeGenerated |
 mod
+| derive_macro.rs:28:1:41:1 | mod glob_shadowing |
+| derive_macro.rs:29:5:31:5 | mod helper |
 | invalid/main.rs:8:1:18:1 | mod self_import_from_struct |
-| lib.rs:1:1:1:11 | mod my |
+| lib.rs:1:1:1:21 | mod derive_macro |
+| lib.rs:2:1:2:11 | mod my |
 | main.rs:1:1:1:7 | mod my |
 | main.rs:8:1:8:8 | mod my2 |
 | main.rs:20:1:44:1 | mod m1 |
@@ -39,6 +46,7 @@ mod
 | main.rs:1033:1:1077:1 | mod self_constructors |
 | main.rs:1079:1:1108:1 | mod self_types |
 | main.rs:1110:1:1154:1 | mod const_static |
+| main.rs:1195:1:1195:17 | mod derive_macro |
 | my2/mod.rs:1:1:1:16 | mod nested2 |
 | my2/mod.rs:20:1:20:12 | mod my3 |
 | my2/mod.rs:22:1:23:10 | mod mymod |
@@ -54,6 +62,17 @@ mod
 | my/nested.rs:1:1:17:1 | mod nested1 |
 | my/nested.rs:2:5:11:5 | mod nested2 |
 resolvePath
+| derive_macro.rs:7:3:7:8 | derive | {EXTERNAL LOCATION} | MacroDef |
+| derive_macro.rs:10:18:10:30 | ConfigBuilder | derive_macro.rs:8:12:8:17 | struct ConfigBuilder |
+| derive_macro.rs:11:5:11:17 | ConfigBuilder | derive_macro.rs:8:12:8:17 | struct ConfigBuilder |
+| derive_macro.rs:14:3:14:8 | derive | {EXTERNAL LOCATION} | MacroDef |
+| derive_macro.rs:17:34:17:47 | MacroGenerated | derive_macro.rs:14:3:14:45 | struct MacroGenerated |
+| derive_macro.rs:18:5:18:18 | MacroGenerated | derive_macro.rs:14:3:14:45 | struct MacroGenerated |
+| derive_macro.rs:21:3:21:8 | derive | {EXTERNAL LOCATION} | MacroDef |
+| derive_macro.rs:24:38:24:55 | AttributeGenerated | derive_macro.rs:21:3:21:49 | struct AttributeGenerated |
+| derive_macro.rs:25:5:25:22 | AttributeGenerated | derive_macro.rs:21:3:21:49 | struct AttributeGenerated |
+| derive_macro.rs:35:7:35:12 | derive | {EXTERNAL LOCATION} | MacroDef |
+| derive_macro.rs:39:16:39:28 | GlobCollision | derive_macro.rs:33:5:33:25 | struct GlobCollision |
 | invalid/main.rs:6:9:6:9 | A | invalid/main.rs:3:11:4:9 | struct A |
 | invalid/main.rs:15:9:15:12 | self | invalid/main.rs:8:1:18:1 | mod self_import_from_struct |
 | invalid/main.rs:15:9:15:22 | ...::MyStruct | invalid/main.rs:12:5:12:20 | struct MyStruct |
@@ -83,7 +102,7 @@ resolvePath
 | main.rs:37:17:37:24 | ...::f | main.rs:26:9:28:9 | fn f |
 | main.rs:39:17:39:23 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:40:17:40:17 | f | main.rs:26:9:28:9 | fn f |
-| main.rs:47:9:47:13 | super | main.rs:1:1:1193:2 | SourceFile |
+| main.rs:47:9:47:13 | super | main.rs:1:1:1195:18 | SourceFile |
 | main.rs:47:9:47:17 | ...::m1 | main.rs:20:1:44:1 | mod m1 |
 | main.rs:47:9:47:21 | ...::m2 | main.rs:25:5:43:5 | mod m2 |
 | main.rs:47:9:47:24 | ...::g | main.rs:30:9:34:9 | fn g |
@@ -98,7 +117,7 @@ resolvePath
 | main.rs:68:17:68:19 | Foo | main.rs:66:9:66:21 | struct Foo |
 | main.rs:71:13:71:15 | Foo | main.rs:60:5:60:17 | struct Foo |
 | main.rs:73:5:73:5 | f | main.rs:62:5:69:5 | fn f |
-| main.rs:75:5:75:8 | self | main.rs:1:1:1193:2 | SourceFile |
+| main.rs:75:5:75:8 | self | main.rs:1:1:1195:18 | SourceFile |
 | main.rs:75:5:75:11 | ...::i | main.rs:78:1:90:1 | fn i |
 | main.rs:79:5:79:11 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:81:13:81:15 | Foo | main.rs:55:1:55:13 | struct Foo |
@@ -120,7 +139,7 @@ resolvePath
 | main.rs:112:9:112:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:118:9:118:15 | println | {EXTERNAL LOCATION} | MacroRules |
 | main.rs:122:9:122:15 | println | {EXTERNAL LOCATION} | MacroRules |
-| main.rs:125:13:125:17 | super | main.rs:1:1:1193:2 | SourceFile |
+| main.rs:125:13:125:17 | super | main.rs:1:1:1195:18 | SourceFile |
 | main.rs:125:13:125:21 | ...::m5 | main.rs:110:1:114:1 | mod m5 |
 | main.rs:126:9:126:9 | f | main.rs:111:5:113:5 | fn f |
 | main.rs:126:9:126:9 | f | main.rs:117:5:119:5 | fn f |
@@ -722,7 +741,7 @@ resolvePath
 | my2/my3/mod.rs:3:5:3:5 | g | my2/mod.rs:3:1:6:1 | fn g |
 | my2/my3/mod.rs:4:5:4:5 | h | main.rs:57:1:76:1 | fn h |
 | my2/my3/mod.rs:7:5:7:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
-| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:1193:2 | SourceFile |
+| my2/my3/mod.rs:7:5:7:16 | ...::super | main.rs:1:1:1195:18 | SourceFile |
 | my2/my3/mod.rs:7:5:7:19 | ...::h | main.rs:57:1:76:1 | fn h |
 | my2/my3/mod.rs:8:5:8:9 | super | my2/mod.rs:1:1:25:34 | SourceFile |
 | my2/my3/mod.rs:8:5:8:12 | ...::g | my2/mod.rs:3:1:6:1 | fn g |
@@ -789,4 +808,29 @@ resolvePath
 | proc_macro.rs:16:24:16:34 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:16:43:16:53 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
 | proc_macro.rs:16:59:16:69 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:21:32:21:42 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:21:48:21:58 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:22:15:22:17 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
+| proc_macro.rs:22:15:22:36 | ...::parse_macro_input | {EXTERNAL LOCATION} | MacroRules |
+| proc_macro.rs:22:48:22:50 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
+| proc_macro.rs:22:48:22:63 | ...::DeriveInput | {EXTERNAL LOCATION} | struct DeriveInput |
+| proc_macro.rs:22:48:22:63 | ...::parse::<...> | {EXTERNAL LOCATION} | fn parse |
+| proc_macro.rs:24:24:24:26 | syn | {EXTERNAL LOCATION} | Crate(syn@2.0.103) |
+| proc_macro.rs:24:24:24:33 | ...::Ident | {EXTERNAL LOCATION} | struct Ident |
+| proc_macro.rs:24:24:24:38 | ...::new | {EXTERNAL LOCATION} | fn new |
+| proc_macro.rs:24:41:24:46 | format | {EXTERNAL LOCATION} | MacroRules |
+| proc_macro.rs:25:5:25:9 | quote | {EXTERNAL LOCATION} | MacroRules |
+| proc_macro.rs:32:43:32:53 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:32:59:32:69 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:33:5:33:9 | quote | {EXTERNAL LOCATION} | MacroRules |
+| proc_macro.rs:40:47:40:57 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:40:63:40:73 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:41:5:41:9 | quote | {EXTERNAL LOCATION} | MacroRules |
+| proc_macro.rs:49:27:49:37 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:49:47:49:57 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:49:63:49:73 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:50:5:50:9 | quote | {EXTERNAL LOCATION} | MacroRules |
+| proc_macro.rs:57:34:57:44 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:57:50:57:60 | TokenStream | {EXTERNAL LOCATION} | struct TokenStream |
+| proc_macro.rs:58:5:58:9 | quote | {EXTERNAL LOCATION} | MacroRules |
 testFailures

@@ -1191,3 +1191,5 @@ fn main() {
     impl_with_attribute_macro::test(); // $ item=impl_with_attribute_macro::test
     patterns::test(); // $ item=patterns::test
 }
+
+mod derive_macro;
