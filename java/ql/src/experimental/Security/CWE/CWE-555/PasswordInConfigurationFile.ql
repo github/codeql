@@ -21,7 +21,7 @@ predicate isNotPassword(string value) {
   or
   value.regexpMatch("\\$\\{.*\\}") // Variable placeholder ${password}
   or
-  value.matches("%=") // A basic check of encrypted passwords ending with padding characters, which could be improved to be more accurate.
+  value.endsWith("=") // A basic check of encrypted passwords ending with padding characters, which could be improved to be more accurate.
 }
 
 /** Holds if the attribute value has an embedded password */

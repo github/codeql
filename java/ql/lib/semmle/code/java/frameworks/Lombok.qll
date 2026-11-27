@@ -16,7 +16,7 @@ import java
 class LombokAnnotation extends Annotation {
   LombokAnnotation() {
     this.getType().getPackage().hasName("lombok") or
-    this.getType().getPackage().getName().matches("lombok.%")
+    this.getType().getPackage().getName().startsWith("lombok.")
   }
 }
 

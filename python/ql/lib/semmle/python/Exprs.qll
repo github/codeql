@@ -527,12 +527,6 @@ private string non_byte_prefix() {
   not result.charAt(_) in ["b", "B"]
 }
 
-/** DEPRECATED. Use `StringLiteral` instead. */
-deprecated class Str = StringLiteral;
-
-/** DEPRECATED. Use `StringLiteral` instead. */
-deprecated class StrConst = StringLiteral;
-
 /** A string constant. */
 class StringLiteral extends Str_, ImmutableLiteral {
   /* syntax: "hello" */

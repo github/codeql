@@ -24,7 +24,7 @@ module Modification {
   predicate isModifyingCall(Call c) {
     exists(SummarizedCallable sc, string output | sc.getACall() = c |
       sc.propagatesFlow(_, output, _, _, _, _) and
-      output.matches("Argument[this]%")
+      output.startsWith("Argument[this]")
     )
   }
 }
@@ -47,7 +47,7 @@ private predicate isThreadSafeInitializer(Expr e) {
   exists(string name |
     e.(Call).getCallee().getSourceDeclaration().hasQualifiedName("java.util", "Collections", name)
   |
-    name.matches("synchronized%")
+    name.startsWith("synchronized")
   )
 }
 

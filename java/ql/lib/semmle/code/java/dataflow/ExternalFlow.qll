@@ -379,7 +379,7 @@ module ModelValidation {
       summaryModel(namespace, type, _, name, _, _, _, output, _, _, _)
     |
       type = name and
-      output.matches("ReturnValue%") and
+      output.startsWith("ReturnValue") and
       result =
         "Constructor model for " + namespace + "." + type +
           " should use `Argument[this]` in the output, not `ReturnValue`."

@@ -75,7 +75,7 @@ predicate same_attribute(Attribute a1, Attribute a2) {
 }
 
 pragma[nomagic]
-Comment pyflakes_comment() { result.getText().toLowerCase().matches("%pyflakes%") }
+Comment pyflakes_comment() { result.getText().toLowerCase().contains("pyflakes") }
 
 int pyflakes_commented_line(File file) {
   pyflakes_comment().getLocation().hasLocationInfo(file.getAbsolutePath(), result, _, _, _)

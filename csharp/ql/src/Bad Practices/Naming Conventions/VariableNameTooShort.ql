@@ -44,7 +44,7 @@ predicate allowedVariable(Variable variable) {
   exists(Parameter param |
     variable = param and
     not exists(param.getAnAccess()) and
-    param.getType().getName().matches("%EventArgs")
+    param.getType().getName().endsWith("EventArgs")
   )
   or
   exists(LocalVariable local |

@@ -21,7 +21,7 @@ query predicate test3(ConstructedClass c, UnboundGenericClass d) {
 
 query predicate test4(UnboundGenericClass c, string s) {
   c.fromSource() and
-  not c.getName().matches("%`%") and
+  not c.getName().contains("`") and
   s = "Unbound generic class with inconsistent name"
 }
 
@@ -175,12 +175,12 @@ query predicate test21(Enum e, Class c) {
 }
 
 query predicate test22(ConstructedMethod m, string tpName) {
-  m.getName().matches("CM%") and
+  m.getName().startsWith("CM") and
   tpName = m.getATypeArgument().getName()
 }
 
 query predicate test23(Class c, Interface i) {
-  c.getName().matches("Inheritance%") and
+  c.getName().startsWith("Inheritance") and
   i = c.getABaseInterface()
 }
 

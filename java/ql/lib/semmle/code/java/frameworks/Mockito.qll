@@ -13,7 +13,7 @@ import java
  */
 class MockitoVerifyMethod extends Method {
   MockitoVerifyMethod() {
-    this.getDeclaringType().getPackage().getName().matches("org.mockito%") and
+    this.getDeclaringType().getPackage().getName().startsWith("org.mockito") and
     this.hasName("verify")
   }
 }
@@ -88,7 +88,7 @@ class MockitoInitedTest extends Class {
 class MockitoAnnotation extends Annotation {
   MockitoAnnotation() {
     this.getType().getPackage().hasName("org.mockito") or
-    this.getType().getPackage().getName().matches("org.mockito.%")
+    this.getType().getPackage().getName().startsWith("org.mockito.")
   }
 }
 

@@ -9,7 +9,7 @@ module TestConfiguration implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     exists(CallExpr sinkCall |
-      sinkCall.getStaticTarget().getName().matches("sink%") and
+      sinkCall.getStaticTarget().getName().startsWith("sink") and
       sinkCall.getAnArgument().getExpr() = sink.asExpr()
     )
   }

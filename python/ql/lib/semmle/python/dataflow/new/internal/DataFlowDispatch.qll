@@ -567,7 +567,7 @@ private CallCfgNode getSuperCall() {
  * this.
  */
 private predicate ignoreForCallGraph(File f) {
-  f.getAbsolutePath().matches("%/site-packages/sympy/%")
+  f.getAbsolutePath().contains("/site-packages/sympy/")
 }
 
 private module TrackFunctionInput implements CallGraphConstruction::Simple::InputSig {

@@ -37,7 +37,7 @@ private class VulnerableJHipsterRandomUtilClass extends Class {
 private class VulnerableJHipsterRandomUtilMethod extends Method {
   VulnerableJHipsterRandomUtilMethod() {
     this.getDeclaringType() instanceof VulnerableJHipsterRandomUtilClass and
-    this.getName().matches("generate%") and
+    this.getName().startsWith("generate") and
     this.getReturnType() instanceof TypeString and
     exists(ReturnStmt s |
       s = this.getBody().(SingletonBlock).getStmt() and

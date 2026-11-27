@@ -330,7 +330,7 @@ class ActorIfCheck extends ActorCheck instanceof If {
       normalizeExpr(this.getCondition())
           .regexpFind(["\\bgithub\\.actor\\b", "\\bgithub\\.triggering_actor\\b",], _, _)
     ) and
-    not normalizeExpr(this.getCondition()).matches("%[bot]%")
+    not normalizeExpr(this.getCondition()).contains("[bot]")
   }
 }
 
@@ -462,7 +462,7 @@ class AssociationActionCheck extends AssociationCheck instanceof UsesStep {
     )
     or
     this.getCallee() = "actions/github-script" and
-    this.getArgument("script").splitAt("\n").matches("%getMembershipForUserInOrg%")
+    this.getArgument("script").splitAt("\n").contains("getMembershipForUserInOrg")
     or
     this.getCallee() = "octokit/request-action" and
     this.getArgument("route").regexpMatch("GET.*(memberships).*")
@@ -495,7 +495,7 @@ class PermissionActionCheck extends PermissionCheck instanceof UsesStep {
     )
     or
     this.getCallee() = "actions/github-script" and
-    this.getArgument("script").splitAt("\n").matches("%getCollaboratorPermissionLevel%")
+    this.getArgument("script").splitAt("\n").contains("getCollaboratorPermissionLevel")
     or
     this.getCallee() = "octokit/request-action" and
     this.getArgument("route").regexpMatch("GET.*(collaborators|permission).*")

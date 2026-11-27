@@ -12,5 +12,5 @@
 import cpp
 
 from Include i
-where i.getIncludeText().matches("<%")
+where i.getIncludeText().startsWith("<")
 select i, "AV Rule 33: the #include <filename.h> notation shall be used."

@@ -121,7 +121,7 @@ class JSDocTag extends @jsdoc_tag, JSDocTypeExprParent {
 
   /** Holds if this tag documents a simple name (as opposed to a name path). */
   predicate documentsSimpleName() {
-    exists(string name | name = this.getName() | not name.matches("%.%"))
+    exists(string name | name = this.getName() | not name.contains("."))
   }
 
   /** Gets the toplevel in which this tag appears. */

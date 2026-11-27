@@ -13,6 +13,6 @@ class ClassOrInterfaceLocation extends ClassOrInterface {
 
 from Method m, int i, Parameter p
 where
-  m.getName().matches("foo%") and
+  m.getName().startsWith("foo") and
   p = m.getParameter(i)
 select m, m.getReturnType(), i, p, p.getType()

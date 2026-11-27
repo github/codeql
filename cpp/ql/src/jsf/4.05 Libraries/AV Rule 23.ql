@@ -14,6 +14,6 @@ import cpp
 from Function f
 where
   f.getName() = ["atof", "atoi", "atol"] and
-  f.getFile().getAbsolutePath().matches("%stdlib.h")
+  f.getFile().getAbsolutePath().endsWith("stdlib.h")
 select f.getACallToThisFunction(),
   "AV Rule 23: The library functions atof, atoi and atol from library <stdlib.h> shall not be used."

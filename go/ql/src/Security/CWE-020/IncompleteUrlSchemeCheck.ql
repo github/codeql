@@ -38,9 +38,9 @@ DataFlow::Node schemeCheck(GVN g, DangerousScheme scheme) {
   // propagate through various string transformations
   exists(string stringop, DataFlow::CallNode c |
     stringop = "Map" or
-    stringop.matches("Replace%") or
-    stringop.matches("To%") or
-    stringop.matches("Trim%")
+    stringop.startsWith("Replace") or
+    stringop.startsWith("To") or
+    stringop.startsWith("Trim")
   |
     c.getTarget().hasQualifiedName("strings", stringop) and
     c.getAnArgument() = g.getANode() and

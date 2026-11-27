@@ -174,7 +174,7 @@ class GitHubEventPathSource extends RemoteFlowSource, CommandSource {
   GitHubEventPathSource() {
     this.asExpr() = run.getScript() and
     run.getScript().getACommand() = cmd and
-    cmd.matches("jq%") and
+    cmd.startsWith("jq") and
     cmd.matches("%GITHUB_EVENT_PATH%") and
     exists(string regexp, string access_path |
       untrustedEventPropertiesDataModel(regexp, flag) and
@@ -371,11 +371,11 @@ class OctokitRequestActionSource extends RemoteFlowSource {
       route = u.getArgument("route").trim() and
       route.indexOf("GET") = 0 and
       (
-        route.matches("%/commits%") or
-        route.matches("%/comments%") or
-        route.matches("%/pulls%") or
-        route.matches("%/issues%") or
-        route.matches("%/users%") or
+        route.contains("/commits") or
+        route.contains("/comments") or
+        route.contains("/pulls") or
+        route.contains("/issues") or
+        route.contains("/users") or
         route.matches("%github.event.issue.pull_request.url%")
       ) and
       this.asExpr() = u

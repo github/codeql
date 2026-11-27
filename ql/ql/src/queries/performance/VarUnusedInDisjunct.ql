@@ -183,7 +183,7 @@ predicate badDisjunction(EffectiveDisjunction disj, VarDef var, AstNode notBound
     var = disj.getEnclosingPredicate().getParameter(_)
   ) and
   // recursion prevention never runs, it's a compile-time check, so we remove those results here
-  not disj.getEnclosingPredicate().getParent().(Class).getName().matches("%RecursionPrevention") and // these are by design
+  not disj.getEnclosingPredicate().getParent().(Class).getName().endsWith("RecursionPrevention") and // these are by design
   // not a small type
   not isSmallType(var.getType()) and
   // one of the branches is a tiny assignment. These are usually intentional cartesian products (and not too big).

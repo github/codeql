@@ -5,7 +5,7 @@ import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView> as ExponentialBa
 import semmle.code.java.regex.regex
 
 bindingset[s]
-string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
+string quote(string s) { if s.contains(" ") then result = "\"" + s + "\"" else result = s }
 
 module HasExpRedos implements TestSig {
   string getARelevantTag() {

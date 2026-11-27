@@ -17,35 +17,19 @@ module Afero {
   string aferoPackage() { result = package("github.com/spf13/afero", "") }
 
   /**
-   * DEPRECATED: Use `FileSystemAccess::Range` instead.
-   *
-   * The File system access sinks of [afero](https://github.com/spf13/afero) framework methods
+   * A modeled filesystem method called through an interface on a value returned by an Afero
+   * constructor. These constructors return `Fs`, so the concrete-type data extensions do not apply.
    */
-  deprecated class AferoSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
-    AferoSystemAccess() {
-      exists(Method m |
-        m.hasQualifiedName(aferoPackage(), "HttpFs",
-          ["Create", "Open", "OpenFile", "Remove", "RemoveAll"]) and
-        this = m.getACall()
-        or
-        m.hasQualifiedName(aferoPackage(), "RegexpFs",
-          ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
-        this = m.getACall()
-        or
-        m.hasQualifiedName(aferoPackage(), "ReadOnlyFs",
-          ["Create", "Open", "OpenFile", "ReadDir", "ReadlinkIfPossible", "Mkdir", "MkdirAll"]) and
-        this = m.getACall()
-        or
-        m.hasQualifiedName(aferoPackage(), "OsFs",
-          [
-            "Create", "Open", "OpenFile", "ReadlinkIfPossible", "Remove", "RemoveAll", "Mkdir",
-            "MkdirAll"
-          ]) and
-        this = m.getACall()
-        or
-        m.hasQualifiedName(aferoPackage(), "MemMapFs",
-          ["Create", "Open", "OpenFile", "Remove", "RemoveAll", "Mkdir", "MkdirAll"]) and
-        this = m.getACall()
+  private class AferoConstructorSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+    AferoConstructorSystemAccess() {
+      exists(string fsType, string methodName, Method method, Function constructor |
+        fsType = ["OsFs", "MemMapFs", "ReadOnlyFs", "RegexpFs"] and
+        sinkModel("github.com/spf13/afero", fsType, _, methodName, "", "", "Argument[0]",
+          "path-injection", _, _) and
+        method.hasQualifiedName(aferoPackage(), fsType, methodName) and
+        this = method.getACall() and
+        constructor.hasQualifiedName(aferoPackage(), "New" + fsType) and
+        DataFlow::localFlow(constructor.getACall().getResult(0), this.getReceiver())
       )
     }
 

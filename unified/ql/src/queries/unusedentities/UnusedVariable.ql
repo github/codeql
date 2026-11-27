@@ -12,7 +12,7 @@ private import unified
 private predicate isUnusedLocal(LocalName local) {
   local.getABinding().fromSource() and // ignore unused implicit locals, and ignore locals in built-ins
   not ignoreDeclaration(local.getABinding().getDeclaration()) and // ignore fields, method, etc
-  not local.getName().regexpMatch("_.*") and
+  not local.getName().startsWith("_") and
   not exists(LocalNameAccess access |
     access = local.getAnAccess() and
     not access instanceof NameBinding

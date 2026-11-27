@@ -203,10 +203,12 @@ nodes
 | file://:0:0:0:0 | booleanXor | semmle.label | [BuiltinPredicate] booleanXor |
 | file://:0:0:0:0 | ceil | semmle.label | [BuiltinPredicate] ceil |
 | file://:0:0:0:0 | charAt | semmle.label | [BuiltinPredicate] charAt |
+| file://:0:0:0:0 | contains | semmle.label | [BuiltinPredicate] contains |
 | file://:0:0:0:0 | copySign | semmle.label | [BuiltinPredicate] copySign |
 | file://:0:0:0:0 | cos | semmle.label | [BuiltinPredicate] cos |
 | file://:0:0:0:0 | cosh | semmle.label | [BuiltinPredicate] cosh |
 | file://:0:0:0:0 | daysTo | semmle.label | [BuiltinPredicate] daysTo |
+| file://:0:0:0:0 | endsWith | semmle.label | [BuiltinPredicate] endsWith |
 | file://:0:0:0:0 | exp | semmle.label | [BuiltinPredicate] exp |
 | file://:0:0:0:0 | floor | semmle.label | [BuiltinPredicate] floor |
 | file://:0:0:0:0 | gcd | semmle.label | [BuiltinPredicate] gcd |
@@ -246,6 +248,7 @@ nodes
 | file://:0:0:0:0 | splitAt | semmle.label | [BuiltinPredicate] splitAt |
 | file://:0:0:0:0 | splitAt | semmle.label | [BuiltinPredicate] splitAt |
 | file://:0:0:0:0 | sqrt | semmle.label | [BuiltinPredicate] sqrt |
+| file://:0:0:0:0 | startsWith | semmle.label | [BuiltinPredicate] startsWith |
 | file://:0:0:0:0 | substring | semmle.label | [BuiltinPredicate] substring |
 | file://:0:0:0:0 | suffix | semmle.label | [BuiltinPredicate] suffix |
 | file://:0:0:0:0 | tan | semmle.label | [BuiltinPredicate] tan |

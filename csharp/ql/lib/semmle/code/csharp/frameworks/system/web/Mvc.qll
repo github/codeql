@@ -68,7 +68,7 @@ class SystemWebMvcControllerClass extends SystemWebMvcClass {
   /** Gets a `Redirect..` method. */
   Method getARedirectMethod() {
     result = this.getAMethod() and
-    result.getName().matches("Redirect%")
+    result.getName().startsWith("Redirect")
   }
 }
 

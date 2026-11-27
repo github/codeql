@@ -73,7 +73,7 @@ private class ArrayUpdate extends Expr {
       m.hasQualifiedName("org.apache.commons.io", "IOUtils", ["read", "readFully"]) or
       m.hasQualifiedName("io.netty.buffer", "ByteBuf", "getBytes") or
       m.hasQualifiedName("org.bouncycastle.crypto.generators",
-        any(string s | s.matches("%BytesGenerator")), "generateBytes")
+        any(string s | s.endsWith("BytesGenerator")), "generateBytes")
     )
   }
 

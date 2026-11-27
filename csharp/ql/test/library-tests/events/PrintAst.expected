@@ -159,7 +159,8 @@ events.cs:
 #   81|       4: [BlockStmt] {...}
 #   82|         0: [LocalVariableDeclStmt] ... ...;
 #   82|           0: [LocalVariableDeclExpr] EventHandler handler
-#   82|             0: [TypeMention] EventHandler
+#   82|             -1: [TypeMention] EventHandler
+#   82|             0: [LocalVariableAccess] access to local variable handler
 #   83|         1: [ExprStmt] ...;
 #   83|           0: [AssignExpr] ... = ...
 #   83|             0: [LocalVariableAccess] access to local variable handler

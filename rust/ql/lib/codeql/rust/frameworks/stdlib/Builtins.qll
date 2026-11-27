@@ -209,7 +209,7 @@ class PtrMutType extends PtrTypeImpl {
 
 /** A builtin tuple type `(T1, T2, ...)`. */
 class TupleType extends BuiltinType {
-  TupleType() { this.getName().matches("Tuple%") }
+  TupleType() { this.getName().startsWith("Tuple") }
 
   /** Gets the arity of this tuple type. */
   int getArity() {

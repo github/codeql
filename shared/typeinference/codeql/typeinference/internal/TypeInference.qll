@@ -2697,10 +2697,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
     module Make3<InputSig3 Input3> {
       private import Input3
 
+      /**
+       * Gets a parameter's declaration pattern or an access to its implicit
+       * variable.
+       */
+      private AstNode getAParameterInferenceNode(Parameter p) {
+        result = p.getPattern()
+        or
+        // Implicit parameters do not have a pattern, use an access instead.
+        result = any(Variable v | implicitParameterDecl(p, v)).getAnAccess()
+      }
+
       pragma[nomagic]
       private predicate closureStep(AstNode pattern, TypePath prefix1, Expr c, TypePath prefix2) {
         exists(Closure c0, Parameter p |
-          pattern = p.getPattern() and
+          pattern = getAParameterInferenceNode(p) and
           p = c0.getParameter(_) and
           prefix1.isEmpty() and
           prefix2 = getClosureParameterTypePath(p) and
@@ -3565,7 +3576,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             hasClosureParameterPseudoType(n, prefix, p) and
             hasTypeAtPrefix(n, prefix, path) and
             path = prefix.appendInverse(suffix) and
-            pattern = p.getPattern()
+            pattern = getAParameterInferenceNode(p)
           )
         }
 
@@ -3580,7 +3591,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           // QL doc for `ClosureParameterPseudoType`.
           exists(Closure c, Parameter p | p = c.getParameter(_) |
             // step 1
-            n = p.getPattern() and
+            n = getAParameterInferenceNode(p) and
             path.isEmpty() and
             result.(ClosureParameterPseudoType).getParameter() = p
             or
@@ -3614,7 +3625,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             result instanceof UnknownType
             or
             // step 3
-            n = p.getPattern() and
+            n = getAParameterInferenceNode(p) and
             result = inferType(def, getClosureParameterTypePath(p).appendInverse(path)) and
             not (path.isEmpty() and result instanceof UnknownType)
           )

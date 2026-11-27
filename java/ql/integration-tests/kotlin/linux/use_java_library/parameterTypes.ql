@@ -37,4 +37,4 @@ query predicate parameterizedTypes(ExtLibParameter p, string ptstr, string typeA
   )
 }
 
-query predicate libCallables(Callable c) { c.getFile().getBaseName().matches("%Lib.java") }
+query predicate libCallables(Callable c) { c.getFile().getBaseName().endsWith("Lib.java") }

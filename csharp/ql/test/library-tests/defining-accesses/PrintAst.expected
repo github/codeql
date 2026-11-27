@@ -1,0 +1,271 @@
+DefiningAccesses.cs:
+#    5| [Class] DefiningAccesses
+#    7|   6: [Method] Source
+#    7|     -1: [TypeMention] int
+#-----|     2: (Parameters)
+#    7|       0: [Parameter] id
+#    7|         -1: [TypeMention] int
+#    7|     4: [ParameterAccess] access to parameter id
+#    8|   12: [Method] Sink`1
+#    8|     -1: [TypeMention] Void
+#-----|     1: (Type parameters)
+#    8|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#    8|       0: [Parameter] value
+#    8|         -1: [TypeMention] T
+#    8|     4: [BlockStmt] {...}
+#    9|   13: [Method] Out
+#    9|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#    9|       0: [Parameter] value
+#    9|         -1: [TypeMention] int
+#    9|     4: [BlockStmt] {...}
+#    9|       0: [ExprStmt] ...;
+#    9|         0: [AssignExpr] ... = ...
+#    9|           0: [ParameterAccess] access to parameter value
+#    9|           1: [MethodCall] call to method Source
+#    9|             0: [IntLiteral] 1
+#   10|   14: [Method] Pair
+#   10|     -1: [TypeMention] (int, int)
+#   10|       1: [TypeMention] int
+#   10|       2: [TypeMention] int
+#   10|     4: [TupleExpr] (..., ...)
+#   10|       0: [MethodCall] call to method Source
+#   10|         0: [IntLiteral] 11
+#   10|       1: [MethodCall] call to method Source
+#   10|         0: [IntLiteral] 12
+#   12|   15: [Method] Fixed
+#   12|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   12|       0: [Parameter] text
+#   12|         -1: [TypeMention] string
+#   13|     4: [BlockStmt] {...}
+#   14|       0: [FixedStmt] fixed(...) { ... }
+#   14|         -1: [LocalVariableDeclAndInitExpr] Char* chars = ...
+#   14|           -1: [TypeMention] char*
+#   14|             1: [TypeMention] char
+#   14|           0: [LocalVariableAccess] access to local variable chars
+#   14|           1: [CastExpr] (...) ...
+#   14|             1: [ParameterAccess] access to parameter text
+#   15|         0: [ExprStmt] ...;
+#   15|           0: [MethodCall] call to method Sink<Char>
+#   15|             0: [PointerIndirectionExpr] *...
+#   15|               0: [LocalVariableAccess] access to local variable chars
+#   18|   16: [Method] Test
+#   18|     -1: [TypeMention] Void
+#-----|     2: (Parameters)
+#   18|       0: [Parameter] values
+#   18|         -1: [TypeMention] IEnumerable<int>
+#   18|           1: [TypeMention] int
+#   18|       1: [Parameter] input
+#   18|         -1: [TypeMention] object
+#   19|     4: [BlockStmt] {...}
+#   20|       0: [LocalVariableDeclStmt] ... ...;
+#   20|         0: [LocalVariableDeclExpr] Int32 uninitialized
+#   20|           -1: [TypeMention] int
+#   20|           0: [LocalVariableAccess] access to local variable uninitialized
+#   21|       1: [ExprStmt] ...;
+#   21|         0: [AssignExpr] ... = ...
+#   21|           0: [LocalVariableAccess] access to local variable uninitialized
+#   21|           1: [MethodCall] call to method Source
+#   21|             0: [IntLiteral] 2
+#   22|       2: [ExprStmt] ...;
+#   22|         0: [MethodCall] call to method Sink<Int32>
+#   22|           0: [LocalVariableAccess] access to local variable uninitialized
+#   23|       3: [LocalVariableDeclStmt] ... ...;
+#   23|         0: [LocalVariableDeclExpr] Int32 multiA
+#   23|           -1: [TypeMention] int
+#   23|           0: [LocalVariableAccess] access to local variable multiA
+#   23|         1: [LocalVariableDeclExpr] Int32 multiB
+#   23|           -1: [TypeMention] int
+#   23|           0: [LocalVariableAccess] access to local variable multiB
+#   24|       4: [LocalConstantDeclStmt] const ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] Int32 constant = ...
+#   24|           -1: [TypeMention] int
+#   24|           0: [LocalVariableAccess] access to local variable constant
+#   24|           1: [IntLiteral] 42
+#   25|       5: [ForStmt] for (...;...;...) ...
+#   25|         -1: [LocalVariableDeclAndInitExpr] Int32 index = ...
+#   25|           -1: [TypeMention] int
+#   25|           0: [LocalVariableAccess] access to local variable index
+#   25|           1: [IntLiteral] 0
+#   25|         0: [LTExpr] ... < ...
+#   25|           0: [LocalVariableAccess] access to local variable index
+#   25|           1: [LocalVariableAccess] access to local variable constant
+#   25|         1: [PostIncrExpr] ...++
+#   25|           0: [LocalVariableAccess] access to local variable index
+#   26|         2: [ExprStmt] ...;
+#   26|           0: [MethodCall] call to method Sink<Int32>
+#   26|             0: [LocalVariableAccess] access to local variable index
+#   27|       6: [LocalVariableDeclStmt] ... ...;
+#   27|         0: [LocalVariableDeclAndInitExpr] Int32 initialized = ...
+#   27|           -1: [TypeMention] int
+#   27|           0: [LocalVariableAccess] access to local variable initialized
+#   27|           1: [MethodCall] call to method Source
+#   27|             0: [IntLiteral] 3
+#   28|       7: [ExprStmt] ...;
+#   28|         0: [MethodCall] call to method Sink<Int32>
+#   28|           0: [LocalVariableAccess] access to local variable initialized
+#   29|       8: [ExprStmt] ...;
+#   29|         0: [MethodCall] call to method Out
+#   29|           0: [LocalVariableAccess,LocalVariableDeclExpr] Int32 output
+#   30|       9: [ExprStmt] ...;
+#   30|         0: [MethodCall] call to method Sink<Int32>
+#   30|           0: [LocalVariableAccess] access to local variable output
+#   31|       10: [ExprStmt] ...;
+#   31|         0: [MethodCall] call to method Out
+#   31|           0: [DiscardExpr] _
+#   32|       11: [ExprStmt] ...;
+#   32|         0: [AssignExpr] ... = ...
+#   32|           0: [TupleExpr] (..., ...)
+#   32|             0: [LocalVariableDeclExpr] Int32 first
+#   32|               0: [LocalVariableAccess] access to local variable first
+#   32|             1: [TupleExpr] (..., ...)
+#   32|               0: [LocalVariableDeclExpr] Int32 second
+#   32|                 0: [LocalVariableAccess] access to local variable second
+#   32|               1: [LocalVariableDeclExpr] Int32 third
+#   32|                 0: [LocalVariableAccess] access to local variable third
+#   32|           1: [TupleExpr] (..., ...)
+#   32|             0: [MethodCall] call to method Source
+#   32|               0: [IntLiteral] 4
+#   32|             1: [TupleExpr] (..., ...)
+#   32|               0: [MethodCall] call to method Source
+#   32|                 0: [IntLiteral] 5
+#   32|               1: [MethodCall] call to method Source
+#   32|                 0: [IntLiteral] 6
+#   33|       12: [ExprStmt] ...;
+#   33|         0: [MethodCall] call to method Sink<Int32>
+#   33|           0: [LocalVariableAccess] access to local variable first
+#   34|       13: [ExprStmt] ...;
+#   34|         0: [MethodCall] call to method Sink<Int32>
+#   34|           0: [LocalVariableAccess] access to local variable second
+#   35|       14: [ExprStmt] ...;
+#   35|         0: [MethodCall] call to method Sink<Int32>
+#   35|           0: [LocalVariableAccess] access to local variable third
+#   36|       15: [ExprStmt] ...;
+#   36|         0: [AssignExpr] ... = ...
+#   36|           0: [TupleExpr] (..., ...)
+#   36|             0: [LocalVariableDeclExpr] Int32 fourth
+#   36|               0: [LocalVariableAccess] access to local variable fourth
+#   36|             1: [LocalVariableDeclExpr] Int32 fifth
+#   36|               0: [LocalVariableAccess] access to local variable fifth
+#   36|           1: [TupleExpr] (..., ...)
+#   36|             0: [MethodCall] call to method Source
+#   36|               0: [IntLiteral] 7
+#   36|             1: [MethodCall] call to method Source
+#   36|               0: [IntLiteral] 8
+#   37|       16: [ExprStmt] ...;
+#   37|         0: [MethodCall] call to method Sink<Int32>
+#   37|           0: [LocalVariableAccess] access to local variable fourth
+#   38|       17: [ExprStmt] ...;
+#   38|         0: [MethodCall] call to method Sink<Int32>
+#   38|           0: [LocalVariableAccess] access to local variable fifth
+#   39|       18: [ExprStmt] ...;
+#   39|         0: [AssignExpr] ... = ...
+#   39|           0: [TupleExpr] (..., ...)
+#   39|             0: [LocalVariableDeclExpr] Int32 sixth
+#   39|               0: [LocalVariableAccess] access to local variable sixth
+#   39|             1: [LocalVariableDeclExpr] Int32 seventh
+#   39|               0: [LocalVariableAccess] access to local variable seventh
+#   39|           1: [MethodCall] call to method Pair
+#   40|       19: [ExprStmt] ...;
+#   40|         0: [MethodCall] call to method Sink<Int32>
+#   40|           0: [LocalVariableAccess] access to local variable sixth
+#   41|       20: [ExprStmt] ...;
+#   41|         0: [MethodCall] call to method Sink<Int32>
+#   41|           0: [LocalVariableAccess] access to local variable seventh
+#   42|       21: [ForEachStmt] foreach (... ... in ...) ...
+#   42|         0: [LocalVariableDeclExpr] Int32 item
+#   42|           -1: [TypeMention] int
+#   42|           0: [LocalVariableAccess] access to local variable item
+#   42|         1: [ParameterAccess] access to parameter values
+#   43|         2: [ExprStmt] ...;
+#   43|           0: [MethodCall] call to method Sink<Int32>
+#   43|             0: [LocalVariableAccess] access to local variable item
+#   44|       22: [ForEachStmt] foreach (... ... in ...) ...
+#   44|         0: [LocalVariableDeclExpr] Int32 element
+#   44|           -1: [TypeMention] int
+#   44|           0: [LocalVariableAccess] access to local variable element
+#   44|         1: [ArrayCreation] array creation of type Int32[]
+#   44|           -1: [ArrayInitializer] { ..., ... }
+#   44|             0: [MethodCall] call to method Source
+#   44|               0: [IntLiteral] 13
+#   45|         2: [ExprStmt] ...;
+#   45|           0: [MethodCall] call to method Sink<Int32>
+#   45|             0: [LocalVariableAccess] access to local variable element
+#   46|       23: [ForEachStmt] foreach (... ... in ...) ...
+#   46|         0: [TupleExpr] (..., ...)
+#   46|           0: [LocalVariableDeclExpr] Int32 left
+#   46|             0: [LocalVariableAccess] access to local variable left
+#   46|           1: [LocalVariableDeclExpr] Int32 right
+#   46|             0: [LocalVariableAccess] access to local variable right
+#   46|         1: [ArrayCreation] array creation of type ValueTuple
+#   46|           -1: [ArrayInitializer] { ..., ... }
+#   46|             0: [TupleExpr] (..., ...)
+#   46|               0: [MethodCall] call to method Source
+#   46|                 0: [IntLiteral] 9
+#   46|               1: [MethodCall] call to method Source
+#   46|                 0: [IntLiteral] 10
+#   47|         2: [BlockStmt] {...}
+#   48|           0: [ExprStmt] ...;
+#   48|             0: [MethodCall] call to method Sink<Int32>
+#   48|               0: [LocalVariableAccess] access to local variable left
+#   49|           1: [ExprStmt] ...;
+#   49|             0: [MethodCall] call to method Sink<Int32>
+#   49|               0: [LocalVariableAccess] access to local variable right
+#   51|       24: [TryStmt] try {...} ...
+#   51|         0: [BlockStmt] {...}
+#   51|           0: [ThrowStmt] throw ...;
+#   51|             0: [ObjectCreation] object creation of type Exception
+#   51|               0: [TypeMention] Exception
+#   52|         1: [SpecificCatchClause] catch (...) {...}
+#   52|           0: [LocalVariableDeclExpr] Exception exception
+#   52|             -1: [TypeMention] Exception
+#   52|             0: [LocalVariableAccess] access to local variable exception
+#   52|           1: [BlockStmt] {...}
+#   52|             0: [ExprStmt] ...;
+#   52|               0: [MethodCall] call to method Sink<Exception>
+#   52|                 0: [LocalVariableAccess] access to local variable exception
+#   52|           2: [NEExpr] ... != ...
+#   52|             0: [PropertyCall] access to property Message
+#   52|               -1: [LocalVariableAccess] access to local variable exception
+#   52|             1: [NullLiteral] null
+#   53|       25: [IfStmt] if (...) ...
+#   53|         0: [IsExpr] ... is ...
+#   53|           0: [ParameterAccess] access to parameter input
+#   53|           1: [VariablePatternExpr] Int32 pattern
+#   53|             -1: [TypeMention] int
+#   53|             0: [LocalVariableAccess] access to local variable pattern
+#   54|         1: [ExprStmt] ...;
+#   54|           0: [MethodCall] call to method Sink<Int32>
+#   54|             0: [LocalVariableAccess] access to local variable pattern
+#   55|       26: [UsingDeclStmt] using ... ...;
+#   55|         0: [LocalVariableDeclAndInitExpr] MemoryStream stream = ...
+#   55|           -1: [TypeMention] MemoryStream
+#   55|           0: [LocalVariableAccess] access to local variable stream
+#   55|           1: [ObjectCreation] object creation of type MemoryStream
+#   55|             0: [TypeMention] MemoryStream
+#   56|       27: [ExprStmt] ...;
+#   56|         0: [MethodCall] call to method Sink<MemoryStream>
+#   56|           0: [LocalVariableAccess] access to local variable stream
+#   57|       28: [LocalVariableDeclStmt] ... ...;
+#   57|         0: [LocalVariableDeclAndInitExpr] IEnumerable<Int32> query = ...
+#   57|           -1: [TypeMention] IEnumerable<int>
+#   57|           0: [LocalVariableAccess] access to local variable query
+#   57|           1: [MethodCall] call to method Select<<>__AnonType0<Int32,Int32>,Int32>
+#   57|             0: [MethodCall] call to method Select<Int32,<>__AnonType0<Int32,Int32>>
+#   57|               0: [LocalVariableDeclAndInitExpr] Int32 value = ...
+#   57|                 0: [LocalVariableAccess] access to local variable value
+#   57|                 1: [ParameterAccess] access to parameter values
+#   57|               1: [LocalVariableDeclAndInitExpr] Int32 next = ...
+#   57|                 0: [LocalVariableAccess] access to local variable next
+#   57|                 1: [AddExpr] ... + ...
+#   57|                   0: [LocalVariableAccess] access to local variable value
+#   57|                   1: [IntLiteral] 1
+#   57|               2: [AddExpr] ... + ...
+#   57|                 0: [LocalVariableAccess] access to local variable value
+#   57|                 1: [IntLiteral] 1
+#   57|             1: [LocalVariableAccess] access to local variable next
+#   58|       29: [ExprStmt] ...;
+#   58|         0: [MethodCall] call to method Sink<IEnumerable<Int32>>
+#   58|           0: [LocalVariableAccess] access to local variable query

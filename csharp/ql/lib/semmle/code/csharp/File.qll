@@ -56,7 +56,7 @@ class File extends Container, Impl::File {
   pragma[noinline]
   predicate isStub() {
     this.extractedQlTest() and
-    this.getAbsolutePath().matches("%resources/stubs/%")
+    this.getAbsolutePath().contains("resources/stubs/")
   }
 
   /** Holds if this file contains source code. */

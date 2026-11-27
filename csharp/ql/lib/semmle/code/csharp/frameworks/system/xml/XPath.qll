@@ -29,7 +29,7 @@ module SystemXmlXPath {
 
     /** Gets a method that selects nodes. */
     CSharp::Method getASelectMethod() {
-      result = this.getAMethod() and result.getName().matches("Select%")
+      result = this.getAMethod() and result.getName().startsWith("Select")
     }
 
     /** Gets the `Compile` method. */

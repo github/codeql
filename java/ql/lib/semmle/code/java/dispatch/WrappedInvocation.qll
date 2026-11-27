@@ -65,7 +65,7 @@ import semmle.code.java.dataflow.FlowSummary
 
 private predicate mayInvokeCallback(SrcMethod m, int n) {
   m.getParameterType(n).(RefType).getSourceDeclaration() instanceof FunctionalInterface and
-  (not m.fromSource() or m.isNative() or m.getFile().getAbsolutePath().matches("%/test/stubs/%"))
+  (not m.fromSource() or m.isNative() or m.getFile().getAbsolutePath().contains("/test/stubs/"))
 }
 
 private class SummarizedCallableWithCallback extends SummarizedCallable::Range {

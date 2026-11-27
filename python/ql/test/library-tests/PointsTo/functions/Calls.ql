@@ -8,5 +8,5 @@ where
     or
     func.getAFunctionCall() = call and kind = "function"
   ) and
-  call.getLocation().getFile().getShortName().matches("odasa%")
+  call.getLocation().getFile().getShortName().startsWith("odasa")
 select call.getLocation().getStartLine(), call.toString(), func.toString(), kind

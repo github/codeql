@@ -350,7 +350,7 @@ class EjbAnnotatedInitMethod extends Method {
  */
 class EjbCreateMethod extends Method {
   EjbCreateMethod() {
-    this.getName().matches("ejbCreate%") and
+    this.getName().startsWith("ejbCreate") and
     exists(SessionEjb ejb | ejb.inherits(this))
   }
 
@@ -364,7 +364,7 @@ class EjbCreateMethod extends Method {
  */
 class EjbInterfaceCreateMethod extends Method {
   EjbInterfaceCreateMethod() {
-    this.getName().matches("create%") and
+    this.getName().startsWith("create") and
     exists(LegacyEjbHomeInterface i | i.inherits(this))
   }
 

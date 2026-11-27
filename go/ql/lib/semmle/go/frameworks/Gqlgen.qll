@@ -19,7 +19,7 @@ module Gqlgen {
   /** A resolver interface. */
   private class ResolverInterface extends Type {
     ResolverInterface() {
-      this.getQualifiedName().matches("%Resolver") and
+      this.getQualifiedName().endsWith("Resolver") and
       this.getEntity().getDeclaration().getFile() instanceof GqlgenGeneratedFile
     }
   }

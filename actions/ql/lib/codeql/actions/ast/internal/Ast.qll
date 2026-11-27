@@ -202,10 +202,10 @@ class ShellScriptImpl extends ScalarValueImpl {
   abstract string getCommand(int i);
 
   string getACommand() {
-    if this.getEnclosingRun().getShell().matches("bash%")
+    if this.getEnclosingRun().getShell().startsWith("bash")
     then result = this.(BashShellScript).getACommand()
     else
-      if this.getEnclosingRun().getShell().matches("pwsh%")
+      if this.getEnclosingRun().getShell().startsWith("pwsh")
       then result = this.(PowerShellScript).getACommand()
       else result = "NOT IMPLEMENTED"
   }
@@ -436,7 +436,7 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
 
   private predicate hasExplicitWritePermission() {
     // a calling job has an explicit write permission
-    this.getACallerJob().getPermissions().getAPermission().matches("%write")
+    this.getACallerJob().getPermissions().getAPermission().endsWith("write")
   }
 
   /** Holds if the action is privileged. */
@@ -981,12 +981,12 @@ class JobImpl extends AstNodeImpl, TJobNode {
   private predicate hasExplicitReadPermission() {
     // the job has not an explicit write permission
     exists(this.getPermissions().getAPermission()) and
-    not this.getPermissions().getAPermission().matches("%write")
+    not this.getPermissions().getAPermission().endsWith("write")
   }
 
   private predicate hasExplicitWritePermission() {
     // the job has an explicit write permission
-    this.getPermissions().getAPermission().matches("%write")
+    this.getPermissions().getAPermission().endsWith("write")
   }
 
   private predicate hasImplicitNonePermission() {
@@ -1010,7 +1010,7 @@ class JobImpl extends AstNodeImpl, TJobNode {
     // the job has not an explicit write permission
     not exists(this.getPermissions()) and
     exists(this.getEnclosingWorkflow().getPermissions().getAPermission()) and
-    not this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
+    not this.getEnclosingWorkflow().getPermissions().getAPermission().endsWith("write")
     or
     not exists(this.getPermissions()) and
     not exists(this.getEnclosingWorkflow().getPermissions()) and
@@ -1019,13 +1019,13 @@ class JobImpl extends AstNodeImpl, TJobNode {
         .getACaller()
         .getPermissions()
         .getAPermission()
-        .matches("%read")
+        .endsWith("read")
   }
 
   private predicate hasImplicitWritePermission() {
     // the job has an explicit write permission
     not exists(this.getPermissions()) and
-    this.getEnclosingWorkflow().getPermissions().getAPermission().matches("%write")
+    this.getEnclosingWorkflow().getPermissions().getAPermission().endsWith("write")
     or
     not exists(this.getPermissions()) and
     not exists(this.getEnclosingWorkflow().getPermissions()) and
@@ -1034,7 +1034,7 @@ class JobImpl extends AstNodeImpl, TJobNode {
         .getACaller()
         .getPermissions()
         .getAPermission()
-        .matches("%write")
+        .endsWith("write")
   }
 
   private predicate hasRuntimeData() {
@@ -1054,7 +1054,7 @@ class JobImpl extends AstNodeImpl, TJobNode {
       // We cannot trust the permissions for pull_request events since they depend on the
       // provenance of the head branch (local vs fork)
       not trigger.trim() = "pull_request" and
-      perms.toLowerCase().matches("%write%")
+      perms.toLowerCase().contains("write")
     )
   }
 
@@ -1400,7 +1400,7 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
   ExternalJobImpl() { n.lookup("uses") = u }
 
   override string getCallee() {
-    if u.getValue().matches("./%")
+    if u.getValue().startsWith("./")
     then result = u.getValue().regexpCapture(pathUsesParser(), 1)
     else
       result =
@@ -1457,7 +1457,7 @@ class RunImpl extends StepImpl {
         if this.getEnclosingJob().getARunsOnLabel().matches(["ubuntu%", "macos%"])
         then result = "bash"
         else
-          if this.getEnclosingJob().getARunsOnLabel().matches("windows%")
+          if this.getEnclosingJob().getARunsOnLabel().startsWith("windows")
           then result = "pwsh"
           else result = "bash"
   }

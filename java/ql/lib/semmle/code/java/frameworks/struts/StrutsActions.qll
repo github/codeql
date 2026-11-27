@@ -138,7 +138,7 @@ class Struts2ActionSupportClass extends Class {
     result.isPublic() and
     exists(string name | result.getField().getName().toLowerCase() = name |
       result.getName().toLowerCase().substring(3, result.getName().length()) = name and
-      result.getName().matches("set%")
+      result.getName().startsWith("set")
     )
   }
 }

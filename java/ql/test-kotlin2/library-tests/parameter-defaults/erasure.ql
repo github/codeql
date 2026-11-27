@@ -16,6 +16,6 @@ predicate containsTypeVariables(Type t) {
 
 from Expr e
 where
-  e.getEnclosingCallable().getName().matches("%$default") and
+  e.getEnclosingCallable().getName().endsWith("$default") and
   containsTypeVariables(e.getType())
 select e, e.getType()

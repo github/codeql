@@ -190,7 +190,7 @@ class AstNode extends @ast_node, NodeInStmtContainer {
  */
 cached
 private predicate isAmbientTopLevel(TopLevel tl) {
-  Stages::Ast::ref() and tl.getFile().getBaseName().matches("%.d.ts")
+  Stages::Ast::ref() and tl.getFile().getBaseName().endsWith(".d.ts")
 }
 
 /**

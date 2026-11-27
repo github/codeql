@@ -33,9 +33,9 @@ predicate isUserDefinedExceptionClass(Class cls) {
 string getBuiltinExceptionName() {
   result = Builtins::getBuiltinName() and
   (
-    result.matches("%Error") or
-    result.matches("%Exception") or
-    result.matches("%Warning") or
+    result.endsWith("Error") or
+    result.endsWith("Exception") or
+    result.endsWith("Warning") or
     result =
       ["GeneratorExit", "KeyboardInterrupt", "StopIteration", "StopAsyncIteration", "SystemExit"]
   )

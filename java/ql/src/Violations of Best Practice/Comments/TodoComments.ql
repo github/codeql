@@ -15,6 +15,6 @@ import java
 
 from JavadocText c
 where
-  c.getText().matches("%TODO%") or
-  c.getText().matches("%FIXME%")
+  c.getText().contains("TODO") or
+  c.getText().contains("FIXME")
 select c, "TODO comments should be addressed."

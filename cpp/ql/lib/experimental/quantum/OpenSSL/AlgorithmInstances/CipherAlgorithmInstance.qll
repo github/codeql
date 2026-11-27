@@ -17,47 +17,47 @@ predicate knownOpenSslConstantToCipherFamilyType(
   exists(string name |
     name = e.(KnownOpenSslAlgorithmExpr).getNormalizedName() and
     (
-      name.matches("AES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
+      name.startsWith("AES") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
       or
-      name.matches("ARIA%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::ARIA())
+      name.startsWith("ARIA") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::ARIA())
       or
-      name.matches("BLOWFISH%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
+      name.startsWith("BLOWFISH") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
       or
-      name.matches("BF%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
+      name.startsWith("BF") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::BLOWFISH())
       or
-      name.matches("CAMELLIA%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAMELLIA())
+      name.startsWith("CAMELLIA") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAMELLIA())
       or
-      name.matches("CHACHA20%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CHACHA20())
+      name.startsWith("CHACHA20") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CHACHA20())
       or
-      name.matches("CAST5%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAST5())
+      name.startsWith("CAST5") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAST5())
       or
-      name.matches("2DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DOUBLE_DES())
+      name.startsWith("2DES") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DOUBLE_DES())
       or
-      name.matches("3DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
+      name.startsWith("3DES") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
       or
-      name.matches("DES%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
+      name.startsWith("DES") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
-      name.matches("DESX%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DESX())
+      name.startsWith("DESX") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DESX())
       or
-      name.matches("GOST%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::GOST())
+      name.startsWith("GOST") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::GOST())
       or
-      name.matches("IDEA%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA())
+      name.startsWith("IDEA") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA())
       or
-      name.matches("KUZNYECHIK%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::KUZNYECHIK())
+      name.startsWith("KUZNYECHIK") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::KUZNYECHIK())
       or
-      name.matches("MAGMA%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::MAGMA())
+      name.startsWith("MAGMA") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::MAGMA())
       or
-      name.matches("RC2%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC2())
+      name.startsWith("RC2") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC2())
       or
-      name.matches("RC4%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC4())
+      name.startsWith("RC4") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC4())
       or
-      name.matches("RC5%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC5())
+      name.startsWith("RC5") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::RC5())
       or
-      name.matches("RSA%") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
+      name.startsWith("RSA") and type = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA())
       or
-      name.matches("SEED%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SEED())
+      name.startsWith("SEED") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SEED())
       or
-      name.matches("SM4%") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SM4())
+      name.startsWith("SM4") and type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SM4())
     )
   )
 }

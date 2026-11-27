@@ -218,3 +218,65 @@ func testShorthandTokens(obj: ShorthandTest, string: String) {
         string  // $ isSink=shorthand-sink
     )  // $ isSink=shorthand-sink
 }
+
+class SubscriptTest {
+    subscript(i: Int) -> String {
+        get { "" }
+        set {}
+    }
+}
+
+class SubscriptTestSub: SubscriptTest {
+    override subscript(i: Int) -> String {
+        get { "" }
+        set(v) {  // $ isSource=subscript-setter-source
+            _ = v
+        }
+    }
+}
+
+func testSubscripts(obj: SubscriptTest, string: String) {
+    _ = obj[0]  // $ isSink=subscript-getter-sink
+    obj[0] = string  // $ isSink=subscript-setter-sink
+}
+
+class OptionalTest {
+    func source(_ x: String, y: Int = 0) {}
+    func named(a: String, b: Int = 0) {}
+    func named(x: String, b: Int) {}
+    func positional(_ x: String, _ y: Int = 0) {}
+    func mixed(_ x: String, x y: Int = 0) {}
+}
+
+class OptionalTestSub: OptionalTest {
+    override func source(
+        _ x: String,  // $ isSource=optional-source
+        y: Int = 0
+    ) {}
+}
+
+class OptionalInit {
+    init(value: String, flag: Bool = false) {}
+}
+
+func testOptionalParameters(obj: OptionalTest, string: String) {
+    obj.named(a: string)  // $ isSink=optional-named-sink
+    obj.named(a: string, b: 1)  // $ isSink=optional-named-sink
+    obj.named(a: string, c: 1)  // not a sink: unknown label
+    obj.named(b: 1, a: string)  // not a sink: wrong order
+    obj.named(x: string)  // not a sink: `b` is required here
+    obj.named(x: string, b: 1)  // $ isSink=required-named-sink
+
+    obj.positional(string)  // $ isSink=optional-positional-sink
+    obj.positional(string, 1)  // $ isSink=optional-positional-sink
+    obj.positional(string, 1, 2)  // not a sink: too many arguments
+    obj.positional()  // not a sink: too few arguments
+
+    obj.mixed(string)  // $ isSink=optional-mixed-sink
+    obj.mixed(string, x: 1)  // $ isSink=optional-mixed-sink
+    obj.mixed(string, 1)  // not a sink: missing label
+
+    _ = OptionalInit(value: string)  // $ isSink=optional-init-sink
+    _ = OptionalInit(value: string, flag: true)  // $ isSink=optional-init-sink
+    _ = OptionalInit(flag: true)  // not a sink: missing required argument
+}

@@ -4,8 +4,8 @@ from Package pkg, string fullpath
 where
   packages(pkg, _, fullpath, _) and
   (
-    pkg.getPath().matches("%github.com/nonexistent-test-pkg%")
+    pkg.getPath().contains("github.com/nonexistent-test-pkg")
     or
-    pkg.getPath().matches("semmle.go.Packages%")
+    pkg.getPath().startsWith("semmle.go.Packages")
   )
 select pkg, pkg.getPath(), fullpath

@@ -1156,24 +1156,6 @@ module IR {
 
     /** Gets the source location for this element. */
     Location getLocation() { none() }
-
-    /**
-     * DEPRECATED: Use `getLocation()` instead.
-     *
-     * Holds if this element is at the specified location.
-     */
-    deprecated predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      or
-      not exists(this.getLocation()) and
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
-    }
   }
 
   /** An implicitly declared variable used as the target of a type-switch case write. */

@@ -39,8 +39,8 @@ module Peewee {
       // class DBClass extends Class, SelfRefMixin {
       //   DBClass() {
       //     exists(this.getLocation().getFile().getRelativePath()) and
-      //     this.getName().matches("%Database") and
-      //     this.getABase().(Name).getId().matches("%Database")
+      //     this.getName().endsWith("Database") and
+      //     this.getABase().(Name).getId().endsWith("Database")
       //   }
       // }
       //

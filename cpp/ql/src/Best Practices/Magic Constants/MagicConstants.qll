@@ -170,11 +170,6 @@ predicate occurrenceCount(Literal lit, string value, int n) {
   nonTrivialValue(_, lit)
 }
 
-/**
- * DEPRECATED: Use `occurrenceCount` instead.
- */
-deprecated predicate occurenceCount = occurrenceCount/3;
-
 /*
  * Literals repeated frequently
  */

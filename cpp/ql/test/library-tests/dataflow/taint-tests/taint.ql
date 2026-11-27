@@ -47,7 +47,7 @@ module AstTest {
     predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
-      source.asParameter().getName().matches("source%")
+      source.asParameter().getName().startsWith("source")
       or
       // Track uninitialized variables
       exists(source.asUninitialized())
@@ -104,7 +104,7 @@ module IRTest {
       or
       source.asIndirectExpr().(FunctionCall).getTarget().getName() = "indirect_source"
       or
-      source.asParameter().getName().matches("source%")
+      source.asParameter().getName().startsWith("source")
       or
       exists(FunctionCall fc |
         fc.getAnArgument() = source.asDefiningArgument() and

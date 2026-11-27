@@ -14,5 +14,5 @@
 import semmle.code.asp.AspNet
 
 from AspBlockCode code
-where code.getBody().trim().matches("Response.Write(%")
+where code.getBody().trim().startsWith("Response.Write(")
 select code, "Non-inline code calls 'Response.Write()'."

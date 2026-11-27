@@ -264,15 +264,6 @@ module SourceSinkInterpretationInput implements
       result = this.asEntity().getLocation() or
       result = this.asAstNode().getLocation()
     }
-
-    /**
-     * DEPRECATED: Use `getLocation()` instead.
-     *
-     * Holds if this element is at the specified location.
-     */
-    deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
-    }
   }
 
   private newtype TInterpretNode =
@@ -323,15 +314,6 @@ module SourceSinkInterpretationInput implements
     Location getLocation() {
       result = this.asElement().getLocation() or
       result = this.asNode().getLocation()
-    }
-
-    /**
-     * DEPRECATED: Use `getLocation()` instead.
-     *
-     * Gets the location of this node.
-     */
-    deprecated predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.getLocation().hasLocationInfo(fp, sl, sc, el, ec)
     }
   }
 

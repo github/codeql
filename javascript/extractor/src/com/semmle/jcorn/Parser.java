@@ -1346,6 +1346,10 @@ public class Parser {
   protected Expression parseExpression(boolean noIn) {
     Position startLoc = this.startLoc;
     Expression expr = this.parseMaybeAssign(noIn, null);
+    return this.parseExpressionRest(expr, startLoc, noIn);
+  }
+
+  protected Expression parseExpressionRest(Expression expr, Position startLoc, boolean noIn) {
     if (this.type == TokenType.comma) {
       List<Expression> expressions = CollectionUtil.makeList(expr);
       SequenceExpression node = new SequenceExpression(new SourceLocation(startLoc), expressions);
@@ -1354,6 +1358,20 @@ public class Parser {
       return this.finishNode(node);
     }
     return expr;
+  }
+
+  /**
+   * Continue parsing a full expression after its leading atomic expression {@code atom} has
+   * already been parsed.
+   */
+  protected Expression parseExpressionFromAtom(
+      Expression atom, int startPos, Position startLoc, boolean noIn) {
+    Expression expr = this.parseSubscripts(atom, startPos, startLoc, false);
+    expr = this.parseMaybeUnaryRest(expr, startPos, startLoc, false);
+    expr = this.parseExprOp(expr, startPos, startLoc, -1, noIn);
+    expr = this.parseMaybeConditionalRest(expr, startLoc, noIn);
+    expr = this.parseMaybeAssignRest(expr, startPos, startLoc, noIn, null);
+    return this.parseExpressionRest(expr, startLoc, noIn);
   }
 
   public interface AfterLeftParse {
@@ -1370,6 +1388,11 @@ public class Parser {
     if (this.type == TokenType.parenL || this.type == TokenType.name)
       this.potentialArrowAt = this.start;
     Expression left = this.parseMaybeConditional(noIn);
+    return this.parseMaybeAssignRest(left, startPos, startLoc, noIn, afterLeftParse);
+  }
+
+  protected Expression parseMaybeAssignRest(
+      Expression left, int startPos, Position startLoc, boolean noIn, AfterLeftParse afterLeftParse) {
     if (afterLeftParse != null) left = afterLeftParse.call(left, startPos, startLoc);
     if (this.type.isAssign) {
       Expression l = this.type == TokenType.eq ? (Expression) this.toAssignable(left, false) : left;
@@ -1388,6 +1411,11 @@ public class Parser {
   protected Expression parseMaybeConditional(boolean noIn) {
     Position startLoc = this.startLoc;
     Expression expr = this.parseExprOps(noIn);
+    return this.parseMaybeConditionalRest(expr, startLoc, noIn);
+  }
+
+  protected Expression parseMaybeConditionalRest(
+      Expression expr, Position startLoc, boolean noIn) {
     if (this.eat(TokenType.question)) {
       return parseConditionalRest(noIn, startLoc, expr);
     }
@@ -1474,17 +1502,25 @@ public class Parser {
       else sawUnary = true;
       expr = this.finishNode(node);
     } else {
-      expr = this.parseExprSubscripts();
-      while (this.type.isPostfix && !this.canInsertSemicolon()) {
-        UpdateExpression node =
-            new UpdateExpression(
-                new SourceLocation(startLoc), String.valueOf(this.value), expr, false);
-        this.checkLVal(expr, false, null);
-        this.next();
-        expr = this.finishNode(node);
-      }
+      return this.parseMaybeUnaryRest(this.parseExprSubscripts(), startPos, startLoc, sawUnary);
     }
 
+    if (!sawUnary && this.eat(TokenType.starstar))
+      return this.buildBinary(
+          startPos, startLoc, expr, this.parseMaybeUnary(false), "**", false);
+    else return expr;
+  }
+
+  protected Expression parseMaybeUnaryRest(
+      Expression expr, int startPos, Position startLoc, boolean sawUnary) {
+    while (this.type.isPostfix && !this.canInsertSemicolon()) {
+      UpdateExpression node =
+          new UpdateExpression(
+              new SourceLocation(startLoc), String.valueOf(this.value), expr, false);
+      this.checkLVal(expr, false, null);
+      this.next();
+      expr = this.finishNode(node);
+    }
     if (!sawUnary && this.eat(TokenType.starstar))
       return this.buildBinary(
           startPos, startLoc, expr, this.parseMaybeUnary(false), "**", false);
