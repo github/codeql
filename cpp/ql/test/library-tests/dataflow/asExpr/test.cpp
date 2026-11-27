@@ -67,9 +67,9 @@ void test_constructor_calls() {
 
 void test_parameters(
   int x, // $ asParameter=x parameterNode=x
-  int &r, // $ asParameter=r(*r) SPURIOUS: parameterNode=r MISSING: parameterNode=r(*r)
-  const int &cr, // $ asParameter=cr(*cr) SPURIOUS: parameterNode=cr MISSING: parameterNode=cr(*cr)
-  int &&rr, // $ asParameter=rr(*rr) SPURIOUS: parameterNode=rr MISSING: parameterNode=rr(*rr)
+  int &r, // $ asParameter=r(*r) parameterNode=r(*r)
+  const int &cr, // $ asParameter=cr(*cr) parameterNode=cr(*cr)
+  int &&rr, // $ asParameter=rr(*rr) parameterNode=rr(*rr)
   int *p, // $ asParameter=p parameterNode=p
-  int *&rp) { // $ asParameter=rp(*rp) SPURIOUS: parameterNode=rp MISSING: parameterNode=rp(*rp)
+  int *&rp) { // $ asParameter=rp(*rp) parameterNode=rp(*rp)
 }
