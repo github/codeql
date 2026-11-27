@@ -1,1 +1,0 @@
-exports_files(["rules_dotnet_nuget_archive.patch"])

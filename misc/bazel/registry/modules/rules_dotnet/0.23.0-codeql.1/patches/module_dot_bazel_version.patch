@@ -1,0 +1,5 @@
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -5 +5 @@
+-    version = "0.0.0",
++    version = "0.23.0-codeql.1",

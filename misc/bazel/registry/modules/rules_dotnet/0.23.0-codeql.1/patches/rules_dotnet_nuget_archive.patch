@@ -1,6 +1,6 @@
 --- a/dotnet/private/rules/nuget/nuget_archive.bzl
 +++ b/dotnet/private/rules/nuget/nuget_archive.bzl
-@@ -219,6 +219,9 @@ def _process_group_with_tfm(groups, group_name, file):
+@@ -116,6 +116,9 @@ def _process_group_with_tfm(groups, group_name, file):
          groups["unsupported_tfms"][folder] = True
          return
 -

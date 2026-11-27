@@ -1,0 +1,112 @@
+"rules_dotnet"
+
+module(
+    name = "rules_dotnet",
+    version = "0.23.0-codeql.1",
+    bazel_compatibility = [">=9.0.0"],
+    compatibility_level = 0,
+)
+
+dotnet = use_extension("@rules_dotnet//dotnet:extensions.bzl", "dotnet")
+dotnet.toolchain(dotnet_version = "11.0.100")
+dotnet.bootstrap_toolchain(dotnet_version = "11.0.100")
+use_repo(dotnet, "dotnet.apphost_packs", "dotnet.crossgen2_packs", "dotnet.ilcompiler_packs", "dotnet.nativeaot_packs", "dotnet.runtime_packs", "dotnet.targeting_packs", "dotnet.wasm_packs", "dotnet_bootstrap_toolchains", "dotnet_toolchains")
+
+register_toolchains(
+    "@dotnet_toolchains//:all",
+    "@dotnet_bootstrap_toolchains//:all",
+)
+
+paket = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket")
+paket.parse(
+    dependencies = "//:paket.dependencies",
+    groups = [
+        "paket_cli",
+        "rules_dotnet_nuget_packages",
+    ],
+    lock = "//:paket.lock",
+)
+use_repo(paket, "paket.paket_cli", "paket.rules_dotnet_nuget_packages")
+
+bazel_dep(name = "bazel_skylib", version = "1.8.1")
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "bazel_lib", version = "3.0.0")
+bazel_dep(name = "rules_shell", version = "0.5.0")
+
+# `publish_binary` links a NativeAOT publish with the cc toolchain APIs.
+bazel_dep(name = "rules_cc", version = "0.2.19")
+bazel_dep(name = "icu", version = "78.2.bcr.2")
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_dotnet_icu_data",
+    build_file_content = 'exports_files(["icudt78l.dat"])',
+    integrity = "sha256-b8UaiBgkK/2DIHq4lVEWasL7S/UC0B5BzdyMtqC6TNo=",
+    urls = ["https://github.com/unicode-org/icu/releases/download/release-78.2/icu4c-78.2-data-bin-l.zip"],
+)
+
+icu_sources = use_repo_rule("//dotnet/private/icu:sources.bzl", "icu_sources")
+
+icu_sources(name = "rules_dotnet_icu_sources")
+
+# Dev dependencies
+bazel_dep(name = "rules_pkg", version = "1.1.0", dev_dependency = True)
+bazel_dep(name = "gazelle", version = "0.51.3", dev_dependency = True, repo_name = "bazel_gazelle")
+bazel_dep(name = "bazel_skylib_gazelle_plugin", version = "1.9.0", dev_dependency = True)
+bazel_dep(name = "rules_testing", version = "0.8.0", dev_dependency = True)
+bazel_dep(name = "bazel_ci_rules", version = "1.0.0", dev_dependency = True)
+
+# Builds container layers from a publish in the tests.
+bazel_dep(name = "rules_img", version = "0.3.22", dev_dependency = True)
+
+# The LLVM toolchains are registered selectively in .bazelrc
+bazel_dep(name = "llvm", version = "0.8.19", dev_dependency = True)
+
+osx_sysroot = use_extension("@llvm//extensions:osx.bzl", "osx", dev_dependency = True)
+osx_sysroot.frameworks(names = [
+    "CoreFoundation",
+    "CryptoKit",
+    "Foundation",
+    "GSS",
+    "Kernel",
+    "Network",
+    "OSLog",
+    "Security",
+    "SystemConfiguration",
+])
+
+bazel_dep(name = "dotnet_test_resources_other_repo", version = "", dev_dependency = True)
+local_path_override(
+    module_name = "dotnet_test_resources_other_repo",
+    path = "dotnet/private/tests/resources/other_repo",
+)
+
+dev_paket = use_extension("@rules_dotnet//dotnet:paket.bzl", "paket", dev_dependency = True)
+dev_paket.parse(
+    dependencies = "//:paket.dependencies",
+    groups = [
+        "rules_dotnet_dev_nuget_packages",
+        "rules_dotnet_nuget_resource_assemblies_tests",
+        "rules_dotnet_framework_override_not_provided_tests",
+        "rules_dotnet_nuget_pack_tests",
+        "rules_dotnet_nuget_tool_tests",
+        "rules_dotnet_static_web_assets_tests",
+    ],
+    lock = "//:paket.lock",
+)
+use_repo(
+    dev_paket,
+    "paket.rules_dotnet_dev_nuget_packages",
+    "paket.rules_dotnet_framework_override_not_provided_tests",
+    "paket.rules_dotnet_nuget_pack_tests",
+    "paket.rules_dotnet_nuget_resource_assemblies_tests",
+    "paket.rules_dotnet_nuget_tool_tests",
+    "paket.rules_dotnet_static_web_assets_tests",
+)
+
+internal_dev_deps = use_extension("@rules_dotnet//dotnet:internal_dev_deps.bzl", "internal_dev_deps", dev_dependency = True)
+use_repo(internal_dev_deps, "buildkite_config")
+
+nuget_fixtures = use_extension("//dotnet/private/tests/nuget_resolution/internal:fixtures.bzl", "nuget_fixtures", dev_dependency = True)
+use_repo(nuget_fixtures, "nuget_fixtures")
