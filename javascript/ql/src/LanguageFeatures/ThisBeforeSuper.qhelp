@@ -41,6 +41,6 @@ class A extends B {
 </example>
 
 <references>
-<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#Sub_classing_with_extends">Sub classing with extends</a>.</li>
+<li>Mozilla Developer Network: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes#inheritance">Sub classing with extends</a>.</li>
 </references>
 </qhelp>
