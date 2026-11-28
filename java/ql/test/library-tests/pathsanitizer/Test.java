@@ -1,5 +1,6 @@
 import java.io.File;
 import java.net.URI;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import android.net.Uri;
@@ -64,6 +65,11 @@ public class Test {
 
     private void allowListGuardValidation(String path) throws Exception {
         if (path.contains("..") || !path.startsWith("/safe"))
+            throw new Exception();
+    }
+
+    private void allowListUnrelatedValidation(String other, String path) throws Exception {
+        if (other.contains("..") || !path.startsWith("/safe"))
             throw new Exception();
     }
 
@@ -171,6 +177,119 @@ public class Test {
             allowListGuardValidation(source);
             sink(source); // Safe
         }
+        {
+            String source = (String) source();
+            String other = (String) source();
+            allowListUnrelatedValidation(other, source);
+            sink(source); // $ hasTaintFlow
+        }
+        // Unrelated `..` guard does not sanitize
+        {
+            String source = (String) source();
+            String other = (String) source();
+            if (!other.contains("..") && source.startsWith("/safe"))
+                sink(source); // $ hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        {
+            // Lossy `File.getName()` does not link `baseName` back to precomputed `resolved`
+            // (note: `sink(source)` is still sanitized because `localTaintFlowToPathGuard` allows taint steps).
+            String source = (String) source();
+            String baseName = new File(source).getName();
+            Path resolved = Paths.get("/safe/sub").resolve(source);
+            if (!baseName.contains("..") && resolved.startsWith("/safe"))
+                sink(resolved); // $ hasTaintFlow
+        }
+        // Derived values across both guards
+        {
+            String source = (String) source();
+            Path resolved = Paths.get("/safe").resolve(source);
+            if (!source.contains("..") && resolved.startsWith("/safe")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            Path source = (Path) source();
+            Path resolved = Paths.get("/safe").resolve(source);
+            if (!source.toString().contains("..") && resolved.startsWith("/safe")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            File source = (File) source();
+            String str = source.getPath();
+            Path resolved = Paths.get("/safe").resolve(source.toPath());
+            if (!str.contains("..") && resolved.startsWith("/safe")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            File source = (File) source();
+            String absPath = source.getAbsoluteFile().getAbsolutePath();
+            Path resolved = Paths.get("/safe").resolve(source.toPath());
+            if (!absPath.contains("..") && resolved.startsWith("/safe")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            File dir = new File("/safe");
+            String name = (String) source();
+            File file = new File(dir, name);
+            if (!name.contains("..") && file.toPath().startsWith(dir.toPath())) {
+                sink(file); // Safe
+                sink(name); // $ hasTaintFlow
+            } else {
+                sink(file); // $ hasTaintFlow
+                sink(name); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (!source.contains("..")) {
+                Path resolved = Paths.get("/safe").resolve(source);
+                if (resolved.startsWith("/safe")) {
+                    sink(source); // Safe
+                    sink(resolved); // Safe
+                } else {
+                    sink(source); // $ hasTaintFlow
+                    sink(resolved); // $ hasTaintFlow
+                }
+            }
+        }
+        {
+            Path source = (Path) source();
+            if (!source.toString().contains("..") && source.startsWith("/safe"))
+                sink(source); // Safe
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        {
+            Object raw = source();
+            if (!((String) raw).contains("..")) {
+                Path resolved = Paths.get("/safe").resolve((String) raw);
+                if (resolved.startsWith("/safe"))
+                    sink(resolved); // Safe
+                else
+                    sink(resolved); // $ hasTaintFlow
+            }
+        }
         // PathInjectionSanitizer + partial string match is considered unsafe
         {
             String source = (String) source();
@@ -209,6 +328,13 @@ public class Test {
 
     private void dotDotCheckGuardValidation(String path) throws Exception {
         if (!path.startsWith("/safe") || path.contains(".."))
+            throw new Exception();
+    }
+
+    private void dotDotUnrelatedValidation(String route, String path) throws Exception {
+        // Use `indexOf` instead of `contains` because `ValidatedVariableAccess`
+        // treats any `void` helper calling `String.contains` on a parameter as a validator.
+        if (!route.startsWith("/safe") || path.indexOf("..") != -1)
             throw new Exception();
     }
 
@@ -291,6 +417,126 @@ public class Test {
             String source = (String) source();
             dotDotCheckGuardValidation(source);
             sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            String route = (String) source();
+            dotDotUnrelatedValidation(route, source);
+            sink(source); // $ hasTaintFlow
+        }
+        // Unrelated prefix or blocklist guard does not sanitize
+        {
+            String source = (String) source();
+            String route = (String) source();
+            if (route.startsWith("/safe") && !source.contains(".."))
+                sink(source); // $ hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            String other = (String) source();
+            if (!other.startsWith("/data") && !source.contains(".."))
+                sink(source); // $ hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        {
+            String s = (String) source();
+            if (s.startsWith("/safe")) {
+                s = (String) source();
+                if (!s.contains(".."))
+                    sink(s); // $ hasTaintFlow
+            }
+        }
+        // Derived values across both guards
+        {
+            String source = (String) source();
+            String trimmed = source.trim();
+            if (source.startsWith("/safe") && !trimmed.contains("..")) {
+                sink(source); // Safe
+                sink(trimmed); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(trimmed); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.startsWith("/safe")) {
+                String trimmed = source.trim();
+                if (!trimmed.contains("..")) {
+                    sink(source); // Safe
+                    sink(trimmed); // Safe
+                } else {
+                    sink(source); // $ hasTaintFlow
+                    sink(trimmed); // $ hasTaintFlow
+                }
+            }
+        }
+        {
+            Object raw = source();
+            if (!((String) raw).contains("/data")) {
+                String trimmed = ((String) raw).trim();
+                if (!trimmed.contains(".."))
+                    sink(trimmed); // Safe
+                else
+                    sink(trimmed); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            String target = source + "/file";
+            if (Paths.get(source).startsWith("/safe") && !target.contains("..")) {
+                sink(source); // Safe
+                sink(target); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(target); // $ hasTaintFlow
+            }
+        }
+        {
+            Path source = (Path) source();
+            String str = source.toString();
+            if (source.toString().startsWith("/safe") && !str.contains("..")) {
+                sink(source); // Safe
+                sink(str); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(str); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            Path checked = FileSystems.getDefault().getPath(source);
+            String target = source + "/file";
+            if (checked.startsWith("/safe") && !target.contains("..")) {
+                sink(source); // Safe
+                sink(target); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(target); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            Path checked = FileSystems.getDefault().getPath(source, "/safe");
+            String target = source + "/etc";
+            if (checked.startsWith("/safe") && !target.contains("..")) {
+                sink(target); // $ hasTaintFlow
+            }
+        }
+        {
+            Path source = (Path) source();
+            Path abs = source.toAbsolutePath();
+            Path target = source.resolve("file");
+            if (abs.startsWith("/safe") && !target.toString().contains("..")) {
+                sink(source); // Safe
+                sink(target); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(target); // $ hasTaintFlow
+            }
         }
     }
 
@@ -402,6 +648,40 @@ public class Test {
             String source = (String) source();
             blockListGuardValidation(source);
             sink(source); // Safe
+        }
+        // Unrelated `..` guard does not sanitize
+        {
+            String source = (String) source();
+            String other = (String) source();
+            if (!other.contains("..") && !source.startsWith("/data"))
+                sink(source); // $ hasTaintFlow
+            else
+                sink(source); // $ hasTaintFlow
+        }
+        // Derived values across both guards
+        {
+            String source = (String) source();
+            Path resolved = Paths.get("/dir").resolve(source);
+            if (!source.contains("..") && !resolved.startsWith("/data")) {
+                sink(source); // Safe
+                sink(resolved); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+                sink(resolved); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (!source.contains("..")) {
+                Path resolved = Paths.get("/dir").resolve(source);
+                if (!resolved.startsWith("/data")) {
+                    sink(source); // Safe
+                    sink(resolved); // Safe
+                } else {
+                    sink(source); // $ hasTaintFlow
+                    sink(resolved); // $ hasTaintFlow
+                }
+            }
         }
         // PathInjectionSanitizer + partial string match with disallowed words
         {

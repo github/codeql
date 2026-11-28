@@ -1,5 +1,6 @@
 import java.io.File
 import java.net.URI
+import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.Paths
 import android.net.Uri
@@ -184,6 +185,75 @@ class TestKt {
             allowListGuardValidation(source)
             sink(source) // Safe
         }
+        // Unrelated `..` guard does not sanitize
+        run {
+            val source = source() as String?
+            val other = source() as String?
+            if (!other!!.contains("..") && source!!.startsWith("/safe"))
+                sink(source) // $ hasTaintFlow
+            else
+                sink(source) // $ hasTaintFlow
+        }
+        // Derived values across both guards
+        run {
+            val source = source() as String?
+            val resolved: Path = Paths.get("/safe").resolve(source!!)
+            if (!source.contains("..") && resolved.startsWith("/safe")) {
+                sink(source) // Safe
+                sink(resolved) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(resolved) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source = source() as Path?
+            val resolved: Path = Paths.get("/safe").resolve(source!!)
+            if (!source.toString().contains("..") && resolved.startsWith("/safe")) {
+                sink(source) // Safe
+                sink(resolved) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(resolved) // $ hasTaintFlow
+            }
+        }
+        run {
+            val dir = File("/safe")
+            val name = source() as String?
+            val file = File(dir, name!!)
+            if (!name.contains("..") && file.toPath().startsWith(dir.toPath())) {
+                sink(file) // Safe
+                sink(name) // $ hasTaintFlow
+            } else {
+                sink(file) // $ hasTaintFlow
+                sink(name) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source = source() as String?
+            val checked: Path = FileSystems.getDefault().getPath(source!!).toAbsolutePath()
+            val target = source + "/file"
+            if (checked.startsWith("/safe") && !target.contains("..")) {
+                sink(source) // Safe
+                sink(target) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(target) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source = source() as String?
+            if (!source!!.contains("..")) {
+                val resolved: Path = Paths.get("/safe").resolve(source)
+                if (resolved.startsWith("/safe")) {
+                    sink(source) // Safe
+                    sink(resolved) // Safe
+                } else {
+                    sink(source) // $ hasTaintFlow
+                    sink(resolved) // $ hasTaintFlow
+                }
+            }
+        }
         // PathInjectionSanitizer + partial string match is considered unsafe
         run {
             val source = source() as String?
@@ -301,6 +371,48 @@ class TestKt {
             val source = source() as String?
             dotDotCheckGuardValidation(source)
             sink(source) // Safe
+        }
+        // Unrelated prefix or blocklist guard does not sanitize
+        run {
+            val source = source() as String?
+            val route = source() as String?
+            if (route!!.startsWith("/safe") && !source!!.contains(".."))
+                sink(source) // $ hasTaintFlow
+            else
+                sink(source) // $ hasTaintFlow
+        }
+        run {
+            val source = source() as String?
+            val other = source() as String?
+            if (!other!!.startsWith("/data") && !source!!.contains(".."))
+                sink(source) // $ hasTaintFlow
+            else
+                sink(source) // $ hasTaintFlow
+        }
+        // Derived values across both guards
+        run {
+            val source = source() as String?
+            val withSuffix = source!! + "/file"
+            if (source.startsWith("/safe") && !withSuffix.contains("..")) {
+                sink(source) // Safe
+                sink(withSuffix) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(withSuffix) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source = source() as String?
+            if (source!!.startsWith("/safe")) {
+                val withSuffix = source + "/file"
+                if (!withSuffix.contains("..")) {
+                    sink(source) // Safe
+                    sink(withSuffix) // Safe
+                } else {
+                    sink(source) // $ hasTaintFlow
+                    sink(withSuffix) // $ hasTaintFlow
+                }
+            }
         }
     }
 
@@ -427,6 +539,40 @@ class TestKt {
             val source = source() as String?
             blockListGuardValidation(source)
             sink(source) // Safe
+        }
+        // Unrelated `..` guard does not sanitize
+        run {
+            val source = source() as String?
+            val other = source() as String?
+            if (!other!!.contains("..") && !source!!.startsWith("/data"))
+                sink(source) // $ hasTaintFlow
+            else
+                sink(source) // $ hasTaintFlow
+        }
+        // Derived values across both guards
+        run {
+            val source = source() as String?
+            val resolved: Path = Paths.get("/dir").resolve(source!!)
+            if (!source.contains("..") && !resolved.startsWith("/data")) {
+                sink(source) // Safe
+                sink(resolved) // Safe
+            } else {
+                sink(source) // $ hasTaintFlow
+                sink(resolved) // $ hasTaintFlow
+            }
+        }
+        run {
+            val source = source() as String?
+            if (!source!!.contains("..")) {
+                val resolved: Path = Paths.get("/dir").resolve(source)
+                if (!resolved.startsWith("/data")) {
+                    sink(source) // Safe
+                    sink(resolved) // Safe
+                } else {
+                    sink(source) // $ hasTaintFlow
+                    sink(resolved) // $ hasTaintFlow
+                }
+            }
         }
         // PathInjectionSanitizer + partial string match with disallowed words
         run {
